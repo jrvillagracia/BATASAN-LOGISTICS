@@ -22,7 +22,7 @@
                 <h1 class="text-4xl font-bold text-white mb-4">Welcome!</h1>
                 <p class="mt-5 mb-5 text-white">Please click or tap your destination.</p>
                 <a href="#" class="w-full bg-blue-500 text-white py-2 px-4 rounded text-center mb-4 hover:bg-blue-600">Student</a>
-                <a href="{{ route('staff_login') }}" class="w-full bg-red-500 text-white py-2 px-4 rounded text-center mb-4 hover:bg-red-600">Employee</a>
+                <a href="{{ route('employee_login') }}" class="w-full bg-red-500 text-white py-2 px-4 rounded text-center mb-4 hover:bg-red-600">Employee</a>
 
                 <div class="text-center mb-4">
                     <a href="{{ route('register') }}" class="text-blue-500 hover:underline block">Register an account</a>

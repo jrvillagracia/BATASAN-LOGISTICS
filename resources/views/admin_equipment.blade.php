@@ -7,10 +7,12 @@
     <title>Dashboard Analytics</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
-    <link rel="stylesheet" href="{{asset('css/admin.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_equipment.css')}}">
 
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="{{asset('js/admin_equipment.js')}}"></script>
     <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{asset('js/admin.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
     <script src="{{asset('js/popups.js')}}"></script>
 
 
@@ -180,58 +182,48 @@
                             </div>
 
                             <!-- Add Item Button -->
-                            <button id="showFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
+                            <button id="EquipFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
                         </div>
                     </div>
 
                     <!-- Floating Card with Form (Initially Hidden) -->
-                    <div id="itemFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                    <div id="EquipFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
-                            <h2 class="text-xl font-bold mb-4">Add New Product</h2>
+                            <h2 class="text-xl font-bold mb-4">Add New Equipment</h2>
 
                             <form action="{{ route('equipment.store') }}" method="POST">
                                 @csrf
                                 <!-- Input Fields -->
                                 <div class="mb-4">
-                                    <input type="text" name="productName" id="productName" class="border p-2 rounded w-full mb-2" placeholder="Product Name">
-                                    <label for="productCategory" class="block text-gray-700 mb-1">Category</label>
-                                    <select name="productCategory" id="productCategory" class="border p-2 rounded w-full mb-2">
+                                    <input type="text" name="EquipmentName" id="EquipmentName" class="border p-2 rounded w-full mb-2" placeholder="Equipment Name">
+                                    <label for="EquipmentCategory" class="block text-gray-700 mb-1">Category</label>
+                                    <select name="EquipmentCategory" id="EquipmentCategory" class="border p-2 rounded w-full mb-2">
                                         <option value="" disabled selected>Select a category</option>
                                         <option value="textbook">Textbook</option>
                                         <option value="office">Office Supplies</option>
                                         <option value="electronics">Electronics</option>
                                         <!-- Add more options as needed -->
                                     </select>
-                                    <input type="number" name="productQuantity" id="productQuantity" class="border p-2 rounded w-full mb-2" placeholder="Quantity">
-                                    <input type="date" name="productDate" id="productDate" class="border p-2 rounded w-full mb-4" placeholder="Date">
-                                    <input type="number" name="productPrice" id="productPrice" class="border p-2 rounded w-full mb-4" placeholder="Price">
-                                    <label for="productDepartment" class="block text-gray-700 mb-1">Department</label>
-                                    <select name="productDepartment" id="productDepartment" class="border p-2 rounded w-full mb-2">
+                                    <input type="number" name="EquipmentQuantity" id="EquipmentQuantity" class="border p-2 rounded w-full mb-2" placeholder="Quantity">
+                                    <input type="date" name="EquipmentDate" id="EquipmentDate" class="border p-2 rounded w-full mb-4" placeholder="Date">
+                                    <input type="number" name="EquipmentPrice" id="EquipmentPrice" class="border p-2 rounded w-full mb-4" placeholder="Price">
+                                    <label for="EquipmentDepartment" class="block text-gray-700 mb-1">Department</label>
+                                    <select name="EquipmentDepartment" id="EquipmentDepartment" class="border p-2 rounded w-full mb-2">
                                         <option value="" disabled selected>Select a department</option>
                                         <option value="science">Science Department</option>
                                         <option value="it">IT Department</option>
                                         <option value="electronics">Electornics Department</option>
                                         <!-- Add more options as needed -->
                                     </select>
-                                    <input type="text" id="productSKU" class="border p-2 rounded w-full mb-2" placeholder="SKU">
+                                    <input type="text" id="EquipmentSKU" class="border p-2 rounded w-full mb-2" placeholder="SKU">
                                 </div>
 
                                 <!-- Save and Close Buttons -->
                                 <div class="flex justify-end space-x-2">
-                                    <button id="closeFormButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Close</button>
-                                    <button id="saveButton" type="button" data-id="equipment" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
+                                    <button id="EquipCloseFormButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Close</button>
+                                    <button id="EquipmentSaveButton" type="button" data-id="equipment" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
                                 </div>
                             </form>
-
-
-                            <!-- @if(Session::has('message'))
-                            <script>
-                                swal.fire("Message", "{{Session::get('message')}}", 'success', {
-                                    showConfirmButton: true
-                                });
-                            </script>
-
-                            @endif -->
                         </div>
                     </div>
 
@@ -242,7 +234,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         <span class="flex items-center">
-                                            Product Name
+                                            Equipment Name
                                             <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
                                             </svg>
@@ -288,13 +280,13 @@
                             <tbody id="tableBody" class="">
                                 @foreach($equipment as $item)
                                 <tr class="cursor-pointer table-row " data-index="${start + index}" data-id="{{$item->id}}">
-                                    <td class="px-6 py-3">{{$item->productName}}</td>
-                                    <td class="px-6 py-3">{{$item->productCategory}}</td>
-                                    <td class="px-6 py-3">{{$item->productQuantity}}</td>
-                                    <td class="px-6 py-3">{{$item->productDate}}</td>
-                                    <td class="px-6 py-3">₱{{number_format($item->productPrice, 2)}}</td>
-                                    <td class="px-6 py-3">{{$item->productDepartment}}</td>
-                                    <td class="px-6 py-3">{{$item->productSKU}}</td>
+                                    <td class="px-6 py-3">{{$item->EquipmentName}}</td>
+                                    <td class="px-6 py-3">{{$item->EquipmentCategory}}</td>
+                                    <td class="px-6 py-3">{{$item->EquipmentQuantity}}</td>
+                                    <td class="px-6 py-3">{{$item->EquipmentDate}}</td>
+                                    <td class="px-6 py-3">₱{{number_format($item->EquipmentPrice, 2)}}</td>
+                                    <td class="px-6 py-3">{{$item->EquipmentDepartment}}</td>
+                                    <td class="px-6 py-3">{{$item->EquipmentSKU}}</td>
                                     <td class="px-6 py-4">
                                         <button id="editEquipButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>
                                     </td>
@@ -307,10 +299,10 @@
                         <!-- Edit Popup Card -->
                         <div id="editEquipModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                             <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                                <h2 class="text-2xl font-semibold mb-4">Edit Product</h2>
+                                <h2 class="text-2xl font-semibold mb-4">Edit Equipment</h2>
                                 <form id="editForm">
                                     <div class="mb-4">
-                                        <input type="text" id="productName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Product Name">
+                                        <input type="text" id="EquipmentName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Equipment Name">
                                     </div>
                                     <div class="mb-4">
                                         <input type="text" id="category" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Category">

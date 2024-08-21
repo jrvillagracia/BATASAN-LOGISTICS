@@ -7,15 +7,15 @@
     <title>Dashboard Analytics</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
-    <link rel="stylesheet" href="{{asset('css/admin.css')}}">
-
+    <link rel="stylesheet" href="{{asset('css/admin_supplies.css')}}">
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
 
-
-
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="{{asset('js/admin_supplies.js')}}"></script>
     <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{asset('js/admin.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
     <script src="{{asset('js/popups.js')}}"></script>
 </head>
 
@@ -183,46 +183,46 @@
                             </div>
 
                             <!-- Add Item Button-->
-                            <button id="showFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
+                            <button id="SupplyFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
                         </div>
                     </div>
 
                     <!-- Floating Card with Form (Initially Hidden) -->
-                    <div id="itemFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                    <div id="SupplyFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
-                            <h2 class="text-xl font-bold mb-4">Add New Product</h2>
+                            <h2 class="text-xl font-bold mb-4">Add New Supplies</h2>
 
                             <form action="{{ route('supplies.store') }}" method="POST">
                                 @csrf
                                 <!-- Input Fields -->
                                 <div class="mb-4">
-                                    <input type="text" name="productName" id="productName" class="border p-2 rounded w-full mb-2" placeholder="Product Name">
-                                    <label for="productCategory" class="block text-gray-700 mb-1">Category</label>
-                                    <select name="productCategory" id="productCategory" class="border p-2 rounded w-full mb-2">
+                                    <input type="text" name="SuppliesName" id="SuppliesName" class="border p-2 rounded w-full mb-2" placeholder="Supplies Name">
+                                    <label for="SuppliesCategory" class="block text-gray-700 mb-1">Category</label>
+                                    <select name="SuppliesCategory" id="SuppliesCategory" class="border p-2 rounded w-full mb-2">
                                         <option value="" disabled selected>Select a category</option>
                                         <option value="textbook">Textbook</option>
                                         <option value="office">Office Supplies</option>
                                         <option value="electronics">Electronics</option>
                                         <!-- Add more options as needed -->
                                     </select>
-                                    <input type="number" name="productQuantity" id="productQuantity" class="border p-2 rounded w-full mb-2" placeholder="Quantity">
-                                    <input type="date" name="productDate" id="productDate" class="border p-2 rounded w-full mb-4" placeholder="Date">
-                                    <input type="number" name="productPrice" id="productPrice" class="border p-2 rounded w-full mb-4" placeholder="Price">
-                                    <label for="productDepartment" class="block text-gray-700 mb-1">Department</label>
-                                    <select name="productDepartment" id="productDepartment" class="border p-2 rounded w-full mb-2">
+                                    <input type="number" name="SuppliesQuantity" id="SuppliesQuantity" class="border p-2 rounded w-full mb-2" placeholder="Quantity">
+                                    <input type="date" name="SuppliesDate" id="SuppliesDate" class="border p-2 rounded w-full mb-4" placeholder="Date">
+                                    <input type="number" name="SuppliesPrice" id="SuppliesPrice" class="border p-2 rounded w-full mb-4" placeholder="Price">
+                                    <label for="SuppliesDepartment" class="block text-gray-700 mb-1">Department</label>
+                                    <select name="SuppliesDepartment" id="SuppliesDepartment" class="border p-2 rounded w-full mb-2">
                                         <option value="" disabled selected>Select a department</option>
                                         <option value="science">Science Department</option>
                                         <option value="it">IT Department</option>
                                         <option value="electronics">Electornics Department</option>
                                         <!-- Add more options as needed -->
                                     </select>
-                                    <input type="text" id="productSKU" class="border p-2 rounded w-full mb-2" placeholder="SKU">
+                                    <input type="text" id="SuppliesSKU" class="border p-2 rounded w-full mb-2" placeholder="SKU">
                                 </div>
 
                                 <!-- Save and Close Buttons -->
                                 <div class="flex justify-end space-x-2">
-                                    <button id="closeFormButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Close</button>
-                                    <button id="saveButton" data-id="supplies" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
+                                    <button id="SupplyCloseFormButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Close</button>
+                                    <button id="SupplySaveButton" type="button" data-id="supplies" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
                                 </div>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         <span class="flex items-center">
-                                            Product Name
+                                            Supplies Name
                                             <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
                                             </svg>
@@ -281,13 +281,13 @@
                             <tbody id="tableBody" class="">
                                 @foreach($supplies as $item)
                                 <tr class="cursor-pointer table-row " data-index="${start + index}" data-id="{{$item->id}}">
-                                    <td class="px-6 py-3">{{$item->productName}}</td>
-                                    <td class="px-6 py-3">{{$item->productCategory}}</td>
-                                    <td class="px-6 py-3">{{$item->productQuantity}}</td>
-                                    <td class="px-6 py-3">{{$item->productDate}}</td>
-                                    <td class="px-6 py-3">₱{{number_format($item->productPrice, 2)}}</td>
-                                    <td class="px-6 py-3">{{$item->productDepartment}}</td>
-                                    <td class="px-6 py-3">{{$item->productSKU}}</td>
+                                    <td class="px-6 py-3">{{$item->SuppliesName}}</td>
+                                    <td class="px-6 py-3">{{$item->SuppliesCategory}}</td>
+                                    <td class="px-6 py-3">{{$item->SuppliesQuantity}}</td>
+                                    <td class="px-6 py-3">{{$item->SuppliesDate}}</td>
+                                    <td class="px-6 py-3">₱{{number_format($item->SuppliesPrice, 2)}}</td>
+                                    <td class="px-6 py-3">{{$item->SuppliesDepartment}}</td>
+                                    <td class="px-6 py-3">{{$item->SuppliesSKU}}</td>
                                     <td class="px-6 py-4">
                                         <button id="editSuppButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>
                                     </td>
@@ -300,10 +300,10 @@
                         <!-- Edit Popup Card -->
                         <div id="editSuppModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                             <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                                <h2 class="text-2xl font-semibold mb-4">Edit Product</h2>
+                                <h2 class="text-2xl font-semibold mb-4">Edit Supplies</h2>
                                 <form id="editForm">
                                     <div class="mb-4">
-                                        <input type="text" id="productName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Product Name">
+                                        <input type="text" id="SuppliesName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Supplies Name">
                                     </div>
                                     <div class="mb-4">
                                         <input type="text" id="category" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Category">

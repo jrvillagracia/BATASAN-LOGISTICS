@@ -30,16 +30,16 @@
                 @csrf
                 <!-- Staff ID -->
                 <div class="mb-4 py-2">
-                    <label class="block text-gray-600 text-sm font-semibold mb-2" for="staff_id">Staff ID</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="staff_id" name="staff_id" type="text" placeholder="Staff ID" required>
+                    <label class="block text-gray-600 text-sm font-semibold mb-2" for="employee_id">Employee ID</label>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="employee_id" name="employee_id" type="text" placeholder="Employee ID" required autofocus>
                 </div>
                 <div class="mb-6">
                     <label class="block text-gray-600 text-sm font-semibold mb-2" for="email">Email</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="email" name="email" type="email" placeholder="Enter your Email" required>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="email" name="email" type="email" placeholder="Enter your Email" required autofocus>
                 </div>
                 <div class="mb-8">
                     <label class="block text-gray-600 text-sm font-semibold mb-2" for="password">Password</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="password" name="password" type="password" placeholder="Password" required>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="password" name="password" type="password" placeholder="Password" required autofocus>
                 </div>
                 <div class="mb-8">
                     <button type="submit" class="w-full block text-center bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">

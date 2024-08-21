@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Staff;
+use Illuminate\Support\Facades\Log;
+use App\Models\Employees;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
@@ -13,24 +14,23 @@ class RegisterController extends Controller
         return view('register');
     }
 
-
     public function registerPost(Request $request)
     {
 
         Log::info('Form Data:', $request->all());
         
         $request->validate([
-            'staff_id' => 'required|string|max:255|unique:staff',
-            'email' => 'required|string|email|max:255|unique:staff',
+            'employee_id' => 'required|string|max:255|unique:employees',
+            'email' => 'required|string|email|max:255|unique:employees',
             'password' => 'required|string|min:8',
         ]);
         
-        Staff::create([
-            'staff_id' => $request->input('staff_id'),
+        Employees::create([
+            'employee_id' => $request->input('employee_id'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
 
-        return redirect()->route('staff_login')->with('success', 'Registered successfully');
+        return redirect()->route('employee_login')->with('success', 'Registered successfully');
     }
 }
