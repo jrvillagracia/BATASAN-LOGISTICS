@@ -14,62 +14,65 @@ $(document).ready(function() {
 });
 
 
-// Function to add a new item
-$('#EquipmentSaveButton').on('click', function () {
-    console.log('Save Button Clicked');
-    const name = $('#EquipmentName').val().trim();
-    const category = $('#EquipmentCategory').val().trim();
-    const quantity = $('#EquipmentQuantity').val().trim();
-    const date = $('#EquipmentDate').val().trim();
-    const price = $('#EquipmentPrice').val().trim();
-    const department = $('#EquipmentDepartment').val().trim();
-    const sku = $('#EquipmentSKU').val().trim();
+// Function to add a new Equipment
+$(document).ready(function() {
+    $('#EquipmentSaveButton').on('click', function () {
+        console.log('Save Button Clicked');
 
-    if (name === '' || category === '' || quantity === '' || date === '' || price === '' || department === '' || sku === '') {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            showConfirmButton: true,
-            text: "Please fill all fields!"
-        });
-        return;
-    }
+        const name = $('#EquipmentName').val().trim();
+        const category = $('#EquipmentCategory').val();
+        const quantity = $('#EquipmentQuantity').val().trim();
+        const date = $('#EquipmentDate').val().trim();
+        const price = $('#EquipmentPrice').val().trim();
+        const department = $('#EquipmentDepartment').val();
+        const sku = $('#EquipmentSKU').val().trim();
 
-    // AJAX request to save the data
-    $.ajax({
-        // url: `/${itemCategory}/store`,
-        type: 'POST',
-        data: {
-            _token: $('input[name="_token"]').val(),
-            EquipmentName: name,
-            EquipmentCategory: category,
-            EquipmentQuantity: quantity,
-            EquipmentDate: date,
-            EquipmentPrice: price,
-            EquipmentDepartment: department,
-            EquipmentSKU: sku
-        },
-        success: function (response) {
-            Swal.fire({
-                icon: "success",
-                title: response.message,
-                showConfirmButton: true
-            }).then(() => {
-                // Clear input fields
-                $('#equipmentForm')[0].reset();
-                $('#suppliesForm')[0].reset();
-                $('#itemFormCard').addClass('hidden');
-            });
-        },
-        error: function (xhr) {
+        if (name === '' || category === '' || quantity === '' || date === '' || price === '' || department === '' || sku === '') {
             Swal.fire({
                 icon: "error",
-                title: "Error",
-                text: xhr.responseText
+                title: "Oops...",
+                text: "Please fill all fields!",
+                showConfirmButton: true
             });
+            return;
         }
+
+        // AJAX request to save the data
+        $.ajax({
+            url: '/equipment/store',  // Corrected URL
+            type: 'POST',
+            data: {
+                _token: $('input[name="_token"]').val(),  // CSRF token
+                EquipmentName: name,
+                EquipmentCategory: category,
+                EquipmentQuantity: quantity,
+                EquipmentDate: date,
+                EquipmentPrice: price,
+                EquipmentDepartment: department,
+                EquipmentSKU: sku
+            },
+            success: function (response) {
+                Swal.fire({
+                    icon: "success",
+                    title: response.message,
+                    showConfirmButton: true
+                }).then(() => {
+                    // Clear input fields and hide the form
+                    $('#EquipmentForm')[0].reset();
+                    $('#EquipFormCard').addClass('hidden');
+                });
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: xhr.responseText
+                });
+            }
+        });
     });
 });
+
 
 $('#EquipCloseFormButton').on('click', function () {
     $('#EquipFormCard').addClass('hidden');

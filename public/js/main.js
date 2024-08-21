@@ -1,60 +1,60 @@
 $(document).ready(function () {
     // Function to add a new item
-    $('#saveButton').on('click', function () {
-        console.log('Save Button Clicked');
-        const name = $('#productName').val().trim();
-        const category = $('#productCategory').val().trim();
-        const quantity = $('#productQuantity').val().trim();
-        const date = $('#productDate').val().trim();
-        const price = $('#productPrice').val().trim();
-        const department = $('#productDepartment').val().trim();
-        const sku = $('#productSKU').val().trim();
+    // $('#saveButton').on('click', function () {
+    //     console.log('Save Button Clicked');
+    //     const name = $('#productName').val().trim();
+    //     const category = $('#productCategory').val().trim();
+    //     const quantity = $('#productQuantity').val().trim();
+    //     const date = $('#productDate').val().trim();
+    //     const price = $('#productPrice').val().trim();
+    //     const department = $('#productDepartment').val().trim();
+    //     const sku = $('#productSKU').val().trim();
 
-        if (name === '' || category === '' || quantity === '' || date === '' || price === '' || department === '' || sku === '') {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                showConfirmButton: true,
-                text: "Please fill all fields!"
-            });
-            return;
-        }
+    //     if (name === '' || category === '' || quantity === '' || date === '' || price === '' || department === '' || sku === '') {
+    //         Swal.fire({
+    //             icon: "error",
+    //             title: "Oops...",
+    //             showConfirmButton: true,
+    //             text: "Please fill all fields!"
+    //         });
+    //         return;
+    //     }
 
-        // AJAX request to save the data
-        $.ajax({
-            url: `/${itemCategory}/store`,
-            type: 'POST',
-            data: {
-                _token: $('input[name="_token"]').val(),
-                productName: name,
-                productCategory: category,
-                productQuantity: quantity,
-                productDate: date,
-                productPrice: price,
-                productDepartment: department,
-                productSKU: sku
-            },
-            success: function (response) {
-                Swal.fire({
-                    icon: "success",
-                    title: response.message,
-                    showConfirmButton: true
-                }).then(() => {
-                    // Clear input fields
-                    $('#equipmentForm')[0].reset();
-                    $('#suppliesForm')[0].reset();
-                    $('#itemFormCard').addClass('hidden');
-                });
-            },
-            error: function (xhr) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: xhr.responseText
-                });
-            }
-        });
-    });
+    //     // AJAX request to save the data
+    //     $.ajax({
+    //         url: `/${itemCategory}/store`,
+    //         type: 'POST',
+    //         data: {
+    //             _token: $('input[name="_token"]').val(),
+    //             productName: name,
+    //             productCategory: category,
+    //             productQuantity: quantity,
+    //             productDate: date,
+    //             productPrice: price,
+    //             productDepartment: department,
+    //             productSKU: sku
+    //         },
+    //         success: function (response) {
+    //             Swal.fire({
+    //                 icon: "success",
+    //                 title: response.message,
+    //                 showConfirmButton: true
+    //             }).then(() => {
+    //                 // Clear input fields
+    //                 $('#equipmentForm')[0].reset();
+    //                 $('#suppliesForm')[0].reset();
+    //                 $('#itemFormCard').addClass('hidden');
+    //             });
+    //         },
+    //         error: function (xhr) {
+    //             Swal.fire({
+    //                 icon: "error",
+    //                 title: "Error",
+    //                 text: xhr.responseText
+    //             });
+    //         }
+    //     });
+    // });
 
     // $('#closeFormButton').on('click', function () {
     //     $('#itemFormCard').addClass('hidden');

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -183,12 +183,12 @@
                             </div>
 
                             <!-- Add Item Button-->
-                            <button id="SupplyFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
+                            <button id="SuppliesFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
                         </div>
                     </div>
 
                     <!-- Floating Card with Form (Initially Hidden) -->
-                    <div id="SupplyFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                    <div id="SuppliesFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
                             <h2 class="text-xl font-bold mb-4">Add New Supplies</h2>
 
@@ -221,8 +221,8 @@
 
                                 <!-- Save and Close Buttons -->
                                 <div class="flex justify-end space-x-2">
-                                    <button id="SupplyCloseFormButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Close</button>
-                                    <button id="SupplySaveButton" type="button" data-id="supplies" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
+                                    <button id="SuppliesCloseFormButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Close</button>
+                                    <button id="SuppliesSaveButton" type="button" data-id="supplies" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
                                 </div>
                         </div>
                     </div>
@@ -303,7 +303,7 @@
                                 <h2 class="text-2xl font-semibold mb-4">Edit Supplies</h2>
                                 <form id="editForm">
                                     <div class="mb-4">
-                                        <input type="text" id="SuppliesName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Supplies Name">
+                                        <input type="text" id="SuppliesEditName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Supplies Name">
                                     </div>
                                     <div class="mb-4">
                                         <input type="text" id="category" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Category">
