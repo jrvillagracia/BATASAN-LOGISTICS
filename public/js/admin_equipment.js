@@ -77,3 +77,6 @@ $(document).ready(function() {
 $('#EquipCloseFormButton').on('click', function () {
     $('#EquipFormCard').addClass('hidden');
 });
+
+
+

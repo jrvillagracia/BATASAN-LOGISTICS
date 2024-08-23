@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elmwood Elementary School</title>
+    <title>Login | BHNHS</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/main_index.css')}}">
     <!-- @vite('resources/css/app.css') -->
@@ -24,8 +24,8 @@
             <form class="w-full">
                 <!-- Staff ID -->
                 <div class="mb-4 py-2">
-                    <label class="block text-white text-sm font-semibold mb-2" for="staff_id">Employee ID</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="staff_id" type="text" placeholder="Employee ID">
+                    <label class="block text-white text-sm font-semibold mb-2" for="employee_id">Employee ID</label>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="employee_id" type="text" placeholder="Employee ID">
                 </div>
                 <div class="mb-0">
                     <label class="block text-white text-sm font-semibold mb-2" for="password">Password</label>

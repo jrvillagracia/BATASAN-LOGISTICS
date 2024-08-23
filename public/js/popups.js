@@ -5,7 +5,7 @@ $(document).ready(function() {
         $('#editEquipModal').removeClass('hidden');
     });
 
-    // Hide the modal when the close button is clicked
+    // 'X' Hide the modal when the close button is clicked
     $('#closeEquipFormButton').on('click', function() {
         $('#editEquipModal').addClass('hidden');
     });
@@ -29,7 +29,8 @@ $(document).ready(function() {
         $('#editSuppModal').removeClass('hidden');
     });
 
-    // Hide the modal when the close button is clicked
+    
+    // 'X' Hide the modal when the close button is clicked
     $('#closeSuppFormButton').on('click', function() {
         $('#editSuppModal').addClass('hidden');
     });
@@ -48,6 +49,11 @@ $(document).ready(function() {
 });
 
 
+
+
+
+
+// Supplies SAVE, CONDEMED, DELETE BUTTON
 $('#saveEquipButton').click(function(e) {
     e.preventDefault(); // Prevent the default form submission
 
@@ -55,14 +61,84 @@ $('#saveEquipButton').click(function(e) {
     
     // On success (after your item is successfully saved)
     Swal.fire({
-        icon: "success",
-        title: "Item saved successfully!",
-        showConfirmButton: false,
-        timer: 1500
-    });
+        title: "Are you sure all input data are correct?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: "No"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Saved!", "", "success");
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });      
     
 });
 
+$('#condEquipButton').click(function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    // Your AJAX request or other logic to save the item goes here
+    
+    // On success (after your item is successfully saved)
+    Swal.fire({
+        title: 'Input Supplies Quantity you want to condemn',
+        html:
+          '<input id="SuppliesQuantity" type="number" class="swal2-input" style="width:100%;margin-bottom:20px;">',
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+          const SuppliesQuantity = Swal.getPopup().querySelector('#SuppliesQuantity').value;
+          if (!SuppliesQuantity) {
+            Swal.showValidationMessage(`Please enter a SuppliesQuantity`);
+          }
+          return { SuppliesQuantity: SuppliesQuantity };
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(`Supplies Quantity: ${result.value.SuppliesQuantity}`, '', 'success');
+        }
+      });
+      
+});
+
+
+
+$('#deleteEquipButton').click(function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    // Your AJAX request or other logic to save the item goes here
+    
+    // On success (after your item is successfully saved)
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want to delete the selected Equipment items?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your Equipment Item has been deleted.",
+            icon: "success"
+          });
+        } 
+      });       
+});
+
+
+
+
+
+
+
+
+// Supplies SAVE, CONDEMED, DELETE BUTTON
 $('#saveSuppButton').click(function(e) {
     e.preventDefault(); // Prevent the default form submission
 
@@ -70,10 +146,69 @@ $('#saveSuppButton').click(function(e) {
 
     // On success (after your item is successfully saved)
     Swal.fire({
-        icon: "success",
-        title: "Item saved successfully!",
-        showConfirmButton: false,
-        timer: 1500
-    });
+        title: "Are you sure all input data are correct?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: "No"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Saved!", "", "success");
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });    
+});
+
+
+$('#condSuppButton').click(function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    // Your AJAX request or other logic to save the item goes here
     
+    // On success (after your item is successfully saved)
+    Swal.fire({
+        title: 'Input Supplies Quantity you want to condemn',
+        html:
+          '<input id="SuppliesQuantity" type="number" class="swal2-input" style="width:100%;margin-bottom:20px;">',
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+          const SuppliesQuantity = Swal.getPopup().querySelector('#SuppliesQuantity').value;
+          if (!SuppliesQuantity) {
+            Swal.showValidationMessage(`Please enter a SuppliesQuantity`);
+          }
+          return { SuppliesQuantity: SuppliesQuantity };
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(`Supplies Quantity: ${result.value.SuppliesQuantity}`, '', 'success');
+        }
+      });
+});
+
+$('#deleteSuppButton').click(function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    // Your AJAX request or other logic to save the item goes here
+    
+    // On success (after your item is successfully saved)
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want to delete the selected Supplies items?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your Supplies Item has been deleted.",
+            icon: "success"
+          });
+        } 
+      });       
 });

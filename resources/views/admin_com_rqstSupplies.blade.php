@@ -4,10 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | BHNHS</title>
+    <title>Request Supplies | BHNHS</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_requestSupplies.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
+    <script src="{{asset('js/admin_requestSupplies.js')}}"></script>
 </head>
 
 <body class="h-screen">
@@ -21,7 +30,7 @@
         </button> <!-- May na Update dito -->
 
         <!-- Sizing and Icons -->
-        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-all duration-300" aria-label="Sidebar"> 
+        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-all duration-300" aria-label="Sidebar">
             <div class="h-full px-3 py-4 overflow-y-auto  ">
 
                 <div id="burger" class="cursor-pointer text-white p-4 flex justify-end h-7">
@@ -98,7 +107,9 @@
                         <li class="p-3 rounded-md relative">
                             <!-- Dropdown Button -->
                             <button type="button" class="dropdownButton flex items-center w-full p-2 -ml-1 text-base text-white transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0"><path d="M440-240h80v-120h120v-80H520v-120h-80v120H320v80h120v120ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520h200L520-800v200Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0">
+                                    <path d="M440-240h80v-120h120v-80H520v-120h-80v120H320v80h120v120ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520h200L520-800v200Z" />
+                                </svg>
                                 <span class="ml-3 flex-1 sidebar-text font-bold text-left rtl:text-right whitespace-nowrap">Request</span>
                                 <svg id="dropdownIcon" class="w-3 h-3 transition-transform duration-300 transform" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
@@ -111,6 +122,7 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('admin_approvalEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Equipment</a>
+
                                 </li>
                             </ul>
                         </li>
@@ -141,7 +153,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
-                    <h1 class="text-3xl font-bold ml-2">Dashboard Analytics</h1>
+                    <h1 class="text-3xl font-bold ml-2">Inventory Request Supplies</h1>
                 </div>
 
                 <!-- Breadcrumb -->
@@ -149,7 +161,7 @@
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center">
                             <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                                Dashboard Analytics
+                                Request
                             </a>
                         </li>
                         <li>
@@ -157,77 +169,174 @@
                                 <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                                 </svg>
-                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Templates</a>
+                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Completed Request</a>
                             </div>
                         </li>
-                        <li aria-current="page">
-                            <div class="flex items-center">
-                                <svg class="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-                                </svg>
-                                <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Flowbite</span>
-                            </div>
-                        </li>
+                        <!-- Add additional breadcrumbs here -->
+
                     </ol>
                 </nav>
 
 
-                <div class="grid grid-cols-3 gap-4 mt-8 pb-8">
-                    <!-- Card 1 -->
-                    <div class="block max-w-screen-md p-6 bg-white border border-gray-200 rounded-lg shadow transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                        <img class="w-full" src="{{asset('img/facility.jpg')}}" alt="Facility">
-                        <div class="px-6 py-4">
-                            <div class="font-bold text-xl mb-2">School Facility Analytics</div>
-                            <p class="text-gray-700 text-base">
-                                Look up at the night sky, and find yourself <span class="font-semibold">immersed</span> in the amazing mountain range of Aspen.
-                            </p>
+                <!-- Add additional content here -->
+                <!-- TABLE -->
+                <div class="bg-gray-100 h-auto rounded-lg ">
+
+                    <div class="flex justify-between items-center mt-4 px-9 py-2">
+                        <!-- Left-Aligned Buttons -->
+                        <div id="tabs-container" class="relative">
+                            <a href="{{route('admin_approvalSupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
+                            <a href="{{route('admin_releaseSupplies')}}" class="button border-b-2  py-2 px-4 transition-all duration-300 translate-x-2">For Release</a>
+                            <a href="{{route('admin_com_rqstSupplies')}}" class="button border-b-2 border-blue-500  py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
                         </div>
-                        <div class="px-6 py-4 flex justify-end">
-                            <button class="bg-blue-100 text-blue-700 font-semibold py-2 px-4 rounded hover:bg-blue-200 transition duration-300">
-                                Explore →
-                            </button>
+
+                        <!-- Search Bar -->
+                        <div class=" flex items-center space-x-4">
+                            <!-- Add Item Button -->
+                            <button id="ReqSupFormBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">&plus; Add Request</button>
                         </div>
                     </div>
 
+                    <!-- Floating Card with Form (Initially Hidden) -->
+                    <div id="ReqSupFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                        <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
 
-                    <!-- Card 2 -->
-                    <div class="block max-w-screen-md p-6 bg-white border border-gray-200 rounded-lg shadow transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                        <img class="w-full" src="{{asset('img/eventactivities.jpg')}}" alt="Facility">
-                        <div class="px-6 py-4">
-                            <div class="font-bold text-xl mb-2">Event and Activities</div>
-                            <p class="text-gray-700 text-base">
-                                Look up at the night sky, and find yourself <span class="font-semibold">immersed</span> in the amazing mountain range of Aspen.
-                            </p>
-                        </div>
-                        <div class="px-6 py-4 flex justify-end">
-                            <button class="bg-blue-100 text-blue-700 font-semibold py-2 px-4 rounded hover:bg-blue-200 transition duration-300">
-                                Explore →
-                            </button>
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-bold mb-4">Add Request Supplies</h2>
+                                <button id="ReqSupCloseFormBtn" class="text-gray-500 hover:text-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <form id="ReqSupForm">
+                                <div class="mb-4">
+                                    <label for="name" class="block text-sm font-semibold mb-2">Name:</label>
+                                    <input type="text" id="name" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Name">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="department" class="block text-sm font-semibold mb-2">Department:</label>
+                                    <select id="SuppliesDepartment" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="">Select Department</option>
+                                        <option value="hr">HR</option>
+                                        <option value="it">IT</option>
+                                        <option value="sales">Sales</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="ReqSupDate" class="block text-sm font-semibold mb-2">Date:</label>
+                                    <input type="text" id="ReqSupDate" name="ReqSupDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="ReqSupReason" class="block text-sm font-semibold mb-2">Reason:</label>
+                                    <input type="text" id="ReqSupReason" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Reason">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="ReqSupRemarks" class="block text-sm font-semibold mb-2">Remarks:</label>
+                                    <textarea id="ReqSupRemarks" class="w-full px-2 py-1 border border-gray-400 rounded h-20" placeholder="Enter your Remarks here"></textarea>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button id="ReqSupCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                                    <button id="ReqSupSubmitFormBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
-                    <!-- Card 3 -->
-                    <div class="block max-w-screen-md p-6 bg-white border border-gray-200 rounded-lg shadow transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                        <img class="w-full" src="{{asset('img/inventory.jpg')}}" alt="Facility">
-                        <div class="px-6 py-4">
-                            <div class="font-bold text-xl mb-2">Inventory</div>
-                            <p class="text-gray-700 text-base">
-                                Look up at the night sky, and find yourself <span class="font-semibold">immersed</span> in the amazing mountain range of Aspen.
-                            </p>
+                    <!-- Table -->
+                    <div class="relative shadow-md sm:rounded-lg px-9 py-5">
+                        <table id="dynamicTable" class="w-full text-sm text-left rtl:text-right text-black">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        <span class="flex items-center">
+                                            Status
+                                        </span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        <span class="flex items-center">
+                                            Name
+                                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                            </svg>
+                                        </span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        <span class="flex items-center">
+                                            Department
+                                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                            </svg>
+                                        </span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">Date</th>
+                                    <th scope="col" class="px-6 py-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="">
+
+                                <tr class="cursor-pointer table-row " data-index="" data-id="">
+                                    <td class="px-6 py-3">Completed</td>
+                                    <td class="px-6 py-3">VicThor</td>
+                                    <td class="px-6 py-3">Faculty Teacher</td>
+                                    <td class="px-6 py-3">2024-08-23</td>
+                                    <td class="px-6 py-4">
+                                        <button id="ViewSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                                    </td>
+                                </tr>
+
+                                <!-- Dynamic rows will be inserted here -->
+                            </tbody>
+                        </table>
+
+                        <!-- View Popup Card -->
+                        <div id="ViewSupPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                            <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 class="text-lg font-semibold">View Request</h2>
+                                    <button id="closeViewSupPopupCard" class="text-gray-500 hover:text-gray-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="text-sm">
+                                    <p class="mb-2"><strong>Name:</strong> Rey</p>
+                                    <p class="mb-2"><strong>Position:</strong> Faculty Teacher</p>
+                                    <p class="mb-2"><strong>Date:</strong> 2024-08/23</p>
+                                    <p class="mb-2"><strong>Product Name:</strong> Chalk Box</p>
+                                    <p class="mb-2"><strong>Category:</strong> Classroom Supply</p>
+                                    <p class="mb-2"><strong>Quantity:</strong> 1</p>
+                                    <p class="mb-2"><strong>Reason:</strong> For Teaching Use</p>
+                                    <div class="mb-4">
+                                        <label for="Remarks" class="block text-sm font-semibold mb-2">Remarks:</label>
+                                        <textarea id="Remarks" class="w-full px-2 py-1 border border-gray-400 rounded h-20">For teaching .. etc</textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="px-6 py-4 flex justify-end">
-                            <button class="bg-blue-100 text-blue-700 font-semibold py-2 px-4 rounded hover:bg-blue-200 transition duration-300">
-                                Explore →
-                            </button>
-                        </div>
+
+
+                        <!-- Pagination -->
+                        <nav id="paginationNav" class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
+                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span id="currentPage" class="font-bold text-black">1</span> of <span id="totalPages" class="font-bold text-black">1</span></span>
+                            <ul id="pagination" class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                                <!-- Pagination buttons will be inserted here dynamically -->
+                            </ul>
+                        </nav>
                     </div>
                 </div>
-                <!-- Add additional content here -->
+
             </section>
         </main>
     </div>
-    <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{asset('js/main.js')}}"></script>
 </body>
 
 </html>

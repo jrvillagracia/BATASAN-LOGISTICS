@@ -26,6 +26,46 @@ Route::get('/admin_dashboard', function () {
     return view('admin_dashboard');
 })->name('admin_dashboard');
 
+
+// CONDEMNED MODULE FOR EQUIPMENT
+Route::get('/admin_equipCondemned', function () {
+    return view('admin_equipCondemned');
+})->name('admin_equipCondemned');
+
+// CONDEMNED MODULE FOR SUPPLIES
+Route::get('/admin_supplyCondemned', function () {
+    return view('admin_supplyCondemned');
+})->name('admin_supplyCondemned');
+
+
+// REQUEST MODULE FOR SUPPLIES
+Route::get('/admin_approvalSupplies', function () {
+    return view('admin_approvalSupplies');
+})->name('admin_approvalSupplies');
+
+Route::get('/admin_releaseSupplies', function () {
+    return view('admin_releaseSupplies');
+})->name('admin_releaseSupplies');
+
+Route::get('/admin_com_rqstSupplies', function () {
+    return view('admin_com_rqstSupplies');
+})->name('admin_com_rqstSupplies');
+
+
+// REQUEST MODULE FOR EQUIPMENT
+Route::get('/admin_approvalEquipment', function () {
+    return view('admin_approvalEquipment');
+})->name('admin_approvalEquipment');
+
+Route::get('/admin_releaseEquipment', function () {
+    return view('admin_releaseEquipment');
+})->name('admin_releaseEquipment');
+
+Route::get('/admin_com_rqstEquipment', function () {
+    return view('admin_com_rqstEquipment');
+})->name('admin_com_rqstEquipment');
+
+
 //Register
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'registerPost'])->name('register.post');

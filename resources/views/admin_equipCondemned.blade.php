@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Equipment | BHNHS</title>
+    <title>Equipment Condemned | BHNHS</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="{{asset('css/admin_equipment.css')}}">
 
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="{{asset('js/admin_equipment.js')}}"></script>
     <script src="{{asset('js/jquery.js')}}"></script>
@@ -173,6 +172,14 @@
                                 <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Equipment</a>
                             </div>
                         </li>
+                        <li>
+                            <div class="flex items-center">
+                                <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                </svg>
+                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Condemned</a>
+                            </div>
+                        </li>
 
                     </ol>
                 </nav>
@@ -182,9 +189,9 @@
 
                     <div class="flex justify-between items-center mt-4 px-9 py-2">
                         <!-- Left-Aligned Buttons -->
-                        <div>
-                            <a href="{{ route('admin_equipment') }}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Equipment</a>
-                            <a href="{{ route('admin_equipCondemned') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
+                        <div id="tabs-container" class="relative">
+                            <a href="{{ route('admin_equipment') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Equipment</a>
+                            <a href="{{ route('admin_equipCondemned') }}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
                         </div>
 
 
@@ -204,58 +211,11 @@
                             </div>
 
                             <!-- Add Item Button -->
-                            <button id="EquipFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
                         </div>
                     </div>
 
                     <!-- Floating Card with Form (Initially Hidden) -->
-                    <div id="EquipFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                        <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
-                            <h2 class="text-xl font-bold mb-4">Add New Equipment</h2>
 
-                            <form action="{{ route('equipment.store') }}" method="POST">
-                                @csrf
-                                <!-- Input Fields -->
-                                <div class="mb-4">
-                                    <label for="EquipmentName" class="block text-sm font-semibold mb-1">Equipment Name</label>
-                                    <input type="text" name="EquipmentName" id="EquipmentName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Equipment Name">
-                                    <label for="EquipmentCategory" class="block text-sm font-semibold mb-1">Category</label>
-                                    <select name="EquipmentCategory" id="EquipmentCategory" class="border border-gray-400 p-2 rounded w-full mb-2">
-                                        <option value="" disabled selected>Select a category</option>
-                                        <option value="textbook">Textbook</option>
-                                        <option value="office">Office Supplies</option>
-                                        <option value="electronics">Electronics</option>
-                                        <!-- Add more options as needed -->
-                                    </select>
-                                    <label for="EquipmentQuantity" class="block text-sm font-semibold mb-1">Quantity</label>
-                                    <input type="number" name="EquipmentQuantity" id="EquipmentQuantity" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity">
-                                    <label for="EquipmentDate" class="block text-sm font-semibold mb-1">Date</label>
-                                    <input type="text" id="EquipmentDate" name="EquipmentDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
-
-                                    <!-- <input type="text" name="EquipmentDate" id="EquipmentDate" class="border p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD"> -->
-                                    <label for="EquipmentPrice" class="block text-sm font-semibold mb-1">Price</label>
-                                    <input type="number" name="EquipmentPrice" id="EquipmentPrice" class="border border-gray-400 p-2 rounded w-full mb-4" placeholder="Price">
-                                    <label for="EquipmentDepartment" class="block text-sm font-semibold mb-1">Department</label>
-                                    <label for="EquipmentDepartment" class="block text-gray-700 mb-1">Department</label>
-                                    <select name="EquipmentDepartment" id="EquipmentDepartment" class="border  border-gray-400 p-2 rounded w-full mb-2">
-                                        <option value="" disabled selected>Select a department</option>
-                                        <option value="science">Science Department</option>
-                                        <option value="it">IT Department</option>
-                                        <option value="electronics">Electornics Department</option>
-                                        <!-- Add more options as needed -->
-                                    </select>
-                                    <label for="EquipmentSKU" class="block text-sm font-semibold mb-1">SKU</label>
-                                    <input type="text" id="EquipmentSKU" class="border  border-gray-400 p-2 rounded w-full mb-2" placeholder="SKU">
-                                </div>
-
-                                <!-- Save and Close Buttons -->
-                                <div class="flex justify-end space-x-2">
-                                    <button id="EquipCloseFormButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Close</button>
-                                    <button id="EquipmentSaveButton" type="button" data-id="equipment" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
 
                     <!-- Table -->
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
@@ -308,74 +268,26 @@
                                 </tr>
                             </thead>
                             <tbody id="tableBody" class="">
-                                @foreach($equipment as $item)
-                                <tr class="cursor-pointer table-row " data-index="${start + index}" data-id="{{$item->id}}">
-                                    <td class="px-6 py-3">{{$item->EquipmentName}}</td>
-                                    <td class="px-6 py-3">{{$item->EquipmentCategory}}</td>
-                                    <td class="px-6 py-3">{{$item->EquipmentQuantity}}</td>
-                                    <td class="px-6 py-3">{{$item->EquipmentDate}}</td>
-                                    <td class="px-6 py-3">₱{{number_format($item->EquipmentPrice, 2)}}</td>
-                                    <td class="px-6 py-3">{{$item->EquipmentDepartment}}</td>
-                                    <td class="px-6 py-3">{{$item->EquipmentSKU}}</td>
+
+                                <tr class="cursor-pointer table-row " data-index="" data-id="">
+                                    <td class="px-6 py-3"></td>
+                                    <td class="px-6 py-3"></td>
+                                    <td class="px-6 py-3"></td>
+                                    <td class="px-6 py-3"></td>
+                                    <td class="px-6 py-3">₱</td>
+                                    <td class="px-6 py-3"></td>
+                                    <td class="px-6 py-3"></td>
                                     <td class="px-6 py-4">
                                         <button id="editEquipButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>
                                     </td>
                                 </tr>
-                                @endforeach
+
                                 <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
 
                         <!-- Edit Popup Card -->
-                        <div id="editEquipModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                                <!-- Flex container for heading and close button -->
-                                <div class="flex justify-between items-center mb-4">
-                                    <h2 class="text-2xl font-semibold">Edit Equipment</h2>
-                                    <button id="closeEquipFormButton" class="text-gray-500 hover:text-gray-700">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <form id="editForm">
-                                    <label for="EquipmentName" class="block text-sm font-semibold mb-1">Equipment Name</label>
-                                    <input type="text" name="EquipmentName" id="EquipmentName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Equipment Name">
-                                    <label for="EquipmentCategory" class="block text-sm font-semibold mb-1">Category</label>
-                                    <select name="EquipmentCategory" id="EquipmentCategory" class="border border-gray-400 p-2 rounded w-full mb-2">
-                                        <option value="" disabled selected>Select a category</option>
-                                        <option value="textbook">Textbook</option>
-                                        <option value="office">Office Supplies</option>
-                                        <option value="electronics">Electronics</option>
-                                        <!-- Add more options as needed -->
-                                    </select>
-                                    <label for="EquipmentQuantity" class="block text-sm font-semibold mb-1">Quantity</label>
-                                    <input type="number" name="EquipmentQuantity" id="EquipmentQuantity" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity">
-                                    <label for="EquipmentDate" class="block text-sm font-semibold mb-1">Date</label>
-                                    <input type="text" id="EquipmentDate" name="EquipmentDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
 
-                                    <!-- <input type="text" name="EquipmentDate" id="EquipmentDate" class="border p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD"> -->
-                                    <label for="EquipmentPrice" class="block text-sm font-semibold mb-1">Price</label>
-                                    <input type="number" name="EquipmentPrice" id="EquipmentPrice" class="border border-gray-400 p-2 rounded w-full mb-4" placeholder="Price">
-                                    <label for="EquipmentDepartment" class="block text-sm font-semibold mb-1">Department</label>
-                                    <label for="EquipmentDepartment" class="block text-gray-700 mb-1">Department</label>
-                                    <select name="EquipmentDepartment" id="EquipmentDepartment" class="border  border-gray-400 p-2 rounded w-full mb-2">
-                                        <option value="" disabled selected>Select a department</option>
-                                        <option value="science">Science Department</option>
-                                        <option value="it">IT Department</option>
-                                        <option value="electronics">Electornics Department</option>
-                                        <!-- Add more options as needed -->
-                                    </select>
-                                    <label for="EquipmentSKU" class="block text-sm font-semibold mb-1">SKU</label>
-                                    <input type="text" id="EquipmentSKU" class="border  border-gray-400 p-2 rounded w-full mb-2" placeholder="SKU">
-                                    <div class="flex justify-end space-x-2">
-                                        <button type="button" id="saveEquipButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                                        <button type="button" id="condEquipButton" class="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded">Condemn</button>
-                                        <button type="button" id="deleteEquipButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
 
                         <!-- Pagination -->
                         <nav id="paginationNav" class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">

@@ -100,10 +100,20 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('.dropdownButton').on('click', function() {
         console.log('Dropdown Button Clicked');
-        $(this).next('#dropdownContent').toggleClass('hidden');
+        $(this).next('#dropdownContent').slideToggle(300);
         $(this).find('#dropdownIcon').toggleClass('rotate-180');
     });
 });
+
+
+// DATEPICKER
+
+// $(document).ready(function() {
+//     $(function() {
+//         $( "#datepicker" ).datepicker({  maxDate: new Date });
+//       });
+// });
+
 
 // DELETE BUTTON 
 // $(document).on('click', '.deleteButton', function () {
