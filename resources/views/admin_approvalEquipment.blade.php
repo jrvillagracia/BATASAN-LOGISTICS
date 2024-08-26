@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
@@ -31,7 +31,7 @@
         </button> <!-- May na Update dito -->
 
         <!-- Sizing and Icons -->
-        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-all duration-300" aria-label="Sidebar"> 
+        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-all duration-300" aria-label="Sidebar">
             <div class="h-full px-3 py-4 overflow-y-auto  ">
 
                 <div id="burger" class="cursor-pointer text-white p-4 flex justify-end h-7">
@@ -65,13 +65,27 @@
                                 <span class="sidebar-text font-bold">Dashboard</span>
                             </a>
                         </li>
-                        <li class="p-3 rounded-md hover:bg-gray-200">
-                            <a href="#" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-7 h-7">
-                                    <path d="M101.35-111.87v-91h83.58v-645.26h419.14v40h171v605.26h83.58v91H684.07v-605.26h-80v605.26H101.35Zm331.72-326.22q17.81 0 29.86-12.05T474.98-480q0-17.81-12.05-29.86t-29.86-12.05q-17.82 0-29.87 12.05T391.15-480q0 17.81 12.05 29.86t29.87 12.05Z" />
+                        <li class="p-3 rounded-md relative">
+                            <!-- Dropdown Button -->
+                            <button type="button" class="dropdownButton flex items-center w-full p-2 -ml-1 text-base text-white transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0">
+                                <path d="M120-120v-80h80v-640h400v40h160v600h80v80H680v-600h-80v600H120Zm320-320q17 0 28.5-11.5T480-480q0-17-11.5-28.5T440-520q-17 0-28.5 11.5T400-480q0 17 11.5 28.5T440-440Z"/>
+                            </svg>
+                                <span class="ml-3 flex-1 sidebar-text font-bold text-left rtl:text-right whitespace-nowrap">Facility</span>
+                                <svg id="dropdownIcon" class="w-3 h-3 transition-transform duration-300 transform" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
-                                <span class="sidebar-text font-bold">Facility</span>
-                            </a>
+                            </button>
+
+                            <ul id="dropdownContent" class="hidden py-2 space-y-2">
+                                <li>
+                                    <a href="{{route('admin_facilityRegRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Regular Room</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin_facilitySpecRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Special Room</a>
+
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="hover:bg-gray-200 p-3 rounded-md">
@@ -108,7 +122,9 @@
                         <li class="p-3 rounded-md relative">
                             <!-- Dropdown Button -->
                             <button type="button" class="dropdownButton flex items-center w-full p-2 -ml-1 text-base text-white transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0"><path d="M440-240h80v-120h120v-80H520v-120h-80v120H320v80h120v120ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520h200L520-800v200Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0">
+                                    <path d="M440-240h80v-120h120v-80H520v-120h-80v120H320v80h120v120ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520h200L520-800v200Z" />
+                                </svg>
                                 <span class="ml-3 flex-1 sidebar-text font-bold text-left rtl:text-right whitespace-nowrap">Request</span>
                                 <svg id="dropdownIcon" class="w-3 h-3 transition-transform duration-300 transform" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
@@ -323,9 +339,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>   
-                        
-                        
+                        </div>
+
+
 
                         <!-- Approval Popup Card -->
                         <div id="ApprEquipPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
@@ -340,7 +356,7 @@
                             </div>
                         </div>
 
-                        <!-- Decline Popup Card -->            
+                        <!-- Decline Popup Card -->
                         <div id="DclnEquipPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                             <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -362,7 +378,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
 
                         <!-- Pagination -->
                         <nav id="paginationNav" class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">

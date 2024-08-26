@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SuppliesController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\FacilityModule\RoomController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -66,9 +67,24 @@ Route::get('/admin_com_rqstEquipment', function () {
 })->name('admin_com_rqstEquipment');
 
 
+// // FACILITY MODULE FOR REGULAR ROOM
+// Route::get('/admin_facilityRegRoom', function () {
+//     return view('admin_facilityRegRoom');
+// })->name('admin_facilityRegRoom');
+
+
+
+// // FACILITY MODULE FOR MORNING SPECIAL ROOM
+// Route::get('/admin_facilitySpecRoom', function () {
+//     return view('admin_facilitySpecRoom');
+// })->name('admin_facilitySpecRoom');
+
+
+
 //Register
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'registerPost'])->name('register.post');
+
 
 //Equipment
 Route::get('/admin_equipment', [EquipmentController::class, 'index'])->name('admin_equipment');
@@ -76,10 +92,15 @@ Route::post('/equipment/store', [EquipmentController::class, 'store'])->name('eq
 Route::post('/equipment/delete', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
 Route::post('/equipment/update', [EquipmentController::class, 'update'])->name('equipment.update');
 
+
 //Supplies
 Route::get('/admin_supplies', [SuppliesController::class, 'index'])->name('admin_supplies');
 Route::post('/supplies/store', [SuppliesController::class, 'store'])->name('supplies.store');
 Route::post('/supplies/delete', [SuppliesController::class, 'destroy'])->name('supplies.destroy');
 Route::post('/supplies/update', [SuppliesController::class, 'update'])->name('supplies.update');
 
+//Room
+Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('admin_facilityRegRoom');
+Route::get('/admin_facilitySpecRoom', [RoomController::class, 'specialIndex'])->name('admin_facilitySpecRoom');
+Route::post('/rooms/store', [RoomController::class, 'store'])->name('room.store');
 
