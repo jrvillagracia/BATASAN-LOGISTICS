@@ -213,7 +213,7 @@
                         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
                             <h2 class="text-xl font-bold mb-4">Add New Equipment</h2>
 
-                            <form action="{{ route('equipment.store') }}" method="POST">
+                            <form id="EquipmentForm" action="{{ route('equipment.store') }}" method="POST">
                                 @csrf
                                 <!-- Input Fields -->
                                 <div class="mb-4">
@@ -236,7 +236,6 @@
                                     <label for="EquipmentPrice" class="block text-sm font-semibold mb-1">Price</label>
                                     <input type="number" name="EquipmentPrice" id="EquipmentPrice" class="border border-gray-400 p-2 rounded w-full mb-4" placeholder="Price">
                                     <label for="EquipmentDepartment" class="block text-sm font-semibold mb-1">Department</label>
-                                    <label for="EquipmentDepartment" class="block text-gray-700 mb-1">Department</label>
                                     <select name="EquipmentDepartment" id="EquipmentDepartment" class="border  border-gray-400 p-2 rounded w-full mb-2">
                                         <option value="" disabled selected>Select a department</option>
                                         <option value="science">Science Department</option>
@@ -307,14 +306,14 @@
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="tableBody" class="">
+                            <tbody id="tableBody">
                                 @foreach($equipment as $item)
-                                <tr class="cursor-pointer table-row " data-index="${start + index}" data-id="{{$item->id}}">
+                                <tr class="cursor-pointer table-row " data-id="{{$item->id}}">
                                     <td class="px-6 py-3">{{$item->EquipmentName}}</td>
                                     <td class="px-6 py-3">{{$item->EquipmentCategory}}</td>
                                     <td class="px-6 py-3">{{$item->EquipmentQuantity}}</td>
                                     <td class="px-6 py-3">{{$item->EquipmentDate}}</td>
-                                    <td class="px-6 py-3">₱{{number_format($item->EquipmentPrice, 2)}}</td>
+                                    <td class="px-6 py-3">{{$item->EquipmentPrice}}</td>
                                     <td class="px-6 py-3">{{$item->EquipmentDepartment}}</td>
                                     <td class="px-6 py-3">{{$item->EquipmentSKU}}</td>
                                     <td class="px-6 py-4">
@@ -338,11 +337,12 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <form id="editForm">
+                                <form id="editForm" action="{{ route('equipment.update') }}" method="POST">
+                                    <input type="hidden" name="id" id="equipmentId">
                                     <label for="EquipmentName" class="block text-sm font-semibold mb-1">Equipment Name</label>
-                                    <input type="text" name="EquipmentName" id="EquipmentName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Equipment Name">
+                                    <input type="text" name="EquipmentName" id="EquipmentNameEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Equipment Name">
                                     <label for="EquipmentCategory" class="block text-sm font-semibold mb-1">Category</label>
-                                    <select name="EquipmentCategory" id="EquipmentCategory" class="border border-gray-400 p-2 rounded w-full mb-2">
+                                    <select name="EquipmentCategory" id="EquipmentCategoryEdit" class="border border-gray-400 p-2 rounded w-full mb-2">
                                         <option value="" disabled selected>Select a category</option>
                                         <option value="textbook">Textbook</option>
                                         <option value="office">Office Supplies</option>
@@ -350,16 +350,15 @@
                                         <!-- Add more options as needed -->
                                     </select>
                                     <label for="EquipmentQuantity" class="block text-sm font-semibold mb-1">Quantity</label>
-                                    <input type="number" name="EquipmentQuantity" id="EquipmentQuantity" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity">
+                                    <input type="number" name="EquipmentQuantity" id="EquipmentQuantityEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity">
                                     <label for="EquipmentDate" class="block text-sm font-semibold mb-1">Date</label>
-                                    <input type="text" id="EquipmentDate" name="EquipmentDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
+                                    <input type="text" id="EquipmentDateEdit" name="EquipmentDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
 
                                     <!-- <input type="text" name="EquipmentDate" id="EquipmentDate" class="border p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD"> -->
                                     <label for="EquipmentPrice" class="block text-sm font-semibold mb-1">Price</label>
-                                    <input type="number" name="EquipmentPrice" id="EquipmentPrice" class="border border-gray-400 p-2 rounded w-full mb-4" placeholder="Price">
+                                    <input type="number" name="EquipmentPrice" id="EquipmentPriceEdit" class="border border-gray-400 p-2 rounded w-full mb-4" placeholder="Price">
                                     <label for="EquipmentDepartment" class="block text-sm font-semibold mb-1">Department</label>
-                                    <label for="EquipmentDepartment" class="block text-gray-700 mb-1">Department</label>
-                                    <select name="EquipmentDepartment" id="EquipmentDepartment" class="border  border-gray-400 p-2 rounded w-full mb-2">
+                                    <select name="EquipmentDepartment" id="EquipmentDepartmentEdit" class="border  border-gray-400 p-2 rounded w-full mb-2">
                                         <option value="" disabled selected>Select a department</option>
                                         <option value="science">Science Department</option>
                                         <option value="it">IT Department</option>
@@ -367,11 +366,11 @@
                                         <!-- Add more options as needed -->
                                     </select>
                                     <label for="EquipmentSKU" class="block text-sm font-semibold mb-1">SKU</label>
-                                    <input type="text" id="EquipmentSKU" class="border  border-gray-400 p-2 rounded w-full mb-2" placeholder="SKU">
+                                    <input type="text" name="EquipmentSKU" id="EquipmentSKUEdit" class="border  border-gray-400 p-2 rounded w-full mb-2" placeholder="SKU">
                                     <div class="flex justify-end space-x-2">
                                         <button type="button" id="saveEquipButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
                                         <button type="button" id="condEquipButton" class="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded">Condemn</button>
-                                        <button type="button" id="deleteEquipButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
+                                        <button type="button" id="deleteEquipButton"  class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
                                     </div>
                                 </form>
                             </div>

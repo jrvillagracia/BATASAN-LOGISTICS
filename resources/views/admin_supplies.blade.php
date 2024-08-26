@@ -228,7 +228,7 @@
                                         <label for="SuppliesQuantity" class="block text-sm font-semibold mb-1">Quantity</label>
                                         <input type="number" name="SuppliesQuantity" id="SuppliesQuantity" class="border p-2 rounded w-full mb-2 border-gray-400" placeholder="Quantity">
                                         <label for="SuppliesDate" class="block text-sm font-semibold mb-1">Date</label>
-                                        <input type="text" id="SuppliestDate" name="SuppliesDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
+                                        <input type="text" id="SuppliesDate" name="SuppliesDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
                                         <label for="SuppliesPrice" class="block text-sm font-semibold mb-1">Price</label>
                                         <input type="number" name="SuppliesPrice" id="SuppliesPrice" class="border p-2 rounded w-full mb-4 border-gray-400" placeholder="Price">
                                         <label for="SuppliesDepartment" class="block text-sm font-semibold mb-1">Department</label>
@@ -303,14 +303,13 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tableBody" class="">
-                                <tbody id="tableBody" class="">
                                     @foreach($supplies as $item)
                                     <tr class="cursor-pointer table-row " data-index="${start + index}" data-id="{{$item->id}}">
                                         <td class="px-6 py-3">{{$item->SuppliesName}}</td>
                                         <td class="px-6 py-3">{{$item->SuppliesCategory}}</td>
                                         <td class="px-6 py-3">{{$item->SuppliesQuantity}}</td>
                                         <td class="px-6 py-3">{{$item->SuppliesDate}}</td>
-                                        <td class="px-6 py-3">₱{{number_format($item->SuppliesPrice, 2)}}</td>
+                                        <td class="px-6 py-3">{{$item->SuppliesPrice}}</td>
                                         <td class="px-6 py-3">{{$item->SuppliesDepartment}}</td>
                                         <td class="px-6 py-3">{{$item->SuppliesSKU}}</td>
                                         <td class="px-6 py-4">
@@ -334,11 +333,12 @@
                                             </svg>
                                         </button>
                                     </div>
-                                    <form id="editForm">
+                                    <form id="editForm" action="{{ route('supplies.update') }}" method="POST">
+                                    <input type="hidden" name="id" id="suppliesId">
                                         <label for="SuppliesName" class="block text-sm font-semibold mb-1">Supplies Name</label>
-                                        <input type="text" name="SuppliesName" id="SuppliesName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Supplies Name">
+                                        <input type="text" name="SuppliesName" id="SuppliesNameEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Supplies Name">
                                         <label for="SuppliesCategory" class="block text-sm font-semibold mb-1">Category</label>
-                                        <select name="SuppliesCategory" id="SuppliesCategory" class="border p-2 rounded w-full mb-2 border-gray-400">
+                                        <select name="SuppliesCategory" id="SuppliesCategoryEdit" class="border p-2 rounded w-full mb-2 border-gray-400">
                                             <option value="" disabled selected>Select a category</option>
                                             <option value="textbook">Textbook</option>
                                             <option value="office">Office Supplies</option>
@@ -346,13 +346,13 @@
                                             <!-- Add more options as needed -->
                                         </select>
                                         <label for="SuppliesQuantity" class="block text-sm font-semibold mb-1">Quantity</label>
-                                        <input type="number" name="SuppliesQuantity" id="SuppliesQuantity" class="border p-2 rounded w-full mb-2 border-gray-400" placeholder="Quantity">
+                                        <input type="number" name="SuppliesQuantity" id="SuppliesQuantityEdit" class="border p-2 rounded w-full mb-2 border-gray-400" placeholder="Quantity">
                                         <label for="SuppliesDate" class="block text-sm font-semibold mb-1">Date</label>
                                         <input type="text" id="SuppliestDate" name="SuppliesDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
                                         <label for="SuppliesPrice" class="block text-sm font-semibold mb-1">Price</label>
-                                        <input type="number" name="SuppliesPrice" id="SuppliesPrice" class="border p-2 rounded w-full mb-4 border-gray-400" placeholder="Price">
+                                        <input type="number" name="SuppliesPrice" id="SuppliesPriceEdit" class="border p-2 rounded w-full mb-4 border-gray-400" placeholder="Price">
                                         <label for="SuppliesDepartment" class="block text-sm font-semibold mb-1">Department</label>
-                                        <select name="SuppliesDepartment" id="SuppliesDepartment" class="border p-2 rounded w-full mb-2 border-gray-400">
+                                        <select name="SuppliesDepartment" id="SuppliesDepartmentEdit" class="border p-2 rounded w-full mb-2 border-gray-400">
                                             <option value="" disabled selected>Select a department</option>
                                             <option value="science">Science Department</option>
                                             <option value="it">IT Department</option>
@@ -360,7 +360,7 @@
                                             <!-- Add more options as needed -->
                                         </select>
                                         <label for="SuppliesSKU" class="block text-sm font-semibold mb-1">SKU</label>
-                                        <input type="text" id="SuppliesSKU" class="border p-2 rounded w-full mb-2 border-gray-400" placeholder="SKU">
+                                        <input type="text" name="SuppliesSKU" id="SuppliesSKUEdit" class="border p-2 rounded w-full mb-2 border-gray-400" placeholder="SKU">
                                         <div class="flex justify-end space-x-2">
                                             <button type="button" id="saveSuppButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
                                             <button type="button" id="condemnSuppButton" class="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded">Condemn</button>

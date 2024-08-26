@@ -25,11 +25,11 @@
                 <!-- Staff ID -->
                 <div class="mb-4 py-2">
                     <label class="block text-white text-sm font-semibold mb-2" for="employee_id">Employee ID</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="employee_id" type="text" placeholder="Employee ID">
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="employee_id" type="text" placeholder="Employee ID" required autofocus>
                 </div>
                 <div class="mb-0">
                     <label class="block text-white text-sm font-semibold mb-2" for="password">Password</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="password" type="password" placeholder="Password">
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="password" type="password" placeholder="Password" required autofocus>
                 </div>
                 <div class="flex items-end mb-6 py-0">
                     <input id="remember_me" type="checkbox" class="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded">
