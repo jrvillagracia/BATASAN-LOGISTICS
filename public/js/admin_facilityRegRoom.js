@@ -33,10 +33,10 @@ $(document).ready(function () {
 
         const buildingName = $('#RegBldName').val();
         const room = $('#RegRoom').val();
-        const shift = $('#facilityShiftReg').val();  // Fixed ID reference
-        const status = $('#facilityStatusReg').val();  // Fixed ID reference
+        const shift = $('#facilityShiftReg').val();
+        const status = $('#facilityStatusReg').val();
         const capacity = $('#RegCapacity').val();
-        const roomType = $('#facilityRTReg').val();  // Fixed ID reference
+        const roomType = $('#facilityRoomType').val();
 
         // Check if all values are entered
         if (buildingName === '' || room === '' || shift === '' || status === '' || capacity === '' || roomType === '') {
@@ -52,13 +52,12 @@ $(document).ready(function () {
 
         // Prepare data for AJAX request
         const formData = {
-            _token: $('meta[name="csrf-token"]').attr('content'),  // Laravel CSRF token
             buildingName: buildingName,
             room: room,
-            shift: shift,
             status: status,
             capacity: capacity,
-            roomType: roomType
+            shift: shift,
+            facilityRoomType: roomType
         };
 
         // AJAX request
@@ -78,17 +77,17 @@ $(document).ready(function () {
 
                 // Optionally, you can append the new data to the table or reload the table
                 $('#tableBody').append(
-                    `<tr class="cursor-pointer table-row" data-index="${response.index}" data-id="${response.id}">
+                    `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
                         <td class="px-6 py-3">${response.buildingName}</td>
                         <td class="px-6 py-3">${response.room}</td>
-                        <td class="px-6 py-3">${response.shift}</td>
                         <td class="px-6 py-3">${response.status}</td>
-                        <td class="px-6 py-4">${response.capacity}</td>
-                        <td class="px-6 py-4">${response.roomType}</td>
+                        <td class="px-6 py-3">${response.capacity}</td>
+                        <td class="px-6 py-4">${response.shift}</td>
                     </tr>`
                 );
             },
             error: function (xhr, status, error) {
+                console.log(xhr.responseText);
                 // Handle error response
                 Swal.fire({
                     icon: "error",

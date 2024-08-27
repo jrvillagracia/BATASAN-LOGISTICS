@@ -326,11 +326,6 @@
                                             Shift Type
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        <span class="flex items-center">
-                                            Room Type
-                                        </span>
-                                    </th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
@@ -339,10 +334,9 @@
                                 <tr class="cursor-pointer table-row " data-index="{{$loop->index}}" data-id="{{$room->id}}">
                                     <td class="px-6 py-3">{{$room->BldName}}</td>
                                     <td class="px-6 py-3">{{$room->Room}} </td>
-                                    <td class="px-6 py-3">{{$room->facilityShift}}</td>
                                     <td class="px-6 py-3">{{$room->facilityStatus}}</td>
-                                    <td class="px-6 py-4">{{$room->Capacity}}</td>
-                                    <td class="px-6 py-4">{{$room->facilityRoomType}}</td>
+                                    <td class="px-6 py-3">{{$room->Capacity}}</td>
+                                    <td class="px-6 py-4">{{$room->facilityShift}}</td>
                                 </tr>
                                 @endforeach
                                 <!-- Dynamic rows will be inserted here -->

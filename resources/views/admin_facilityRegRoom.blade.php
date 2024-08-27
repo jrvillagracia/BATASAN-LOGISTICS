@@ -278,7 +278,7 @@
 
                                 <div class="mb-4">
                                     <label for="status" class="block text-sm font-semibold mb-2">Room Type</label>
-                                    <select id="facilityRTReg" name="facilityRoomType" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <select id="facilityRoomType" name="facilityRoomType" class="w-full px-2 py-1 border border-gray-400 rounded">
                                         <option value="">Select Room Type</option>
                                         <option value="Regular">Regular</option>
                                         <option value="Special">Special</option>
@@ -327,11 +327,6 @@
                                             Shift Type
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        <span class="flex items-center">
-                                            Room Type
-                                        </span>
-                                    </th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
@@ -340,10 +335,9 @@
                                 <tr class="cursor-pointer table-row " data-index="{{$loop->index}}" data-id="{{$room->id}}">
                                     <td class="px-6 py-3">{{$room->BldName}}</td>
                                     <td class="px-6 py-3">{{$room->Room}} </td>
-                                    <td class="px-6 py-3">{{$room->facilityShift}}</td>
                                     <td class="px-6 py-3">{{$room->facilityStatus}}</td>
-                                    <td class="px-6 py-4">{{$room->Capacity}}</td>
-                                    <td class="px-6 py-4">{{$room->facilityRoomType}}</td>
+                                    <td class="px-6 py-3">{{$room->Capacity}}</td>
+                                    <td class="px-6 py-4">{{$room->facilityShift}}</td>
                                 </tr>
                                 @endforeach
                                 <!-- Dynamic rows will be inserted here -->

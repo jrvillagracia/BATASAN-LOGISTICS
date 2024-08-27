@@ -35,18 +35,18 @@ $(document).ready(function () {
         // Gather form data
         const buildingName = $('#SpecBldName').val();
         const room = $('#SpecRoom').val();
-        const shift = $('#facilityShiftSpec').val();
         const status = $('#facilityStatusSpec').val();
         const capacity = $('#SpecCapacity').val();
+        const shift = $('#facilityShiftSpec').val();
         const roomType = $('#facilityRTSpec').val();
 
         // Check if all values are entered
-        if (buildingName === '' || room === '' || shift === '' || status === '' || capacity === '' || roomType === '') {
+        if (buildingName === '' || room === '' || status === '' || capacity === '' || shift === ''|| roomType === '') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "Please fill all fields!",
-                showConfirmButton: true
+                    showConfirmButton: true
             });
             return;
         }
@@ -56,9 +56,9 @@ $(document).ready(function () {
             _token: $('meta[name="csrf-token"]').attr('content'),  // Laravel CSRF token
             buildingName: buildingName,
             room: room,
-            shift: shift,
             status: status,
             capacity: capacity,
+            shift: shift,
             facilityRoomType: roomType  // Adjust this name to match your backend field
         };
 
@@ -83,10 +83,9 @@ $(document).ready(function () {
                     `<tr class="cursor-pointer table-row" data-index="${response.index}" data-id="${response.id}">
                         <td class="px-6 py-3">${response.buildingName}</td>
                         <td class="px-6 py-3">${response.room}</td>
-                        <td class="px-6 py-3">${response.shift}</td>
                         <td class="px-6 py-3">${response.status}</td>
-                        <td class="px-6 py-4">${response.capacity}</td>
-                        <td class="px-6 py-4">${response.roomType}</td>
+                        <td class="px-6 py-3">${response.capacity}</td>
+                        <td class="px-6 py-4">${response.shift}</td>
                     </tr>`
                 );
             },
