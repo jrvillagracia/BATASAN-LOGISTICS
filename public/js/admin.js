@@ -227,3 +227,173 @@ $(document).ready(function() {
 //         }
 //     });
 // });
+
+//FUNCTION FOR REGISTER VALIDATION 
+$(document).ready(function() {
+    // Regular expressions for validation
+    var idPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+    var passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
+    function validateForm() {
+        var isValid = true;
+
+        // Get field values
+        var employeeId = $('#employee_id').val();
+        var email = $('#email').val();
+        var password = $('#password').val();
+
+        // Clear previous errors
+        $('#employeeIdError').text('');
+        $('#emailError').text('');
+        $('#passwordError').text('');
+
+        // Direct validation for Employee ID
+        if (!idPattern.test(employeeId)) {
+            $('#employeeIdError').text('Employee ID must be at least 8 characters long and include an uppercase letter, a number, and a special character.');
+            isValid = false;
+        }
+
+        // Direct validation for Password
+        if (!passwordPattern.test(password)) {
+            $('#passwordError').text('Password must be at least 8 characters long and include an uppercase letter, a number, and a special character.');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    $('#registerForm').on('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        if (validateForm()) {
+            var employeeId = $('#employee_id').val();
+            var email = $('#email').val();
+            var password = $('#password').val();
+
+            // AJAX request to validate employee_id and email
+            $.ajax({
+                url: '/register/check',
+                method: "POST",
+                data: {
+                    employee_id: employeeId,
+                    email: email,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    var errors = [];
+
+                    if (response.exists.employee_id) {
+                        errors.push('Employee ID is already registered.');
+                        $('#employee_id').focus();
+                    }
+                    if (response.exists.email) {
+                        errors.push('Email is already registered.');
+                        if (!response.exists.employee_id) {
+                            $('#email').focus();
+                        }
+                    }
+
+                    if (errors.length > 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: errors.join(' '),
+                        });
+                    } else {
+                        // Submit the form data via AJAX if validation passes
+                        $.ajax({
+                            url: '/register',
+                            method: "POST",
+                            data: {
+                                employee_id: employeeId,
+                                email: email,
+                                password: password,
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                // Handle successful registration
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Registered Successfully',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(function() {
+                                    window.location.href = '/employee/login';
+                                });
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'There was an error during registration. Please try again.',
+                                });
+                            }
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'There was an error checking availability. Please try again.',
+                    });
+                }
+            });
+        }
+    });
+});
+
+
+
+// FUNCTION FOR LOGIN VALIDATION 
+$(document).ready(function() {
+    $('#loginForm').on('submit', function(e) {
+        e.preventDefault();
+
+        // Capture the form input values
+        var employee_id = $('#employee_id').val();
+        var password = $('#password').val();
+        var token = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: '/login/check',
+            type: 'POST',
+            data: {
+                employee_id: employee_id,
+                password: password,
+                _token: token
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Show SweetAlert for successful login
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Successful',
+                        text: 'You will be redirected to the dashboard shortly.',
+                        timer: 2000, // 2 seconds timer before redirection
+                        showConfirmButton: false
+                    }).then(function() {
+                        window.location.href = '/admin/dashboard';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.message
+                    });
+                }
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid Credentials'
+                });
+            }
+        });
+    });
+});
+

@@ -13,67 +13,65 @@ class EquipmentController extends Controller
         return view('admin_equipment', compact('equipment'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin_equipment');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'productName' => 'required|string|max:255',
-            'productCategory' => 'required|string|max:255',
-            'productQuantity' => 'required|integer',
-            'productDate' => 'required|date',
-            'productPrice' => 'required|numeric',
-            'productDepartment' => 'required|string|max:255',
-            'productSKU' => 'required|string|max:255',
+            'EquipmentName' => 'required|string|max:255',
+            'EquipmentCategory' => 'required|string|max:255',
+            'EquipmentQuantity' => 'required|integer',
+            'EquipmentDate' => 'required|date',
+            'EquipmentPrice' => 'required|numeric',
+            'EquipmentDepartment' => 'required|string|max:255',
+            'EquipmentSKU' => 'required|string|max:255',
         ]);
 
-        Equipment::create($request->all());
+        $equipment = Equipment::create($request->all());
 
-        return response()->json(['message' => 'Item saved successfully!']);
+        return response()->json(['message' => 'Equipment saved successfully!' , 'equipmentId'=> $equipment->id]);
     }
 
-    public function show(string $id)
+    public function update(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'id' => 'required|exists:equipment,id',
+            'EquipmentName' => 'required|string|max:255',
+            'EquipmentCategory' => 'required|string',
+            'EquipmentQuantity' => 'required|integer',
+            'EquipmentDate' => 'required|date',
+            'EquipmentPrice' => 'required|numeric',
+            'EquipmentDepartment' => 'required|string',
+            'EquipmentSKU' => 'required|string|max:255',
+        ]);
+
+        $equipment = Equipment::find($validatedData['id']);
+        $equipment->update([
+            'EquipmentName' => $validatedData['EquipmentName'],
+            'EquipmentCategory' => $validatedData['EquipmentCategory'],
+            'EquipmentQuantity' => $validatedData['EquipmentQuantity'],
+            'EquipmentDate' => $validatedData['EquipmentDate'],
+            'EquipmentPrice' => $validatedData['EquipmentPrice'],
+            'EquipmentDepartment' => $validatedData['EquipmentDepartment'],
+            'EquipmentSKU' => $validatedData['EquipmentSKU'],
+        ]);
+
+        return response()->json(['message' => 'Equipment updated successfully']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    
     public function destroy(Request $request)
     {
-        $itemId = $request->input('itemID');
-    
-        // Find the equipment by ID and delete it
-        $item = Equipment::find($itemId); // For equipment
-        if ($item) {
-            $item->delete();
-            return response()->json(['success' => true]);
+        $id = $request->input('id');
+        $equipment = Equipment::find($id);
+
+        if ($equipment) {
+            $equipment->delete();
+            return response()->json(['message' => 'Equipment item deleted successfully.'], 200);
         } else {
-            return response()->json(['error' => 'Item not found'], 404);
+            return response()->json(['message' => 'Equipment item not found.'], 404);
         }
     }
 }
