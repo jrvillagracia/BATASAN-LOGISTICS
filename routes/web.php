@@ -84,6 +84,12 @@ Route::get('/admin_com_rqstEquipment', function () {
 //Register
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'registerPost'])->name('register.post');
+Route::post('/register/check', [RegisterController::class, 'checkAvailability'])->name('register.check');
+
+//Login
+Route::post('/login/check', [RegisterController::class, 'checkLogin'])->name('login.check');
+Route::get('/admin/dashboard', [RegisterController::class, 'index'])->name('admin.dashboard');
+Route::get('/employee/login', [RegisterController::class, 'login'])->name('employee_login');
 
 
 //Equipment
