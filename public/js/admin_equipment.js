@@ -255,4 +255,63 @@ $(document).ready(function(){
     });
 });
 
+// SEARCH FUNCTION EQUIPMENT 
+$(document).ready(function() {
+    $('#equipmentSearchForm').on('submit', function(e) {
+        e.preventDefault();
+
+        var searchTerm = $('#equipment-search').val(); 
+        var token = $('#csrf-token').data('token'); 
+
+        console.log('Search Term:', searchTerm);
+        console.log('CSRF Token:', token);
+
+        $.ajax({
+            url: '/equipment/search',
+            type: 'GET',
+            data: {
+                equipmentSearch: searchTerm,
+                _token: token
+            },
+            success: function(response) {
+                console.log('Response:', response);
+
+                var tableBody = $('#tableBody'); 
+                tableBody.empty(); 
+
+                if (response.equipment.length > 0) {
+                    $.each(response.equipment, function(index, item) {
+                        tableBody.append(
+                            '<tr class="cursor-pointer table-row" data-id="'+ item.id +'">' +
+                                '<td class="px-6 py-3">' + item.EquipmentName + '</td>' +
+                                '<td class="px-6 py-3">' + item.EquipmentCategory + '</td>' +
+                                '<td class="px-6 py-3">' + item.EquipmentQuantity + '</td>' +
+                                '<td class="px-6 py-3">' + item.EquipmentDate + '</td>' +
+                                '<td class="px-6 py-3">' + item.EquipmentPrice + '</td>' +
+                                '<td class="px-6 py-3">' + item.EquipmentDepartment + '</td>' +
+                                '<td class="px-6 py-3">' + item.EquipmentSKU + '</td>' +
+                                '<td class="px-6 py-4">' +
+                                    '<button id="editEquipButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>' +
+                                '</td>' +
+                            '</tr>'
+                        );
+                    });
+                } else {
+                    tableBody.append('<tr><td colspan="8" class="px-6 py-3 text-center">No results found</td></tr>');
+                }
+            },
+            error: function(xhr) {
+                // Log error response to the console
+                console.log('Error:', xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'An error occurred while processing your request.'
+                });
+            }
+        });
+    });
+});
+
+
 

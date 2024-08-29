@@ -75,4 +75,20 @@ class SuppliesController extends Controller
         }
     }
 
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('suppliesSearch');
+
+        if ($searchTerm) {
+            $supplies = Supplies::where('SuppliesName', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('SuppliesCategory', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('SuppliesDepartment', 'LIKE', "%{$searchTerm}%")
+                ->get();
+        } else {
+            $supplies = Supplies::all();
+        }
+
+        return response()->json(['supplies' => $supplies]);
+    }
+
 }
