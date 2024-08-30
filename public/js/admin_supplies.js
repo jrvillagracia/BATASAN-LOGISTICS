@@ -1,21 +1,20 @@
 // Show the form when "Add Item" button is clicked
 $(document).ready(function() {
-    $('#closeSuppFormButton').on('click', function() {
-        $('#editSuppModal').addClass('hidden');
-    });
-
     $('#SuppliesFormButton').click(function() {
+        event.preventDefault();
         console.log('Show Supplies Form Button Clicked');
         $('#SuppliesFormCard').removeClass('hidden'); // Show the form card
     });
 
+    
+
     // Close the form when "Close" button is clicked
     $('#SuppliesCloseFormButton').click(function() {
+        event.preventDefault();
         console.log('Close Form Button Clicked');
         $('#SuppliesFormCard').addClass('hidden'); // Hide the form card
     });
 });
-
 
 
 // Function to add a new Supplies
@@ -249,66 +248,17 @@ $(document).ready(function(){
     });
 });
 
-// INVENTORY SEARCH FUNCTION 
+// FUNCTION FOR SEARCH
 $(document).ready(function() {
-    $('#suppliesSearchForm').on('submit', function(e) {
-        e.preventDefault();
-        
-        var searchTerm = $('#default-search').val();  
-        var token = $('#csrf-token').data('token');  
+    var table = $('#dynamicTable').DataTable({
+ 
+    });
 
-        console.log('Search Term:', searchTerm);
-        console.log('CSRF Token:', token);
+    $('.dt-search').hide();
 
-        $.ajax({
-            url: '/supplies/search',
-            type: 'GET',
-            data: {
-                suppliesSearch: searchTerm,
-                _token: token
-            },
-            success: function(response) {
-                console.log('Response:', response);
-
-                var tableBody = $('#tableBody');
-                tableBody.empty(); 
-
-                if (response.supplies.length > 0) {
-                    $.each(response.supplies, function(index, item) {
-                        tableBody.append(
-                            '<tr class="cursor-pointer table-row" data-id="'+ item.id +'">' +
-                                '<td class="px-6 py-3">' + item.SuppliesName + '</td>' +
-                                '<td class="px-6 py-3">' + item.SuppliesCategory + '</td>' +
-                                '<td class="px-6 py-3">' + item.SuppliesQuantity + '</td>' +
-                                '<td class="px-6 py-3">' + item.SuppliesDate + '</td>' +
-                                '<td class="px-6 py-3">' + item.SuppliesPrice + '</td>' +
-                                '<td class="px-6 py-3">' + item.SuppliesDepartment + '</td>' +
-                                '<td class="px-6 py-3">' + item.SuppliesSKU + '</td>' +
-                                '<td class="px-6 py-4">' +
-                                    '<button id="editSuppButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>' +
-                                '</td>' +
-                            '</tr>'
-                        );
-                    });
-                } else {
-                    tableBody.append('<tr><td colspan="8" class="px-6 py-3 text-center">No results found</td></tr>');
-                }
-            },
-            error: function(xhr) {
-                // Log error response to the console
-                console.log('Error:', xhr.responseText);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'An error occurred while processing your request.'
-                });
-            }
-        });
+    // Custom search function
+    $('#suppliesSearch').on('keyup', function() {
+        console.log('Search input:', this.value); 
+        table.search(this.value).draw(); 
     });
 });
-
-
-
-
-
-

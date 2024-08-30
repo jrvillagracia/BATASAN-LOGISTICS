@@ -97,7 +97,6 @@ Route::get('/admin_equipment', [EquipmentController::class, 'index'])->name('adm
 Route::post('/equipment/store', [EquipmentController::class, 'store'])->name('equipment.store');
 Route::post('/equipment/delete', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
 Route::post('/equipment/update', [EquipmentController::class, 'update'])->name('equipment.update');
-Route::get('/equipment/search', [EquipmentController::class, 'search'])->name('equipment.search');
 
 
 //Supplies
@@ -105,7 +104,6 @@ Route::get('/admin_supplies', [SuppliesController::class, 'index'])->name('admin
 Route::post('/supplies/store', [SuppliesController::class, 'store'])->name('supplies.store');
 Route::post('/supplies/delete', [SuppliesController::class, 'destroy'])->name('supplies.destroy');
 Route::post('/supplies/update', [SuppliesController::class, 'update'])->name('supplies.update');
-Route::get('/supplies/search', [SuppliesController::class, 'search'])->name('supplies.search');
 
 
 //Room

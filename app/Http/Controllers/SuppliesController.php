@@ -74,21 +74,4 @@ class SuppliesController extends Controller
             return response()->json(['message' => 'Equipment item not found.'], 404);
         }
     }
-
-    public function search(Request $request)
-    {
-        $searchTerm = $request->input('suppliesSearch');
-
-        if ($searchTerm) {
-            $supplies = Supplies::where('SuppliesName', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('SuppliesCategory', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('SuppliesDepartment', 'LIKE', "%{$searchTerm}%")
-                ->get();
-        } else {
-            $supplies = Supplies::all();
-        }
-
-        return response()->json(['supplies' => $supplies]);
-    }
-
 }

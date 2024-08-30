@@ -1,15 +1,20 @@
 // Show the form when "Add Item" button is clicked
 $(document).ready(function() {
-    // Show the form card when the button is clicked
     $('#EquipFormButton').click(function() {
+        event.preventDefault();
         console.log('Show Equip Form Button Clicked');
-        $('#EquipFormCard').removeClass('hidden'); // Show the form card
+        $('#EquipFormCard').removeClass('hidden'); 
+    });
+
+    $('#closeSuppFormButton').on('click', function() {
+        $('#editSuppModal').addClass('hidden');
     });
 
     // Hide the form card when the close button is clicked
     $('#EquipCloseFormButton').click(function() {
+        event.preventDefault();
         console.log('Close Form Button Clicked');
-        $('#EquipFormCard').addClass('hidden'); // Hide the form card
+        $('#EquipFormCard').addClass('hidden'); 
     });
 });
 
@@ -59,6 +64,7 @@ $(document).ready(function() {
                     title: response.message,
                     showConfirmButton: true
                 }).then(() => {
+                    console.log('Equipment Quantity:', quantity);
                     // Add the new equipment to the table
                     $('#tableBody').append(`
                         <tr class="cursor-pointer table-row " data-id="${response.equipmentId}">
@@ -76,7 +82,6 @@ $(document).ready(function() {
                     `);
 
                     // Clear input fields and hide the form
-                    $('#EquipmentForm')[0].reset();  // Reset form fields
                     $('#EquipFormCard').addClass('hidden');  // Hide the form
                 });
             },
@@ -199,8 +204,6 @@ $(document).ready(function() {
 });
 
 
-
-
 //DELETE EQUIPMENT
 $(document).ready(function(){
     $('#deleteEquipButton').click(function() {
@@ -255,61 +258,17 @@ $(document).ready(function(){
     });
 });
 
-// SEARCH FUNCTION EQUIPMENT 
+// FUNCTION FOR SEARCH
 $(document).ready(function() {
-    $('#equipmentSearchForm').on('submit', function(e) {
-        e.preventDefault();
+    var table = $('#dynamicTable').DataTable({
+    });
 
-        var searchTerm = $('#equipment-search').val(); 
-        var token = $('#csrf-token').data('token'); 
+    $('.dt-search').hide();
 
-        console.log('Search Term:', searchTerm);
-        console.log('CSRF Token:', token);
-
-        $.ajax({
-            url: '/equipment/search',
-            type: 'GET',
-            data: {
-                equipmentSearch: searchTerm,
-                _token: token
-            },
-            success: function(response) {
-                console.log('Response:', response);
-
-                var tableBody = $('#tableBody'); 
-                tableBody.empty(); 
-
-                if (response.equipment.length > 0) {
-                    $.each(response.equipment, function(index, item) {
-                        tableBody.append(
-                            '<tr class="cursor-pointer table-row" data-id="'+ item.id +'">' +
-                                '<td class="px-6 py-3">' + item.EquipmentName + '</td>' +
-                                '<td class="px-6 py-3">' + item.EquipmentCategory + '</td>' +
-                                '<td class="px-6 py-3">' + item.EquipmentQuantity + '</td>' +
-                                '<td class="px-6 py-3">' + item.EquipmentDate + '</td>' +
-                                '<td class="px-6 py-3">' + item.EquipmentPrice + '</td>' +
-                                '<td class="px-6 py-3">' + item.EquipmentDepartment + '</td>' +
-                                '<td class="px-6 py-3">' + item.EquipmentSKU + '</td>' +
-                                '<td class="px-6 py-4">' +
-                                    '<button id="editEquipButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>' +
-                                '</td>' +
-                            '</tr>'
-                        );
-                    });
-                } else {
-                    tableBody.append('<tr><td colspan="8" class="px-6 py-3 text-center">No results found</td></tr>');
-                }
-            },
-            error: function(xhr) {
-                // Log error response to the console
-                console.log('Error:', xhr.responseText);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'An error occurred while processing your request.'
-                });
-            }
-        });
+    // Custom search function
+    $('#equipmentSearch').on('keyup', function() {
+        console.log('Search input:', this.value); 
+        table.search(this.value).draw(); 
     });
 });
 

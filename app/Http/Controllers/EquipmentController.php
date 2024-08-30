@@ -74,18 +74,4 @@ class EquipmentController extends Controller
             return response()->json(['message' => 'Equipment item not found.'], 404);
         }
     }
-
-    public function search(Request $request)
-    {
-        $searchTerm = $request->input('equipmentSearch', '');
-
-        $equipment = Equipment::query()
-            ->where('EquipmentName', 'like', "%{$searchTerm}%")
-            ->orWhere('EquipmentCategory', 'like', "%{$searchTerm}%")
-            ->orWhere('EquipmentSKU', 'like', "%{$searchTerm}%")
-            ->get();
-       
-        return response()->json(['equipment' => $equipment]);
-    }
-
 }
