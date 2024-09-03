@@ -6,9 +6,6 @@ $(document).ready(function() {
         $('#EquipFormCard').removeClass('hidden'); 
     });
 
-    $('#closeSuppFormButton').on('click', function() {
-        $('#editSuppModal').addClass('hidden');
-    });
 
     // Hide the form card when the close button is clicked
     $('#EquipCloseFormButton').click(function() {

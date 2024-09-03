@@ -317,7 +317,7 @@
                                         <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesPrice}}</td>
                                         <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesDepartment}}</td>
                                         <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesSKU}}</td>
-                                        <td class="px-6 py-3 border-b border-gray-300">
+                                        <td class="px-6 py-4 border-b border-gray-300">
                                             <button id="editSuppButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>
                                         </td>
                                     </tr>

@@ -306,7 +306,7 @@
                                     <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentCategory}}</td>
                                     <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentQuantity}}</td>
                                     <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentDate}}</td>
-                                    <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentPrice}}</td>
+                                    <td class="px-6 py-6 border-b border-gray-300">₱{{number_format($item->EquipmentPrice, 2)}}</td>
                                     <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentDepartment}}</td>
                                     <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentSKU}}</td>
                                     <td class="px-6 py-6 border-b border-gray-300">
@@ -317,9 +317,7 @@
                                 <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
-
                     </div>
-
 
                     <!-- Edit Popup Card -->
                     <div id="editEquipModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
