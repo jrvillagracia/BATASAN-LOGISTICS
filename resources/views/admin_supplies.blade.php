@@ -314,7 +314,7 @@
                                         <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesCategory}}</td>
                                         <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesQuantity}}</td>
                                         <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesDate}}</td>
-                                        <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesPrice}}</td>
+                                        <td class="px-6 py-3 border-b border-gray-300">₱{{number_format($item->SuppliesPrice,2)}}</td>
                                         <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesDepartment}}</td>
                                         <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesSKU}}</td>
                                         <td class="px-6 py-4 border-b border-gray-300">
