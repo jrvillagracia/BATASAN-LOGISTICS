@@ -6,21 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Facility Regular Room | BHNHS</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/admin_facilityRegRoom.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
+
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
-    <link rel="stylesheet" href="{{asset('css/admin_requestSupplies.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_facilityRegRoom.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css">
 
-
-
+    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="{{asset('js/admin_facilityRegRoom.js')}}"></script>
-    <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{asset('js/main.js')}}"></script>
-    <script src="{{asset('js/admin_requestSupplies.js')}}"></script>
 </head>
 
 <body class="h-screen">
@@ -187,7 +187,7 @@
                                 <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                                 </svg>
-                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Morning Shift</a>
+                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Regular Rooms</a>
                             </div>
                         </li>
                         <!-- Add additional breadcrumbs here -->
@@ -217,7 +217,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
+                                <input type="search" id="RegSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
                                 <button type="submit" class="text-white absolute right-2.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                             </div>
 
@@ -296,48 +296,46 @@
 
                     <!-- Table -->
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <table id="dynamicTable" class="w-full text-sm text-left rtl:text-right text-black">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                        <table id="RegFacTable" class="w-full text-sm text-left rtl:text-right text-black border-2 border-gray-300">
+                            <thead class="table_color text-xs text-white uppercase ">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
                                         <span class="flex items-center">
                                             Building Name
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
                                         <span class="flex items-center">
                                             Room
-                                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                            </svg>
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
                                         <span class="flex items-center">
                                             Status
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
                                         <span class="flex items-center">
                                             Capacity
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
                                         <span class="flex items-center">
                                             Shift Type
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">Action</th>
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
                                 @foreach($regularRooms as $room)
-                                <tr class="cursor-pointer table-row " data-index="{{$loop->index}}" data-id="{{$room->id}}">
-                                    <td class="px-6 py-3">{{$room->BldName}}</td>
-                                    <td class="px-6 py-3">{{$room->Room}} </td>
-                                    <td class="px-6 py-3">{{$room->facilityStatus}}</td>
-                                    <td class="px-6 py-3">{{$room->Capacity}}</td>
-                                    <td class="px-6 py-4">{{$room->facilityShift}}</td>
+                                <tr class="cursor-pointer table-row border-b border-gray-300" data-index="{{$loop->index}}" data-id="{{$room->id}}">
+                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->BldName}}</td>
+                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->Room}} </td>
+                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->facilityStatus}}</td>
+                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->Capacity}}</td>
+                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->facilityShift}}</td>
+                                    <td class="px-6 py-3 border-b border-gray-300"></td>
                                 </tr>
                                 @endforeach
                                 <!-- Dynamic rows will be inserted here -->
@@ -345,15 +343,6 @@
                         </table>
 
                         <!-- Edit Popup Card -->
-
-
-                        <!-- Pagination -->
-                        <nav id="paginationNav" class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span id="currentPage" class="font-bold text-black">1</span> of <span id="totalPages" class="font-bold text-black">1</span></span>
-                            <ul id="pagination" class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                                <!-- Pagination buttons will be inserted here dynamically -->
-                            </ul>
-                        </nav>
                     </div>
                 </div>
 

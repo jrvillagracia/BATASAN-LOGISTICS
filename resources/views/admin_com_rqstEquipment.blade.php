@@ -5,19 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Equipment | BHNHS</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
+    <script src="{{asset('js/admin_requestEquipment.js')}}"></script>
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_requestEquipment.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css">
 
-
-
+    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{asset('js/main.js')}}"></script>
-    <script src="{{asset('js/admin_requestEquipment.js')}}"></script>
 </head>
 
 <body class="h-screen">
@@ -265,42 +267,37 @@
 
                     <!-- Table -->
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <table id="dynamicTable" class="w-full text-sm text-left rtl:text-right text-black">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                        <table id="reqEquipTable" class="w-full text-sm text-left rtl:text-right text-black border-2 border-gray-300">
+                            <thead class="table_color text-xs text-white uppercase">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
                                         <span class="flex items-center">
                                             Status
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
                                         <span class="flex items-center">
                                             Name
-                                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                            </svg>
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
                                         <span class="flex items-center">
                                             Department
-                                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                            </svg>
+
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">Date</th>
-                                    <th scope="col" class="px-6 py-3">Action</th>
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">Date</th>
+                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody" class="">
 
-                                <tr class="cursor-pointer table-row " data-index="" data-id="">
-                                    <td class="px-6 py-3">Completed</td>
-                                    <td class="px-6 py-3">VicThor</td>
-                                    <td class="px-6 py-3">Faculty Teacher</td>
-                                    <td class="px-6 py-3">2024-08-23</td>
-                                    <td class="px-6 py-4">
+                                <tr class="cursor-pointer table-row border-b border-gray-300" data-index="" data-id="">
+                                    <td class="px-6 py-3 border-b border-gray-300">Completed</td>
+                                    <td class="px-6 py-3 border-b border-gray-300">VicThor</td>
+                                    <td class="px-6 py-3 border-b border-gray-300">Faculty Teacher</td>
+                                    <td class="px-6 py-3 border-b border-gray-300">2024-08-23</td>
+                                    <td class="px-6 py-3 border-b border-gray-300">
                                         <button id="ViewEquipBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                                     </td>
                                 </tr>
@@ -336,15 +333,7 @@
                                 </div>
                             </div>
                         </div> 
-
-
                         <!-- Pagination -->
-                        <nav id="paginationNav" class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span id="currentPage" class="font-bold text-black">1</span> of <span id="totalPages" class="font-bold text-black">1</span></span>
-                            <ul id="pagination" class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                                <!-- Pagination buttons will be inserted here dynamically -->
-                            </ul>
-                        </nav>
                     </div>
                 </div>
 

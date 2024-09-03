@@ -103,3 +103,16 @@ $(document).ready(function () {
     });
 });
 
+
+$(document).ready(function() {
+    var table = $('#SpecFacTable').DataTable({
+    });
+
+    $('.dt-search').hide();
+
+    // Custom search function
+    $('#SpecSearch').on('keyup', function() {
+        console.log('Search input:', this.value); 
+        table.search(this.value).draw(); 
+    });
+});

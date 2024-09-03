@@ -44,6 +44,9 @@ $(document).ready(function() {
             return;
         }
 
+        // Hide the form immediately after clicking the save button
+        $('#EquipFormCard').addClass('hidden');
+
         // AJAX request to save the data
         $.ajax({
             url: '/equipment/store',  // Ensure this URL is correct
@@ -271,6 +274,10 @@ $(document).ready(function() {
         table.search(this.value).draw(); 
     });
 });
+
+
+
+
 
 
 

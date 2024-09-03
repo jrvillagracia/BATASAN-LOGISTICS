@@ -48,11 +48,11 @@ $(document).ready(function () {
                 // Append new row to the table  // THIS IS FOR EXAMPLE ONLY TO CHECK IF SWEETALERT2 IS APPLIED
                 $('#dynamicTable tbody').append(`
                     <tr>
-                        <td class="py-6 px-3"></td>
-                        <td class="py-6 px-3">${name}</td>
-                        <td class="py-6 px-3">${department}</td>
-                        <td class="py-6 px-3">${date}</td>
-                        <td class="py-6 px-4">
+                        <td class="py-6 px-3 border-b border-gray-300"></td>
+                        <td class="py-6 px-3 border-b border-gray-300">${name}</td>
+                        <td class="py-6 px-3 border-b border-gray-300">${department}</td>
+                        <td class="py-6 px-3 border-b border-gray-300">${date}</td>
+                        <td class="py-6 px-3 border-b border-gray-300">
                             <button id="ViewEquipBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                             <button id="ApprEquipBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
                             <button id="DclnEquipBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
@@ -235,3 +235,19 @@ $(document).ready(function () {
 
 
 // ======================== COMPLETED REQUEST ============================= //
+
+
+
+// ======================== DATATABLES ============================= //
+$(document).ready(function() {
+    var table = $('#reqEquipTable').DataTable({
+    });
+
+    $('.dt-search').hide();
+
+    // Custom search function
+    $('#equipmentSearch').on('keyup', function() {
+        console.log('Search input:', this.value); 
+        table.search(this.value).draw(); 
+    });
+});

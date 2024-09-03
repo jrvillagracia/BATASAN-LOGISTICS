@@ -1,3 +1,15 @@
 #RegFormCard {
     z-index: 50; /* Increase the z-index  */
 }
+
+
+#RegFacTable tbody tr:nth-child(even) {
+    background-color: #dfdfdf; /* Light gray for even rows */
+}
+#RegFacTable tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* White for odd rows */
+}
+
+.table_color{
+    background-color: #163172;
+}

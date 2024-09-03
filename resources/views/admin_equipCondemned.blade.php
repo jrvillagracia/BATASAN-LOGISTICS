@@ -206,6 +206,7 @@
                         <div id="tabs-container" class="relative">
                             <a href="{{ route('admin_equipment') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Equipment</a>
                             <a href="{{ route('admin_equipCondemned') }}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
+                            <a href="#" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
                         </div>
 
 
