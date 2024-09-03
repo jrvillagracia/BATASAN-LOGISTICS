@@ -1,0 +1,15 @@
+#ReqEquipFormCard {
+    z-index: 50; /* Increase the z-index  */
+}
+
+
+#reqEquipTable tbody tr:nth-child(even) {
+    background-color: #dfdfdf; /* Light gray for even rows */
+}
+#reqEquipTable tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* White for odd rows */
+}
+
+.table_color{
+    background-color: #163172;
+}
