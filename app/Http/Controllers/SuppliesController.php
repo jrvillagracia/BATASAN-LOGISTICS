@@ -74,5 +74,4 @@ class SuppliesController extends Controller
             return response()->json(['message' => 'Equipment item not found.'], 404);
         }
     }
-
 }

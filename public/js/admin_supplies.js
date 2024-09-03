@@ -1,21 +1,18 @@
 // Show the form when "Add Item" button is clicked
 $(document).ready(function() {
-    $('#closeSuppFormButton').on('click', function() {
-        $('#editSuppModal').addClass('hidden');
-    });
-
     $('#SuppliesFormButton').click(function() {
+        event.preventDefault();
         console.log('Show Supplies Form Button Clicked');
-        $('#SuppliesFormCard').removeClass('hidden'); // Show the form card
+        $('#SuppliesFormCard').removeClass('hidden');
     });
 
     // Close the form when "Close" button is clicked
     $('#SuppliesCloseFormButton').click(function() {
+        event.preventDefault();
         console.log('Close Form Button Clicked');
         $('#SuppliesFormCard').addClass('hidden'); // Hide the form card
     });
 });
-
 
 
 // Function to add a new Supplies
@@ -77,7 +74,6 @@ $(document).ready(function() {
                         </tr>
                     `);
                     // Clear input fields
-                    $('#SuppliesFormCard')[0].reset();
                     $('#SuppliesFormCard').addClass('hidden');
                 });
             },
@@ -90,11 +86,12 @@ $(document).ready(function() {
             }
         });
     });
-});
 
-$('#SuppliesCloseFormButton').on('click', function () {
-    $('#SuppliesFormCard').addClass('hidden');
-
+    $(window).on('click', function(e) {
+        if ($(e.target).is('#SuppliesFormCard')) {
+            $('#SuppliesFormCard').addClass('hidden');
+        }
+    });
 });
 
 // SUPPLIES EDIT FUNCTION 
@@ -249,7 +246,17 @@ $(document).ready(function(){
     });
 });
 
+// FUNCTION FOR SEARCH
+$(document).ready(function() {
+    var table = $('#dynamicTable').DataTable({
+ 
+    });
 
+    $('.dt-search').hide();
 
-
-
+    // Custom search function
+    $('#suppliesSearch').on('keyup', function() {
+        console.log('Search input:', this.value); 
+        table.search(this.value).draw(); 
+    });
+});

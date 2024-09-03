@@ -105,6 +105,7 @@ Route::post('/supplies/store', [SuppliesController::class, 'store'])->name('supp
 Route::post('/supplies/delete', [SuppliesController::class, 'destroy'])->name('supplies.destroy');
 Route::post('/supplies/update', [SuppliesController::class, 'update'])->name('supplies.update');
 
+
 //Room
 Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('admin_facilityRegRoom');
 Route::get('/admin_facilitySpecRoom', [RoomController::class, 'specialIndex'])->name('admin_facilitySpecRoom');

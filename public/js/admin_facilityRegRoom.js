@@ -78,11 +78,12 @@ $(document).ready(function () {
                 // Optionally, you can append the new data to the table or reload the table
                 $('#tableBody').append(
                     `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
-                        <td class="px-6 py-3">${response.buildingName}</td>
-                        <td class="px-6 py-3">${response.room}</td>
-                        <td class="px-6 py-3">${response.status}</td>
-                        <td class="px-6 py-3">${response.capacity}</td>
-                        <td class="px-6 py-4">${response.shift}</td>
+                        <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
+                        <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
+                        <td class="px-6 py-6 border-b border-gray-300">${response.status}</td>
+                        <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
+                        <td class="px-6 py-6 border-b border-gray-300">${response.shift}</td>
+                        <td class="px-6 py-6 border-b border-gray-300"></td>
                     </tr>`
                 );
             },
@@ -101,3 +102,17 @@ $(document).ready(function () {
 });
 
 
+
+
+$(document).ready(function() {
+    var table = $('#RegFacTable').DataTable({
+    });
+
+    $('.dt-search').hide();
+
+    // Custom search function
+    $('#RegSearch').on('keyup', function() {
+        console.log('Search input:', this.value); 
+        table.search(this.value).draw(); 
+    });
+});

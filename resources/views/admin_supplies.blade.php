@@ -5,19 +5,22 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Inventory Supplies | BHNHS</title>
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
-        <link rel="stylesheet" href="{{asset('css/admin_supplies.css')}}">
-
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
-
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
         <script src="{{asset('js/admin_supplies.js')}}"></script>
         <script src="{{asset('js/jquery.js')}}"></script>
         <script src="{{asset('js/main.js')}}"></script>
         <script src="{{asset('js/popups.js')}}"></script>
+        
+        <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
+        <link rel="stylesheet" href="{{asset('css/admin_supplies.css')}}">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css"></link>
+
     </head>
 
     <body class="h-screen">
@@ -67,6 +70,7 @@
                                 </a>
                             </li>
                             <li class="p-3 rounded-md relative">
+                                
                             <!-- Dropdown Button -->
                             <button type="button" class="dropdownButton flex items-center w-full p-2 -ml-1 text-base text-white transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0">
@@ -196,6 +200,7 @@
                             <div>
                                 <a href="{{ route('admin_supplies') }}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Supplies</a>
                                 <a href="{{ route('admin_supplyCondemned') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
+                                <a href="#" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
                             </div>
 
                             <!-- Date Picker -->
@@ -205,13 +210,14 @@
                             <div class="flex items-center space-x-4">
 
                                 <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only dark:text-white">Search</label>
+                                <form id="suppliesSearchForm" class="flex items-center space-x-4">
                                 <div class="relative w-96">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                         </svg>
                                     </div>
-                                    <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
+                                    <input type="search" id="suppliesSearch" name="suppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search"/>
                                     <button type="submit" class="text-white absolute right-2.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                                 </div>
 
@@ -267,66 +273,51 @@
                         </div>
 
                         <!-- Table -->
-                        <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                            <table id="dynamicTable" class="w-full text-sm text-left rtl:text-right text-black">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                        <div class="relative shadow-md sm:rounded-lg px-9 py-5 ">
+                            <table id="dynamicTable" class="w-full text-sm text-left rtl:text-right text-black border-2 border-gray-300">
+                                <thead class="table_color text-xs uppercase text-white">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
                                             <span class="flex items-center">
                                                 Supplies Name
-                                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                                </svg>
                                             </span>
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
                                             <span class="flex items-center">
                                                 Category
-                                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                                </svg>
                                             </span>
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
                                             <span class="flex items-center">
                                                 Quantity
-                                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                                </svg>
                                             </span>
                                         </th>
-                                        <th scope="col" class="px-6 py-3">Date</th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">Date</th>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
                                             <span class="flex items-center">
                                                 Price
-                                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                                </svg>
                                             </span>
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
                                             <span class="flex items-center">
                                                 Department
-                                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                                </svg>
                                             </span>
                                         </th>
-                                        <th scope="col" class="px-6 py-3">SKU</th>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">SKU</th>
                                         <th scope="col" class="px-6 py-3">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tableBody" class="">
+                                <tbody id="tableBody">
                                     @foreach($supplies as $item)
-                                    <tr class="cursor-pointer table-row " data-index="${start + index}" data-id="{{$item->id}}">
-                                        <td class="px-6 py-3">{{$item->SuppliesName}}</td>
-                                        <td class="px-6 py-3">{{$item->SuppliesCategory}}</td>
-                                        <td class="px-6 py-3">{{$item->SuppliesQuantity}}</td>
-                                        <td class="px-6 py-3">{{$item->SuppliesDate}}</td>
-                                        <td class="px-6 py-3">{{$item->SuppliesPrice}}</td>
-                                        <td class="px-6 py-3">{{$item->SuppliesDepartment}}</td>
-                                        <td class="px-6 py-3">{{$item->SuppliesSKU}}</td>
-                                        <td class="px-6 py-4">
+                                    <tr class="cursor-pointer table-row border-b border-gray-300" data-index="${start + index}" data-id="{{$item->id}}">
+                                        <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesName}}</td>
+                                        <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesCategory}}</td>
+                                        <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesQuantity}}</td>
+                                        <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesDate}}</td>
+                                        <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesPrice}}</td>
+                                        <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesDepartment}}</td>
+                                        <td class="px-6 py-3 border-b border-gray-300">{{$item->SuppliesSKU}}</td>
+                                        <td class="px-6 py-4 border-b border-gray-300">
                                             <button id="editSuppButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>
                                         </td>
                                     </tr>
@@ -384,9 +375,6 @@
                                 </div>
                             </div>
 
-
-
-
                             <!-- Pagination -->
                             <nav id="paginationNav" class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
                                 <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span id="currentPage" class="font-bold text-black">1</span> of <span id="totalPages" class="font-bold text-black">1</span></span>
@@ -413,11 +401,6 @@
                 </section>
             </main>
         </div>
-
-        <!-- <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{asset('js/admin.js')}}"></script>
-    <script src="{{asset('js/popups.js')}}"></script> -->
-
 
     </body>
 

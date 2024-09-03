@@ -1,15 +1,17 @@
 // Show the form when "Add Item" button is clicked
 $(document).ready(function() {
-    // Show the form card when the button is clicked
     $('#EquipFormButton').click(function() {
+        event.preventDefault();
         console.log('Show Equip Form Button Clicked');
-        $('#EquipFormCard').removeClass('hidden'); // Show the form card
+        $('#EquipFormCard').removeClass('hidden'); 
     });
+
 
     // Hide the form card when the close button is clicked
     $('#EquipCloseFormButton').click(function() {
+        event.preventDefault();
         console.log('Close Form Button Clicked');
-        $('#EquipFormCard').addClass('hidden'); // Hide the form card
+        $('#EquipFormCard').addClass('hidden'); 
     });
 });
 
@@ -39,6 +41,9 @@ $(document).ready(function() {
             return;
         }
 
+        // Hide the form immediately after clicking the save button
+        $('#EquipFormCard').addClass('hidden');
+
         // AJAX request to save the data
         $.ajax({
             url: '/equipment/store',  // Ensure this URL is correct
@@ -59,6 +64,7 @@ $(document).ready(function() {
                     title: response.message,
                     showConfirmButton: true
                 }).then(() => {
+                    console.log('Equipment Quantity:', quantity);
                     // Add the new equipment to the table
                     $('#tableBody').append(`
                         <tr class="cursor-pointer table-row " data-id="${response.equipmentId}">
@@ -76,7 +82,6 @@ $(document).ready(function() {
                     `);
 
                     // Clear input fields and hide the form
-                    $('#EquipmentForm')[0].reset();  // Reset form fields
                     $('#EquipFormCard').addClass('hidden');  // Hide the form
                 });
             },
@@ -199,8 +204,6 @@ $(document).ready(function() {
 });
 
 
-
-
 //DELETE EQUIPMENT
 $(document).ready(function(){
     $('#deleteEquipButton').click(function() {
@@ -254,5 +257,24 @@ $(document).ready(function(){
         });
     });
 });
+
+// FUNCTION FOR SEARCH
+$(document).ready(function() {
+    var table = $('#dynamicTable').DataTable({
+    });
+
+    $('.dt-search').hide();
+
+    // Custom search function
+    $('#equipmentSearch').on('keyup', function() {
+        console.log('Search input:', this.value); 
+        table.search(this.value).draw(); 
+    });
+});
+
+
+
+
+
 
 

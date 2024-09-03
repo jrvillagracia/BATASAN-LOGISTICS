@@ -31,6 +31,22 @@ aside{
     position: relative;
 }
 
+.dataTables_filter {
+    display: none;
+}
+
+#dynamicTable tbody tr:nth-child(even) {
+    background-color: #dfdfdf; /* Light gray for even rows */
+}
+#dynamicTable tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* White for odd rows */
+}
+
+.table_color{
+    background-color: #163172;
+}
+
+
 /* .datepicker {
     background-color: #fff;
     border: 1px solid #d2d6dc;
