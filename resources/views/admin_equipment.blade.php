@@ -301,15 +301,15 @@
                             </thead>
                             <tbody id="tableBody">
                                 @foreach($equipment as $item)
-                                <tr class="cursor-pointer border-b border-gray-300" data-id="{{$item->id}}">
-                                    <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentName}}</td>
-                                    <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentCategory}}</td>
-                                    <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentQuantity}}</td>
-                                    <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentDate}}</td>
-                                    <td class="px-6 py-6 border-b border-gray-300">₱{{number_format($item->EquipmentPrice, 2)}}</td>
-                                    <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentDepartment}}</td>
-                                    <td class="px-6 py-6 border-b border-gray-300">{{$item->EquipmentSKU}}</td>
-                                    <td class="px-6 py-6 border-b border-gray-300">
+                                <tr class="cursor-pointer table-row border-b border-gray-300 lefttxtdata" data-id="{{$item->id}}">
+                                    <td class="px-6 py-6 border-b border-gray-300 lefttxtdata">{{$item->EquipmentName}}</td>
+                                    <td class="px-6 py-6 border-b border-gray-300 lefttxtdata">{{$item->EquipmentCategory}}</td>
+                                    <td class="px-6 py-6 border-b border-gray-300 lefttxtdata">{{$item->EquipmentQuantity}}</td>
+                                    <td class="px-6 py-6 border-b border-gray-300 lefttxtdata">{{$item->EquipmentDate}}</td>
+                                    <td class="px-6 py-6 border-b border-gray-300 lefttxtdata">₱{{number_format($item->EquipmentPrice, 2)}}</td>
+                                    <td class="px-6 py-6 border-b border-gray-300 lefttxtdata">{{$item->EquipmentDepartment}}</td>
+                                    <td class="px-6 py-6 border-b border-gray-300 lefttxtdata">{{$item->EquipmentSKU}}</td>
+                                    <td class="px-6 py-4 border-b border-gray-300">
                                         <button id="editEquipButton" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Edit</button>
                                     </td>
                                 </tr>

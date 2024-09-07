@@ -146,7 +146,7 @@
             <header class="flex justify-end mb-8">
                 <div class="bg-gray-200 rounded-full px-4 py-2 inline-flex items-center space-x-4">
                     <div>
-                        <span class="font-semibold text-black">Andres Santiago</span>
+                        <span class="font-semibold text-black">Jersom Tumacder</span>
                         <p class="text-gray-600 text-xs pl-11">administrator</p>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
