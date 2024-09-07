@@ -38,7 +38,7 @@ class SuppliesController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id' => 'required|exists:Supplies,id',
+            'id' => 'required|exists:supplies,id',
             'SuppliesName' => 'required|string|max:255',
             'SuppliesCategory' => 'required|string',
             'SuppliesQuantity' => 'required|integer',
