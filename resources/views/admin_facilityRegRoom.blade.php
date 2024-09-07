@@ -329,7 +329,7 @@
                             </thead>
                             <tbody id="tableBody">
                                 @foreach($regularRooms as $room)
-                                <tr class="cursor-pointer table-row border-b border-gray-300" data-index="{{$loop->index}}" data-id="{{$room->id}}">
+                                <tr class="cursor-pointer table-row border-b border-gray-300 lefttxtdata" data-index="{{$loop->index}}" data-id="{{$room->id}}">
                                     <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->BldName}}</td>
                                     <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->Room}} </td>
                                     <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->facilityStatus}}</td>
