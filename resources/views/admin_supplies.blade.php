@@ -309,7 +309,7 @@
                                 </thead>
                                 <tbody id="tableBody">
                                     @foreach($supplies as $item)
-                                    <tr class="cursor-pointer table-row border-b border-gray-300 lefttxtdata" data-index="${start + index}" data-id="{{$item->id}}">
+                                    <tr class="cursor-pointer table-row border-b border-gray-300 lefttxtdata" data-id="{{$item->id}}">
                                         <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$item->SuppliesName}}</td>
                                         <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$item->SuppliesCategory}}</td>
                                         <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$item->SuppliesQuantity}}</td>

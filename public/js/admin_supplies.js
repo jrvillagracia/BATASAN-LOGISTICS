@@ -164,6 +164,9 @@ $(document).ready(function() {
                     error: function(xhr, status, error) {
                         var errorMessage = xhr.responseJSON.message || error;
                         console.log('Error:', errorMessage);
+                        console.log("Error Status: ", xhr.status);
+                        console.log("Error Response: ", xhr.responseText);
+                        console.log("Error Details: ", error);
                         Swal.fire("Error!", "Failed to update supplies: " + errorMessage, "error");
                     }
                 });
