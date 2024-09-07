@@ -330,12 +330,12 @@
                             <tbody id="tableBody">
                                 @foreach($specialRooms as $room)
                                 <tr class="cursor-pointer table-row border-b border-gray-300" data-index="{{$loop->index}}" data-id="{{$room->id}}">
-                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->BldName}}</td>
-                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->Room}} </td>
-                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->facilityStatus}}</td>
-                                    <td class="px-6 py-3 border-b border-gray-300">{{$room->Capacity}}</td>
-                                    <td class="px-6 py-4 border-b border-gray-300">{{$room->facilityShift}}</td>
-                                    <td class="px-6 py-4 border-b border-gray-300"></td>
+                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->BldName}}</td>
+                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->Room}} </td>
+                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->facilityStatus}}</td>
+                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->Capacity}}</td>
+                                    <td class="px-6 py-4 border-b border-gray-300 lefttxtdata">{{$room->facilityShift}}</td>
+                                    <td class="px-6 py-4 border-b border-gray-300 "></td>
                                 </tr>
                                 @endforeach
                                 <!-- Dynamic rows will be inserted here -->
