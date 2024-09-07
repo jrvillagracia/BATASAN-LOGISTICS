@@ -42,7 +42,10 @@ aside{
     background-color: #163172;
 }
 
-
+.lefttxtdata
+{
+    text-align: left !important;
+}
 
 /* .datepicker {
     background-color: #fff;

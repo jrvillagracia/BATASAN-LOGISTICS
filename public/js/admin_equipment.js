@@ -67,7 +67,7 @@ $(document).ready(function() {
                     console.log('Equipment Quantity:', quantity);
                     // Add the new equipment to the table
                     $('#tableBody').append(`
-                        <tr class="cursor-pointer table-row " data-id="${response.equipmentId}">
+                        <tr class="cursor-pointer table-row border-b border-gray-300" data-id="${response.equipmentId}">
                             <td class="px-6 py-3">${name}</td>
                             <td class="px-6 py-3">${category}</td>
                             <td class="px-6 py-3">${quantity}</td>
