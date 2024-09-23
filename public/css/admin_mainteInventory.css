@@ -1,8 +1,5 @@
-#ReqEquipFormCard {
-    z-index: 50; /* Increase the z-index  */
-}
 
-#reqEquipTable thead {
+#MainteInventoryTable thead {
     background-color: #163172; /* Your custom background color */
     color: white; /* Your custom text color */
 }

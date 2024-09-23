@@ -31,17 +31,6 @@ aside{
     position: relative;
 }
 
-#dynamicTable tbody tr:nth-child(even) {
-    background-color: #dfdfdf; /* Light gray for even rows */
-}
-#dynamicTable tbody tr:nth-child(odd) {
-    background-color: #ffffff; /* White for odd rows */
-}
-
-.table_color{
-    background-color: #163172;
-}
-
 .lefttxtdata
 {
     text-align: left !important;
@@ -54,3 +43,14 @@ aside{
     padding: 0.5rem;
     width: 100%;
 } */
+
+#dynamicTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+#ViewDynamicTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+

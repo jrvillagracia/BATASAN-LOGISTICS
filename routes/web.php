@@ -33,10 +33,29 @@ Route::get('/admin_equipCondemned', function () {
     return view('admin_equipCondemned');
 })->name('admin_equipCondemned');
 
-// CONDEMNED MODULE FOR SUPPLIES
-Route::get('/admin_supplyCondemned', function () {
-    return view('admin_supplyCondemned');
-})->name('admin_supplyCondemned');
+
+// USED MODULE FOR EQUIPMENT
+Route::get('/admin_equipUsed', function () {
+    return view('admin_equipUsed');
+})->name('admin_equipUsed');
+
+
+// HISTORY FOR EQUIPMENT
+Route::get('/admin_equipHistory', function () {
+    return view('admin_equipHistory');
+})->name('admin_equipHistory');
+
+// HISTORY FOR SUPPLIES
+Route::get('/admin_suppliesHistory', function () {
+    return view('admin_suppliesHistory');
+})->name('admin_suppliesHistory');
+
+
+// USED FOR SUPPLIES
+Route::get('/admin_suppliesUsed', function () {
+    return view('admin_suppliesUsed');
+})->name('admin_suppliesUsed');
+
 
 
 // REQUEST MODULE FOR SUPPLIES
@@ -65,6 +84,8 @@ Route::get('/admin_releaseEquipment', function () {
 Route::get('/admin_com_rqstEquipment', function () {
     return view('admin_com_rqstEquipment');
 })->name('admin_com_rqstEquipment');
+
+
 
 
 // // FACILITY MODULE FOR REGULAR ROOM
@@ -111,3 +132,42 @@ Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('ad
 Route::get('/admin_facilitySpecRoom', [RoomController::class, 'specialIndex'])->name('admin_facilitySpecRoom');
 Route::post('/rooms/store', [RoomController::class, 'store'])->name('room.store');
 
+
+// OFFICE ROOM
+Route::get('/admin_facilityOfficeRoom', function () {
+    return view('admin_facilityOfficeRoom');
+})->name('admin_facilityOfficeRoom');
+
+
+
+// FACULTY PAGES
+Route::get('/faculty_home', function () {
+    return view('facultyPages.faculty_home');
+})->name('faculty_home');
+
+
+
+// MAINTENANCE INVENTORY
+Route::get('/admin_mainteInventory', function () {
+    return view('adminPages.admin_mainteInventory');
+})->name('admin_mainteInventory');
+
+
+
+
+// EVENT AND ACTIVITIES FOR APPROVAL
+Route::get('/admin_eventsForApproval', function () {
+    return view('adminPages.admin_eventsForApproval');
+})->name('admin_eventsForApproval');
+
+
+// EVENT AND ACTIVITIES FOR APPROVAL REQUEST
+Route::get('/admin_eventsAprRequest', function () {
+    return view('adminPages.admin_eventsAprRequest');
+})->name('admin_eventsAprRequest');
+
+
+// EVENT AND ACTIVITIES FOR HISTORY
+Route::get('/admin_eventsHistory', function () {
+    return view('adminPages.admin_eventsHistory');
+})->name('admin_eventsHistory');

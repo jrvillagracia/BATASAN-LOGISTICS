@@ -21,13 +21,19 @@ class SuppliesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'SuppliesControlNo' => 'required|string|max:255',
+            'SuppliesBrandName' => 'required|string|max:255',
             'SuppliesName' => 'required|string|max:255',
             'SuppliesCategory' => 'required|string|max:255',
+            'SuppliesType' => 'required|string|max:255',
+            'SuppliesColor' => 'required|string|max:255',
+            'SuppliesUnit' => 'required|string|max:255',
             'SuppliesQuantity' => 'required|integer',
             'SuppliesDate' => 'required|date',
-            'SuppliesPrice' => 'required|numeric',
-            'SuppliesDepartment' => 'required|string|max:255',
+            'SuppliesUnitPrice' => 'required|numeric',
+            'SuppliesClassification' => 'required|string|max:255',
             'SuppliesSKU' => 'required|string|max:255',
+            'SuppliesSerialNo' => 'required|string|max:255',
         ]);
 
         $supplies = Supplies::create($request->all());
@@ -39,24 +45,36 @@ class SuppliesController extends Controller
     {
         $validatedData = $request->validate([
             'id' => 'required|exists:supplies,id',
+            'SuppliesControlNo' => 'required|string|max:255',
+            'SuppliesBrandName' => 'required|string|max:255',
             'SuppliesName' => 'required|string|max:255',
             'SuppliesCategory' => 'required|string',
+            'SuppliesType' => 'required|string|max:255',
+            'SuppliesColor' => 'required|string|max:255',
+            'SuppliesUnit' => 'required|string|max:255',
             'SuppliesQuantity' => 'required|integer',
             'SuppliesDate' => 'required|date',
-            'SuppliesPrice' => 'required|numeric',
-            'SuppliesDepartment' => 'required|string',
+            'SuppliesUnitPrice' => 'required|numeric',
+            'SuppliesClassification' => 'required|string|max:255',
             'SuppliesSKU' => 'required|string|max:255',
+            'SuppliesSerialNo' => 'required|string|max:255',
         ]);
 
         $Supplies = Supplies::find($validatedData['id']);
         $Supplies->update([
+            'SuppliesControlNo' => $validatedData['SuppliesControlNo'],
+            'SuppliesBrandName' => $validatedData['SuppliesBrandName'],
             'SuppliesName' => $validatedData['SuppliesName'],
             'SuppliesCategory' => $validatedData['SuppliesCategory'],
+            'SuppliesType' => $validatedData['SuppliesType'],
+            'SuppliesColor' => $validatedData['SuppliesColor'],
+            'SuppliesUnit' => $validatedData['SuppliesUnit'],
             'SuppliesQuantity' => $validatedData['SuppliesQuantity'],
             'SuppliesDate' => $validatedData['SuppliesDate'],
-            'SuppliesPrice' => $validatedData['SuppliesPrice'],
-            'SuppliesDepartment' => $validatedData['SuppliesDepartment'],
+            'SuppliesUnitPrice' => $validatedData['SuppliesUnitPrice'],
+            'SuppliesClassification' => $validatedData['SuppliesClassification'],
             'SuppliesSKU' => $validatedData['SuppliesSKU'],
+            'SuppliesSerialNo' => $validatedData['SuppliesSerialNo'],
         ]);
 
         return response()->json(['message' => 'Supplies updated successfully']);
@@ -69,9 +87,9 @@ class SuppliesController extends Controller
 
         if ($supplies) {
             $supplies->delete();
-            return response()->json(['message' => 'Equipment item deleted successfully.'], 200);
+            return response()->json(['message' => 'Supplies item deleted successfully.'], 200);
         } else {
-            return response()->json(['message' => 'Equipment item not found.'], 404);
+            return response()->json(['message' => 'Supplies item not found.'], 404);
         }
     }
 }

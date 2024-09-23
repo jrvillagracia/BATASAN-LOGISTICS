@@ -1,21 +1,3 @@
-// VIEW CONDEMNED MODAL
-$(document).ready(function() {
-    $('#viewCondEquipButton').click(function() {
-        event.preventDefault();
-        console.log('Show View Equip Form Button Clicked');
-        $('#ViewCondEquipModal').removeClass('hidden'); 
-    });
-
-
-    // Hide the form card when the close button is clicked
-    $('#closeViewCondEquipModal').click(function() {
-        event.preventDefault();
-        console.log('Close View Form Button Clicked');
-        $('#ViewCondEquipModal').addClass('hidden'); 
-    });
-});
-
-
 // MAIN TABLE DATATABLES
 document.addEventListener("DOMContentLoaded", function() {
     // Check if the table exists and simple-datatables is loaded
@@ -38,4 +20,21 @@ document.addEventListener("DOMContentLoaded", function() {
             dataTable.search(searchTerm);
         });
     }
+});
+
+// VIEWING CARD
+$(document).ready(function() {
+    $('#viewEquipUsedButton').click(function() {
+        event.preventDefault();
+        console.log('Show View Equip Form Button Clicked');
+        $('#ViewEquipUsedModal').removeClass('hidden'); 
+    });
+
+
+    // Hide the form card when the close button is clicked
+    $('#closeViewEquipUsedFormButton').click(function() {
+        event.preventDefault();
+        console.log('Close View Form Button Clicked');
+        $('#ViewEquipUsedModal').addClass('hidden'); 
+    });
 });

@@ -110,6 +110,7 @@ $(document).ready(function () {
             title: 'Cancelled',
             text: 'Your action has been cancelled',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#D1191A'
         }).then(() => {
             $("#ApprSupPopupCard").addClass("hidden");
         });
@@ -122,6 +123,7 @@ $(document).ready(function () {
             title: 'Submitted',
             text: 'Your action has been successfully submitted',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
         }).then(() => {
             $("#ApprSupPopupCard").addClass("hidden");
         });
@@ -143,6 +145,7 @@ $(document).ready(function () {
             title: 'Cancelled',
             text: 'Decline process has been cancelled',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
         }).then(() => {
             $("#DclnSupPopupCard").addClass("hidden");
         });
@@ -155,6 +158,7 @@ $(document).ready(function () {
             title: 'Submitted',
             text: 'Your reason has been submitted',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
         }).then(() => {
             $("#DclnSupPopupCard").addClass("hidden");
         });
@@ -241,15 +245,26 @@ $(document).ready(function () {
 
 
 // ======================== DATATABLES ============================= //
-$(document).ready(function() {
-    var table = $('#reqSuppTable').DataTable({
-    });
+// MAIN TABLE DATATABLES
+document.addEventListener("DOMContentLoaded", function () {
+    // Check if the table exists and simple-datatables is loaded
+    if (document.getElementById("reqSuppTable") && typeof simpleDatatables !== 'undefined') {
+        const dataTable = new simpleDatatables.DataTable("#reqSuppTable", {
+            searchable: false,
+            perPageSelect: [5, 10, 20, 50],
+            perPage: 5,
+            firstLast: true,
+            nextPrev: true,
+            sortable: true,
 
-    $('.dt-search').hide();
+            labels: {
+                info: "Showing <strong>{start}</strong> - <strong>{end}</strong> of <strong>{rows}</strong>",
+            }
+        });
 
-    // Custom search function
-    $('#SuppliesSearch').on('keyup', function() {
-        console.log('Search input:', this.value); 
-        table.search(this.value).draw(); 
-    });
+        // document.getElementById("SuppliesSearch").addEventListener("keyup", function() {
+        //     let searchTerm = this.value;
+        //     dataTable.search(searchTerm);
+        // });
+    }
 });

@@ -2,13 +2,8 @@
     z-index: 50; /* Increase the z-index  */
 }
 
-#reqSuppTable tbody tr:nth-child(even) {
-    background-color: #dfdfdf; /* Light gray for even rows */
-}
-#reqSuppTable tbody tr:nth-child(odd) {
-    background-color: #ffffff; /* White for odd rows */
-}
 
-.table_color{
-    background-color: #163172;
+#reqSuppTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
 }

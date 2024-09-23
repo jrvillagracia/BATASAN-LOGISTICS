@@ -21,13 +21,19 @@ class EquipmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'EquipmentControlNo' => 'required|string|max:255',
+            'EquipmentBrandName' => 'required|string|max:255',
             'EquipmentName' => 'required|string|max:255',
             'EquipmentCategory' => 'required|string|max:255',
+            'EquipmentType' => 'required|string|max:255',
+            'EquipmentColor' => 'required|string|max:255',
+            'EquipmentUnit' => 'required|string|max:255',
             'EquipmentQuantity' => 'required|integer',
             'EquipmentDate' => 'required|date',
-            'EquipmentPrice' => 'required|numeric',
-            'EquipmentDepartment' => 'required|string|max:255',
+            'EquipmentUnitPrice' => 'required|numeric',
+            'EquipmentClassification' => 'required|string|max:255',
             'EquipmentSKU' => 'required|string|max:255',
+            'EquipmentSerialNo' => 'required|string|max:255',
         ]);
 
         $equipment = Equipment::create($request->all());
@@ -39,24 +45,35 @@ class EquipmentController extends Controller
     {
         $validatedData = $request->validate([
             'id' => 'required|exists:equipment,id',
+            'EquipmentControlNo' => 'required|string|max:255',
+            'EquipmentBrandName' => 'required|string|max:255',
             'EquipmentName' => 'required|string|max:255',
             'EquipmentCategory' => 'required|string',
+            'EquipmentType' => 'required|string|max:255',
+            'EquipmentColor' => 'required|string|max:255',
+            'EquipmentUnit' => 'required|string|max:255',
             'EquipmentQuantity' => 'required|integer',
             'EquipmentDate' => 'required|date',
-            'EquipmentPrice' => 'required|numeric',
-            'EquipmentDepartment' => 'required|string',
+            'EquipmentUnitPrice' => 'required|numeric',
+            'EquipmentClassification' => 'required|string|max:255',
             'EquipmentSKU' => 'required|string|max:255',
+            'EquipmentSerialNo' => 'required|string|max:255',
         ]);
 
         $equipment = Equipment::find($validatedData['id']);
         $equipment->update([
+            'EquipmentControlNo' => $validatedData['EquipmentControlNo'],
+            'EquipmentBrandName' => $validatedData['EquipmentBrandName'],
             'EquipmentName' => $validatedData['EquipmentName'],
             'EquipmentCategory' => $validatedData['EquipmentCategory'],
+            'EquipmentType' => $validatedData['EquipmentType'],
+            'EquipmentColor' => $validatedData['EquipmentColor'],
+            'EquipmentUnit' => $validatedData['EquipmentUnit'],
             'EquipmentQuantity' => $validatedData['EquipmentQuantity'],
             'EquipmentDate' => $validatedData['EquipmentDate'],
-            'EquipmentPrice' => $validatedData['EquipmentPrice'],
-            'EquipmentDepartment' => $validatedData['EquipmentDepartment'],
+            'EquipmentUnitPrice' => $validatedData['EquipmentUnitPrice'],
             'EquipmentSKU' => $validatedData['EquipmentSKU'],
+            'EquipmentSerialNo' => $validatedData['EquipmentSerialNo'],
         ]);
 
         return response()->json(['message' => 'Equipment updated successfully']);

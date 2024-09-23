@@ -1,21 +1,3 @@
-// VIEW CONDEMNED MODAL
-$(document).ready(function() {
-    $('#viewCondEquipButton').click(function() {
-        event.preventDefault();
-        console.log('Show View Equip Form Button Clicked');
-        $('#ViewCondEquipModal').removeClass('hidden'); 
-    });
-
-
-    // Hide the form card when the close button is clicked
-    $('#closeViewCondEquipModal').click(function() {
-        event.preventDefault();
-        console.log('Close View Form Button Clicked');
-        $('#ViewCondEquipModal').addClass('hidden'); 
-    });
-});
-
-
 // MAIN TABLE DATATABLES
 document.addEventListener("DOMContentLoaded", function() {
     // Check if the table exists and simple-datatables is loaded
@@ -33,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        document.getElementById("equipmentSearch").addEventListener("keyup", function() {
+        document.getElementById("suppliesSearch").addEventListener("keyup", function() {
             let searchTerm = this.value;
             dataTable.search(searchTerm);
         });

@@ -46,16 +46,28 @@ $(document).ready(function () {
                 }
 
                 // Append new row to the table  // THIS IS FOR EXAMPLE ONLY TO CHECK IF SWEETALERT2 IS APPLIED
-                $('#dynamicTable tbody').append(`
+                $('#reqEquipTable tbody').append(`
                     <tr>
                         <td class="py-6 px-3 border-b border-gray-300"></td>
-                        <td class="py-6 px-3 border-b border-gray-300">${name}</td>
-                        <td class="py-6 px-3 border-b border-gray-300">${department}</td>
-                        <td class="py-6 px-3 border-b border-gray-300">${date}</td>
+                        <td class="py-6 px-3 border-b border-gray-300"></td>
+                        <td class="py-6 px-3 border-b border-gray-300"></td>
+                        <td class="py-6 px-3 border-b border-gray-300"></td>
                         <td class="py-6 px-3 border-b border-gray-300">
-                            <button id="ViewEquipBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                            <button id="ApprEquipBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
-                            <button id="DclnEquipBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
+                            <button id="ViewEquipBtn" type="button">
+                                <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </button>
+                            <button id="ApprEquipBtn" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000FF">
+                                    <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
+                                </svg>
+                            </button>
+                            <button id="DclnEquipBtn" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#D1191A"><path d="M200-440v-80h560v80H200Z"/>
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                 `);
@@ -82,16 +94,16 @@ $(document).ready(function () {
 // ======================== FOR APPROVAL MODULE ============================= //
 // VIEW BUTTON CARD FORM      // THIS IS VIEW BUTTON IS APPLICABLE TO FOR APPROVAL, RELEASE, COMPLETED REQUEST
 $(document).ready(function () {
-    $('#ViewEquipBtn').click(function (){
+    $('#ViewEquipBtn').click(function () {
         console.log('View Equipment Button is Clicked.');
         $('#ViewEquipPopupCard').removeClass('hidden');
     });
 });
 
 $(document).ready(function () {
-    $('#closeViewEquipPopupCard').click(function (){
+    $('#closeViewEquipPopupCard').click(function () {
         console.log('Close "X" Equipment Button is Clicked.');
-    $('#ViewEquipPopupCard').addClass('hidden');
+        $('#ViewEquipPopupCard').addClass('hidden');
     });
 });
 
@@ -109,6 +121,7 @@ $(document).ready(function () {
             title: 'Cancelled',
             text: 'Your action has been cancelled',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#D1191A'
         }).then(() => {
             $("#ApprEquipPopupCard").addClass("hidden");
         });
@@ -121,6 +134,7 @@ $(document).ready(function () {
             title: 'Submitted',
             text: 'Your action has been successfully submitted',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
         }).then(() => {
             $("#ApprEquipPopupCard").addClass("hidden");
         });
@@ -142,6 +156,7 @@ $(document).ready(function () {
             title: 'Cancelled',
             text: 'Decline process has been cancelled',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
         }).then(() => {
             $("#DclnEquipPopupCard").addClass("hidden");
         });
@@ -154,6 +169,7 @@ $(document).ready(function () {
             title: 'Submitted',
             text: 'Your reason has been submitted',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
         }).then(() => {
             $("#DclnEquipPopupCard").addClass("hidden");
         });
@@ -194,6 +210,7 @@ $(document).ready(function () {
             title: 'Submitted',
             text: 'The release process has been successfully submitted',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
         }).then(() => {
             $("#RelEquipPopupCard").addClass("hidden");
         });
@@ -227,6 +244,7 @@ $(document).ready(function () {
             title: 'Submitted',
             text: 'Revoke Successfully',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
         }).then(() => {
             $("#RevEquipPopupCard").addClass("hidden");
         });
@@ -239,15 +257,26 @@ $(document).ready(function () {
 
 
 // ======================== DATATABLES ============================= //
-$(document).ready(function() {
-    var table = $('#reqEquipTable').DataTable({
-    });
+// MAIN TABLE DATATABLES
+document.addEventListener("DOMContentLoaded", function () {
+    // Check if the table exists and simple-datatables is loaded
+    if (document.getElementById("reqEquipTable") && typeof simpleDatatables !== 'undefined') {
+        const dataTable = new simpleDatatables.DataTable("#reqEquipTable", {
+            searchable: false,
+            perPageSelect: [5, 10, 20, 50],
+            perPage: 5,
+            firstLast: true,
+            nextPrev: true,
+            sortable: true,
 
-    $('.dt-search').hide();
+            labels: {
+                info: "Showing <strong>{start}</strong> - <strong>{end}</strong> of <strong>{rows}</strong>",
+            }
+        });
 
-    // Custom search function
-    $('#equipmentSearch').on('keyup', function() {
-        console.log('Search input:', this.value); 
-        table.search(this.value).draw(); 
-    });
+        // document.getElementById("equipmentSearch").addEventListener("keyup", function() {
+        //     let searchTerm = this.value;
+        //     dataTable.search(searchTerm);
+        // });
+    }
 });

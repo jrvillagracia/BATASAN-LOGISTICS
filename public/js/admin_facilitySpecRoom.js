@@ -103,16 +103,26 @@ $(document).ready(function () {
     });
 });
 
+// MAIN TABLE DATATABLES
+document.addEventListener("DOMContentLoaded", function() {
+    // Check if the table exists and simple-datatables is loaded
+    if (document.getElementById("SpecFacTable") && typeof simpleDatatables !== 'undefined') {
+        const dataTable = new simpleDatatables.DataTable("#SpecFacTable", {
+            searchable: false,
+            perPageSelect: [5, 10, 20, 50],
+            perPage: 5,
+            firstLast: true,
+            nextPrev: true,
+            sortable: true,
 
-$(document).ready(function() {
-    var table = $('#SpecFacTable').DataTable({
-    });
+            labels:{
+                info: "Showing <strong>{start}</strong> - <strong>{end}</strong> of <strong>{rows}</strong>",
+            }
+        });
 
-    $('.dt-search').hide();
-
-    // Custom search function
-    $('#SpecSearch').on('keyup', function() {
-        console.log('Search input:', this.value); 
-        table.search(this.value).draw(); 
-    });
+        document.getElementById("SpecSearch").addEventListener("keyup", function() {
+            let searchTerm = this.value;
+            dataTable.search(searchTerm);
+        });
+    }
 });

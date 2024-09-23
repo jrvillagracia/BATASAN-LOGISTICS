@@ -1,14 +1,21 @@
-#RegFormCard {
+#EventFormCard {
     z-index: 50; /* Increase the z-index  */
 }
 
 
-#RegFacTable thead {
+#EventApproveTable thead {
     background-color: #163172; /* Your custom background color */
     color: white; /* Your custom text color */
 }
 
-#RegFacTable thead {
+
+#EventApproveReqTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+
+#EventHistoryTable thead {
     background-color: #163172; /* Your custom background color */
     color: white; /* Your custom text color */
 }

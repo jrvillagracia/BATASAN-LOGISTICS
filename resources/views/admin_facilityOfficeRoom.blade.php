@@ -4,24 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request | BHNHS</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Facility Regular Room | BHNHS</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/admin_facilityOfficeRoom.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
-    <script src="{{asset('js/admin_requestSupplies.js')}}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
 
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
-    <link rel="stylesheet" href="{{asset('css/admin_requestSupplies.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_facilityOfficeRoom.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css"> -->
 
@@ -125,6 +125,7 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('admin_equipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
+
                                 </li>
                             </ul>
                         </li>
@@ -200,7 +201,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
-                    <h1 class="text-3xl font-bold ml-2">Inventory Request Supplies</h1>
+                    <h1 class="text-3xl font-bold ml-2">Office Facility Room</h1>
                 </div>
 
                 <!-- Breadcrumb -->
@@ -208,7 +209,7 @@
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center">
                             <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                                Request
+                                Facility
                             </a>
                         </li>
                         <li>
@@ -216,7 +217,7 @@
                                 <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                                 </svg>
-                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">For Release</a>
+                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Offices</a>
                             </div>
                         </li>
                         <!-- Add additional breadcrumbs here -->
@@ -232,182 +233,146 @@
                     <div class="flex justify-between items-center mt-4 px-9 py-2">
                         <!-- Left-Aligned Buttons -->
                         <div id="tabs-container" class="relative">
-                            <a href="{{route('admin_approvalSupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
-                            <a href="{{route('admin_releaseSupplies')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">For Release</a>
-                            <a href="{{route('admin_com_rqstSupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                            <a href="#" class="button border-b-2 border-blue-500  py-2 px-4 transition-all duration-300 translate-x-2">Office Facility</a>
                         </div>
 
-
                         <div class=" flex items-center space-x-4">
+
+
+                            <!-- Search Bar -->
+                            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only dark:text-white">Search</label>
+                            <div class="relative w-96">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                    </svg>
+                                </div>
+                                <input type="search" id="OfficeSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
+                                <button type="submit" class="text-white absolute right-2.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                            </div>
+
                             <!-- Add Item Button -->
-                            <button id="ReqSupFormBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">&plus; Add Request</button>
+                            <button id="OfficeRoomFormBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">&plus; Add Facility</button>
+
                         </div>
                     </div>
 
                     <!-- Floating Card with Form (Initially Hidden) -->
-                    <div id="ReqSupFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                    <div id="OfficeFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
 
                             <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-xl font-bold mb-4">Add Request Supplies</h2>
-                                <button id="ReqSupCloseFormBtn" class="text-gray-500 hover:text-gray-700">
+                                <h2 class="text-xl font-bold mb-4">Add Regular Room</h2>
+                                <button id="OfficeCloseFormBtn" class="text-gray-500 hover:text-gray-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
 
-                            <form id="ReqSupForm">
+                            <form id="OfficeForm" action="" method="POST">
+                                <!-- Input Fields -->
                                 <div class="mb-4">
-                                    <label for="name" class="block text-sm font-semibold mb-2">Name:</label>
-                                    <input type="text" id="name" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Name">
+                                    <label for="name" class="block text-sm font-semibold mb-2">Building Name</label>
+                                    <input type="text" id="OfficeBldName" name="buildingName" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Building Name">
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="department" class="block text-sm font-semibold mb-2">Department:</label>
-                                    <select id="SuppliesDepartment" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                        <option value="">Select Department</option>
-                                        <option value="hr">HR</option>
-                                        <option value="it">IT</option>
-                                        <option value="sales">Sales</option>
+                                    <label for="room" class="block text-sm font-semibold mb-2">Room</label>
+                                    <input type="text" id="OfficeRoom" name="room" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Room">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="shift" class="block text-sm font-semibold mb-2">Shift</label>
+                                    <select id="facilityShiftOffice" name="shift" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="">Select Shift</option>
+                                        <option value="morning">Morning</option>
+                                        <option value="night">Night</option>
                                     </select>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="ReqSupDate" class="block text-sm font-semibold mb-2">Date:</label>
-                                    <input type="text" id="ReqSupDate" name="ReqSupDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
+                                    <label for="status" class="block text-sm font-semibold mb-2">Status</label>
+                                    <select id="facilityStatusOffice" name="status" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="">Select Status</option>
+                                        <option value="Available">Available</option>
+                                        <option value="Not Available">Not Available</option>
+                                    </select>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="ReqSupReason" class="block text-sm font-semibold mb-2">Reason:</label>
-                                    <input type="text" id="ReqSupReason" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Reason">
+                                    <label for="RegCapacity" class="block text-sm font-semibold mb-2">Capacity</label>
+                                    <input type="number" id="OfficeCapacity" name="capacity" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Capacity">
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="ReqSupRemarks" class="block text-sm font-semibold mb-2">Remarks:</label>
-                                    <textarea id="ReqSupRemarks" class="w-full px-2 py-1 border border-gray-400 rounded h-20" placeholder="Enter your Remarks here"></textarea>
+                                    <label for="status" class="block text-sm font-semibold mb-2">Room Type</label>
+                                    <select id="facilityRoomType" name="facilityRoomType" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="">Select Room Type</option>
+                                        <option value="Regular">Regular</option>
+                                        <option value="Special">Special</option>
+                                    </select>
                                 </div>
 
                                 <div class="flex justify-end space-x-2">
-                                    <button id="ReqSupCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
-                                    <button id="ReqSupSubmitFormBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                                    <button id="OfficeCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                                    <button id="OfficeSubFormBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
                                 </div>
                             </form>
                         </div>
                     </div>
 
+
                     <!-- Table -->
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <table id="reqSuppTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <table id="OfficeFacTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
                                 <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Building Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Room
+                                    </th>
                                     <th scope="col" class="px-6 py-3">
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Name
+                                        Capacity
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Department
-                                    </th>
-                                    <th scope="col" class="px-6 py-30">
-                                        Date
+                                        Shift Type
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Actions
+                                        Assigned
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="tableBody" class="">
-
+                            <tbody id="tableBody">
                                 <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Waiting for Pickup</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">VicThor</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Faculty Teacher</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">2024-08-23</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">TEST</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
                                     <td class="px-6 py-4">
-                                        <button id="ViewSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                                        <button id="RelSupBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Release</button>
-                                        <button id="RevSupBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Revoke</button>
+                                        <button id="editOFFICEButton" type="button">
+                                            <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
+                                                <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
                                     </td>
                                 </tr>
-
                                 <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
 
-                        <!-- View Popup Card -->
-                        <div id="ViewSupPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                            <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h2 class="text-lg font-semibold">View Request</h2>
-                                    <button id="closeViewSupPopupCard" class="text-gray-500 hover:text-gray-700">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <div class="text-sm">
-                                    <p class="mb-2"><strong>Name:</strong> Rey</p>
-                                    <p class="mb-2"><strong>Position:</strong> Faculty Teacher</p>
-                                    <p class="mb-2"><strong>Date:</strong> 2024-08/23</p>
-                                    <p class="mb-2"><strong>Product Name:</strong> Chalk Box</p>
-                                    <p class="mb-2"><strong>Category:</strong> Classroom Supply</p>
-                                    <p class="mb-2"><strong>Quantity:</strong> 1</p>
-                                    <p class="mb-2"><strong>Reason:</strong> For Teaching Use</p>
-                                    <div class="mb-4">
-                                        <label for="Remarks" class="block text-sm font-semibold mb-2">Remarks:</label>
-                                        <textarea id="Remarks" class="w-full px-2 py-1 border border-gray-400 rounded h-20">For teaching .. etc</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Release Popup Card -->
-                        <div id="RelSupPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                            <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-                                <!-- Product Details -->
-                                <p class="mb-2 text-center">Product name: Chalk Box</p>
-                                <p class="mb-2 text-center">Quantity Release: 10</p>
-                                <p class="mb-4 text-center">Updated Stock(s): 10</p>
-
-                                <div class="flex justify-center space-x-4">
-                                    <button id="submitRelSupPopupCard" class="bg-green-400 hover:bg-green-500 text-white  py-2 px-4 rounded">Submit</button>
-                                    <button id="closeRelSupPopupCard" class="bg-red-400 hover:bg-red-500 text-white  py-2 px-4 rounded">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Revoke Popup Card -->
-                        <div id="RevSupPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                            <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-
-                                <!-- Reason Dropdown -->
-                                <label for="reason" class="block mb-2">Reason</label>
-                                <select id="reason" class="mb-4 w-full p-2 rounded border border-gray-400">
-                                    <option value="no-supply">No Supply</option>
-                                    <option value="wrong-order">Wrong Order</option>
-                                    <option value="damaged">Damaged Product</option>
-                                </select>
-
-                                <!-- Remarks Textarea -->
-                                <label for="remarks" class="block mb-2">Remarks</label>
-                                <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
-
-                                <div class="flex justify-center space-x-4">
-                                    <button id="submitRevSupPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                                    <button id="closeRevSupPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-                        <!-- Pagination -->
+                        <!-- Edit Popup Card -->
                     </div>
                 </div>
 
