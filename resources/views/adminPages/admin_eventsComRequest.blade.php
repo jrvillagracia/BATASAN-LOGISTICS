@@ -25,7 +25,7 @@
                     <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                     </svg>
-                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Approve Request</a>
+                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Completed Request</a>
                 </div>
             </li>
             <!-- Add additional breadcrumbs here -->
@@ -42,8 +42,8 @@
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
                 <a href="{{route('admin_eventsForApproval')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
-                <a href="{{route('admin_eventsAprRequest')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
-                <a href="{{route('admin_eventsComRequest')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_eventsAprRequest')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
+                <a href="{{route('admin_eventsComRequest')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
                 <a href="{{route('admin_eventsHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
             </div>
 
@@ -58,7 +58,7 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="eventApprReqSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                        <input type="search" id="eventComRequestSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
                         <button type="submit" class="text-white absolute right-2.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                     </div>
 
@@ -73,7 +73,7 @@
 
         <!-- Table -->
         <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-            <table id="EventApproveReqTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table id="EventComRequestTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-sm text-white dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -108,10 +108,7 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Grade 9 TLE Faculty</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">TLE Event</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button id="EventApprReqViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                            <button id="EventApprReqSetItemBTN" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Set Item</button>
-                            <button id="EventApprReqCompletedBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Completed</button>
-                            <button id="EventApprReqCancelBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
+                            <button id="EventComRequestViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                         </td>
                     </tr>
 
@@ -120,40 +117,10 @@
             </table>
 
             <!-- View Popup Card -->
-            <div id="ViewEventApprReqPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Event and Activity Request Slip</h2>
-                    </div>
-
-                    <div class="text-sm">
-                        <p class="mb-2"><strong>Date:</strong> 25th Sept 2024</p>
-                        <p class="mb-2"><strong>Time:</strong> 10:00 AM</p>
-                        <p class="mb-2"><strong>Requesting Office/Unit:</strong> Marketing Department</p>
-                        <p class="mb-2"><strong>Event Name:</strong> Product Launch</p>
-                        <p class="mb-2"><strong>Event Date:</strong> 26th Sept 2024</p>
-                        <p class="mb-2"><strong>Event Time:</strong> 11:00 AM</p>
-                        <p class="mb-2"><strong>Event Location:</strong> Conference Hall</p>
-                        <br>
-                        <hr>
-                        <br>
-                        <p class="mb-2"><strong>Required Equipment and Supplies</strong></p>
-                        <p class="mb-2"><strong>Product Name:</strong> Projector</p>
-                        <p class="mb-2"><strong>Quantity:</strong> 1</p>
-                    </div>
-
-                    <div class="flex justify-end space-x-4">
-                        <button id="printViewEventApprReqPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Print</button>
-                        <button id="closeViewEventApprReqPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Close</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Set Item Popup Card -->
-            <div id="SetItemEventApprReqPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div id="EventViewComRequestPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-8xl h-auto overflow-auto">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Set Item</h2>
+                        <h2 class="text-lg font-semibold">View Completed Request</h2>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 text-sm w-full">
@@ -178,75 +145,10 @@
                     </div>
 
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <table id="SetItemTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <table id="ViewCompletedReqTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Product Name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Brand Name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Type
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Quantity
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        SKU
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Add
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableViewBody">
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <button id="addEquipBTN" type="button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-                                                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <!-- Dynamic rows will be inserted here -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="flex justify-end space-x-4 mt-10">
-                        <button id="submitSetItemEventApprReqPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeSetItemEventApprReqPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <!-- Completed Popup Card -->
-            <div id="CompletedEventApprReqPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-8xl h-auto overflow-auto">
-                    <div class="flex justify-center items-center">
-                        <h2 class="text-lg text-center font-semibold px-7">Complete</h2>
-                    </div>
-
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-lg text-center font-semibold px-7">Item Checklist</h2>
-                    </div>
-
-                    <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <table id="CompletedTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-sm text-white dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-6 py-3">
                                         Product Name
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -283,34 +185,25 @@
                                         <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     </td>
                                 </tr>
+
                                 <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
                     </div>
 
                     <div class="flex justify-end space-x-4 mt-10">
-                        <button id="submitCompletedEventApprReqPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeCompletedEventApprReqPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitViewEventComRequestPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="closeViewEventComRequestPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
-
                 </div>
             </div>
+
+
+            <!-- Completed Popup Card -->
+
 
             <!-- Cancel Popup Card -->
-            <div id="CancelEventPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
-                    <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to Cancel this request?</h2>
-                    <!-- Remarks Textarea -->
-                    <label for="remarks" class="block mb-2">Remarks</label>
-                    <textarea id="CancelEventRemarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..." style="resize: none; overflow-y: auto;"></textarea>
-
-                    <div class="flex justify-center space-x-4">
-                        <button id="submitCancelEventPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeCancelEventPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
-                    </div>
-                </div>
-            </div>
 
 
             <!-- Pagination -->

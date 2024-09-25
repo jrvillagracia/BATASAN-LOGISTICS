@@ -166,6 +166,10 @@ Route::get('/admin_eventsAprRequest', function () {
     return view('adminPages.admin_eventsAprRequest');
 })->name('admin_eventsAprRequest');
 
+// EVENT AND ACTIVITIES FOR COMPLETED REQUEST
+Route::get('/admin_eventsComRequest', function () {
+    return view('adminPages.admin_eventsComRequest');
+})->name('admin_eventsComRequest');
 
 // EVENT AND ACTIVITIES FOR HISTORY
 Route::get('/admin_eventsHistory', function () {

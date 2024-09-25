@@ -3,19 +3,49 @@
 }
 
 
+
+/* For Approval Module */
 #EventApproveTable thead {
-    background-color: #163172; /* Your custom background color */
-    color: white; /* Your custom text color */
+    background-color: #163172; 
+    color: white; 
 }
 
 
+
+/* For Approve Request Module */
 #EventApproveReqTable thead {
-    background-color: #163172; /* Your custom background color */
-    color: white; /* Your custom text color */
+    background-color: #163172; 
+    color: white; 
+}
+
+/* For Approve Request: Set Item Button */
+#SetItemTable thead {
+    background-color: #163172; 
+    color: white; 
 }
 
 
+/* For Approve Request: Completed Button */
+#CompletedTable thead {
+    background-color: #163172; 
+    color: white; 
+}
+
+
+/* For Completed Request  MAIN TABLE */
+#EventComRequestTable thead {
+    background-color: #163172; 
+    color: white;
+}
+
+/* For Completed Request VIEW TABLE */
+#ViewCompletedReqTable thead {
+    background-color: #163172; 
+    color: white; 
+}
+
+/* For History Module */
 #EventHistoryTable thead {
-    background-color: #163172; /* Your custom background color */
-    color: white; /* Your custom text color */
+    background-color: #163172; 
+    color: white;
 }

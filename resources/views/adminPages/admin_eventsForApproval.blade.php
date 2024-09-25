@@ -43,7 +43,7 @@
             <div id="tabs-container" class="relative">
                 <a href="{{route('admin_eventsForApproval')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
                 <a href="{{route('admin_eventsAprRequest')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
-                <a href="#" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_eventsComRequest')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
                 <a href="{{route('admin_eventsHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
             </div>
 
