@@ -12,12 +12,19 @@ $(document).ready(function() {
         console.log('Close Form Button Clicked');
         $('#SuppliesFormCard').addClass('hidden'); // Hide the form card
     });
+
+    $(window).on('click', function(e) {
+        if ($(e.target).is('#SuppliesFormCard')) {
+            $('#SuppliesFormCard').addClass('hidden');
+        }
+    });
 });
 
 
 // Function to add a new Supplies
 $(document).ready(function() {
-    $('#SuppliesSaveButton').on('click', function () {
+    $('#SuppliesSaveButton').on('click', function (e) {
+        e.preventDefault();
         console.log('Save Button Clicked');
 
         const controlNo = $('#SuppliesControlNo').val().trim();
@@ -75,7 +82,7 @@ $(document).ready(function() {
                 }).then(() => {
 
                     $('#tableBody').append(`
-                        <tr class="cursor-pointer table-row " data-id="${response.suppliesId}">
+                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="${response.suppliesId}">
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${brandName}</td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${name}</td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${category}</td>
@@ -112,14 +119,18 @@ $(document).ready(function() {
         });
     });
 
-    $(window).on('click', function(e) {
-        if ($(e.target).is('#SuppliesFormCard')) {
-            $('#SuppliesFormCard').addClass('hidden');
-        }
+    $(document).ready(function() {
+        $('#SuppliesCategory').change(function() {
+            if ($(this).val() === 'other') {
+                $('#otherSuppCategoryDiv').removeClass('hidden');
+            } else {
+                $('#otherSuppCategoryDiv').addClass('hidden');
+            }
+        });
     });
 });
 
-// SUPPLIES EDIT FUNCTION 
+// SUPPLIES EDIT MAIN TABLE FUNCTION 
 $(document).ready(function() {
     var csrfToken = $('meta[name="csrf-token"]').attr('content') || $('#csrf-token').data('token');
     console.log('CSRF Token:', csrfToken);
@@ -130,62 +141,61 @@ $(document).ready(function() {
         }
     });
 
-    // Function to open the edit modal and populate the form with row data
-    function openEditSuppModal(row) {
-        var suppId = row.data('id');
-        console.log('Edit button clicked for supplies ID:', suppId);
+    // Event delegation for the edit button click
+    $(document).on('click', '#editSuppButton', function(event) {
+        event.preventDefault();
+        console.log('Show Edit Supply Form Button Clicked');
 
+        // Get the clicked row
+        var row = $(this).closest('tr');
+        var suppliesBrand = row.data('brand'); // Retrieve the supplies brand from the row's data-brand attribute
+        console.log('Edit button clicked for supplies Brand:', suppliesBrand);
+
+        // Show the edit modal
         $('#editSuppModal').removeClass('hidden');
+
+        // Populate the edit modal fields with data from the row
         $('#editForm').find('#SuppliesBrandNameEdit').val(row.find('td').eq(0).text().trim());
         $('#editForm').find('#SuppliesNameEdit').val(row.find('td').eq(1).text().trim());
-        $('#editForm').find('#SuppliesCategoryEdit').val(row.find('td').eq(3).text().trim());
-        $('#editForm').find('#SuppliesSKUEdit').val(row.find('td').eq(6).text().trim());
-
-        // Set the hidden input field with the supplies ID
-        $('#editForm').find('input[name="id"]').val(suppId);
-    }
-
-    function updateTableRow(SuppId) {
-        var row = $('#tableBody').find(`tr[data-id="${SuppId}"]`);
-        console.log('Updating row:', row);
-
-        row.find('td').eq(0).text($('#SuppliesNameEdit').val());
-        row.find('td').eq(1).text($('#SuppliesCategoryEdit').val());
-        row.find('td').eq(3).text($('#SuppliesBrandNameEdit').val());
-        row.find('td').eq(6).text($('#SuppliesSKUEdit').val());
-    }
+        $('#editForm').find('#SuppliesCategoryEdit').val(row.find('td').eq(2).text().trim());
+        $('#editForm').find('#SuppliesSKUEdit').val(row.find('td').eq(5).text().trim());
+        // Set the hidden input field with the supplies brand
+        $('#editForm').find('input[name="brand"]').val(suppliesBrand);
+    });
 
     // Handle saving the changes
     $('#saveSuppButton').on('click', function(e) {
         e.preventDefault();
-
+    
         Swal.fire({
             title: "Are you sure all input data are correct?",
             showDenyButton: true,
             confirmButtonText: "Yes",
-            denyButtonText: "No"
+            denyButtonText: "No",
+            confirmButtonColor: '#3085d6',
+            denyButtonColor: '#d33'
         }).then((result) => {
             if (result.isConfirmed) {
                 var formData = $('#editForm').serialize();
                 console.log('Form data:', formData);
-
+    
+                // Ensure brand is being set correctly
+                var suppliesBrand = $('#editForm').find('input[name="brand"]').val(); 
+                console.log('Supplies Brand to be sent:', suppliesBrand); 
+                
                 $.ajax({
-                    url: $('#editForm').attr('action'),
+                    url: '/supplies/update-main', 
                     method: 'POST',
                     data: formData,
                     success: function() {
                         Swal.fire("Saved!", "", "success").then(() => {
-                            var suppId = $('#editForm').find('input[name="id"]').val();
-                            updateTableRow(suppId); // Call the function to update the table row
+                            updateTableRow(suppliesBrand); // Update the table row with new data
                             $('#editSuppModal').addClass('hidden');
                         });
                     },
                     error: function(xhr, status, error) {
                         var errorMessage = xhr.responseJSON.message || error;
                         console.log('Error:', errorMessage);
-                        console.log("Error Status: ", xhr.status);
-                        console.log("Error Response: ", xhr.responseText);
-                        console.log("Error Details: ", error);
                         Swal.fire("Error!", "Failed to update supplies: " + errorMessage, "error");
                     }
                 });
@@ -195,32 +205,37 @@ $(document).ready(function() {
         });
     });
 
-    // Handle clicking the edit button for supplies
-    $('#dynamicTable tbody').on('click', '#editSuppButton', function(e) {
-        e.preventDefault();
-        var row = $(this).closest('tr');
-        openEditSuppModal(row);
-    });
+    // Function to update the table row with new data based on brand
+    function updateTableRow(suppliesBrand) {
+        var row = $('#tableBody').find(`tr[data-brand="${suppliesBrand}"]`); 
+        console.log('Updating row:', row);
+
+        if (row.length > 0) { 
+            row.find('td').eq(0).text($('#SuppliesBrandNameEdit').val().trim()); 
+            row.find('td').eq(1).text($('#SuppliesNameEdit').val().trim());
+            row.find('td').eq(2).text($('#SuppliesCategoryEdit').val().trim()); 
+            row.find('td').eq(3).text($('#SuppliesSKUEdit').val().trim());
+            console.log('Row updated successfully');
+        } else {
+            console.log('Row not found for brand:', suppliesBrand);
+        }
+    }
 
     // Handle closing the edit modal
     $('#closeSuppFormButton').on('click', function() {
         $('#editSuppModal').addClass('hidden');
     });
 
+    // Close modal when clicking outside of it
     $(window).on('click', function(e) {
         if ($(e.target).is('#editSuppModal')) {
             $('#editSuppModal').addClass('hidden');
         }
     });
-});
 
-
-$(document).ready(function() {
-    $('#SuppliesCategory').change(function() {
-        if ($(this).val() === 'other') {
-            $('#otherSuppCategoryDiv').removeClass('hidden');
-        } else {
-            $('#otherSuppCategoryDiv').addClass('hidden');
+    $(window).on('click', function(e) {
+        if ($(e.target).is('#ViewSuppModal')) {
+            $('#ViewSuppModal').addClass('hidden');
         }
     });
 });
@@ -228,10 +243,13 @@ $(document).ready(function() {
 
 
 // SUPPLIES DELETE FUNCTION 
-$(document).ready(function(){
+$(document).ready(function() {
     $('#deleteSuppButton').click(function() {
-        var suppliesId = $('#suppliesId').val();
-        var csrfToken = $('#csrf-token').data('token'); 
+        var suppliesBrand = $(this).data('brand');
+        var csrfToken = $('#csrf-token').data('token');
+
+        // Check if suppliesBrand is retrieved correctly
+        console.log('Supplies Brand to delete:', suppliesBrand);
 
         Swal.fire({
             title: "Are you sure?",
@@ -249,11 +267,10 @@ $(document).ready(function(){
                     url: '/supplies/delete',  
                     type: 'POST',
                     data: {
-                        id: suppliesId,
+                        brand: suppliesBrand, // Use the brand name for deletion
                         _token: csrfToken  
                     },
                     success: function(response) {
-
                         Swal.fire({
                             title: "Deleted!",
                             text: "The supplies item has been deleted.",
@@ -265,7 +282,7 @@ $(document).ready(function(){
                         $('#editSuppModal').addClass('hidden');
 
                         // Optionally, remove the item from the UI
-                        $('tr[data-id="'+suppliesId+'"]').remove();
+                        $('tr[data-brand="'+suppliesBrand+'"]').remove(); // Ensure rows are matched by brand
                     },
                     error: function(xhr) {
                         // Show error message
@@ -281,6 +298,7 @@ $(document).ready(function(){
         });
     });
 });
+
 
 
 // MAIN TABLE DATATABLES
@@ -335,40 +353,157 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // VIEWING CARD
 $(document).ready(function() {
-    $('#viewSuppButton').click(function() {
-        event.preventDefault();
-        console.log('Show View Supplies Form Button Clicked');
-        $('#ViewSuppModal').removeClass('hidden'); 
+    // Bind click event for the view button
+    $(document).on('click', '#viewSuppButton', function() {
+        // Use closest 'tr' to find the correct row and get data attributes
+        const row = $(this).closest('tr');
+        var brandName = row.attr('data-brand');
+        const suppliesId = row.attr('data-id');
+
+        console.log('Brand Name:', brandName);
+        console.log('Supplies ID:', suppliesId); 
+        console.log(row);
+
+        // Show the modal for viewing/editing details
+        $('#ViewSuppModal').removeClass('hidden');
+        $('#ViewDynamicTable tbody').empty();
+
+        // AJAX call to fetch supplies details by brand name
+        $.ajax({
+            url: '/supplies/details', // Update URL if necessary
+            type: 'GET',
+            data: { SuppliesBrandName: brandName }, 
+            success: function(response) {
+                console.log('Response:', response);
+
+                // Check if the response contains supplies details
+                if (response.suppliesDetails && response.suppliesDetails.length > 0) {
+                    response.suppliesDetails.forEach(supplies => {
+                        const newRow = `
+                            <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="${supplies.id}" data-brand="${supplies.SuppliesBrandName}">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${supplies.SuppliesSerialNo}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${supplies.SuppliesControlNo}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${supplies.SuppliesBrandName}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${supplies.SuppliesName}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${supplies.SuppliesUnit}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱${Number(supplies.SuppliesUnitPrice).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${supplies.SuppliesClassification}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${supplies.SuppliesDate}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <button class="viewSuppBTN" type="button">
+                                        <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </button>
+                                    <button class="editSuppBTN" data-form-type="second" type="button">
+                                        <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
+                                            <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                    <button class="addSuppBTN" type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                                            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+
+                        // Append the new row to the table
+                        $('#ViewDynamicTable tbody').append(newRow);
+                    });
+                } else {
+                    alert('No supplies details found.');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX Error:', textStatus, errorThrown);
+                console.error('Response Text:', jqXHR.responseText);
+                alert('Failed to load supplies details: ' + (jqXHR.status ? jqXHR.statusText : 'Unknown error'));
+            }
+        });
     });
 
+    // Close modal when close button is clicked
+    $(document).on('click', '#closeViewSuppFormButton', function() {
+        $('#ViewSuppModal').addClass('hidden');
+    });
 
-    // Hide the form card when the close button is clicked
-    $('#closeViewSuppFormButton').click(function() {
-        event.preventDefault();
-        console.log('Close View Form Button Clicked');
-        $('#ViewSuppModal').addClass('hidden'); 
+    $(window).on('click', function(e) {
+        if ($(e.target).is('#ViewSupppModal')) {
+            $('#ViewSupppModal').addClass('hidden');
+        }
     });
 });
+
+
 
 // VIEWING FULL INFORMATION SMALL CARD
 $(document).ready(function() {
-    $('#viewSuppBTN').click(function() {
-        event.preventDefault();
+    // Bind click event for the view button
+    $(document).on('click', '.viewSuppBTN', function(event) {
+        event.preventDefault(); // Prevent default action
         console.log('Show View Supp Form Button Clicked');
-        $('#ViewFullSuppModal').removeClass('hidden'); 
+
+        // Get the closest row to find the Supplies ID
+        var row = $(this).closest('tr');
+        var suppliesId = row.data('id'); 
+
+        if (suppliesId) {
+            console.log('Final Viewing button clicked for supplies ID:', suppliesId);
+
+            // Make an AJAX call to fetch the details
+            $.ajax({
+                url: '/supplies/final-viewing', 
+                type: 'GET',
+                data: { id: suppliesId },
+                success: function(response) {
+                    // Populate the modal with the supplies details
+                    let suppliesDetails = `
+                        <p><strong>Serial Number:</strong> ${response.SuppliesSerialNo}</p>
+                        <p><strong>Control Number:</strong> ${response.SuppliesControlNo}</p>
+                        <p><strong>Brand Name:</strong> ${response.SuppliesBrandName}</p>
+                        <p><strong>Product Name:</strong> ${response.SuppliesName}</p>
+                        <p><strong>Category:</strong> ${response.SuppliesCategory}</p>
+                        <p><strong>Type:</strong> ${response.SuppliesType}</p>
+                        <p><strong>Color:</strong> ${response.SuppliesColor}</p>
+                        <p><strong>Unit:</strong> ${response.SuppliesUnit}</p>
+                        <p><strong>Unit Price:</strong> ₱${Number(response.SuppliesUnitPrice).toFixed(2)}</p>
+                        <p><strong>Classification:</strong> ${response.SuppliesClassification}</p>
+                        <p><strong>Date:</strong> ${response.SuppliesDate}</p>
+                    `;
+                    $('#equipmentDetails').html(suppliesDetails); 
+                    $('#ViewFullSuppModal').removeClass('hidden');
+                },
+                error: function(xhr) {
+                    console.error('Error fetching supplies details:', xhr.responseJSON);
+                }
+            });
+        } else {
+            console.log('No supplies ID found.');
+        }
     });
 
-
-    // Hide the form card when the close button is clicked
-    $('#closeViewFullSuppModal').click(function() {
-        event.preventDefault();
+    // Hide the modal when the close button is clicked
+    $('#closeViewFullSuppModal').click(function(event) {
+        event.preventDefault(); // Prevent default action
         console.log('Close View Form Button Clicked');
         $('#ViewFullSuppModal').addClass('hidden'); 
+    });
+
+    // Hide modal on click outside
+    $(window).on('click', function(e) {
+        if ($(e.target).is('#ViewFullSuppModal')) {
+            $('#ViewFullSuppModal').addClass('hidden');
+        }
     });
 });
 
 
-// EDIT FULL INFORMATION SMALL CARD
+
+// EDIT FUNCTION FOR VIEW TABLE
 $(document).ready(function() {
     var csrfToken = $('meta[name="csrf-token"]').attr('content') || $('#csrf-token').data('token');
     console.log('CSRF Token:', csrfToken);
@@ -379,12 +514,18 @@ $(document).ready(function() {
         }
     });
 
-    // Function to open the edit modal and populate the form with row data
-    function openEditModal(row) {
-        var SuppId = row.data('id');
-        console.log('Edit button clicked for supplies ID:', SuppId);
+    $(document).on('click', '.editSuppBTN', function(event) {
+        event.preventDefault();
+        console.log('Edit Supplies Button Clicked');
 
+        var row = $(this).closest('tr');
+        var suppliesId = row.data('id'); // Ensure this is set in the HTML
+        console.log('Editing supplies with ID:', suppliesId);
+
+        // Show the edit modal
         $('#editFullSuppModal').removeClass('hidden');
+
+        // Populate the edit modal fields with data from the row
         $('#editFullSuppForm').find('#FullSuppliesSerialNoEdit').val(row.find('td').eq(0).text().trim());
         $('#editFullSuppForm').find('#FullSuppliesControlNoEdit').val(row.find('td').eq(1).text().trim());
         $('#editFullSuppForm').find('#FullSuppliesTypeEdit').val(row.find('td').eq(2).text().trim());
@@ -394,29 +535,14 @@ $(document).ready(function() {
         $('#editFullSuppForm').find('#FullSuppliesClassificationEdit').val(row.find('td').eq(6).text().trim());
         $('#editFullSuppForm').find('#FullSuppliesDateEdit').val(row.find('td').eq(7).text().trim());
 
-        // Set the hidden input field with the Supplies ID
-        $('#editFullSuppForm').find('input[name="id"]').val(SuppId);
-    }
-
-    // Function to update the table row with new data
-    function updateTableRow(SuppId) {
-        var row = $('#tableViewBody').find(`tr[data-id="${SuppId}"]`);
-        console.log('Updating row:', row);
-
-        row.find('td').eq(0).text($('#SuppliesSerialNoEdit').val());
-        row.find('td').eq(1).text($('#SuppliesControlNoEdit').val());
-        row.find('td').eq(0).text($('#SuppliesTypeEdit').val());
-        row.find('td').eq(0).text($('#SuppliesColorEdit').val());
-        row.find('td').eq(0).text($('#SuppliesUnitEdit').val());
-        row.find('td').eq(0).text($('#SuppliesUnitPriceEdit').val());
-        row.find('td').eq(0).text($('#SuppliesClassificationEdit').val());
-        row.find('td').eq(0).text($('#SuppliesDateEdit').val());
-    }
+        // Set the hidden input field with the supplies ID for form submission
+        $('#editFullSuppForm').find('input[name="id"]').val(suppliesId); // Use supplies ID instead of brand
+    });
 
     // Handle saving the changes
     $('#saveFullSuppButton').on('click', function(e) {
         e.preventDefault();
-
+    
         Swal.fire({
             title: "Are you sure all input data are correct?",
             showDenyButton: true,
@@ -427,23 +553,25 @@ $(document).ready(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 var formData = $('#editFullSuppForm').serialize();
-                console.log('Form data:', formData);
-
+                console.log('Form data to be submitted:', formData);
+    
+                var suppliesId = $('#editFullSuppForm').find('input[name="id"]').val(); // Ensure ID is set correctly
+                console.log('Submitting data for supplies ID:', suppliesId);
+                
                 $.ajax({
-                    url: $('#editFullSuppForm').attr('action'),
+                    url: '/supplies/update-view', // Change the URL to the supplies update endpoint
                     method: 'POST',
                     data: formData,
-                    success: function() {
+                    success: function(response) {
                         Swal.fire("Saved!", "", "success").then(() => {
-                            var SuppId = $('#editFullSuppForm').find('input[name="id"]').val();
-                            updateTableRow(SuppId); // Update the table row with new data
-                            $('#editFullSuppModal').addClass('hidden');
+                            updateTableRow(suppliesId); // Update the table row with new data
+                            $('#editFullSuppModal').addClass('hidden'); // Close the modal after saving
                         });
                     },
                     error: function(xhr, status, error) {
                         var errorMessage = xhr.responseJSON.message || error;
                         console.log('Error:', errorMessage);
-                        Swal.fire("Error!", "Failed to update Supplies: " + errorMessage, "error");
+                        Swal.fire("Error!", "Failed to update supplies: " + errorMessage, "error");
                     }
                 });
             } else if (result.isDenied) {
@@ -452,14 +580,28 @@ $(document).ready(function() {
         });
     });
 
-    // Handle clicking the edit button
-    $('#ViewDynamicTable tbody').on('click', '#editSuppBTN', function() {
-        var row = $(this).closest('tr');
-        openEditModal(row);
-    });
+    // Function to update the table row with new data based on ID
+    function updateTableRow(suppliesId) {
+        var row = $('#tableViewBody').find(`tr[data-id="${suppliesId}"]`); // Find the row by ID
+        console.log('Updating row for ID:', suppliesId, row);
+
+        if (row.length > 0) { 
+            row.find('td').eq(0).text($('#FullSuppliesSerialNoEdit').val().trim());
+            row.find('td').eq(1).text($('#FullSuppliesControlNoEdit').val().trim());
+            row.find('td').eq(2).text($('#FullSuppliesTypeEdit').val().trim());
+            row.find('td').eq(3).text($('#FullSuppliesColorEdit').val().trim());
+            row.find('td').eq(4).text($('#FullSuppliesUnitEdit').val().trim());
+            row.find('td').eq(5).text($('#FullSuppliesUnitPriceEdit').val().trim());
+            row.find('td').eq(6).text($('#FullSuppliesClassificationEdit').val().trim());
+            row.find('td').eq(7).text($('#FullSuppliesDateEdit').val().trim());
+            console.log('Row updated successfully');
+        } else {
+            console.log('Row not found for ID:', suppliesId);
+        }
+    }
 
     // Handle closing the edit modal
-    $('#closeEditFullSuppModal').on('click', function() {
+    $('#closeFullSuppliesFormButton').on('click', function() {
         $('#editFullSuppModal').addClass('hidden');
     });
 
@@ -470,6 +612,64 @@ $(document).ready(function() {
         }
     });
 });
+
+
+// DELETE FUNCTION FOR SUPPLIES ITEM
+$(document).ready(function(){
+    $('#deleteFullSuppButton').click(function() { 
+        // Retrieve the supplies ID from the modal input
+        var suppliesId = $('#fullsuppliesId').val();
+        var csrfToken = $('#csrf-token').data('token');
+        console.log('Deleting supplies ID:', suppliesId);
+
+        // Display confirmation dialog
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete the selected supplies item?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Perform AJAX request to delete the supplies item
+                $.ajax({
+                    url: '/supplies/delete-view', // Update the URL to match your delete route for supplies
+                    type: 'POST',
+                    data: {
+                        id: suppliesId,
+                        _token: csrfToken // Include CSRF token
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: response.message, // Use message from the server response
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                        }).then(() => {
+                            // Remove the deleted supplies row from the table
+                            $('tr[data-id="'+suppliesId+'"]').remove(); // Ensure row removal is correct
+                            $('#editFullSuppModal').addClass('hidden'); // Optionally close the modal
+                        });
+                    },
+                    error: function(xhr) {
+                        // Handle errors here
+                        var errorMessage = xhr.responseJSON?.message || "There was an error deleting the supplies item.";
+                        Swal.fire({
+                            title: "Error!",
+                            text: errorMessage,
+                            icon: "error"
+                        });
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+});
+
 
 // ADD BUTTON TO FULL INFORMATION CARD
 $(document).ready(function() {

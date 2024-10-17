@@ -387,12 +387,12 @@
                                 </thead>
                                 <tbody id="tableBody">
                                     @foreach($supplies as $item)
-                                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}">
+                                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}" data-brand="{{$item->SuppliesBrandName}}">
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesBrandName}}</td>
                                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesName}}</td>
                                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesCategory}}</td>
                                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesQuantity}}</td>
-                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesDate}}</td>
-                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->SuppliesPrice,2)}}</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->totalPrice,2)}}</td>
                                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSKU}}</td>
                                         <td class="px-6 py-4 border-b border-gray-300">
                                             <button id="viewSuppButton" type="button">
@@ -426,8 +426,9 @@
                                             </svg>
                                         </button>
                                     </div>
-                                    <form id="editForm" action="{{ route('supplies.update') }}" method="POST">
-                                        <input type="hidden" name="id" id="suppliesId">
+                                    <form id="editForm" action="" method="POST">
+
+                                        <input type="hidden" name="brand" value="">
 
                                         <label for="SuppliesBrandName" class="block text-sm font-semibold mb-1">Brand Name</label>
                                         <input type="text" name="SuppliesBrandName" id="SuppliesBrandNameEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Brand Name">
@@ -449,8 +450,11 @@
 
                                         <div class="flex justify-end space-x-2">
                                             <button type="button" id="saveSuppButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                                            <button type="button" id="condemnSuppButton" class="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded">Condemn</button>
-                                            <button type="button" id="deleteSuppButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
+                                            @if(isset($item)) <!-- Check if $item exists -->
+                                                <button type="button" id="deleteSuppButton" data-brand="{{$item->SuppliesBrandName}}" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
+                                            @else
+                                            <button type="button" id="deleteSuppButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded" disabled>No Supplies to Delete</button>
+                                            @endif
                                         </div>
                                     </form>
                                 </div>
@@ -513,7 +517,7 @@
                                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesClassification}}</td>
                                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesDate}}</td>
                                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <button id="viewSuppBTN" type="button">
+                                                        <button id="viewSuppBTN" data-id="{{ $item->id}}" type="button">
                                                             <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                                 <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                                                 <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -554,9 +558,9 @@
                                             </svg>
                                         </button>
                                     </div>
-                                    <form id="editFullSuppForm" action="{{ route('supplies.update') }}" method="POST">
+                                    <form id="editFullSuppForm" action="" method="POST">
 
-                                        <input type="hidden" name="id" id="suppliesId">
+                                        <input type="hidden" name="id" id="fullsuppliesId">
 
                                         <label for="FullSuppliesSerialNoEdit" class="block text-sm font-semibold mb-1">Serial Number</label>
                                         <input type="text" name="FullSuppliesSerialNoEdit" id="FullSuppliesSerialNoEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Serial Number">
@@ -585,8 +589,7 @@
 
                                         <div class="flex justify-end space-x-2">
                                             <button type="button" id="saveFullSuppButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                                            <button type="button" id="condFullSuppButton" class="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded">Condemn</button>
-                                            <button type="button" id="deleteFullSupppButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
+                                            <button type="button" id="deleteFullSuppButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
                                         </div>
                                     </form>
                                 </div>
@@ -669,7 +672,7 @@
                                             </svg>
                                         </button>
                                     </div>
-                                    <div class="text-sm text-gray-700 mb-4">
+                                    <div class="text-sm text-gray-700 mb-4" id=equipmentDetails>>
                                         <p><strong>Serial Number:</strong>{{$item->SuppliesSerialNo}}</p>
                                         <p><strong>Control Number:</strong>{{$item->SuppliesControlNo}}</p>
                                         <p><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</p>

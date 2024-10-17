@@ -115,16 +115,25 @@ Route::get('/employee/login', [RegisterController::class, 'login'])->name('emplo
 
 //Equipment
 Route::get('/admin_equipment', [EquipmentController::class, 'index'])->name('admin_equipment');
+Route::get('/equipment/details', [EquipmentController::class,'equipmentDetails'])->name('equipment.details');
 Route::post('/equipment/store', [EquipmentController::class, 'store'])->name('equipment.store');
 Route::post('/equipment/delete', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
-Route::post('/equipment/update', [EquipmentController::class, 'update'])->name('equipment.update');
+Route::post('/equipment/delete-view', [EquipmentController::class, 'destroyEdit2'])->name('equipment.destroy2');
+Route::post('/equipment/update-main', [EquipmentController::class, 'updateMain'])->name('equipment.updateMain');
+Route::post('/equipment/update-view', [EquipmentController::class, 'updateView'])->name('equipment.updateView');
+Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewing'])->name('equipment.finalViewing');
+
 
 
 //Supplies
 Route::get('/admin_supplies', [SuppliesController::class, 'index'])->name('admin_supplies');
+Route::get('/supplies/details', [SuppliesController::class,'suppliesDetails'])->name('supplies.details');
 Route::post('/supplies/store', [SuppliesController::class, 'store'])->name('supplies.store');
 Route::post('/supplies/delete', [SuppliesController::class, 'destroy'])->name('supplies.destroy');
-Route::post('/supplies/update', [SuppliesController::class, 'update'])->name('supplies.update');
+Route::post('/supplies/delete-view', [SuppliesController::class, 'destroyEdit2'])->name('equipment.destroy2');
+Route::post('/supplies/update-main', [SuppliesController::class, 'updateMain'])->name('supplies.updateMain');
+Route::post('/supplies/update-view', [SuppliesController::class, 'updateView'])->name('equipment.updateView');
+Route::get('/supplies/final-viewing', [SuppliesController::class, 'finalViewing'])->name('supplies.finalViewing');
 
 
 //Room
