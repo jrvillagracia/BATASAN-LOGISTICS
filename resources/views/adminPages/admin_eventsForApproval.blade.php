@@ -3,7 +3,9 @@
 @section('title', 'Events and Activities | BHNHS')
 
 @section('content')
-
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
 <section>
     <div class="flex items-center pb-8">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9">
@@ -80,10 +82,11 @@
                     </button>
                 </div>
 
-                <form id="EventForm">
-
+                <form id="EventForm" action="{{ route('events.store') }}"method="POST">
+                    @csrf
                     <div class="grid grid-cols-2 gap-2">
                         <!-- First column label/input -->
+                        <input type="hidden" name="event_id" id="event_id" value="{{ $event->event_id ?? '' }}">
                         <div>
                             <label for="time" class="block text-sm font-semibold mb-2">Select time:</label>
                             <div class="relative">
@@ -92,7 +95,7 @@
                                         <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="time" id="EventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                                <input type="time" id="EventApprTime" name="EventApprtime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                             </div>
                         </div>
 
@@ -104,23 +107,23 @@
                                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                     </svg>
                                 </div>
-                                <input id="EventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                <input id="EventApprDate" name="EventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                             </div>
                         </div>
 
                         <div>
                             <label for="Request" class="block text-sm font-semibold mb-2">Requesting Office/Unit:</label>
-                            <input type="text" id="EventApprRequestOffice" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Request">
+                            <input type="text" id="EventApprRequestOffice"  name="EventApprRequestOffice" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Request">
                         </div>
 
                         <div>
                             <label for="Request" class="block text-sm font-semibold mb-2">Requesting for:</label>
-                            <input type="text" id="EventApprRequestFor" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Request for...." pattern="[A-Za-z ]*" title="Only characters are allowed">
+                            <input type="text" id="EventApprRequestFor" name="EventApprRequestFor" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Request for...." pattern="[A-Za-z ]*" title="Only characters are allowed">
                         </div>
 
                         <div>
                             <label for="EName" class="block text-sm font-semibold mb-2">Event Name:</label>
-                            <input type="text" id="EventApprName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Event Name">
+                            <input type="text" id="EventApprName" name="EventApprName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Event Name">
                         </div>
 
                         <div>
@@ -132,7 +135,7 @@
                                             <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                         </svg>
                                     </div>
-                                    <input id="StartEventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" name="start" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
+                                    <input id="StartEventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" name="startEventApprDate" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
                                 </div>
                                 <span class="mx-4 text-gray-500">to</span>
                                 <div class="relative">
@@ -141,7 +144,7 @@
                                             <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                         </svg>
                                     </div>
-                                    <input id="EndEventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
+                                    <input id="EndEventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" name="endEventApprDate" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
                                 </div>
                             </div>
                         </div>
@@ -154,7 +157,7 @@
                                         <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="time" id="StartEventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                                <input type="time" id="StartEventApprTime" name="StartEventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                             </div>
                         </div>
 
@@ -166,23 +169,23 @@
                                         <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="time" id="EndEventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                                <input type="time" id="EndEventApprTime" name="EndEventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                             </div>
                         </div>
 
                         <div>
                             <label for="ELocation" class="block text-sm font-semibold mb-2">Event Location:</label>
-                            <input type="text" id="EventApprLocation" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Event Location">
+                            <input type="text" id="EventApprLocation" name="EventApprLocation" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Event Location">
                         </div>
 
                         <div>
                             <label for="EProductName" class="block text-sm font-semibold mb-2">Product Name:</label>
-                            <input type="text" id="EventApprProductName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Product Name">
+                            <input type="text" id="EventApprProductName" name="EventApprProductName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Product Name">
                         </div>
 
                         <div>
                             <label for="EQuantity" class="block text-sm font-semibold mb-1">Quantity</label>
-                            <input type="number" name="EventApprQuantity" id="EventQuantity" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity">
+                            <input type="number" name="EventApprQuantity" id="EventApprQuantity" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity">
                         </div>
                     </div>
 
@@ -221,50 +224,50 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Actions
-                        </th>
-
+                        </th> 
                 </thead>
                 <tbody id="tableBody" class="">
-
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">1902</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/21/2024</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">1pm-5pm</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Grade 9 TLE Faculty</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">TLE Event</td>
+                @foreach ($events as $event)
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="{{$event->id}}">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->status}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->eventId}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprDate}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ \Carbon\Carbon::parse($event->StartEventApprTime)->format('g:ia') }}-{{ \Carbon\Carbon::parse($event->EndEventApprTime)->format('g:ia') }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprRequestOffice}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprRequestFor}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button id="EventViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                            <button id="EventApproveBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
-                            <button id="EventDeclineBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
+                            <button type="button" data-id="{{ $event->id }}" class=" EventViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                            <button type="button" data-id="{{ $event->id }}" class=" EventApproveBTN bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
+                            <button type="button" data-id="{{ $event->id }}" class=" EventDeclineBTN bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
                         </td>
                     </tr>
-
+                    @endforeach
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>
 
             <!-- View Popup Card -->
-            <div id="ViewEventApprPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+             @foreach ($events as $event)
+            <div id="ViewEventApprPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" data-id="">
                 <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold">Event and Activity Request Slip</h2>
                     </div>
 
-                    <div class="text-sm">
-                        <p class="mb-2"><strong>Date:</strong> 25th Sept 2024</p>
-                        <p class="mb-2"><strong>Time:</strong> 10:00 AM</p>
-                        <p class="mb-2"><strong>Requesting Office/Unit:</strong> Marketing Department</p>
-                        <p class="mb-2"><strong>Event Name:</strong> Product Launch</p>
-                        <p class="mb-2"><strong>Event Date:</strong> 26th Sept 2024</p>
-                        <p class="mb-2"><strong>Event Time:</strong> 11:00 AM</p>
-                        <p class="mb-2"><strong>Event Location:</strong> Conference Hall</p>
+                    <div class="text-sm" id="getEventsDetails">
+                        <p class="mb-2"><strong>Date:</strong>{{$event->EventApprDate}}</p>
+                        <p class="mb-2"><strong>Time:</strong>{{$event->EventApprTime}}</p>
+                        <p class="mb-2"><strong>Requesting Office/Unit:</strong>{{$event->EventApprRequestOffice}}</p>
+                        <p class="mb-2"><strong>Event Name:</strong>{{$event->EventApprName}}</p>
+                        <p class="mb-2"><strong>Event Date:</strong>{{$event->StartEventApprDate}}</p>
+                        <p class="mb-2"><strong>Event Time:</strong>{{$event->StartEventApprTime}}</p>
+                        <p class="mb-2"><strong>Event Location:</strong>{{$event->EventApprLocation}}</p>
                         <br>
                         <hr>
                         <br>
                         <p class="mb-2"><strong>Required Equipment and Supplies</strong></p>
-                        <p class="mb-2"><strong>Product Name:</strong> Projector</p>
-                        <p class="mb-2"><strong>Quantity:</strong> 1</p>
+                        <p class="mb-2"><strong>Product Name:</strong>{{$event->EventApprProductName}}</p>
+                        <p class="mb-2"><strong>Quantity:</strong>{{$event->EventApprQuantity}}</p>
                     </div>
 
                     <div class="flex justify-end space-x-4">
@@ -273,9 +276,11 @@
                     </div>
                 </div>
             </div>
+            @endforeach
 
             <!-- Approval Popup Card -->
-            <div id="ApprEventPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+            @foreach ($events as $event)
+            <div data-id="{{ $event->id }}" class="ApprEventPopupCard hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
                     <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to approve this request?</h2>
 
@@ -283,13 +288,16 @@
                     <textarea id="ApprEventRemarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..." style="resize: none; overflow-y: auto;"></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitApprEventPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeApprEventPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button data-id="{{ $event->id }}" class=" submitApprEventPopupCard bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
+                        <button class=" closeApprEventPopupCard bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
+            @endforeach
+            
 
             <!-- Decline Popup Card -->
+            @foreach ($events as $event)
             <div id="DeclineEventPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -299,12 +307,12 @@
                     <textarea id="DeclineEventRemarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..." style="resize: none; overflow-y: auto;"></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitDeclineEventPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
+                        <button data-id="{{ $event->id }}" class="submitDeclineEventPopupCard bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
                         <button id="closeDeclineEventPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
-
+            @endforeach
 
             <!-- Release Popup Card -->
 

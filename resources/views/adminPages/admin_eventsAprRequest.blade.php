@@ -100,46 +100,48 @@
 
                 </thead>
                 <tbody id="tableBody" class="">
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">1902</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/21/2024</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">1pm-5pm</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Grade 9 TLE Faculty</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">TLE Event</td>
+                @foreach ($events as $event)
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="{{$event->id}}">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">End</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->eventId}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprDate}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ \Carbon\Carbon::parse($event->StartEventApprTime)->format('g:ia') }}-{{ \Carbon\Carbon::parse($event->EndEventApprTime)->format('g:ia') }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprRequestOffice}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprRequestFor}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button id="EventApprReqViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                            <button id="EventApprReqSetItemBTN" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Set Item</button>
+                            <button data-id="{{ $event->id }}" type="button" class=" EventApprReqViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                            <button data-id="{{ $event->id }}" type="button" class=" EventApprReqSetItemBTN bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Set Item</button>
                             <button id="EventApprReqCompletedBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Completed</button>
                             <button id="EventApprReqCancelBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
                         </td>
                     </tr>
-
+                    @endforeach
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>
 
             <!-- View Popup Card -->
+            @foreach ($events as $event)
             <div id="ViewEventApprReqPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold">Event and Activity Request Slip</h2>
                     </div>
 
-                    <div class="text-sm">
-                        <p class="mb-2"><strong>Date:</strong> 25th Sept 2024</p>
-                        <p class="mb-2"><strong>Time:</strong> 10:00 AM</p>
-                        <p class="mb-2"><strong>Requesting Office/Unit:</strong> Marketing Department</p>
-                        <p class="mb-2"><strong>Event Name:</strong> Product Launch</p>
-                        <p class="mb-2"><strong>Event Date:</strong> 26th Sept 2024</p>
-                        <p class="mb-2"><strong>Event Time:</strong> 11:00 AM</p>
-                        <p class="mb-2"><strong>Event Location:</strong> Conference Hall</p>
+                    <div class="text-sm" id="getEventsDetails">
+                        <p class="mb-2"><strong>Date:</strong>{{$event->EventApprDate}}</p>
+                        <p class="mb-2"><strong>Time:</strong>{{$event->EventApprTime}}</p>
+                        <p class="mb-2"><strong>Requesting Office/Unit:</strong>{{$event->EventApprRequestOffice}}</p>
+                        <p class="mb-2"><strong>Event Name:</strong>{{$event->EventApprName}}</p>
+                        <p class="mb-2"><strong>Event Date:</strong>{{$event->StartEventApprDate}}</p>
+                        <p class="mb-2"><strong>Event Time:</strong>{{$event->StartEventApprTime}}</p>
+                        <p class="mb-2"><strong>Event Location:</strong>{{$event->EventApprLocation}}</p>
                         <br>
                         <hr>
                         <br>
                         <p class="mb-2"><strong>Required Equipment and Supplies</strong></p>
-                        <p class="mb-2"><strong>Product Name:</strong> Projector</p>
-                        <p class="mb-2"><strong>Quantity:</strong> 1</p>
+                        <p class="mb-2"><strong>Product Name:</strong>{{$event->EventApprProductName}}</p>
+                        <p class="mb-2"><strong>Quantity:</strong>{{$event->EventApprQuantity}}</p>
                     </div>
 
                     <div class="flex justify-end space-x-4">
@@ -148,8 +150,10 @@
                     </div>
                 </div>
             </div>
+            @endforeach
 
             <!-- Set Item Popup Card -->
+            @foreach ($events as $event)
             <div id="SetItemEventApprReqPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-8xl h-auto overflow-auto">
                     <div class="flex justify-between items-center mb-4">
@@ -158,16 +162,16 @@
 
                     <div class="grid grid-cols-2 gap-4 text-sm w-full">
                         <div>
-                            <p class="mb-2"><strong>Date:</strong> 25th Sept 2024</p>
-                            <p class="mb-2"><strong>Time:</strong> 10:00 AM</p>
-                            <p class="mb-2"><strong>Requesting Office/Unit:</strong> Marketing Department</p>
+                            <p class="mb-2"><strong>Date:</strong>{{$event->EventApprDate}}</p>
+                            <p class="mb-2"><strong>Time:</strong>{{$event->EventApprTime}}</p>
+                            <p class="mb-2"><strong>Requesting Office/Unit:</strong>{{$event->EventApprRequestOffice}}</p>
                         </div>
 
                         <div>
-                            <p class="mb-2"><strong>Event Name:</strong> Product Launch</p>
-                            <p class="mb-2"><strong>Event Date:</strong> 26th Sept 2024</p>
-                            <p class="mb-2"><strong>Event Time:</strong> 11:00 AM</p>
-                            <p class="mb-2"><strong>Event Location:</strong> Conference Hall</p>
+                            <p class="mb-2"><strong>Event Name:</strong>{{$event->EventApprName}}</p>
+                            <p class="mb-2"><strong>Event Date:</strong>{{$event->StartEventApprDate}}</p>
+                            <p class="mb-2"><strong>Event Time:</strong>{{$event->StartEventApprTime}}</p>
+                            <p class="mb-2"><strong>Event Location:</strong>{{$event->EventApprLocation}}</p>
                         </div>
                     </div>
 
@@ -176,7 +180,8 @@
                         <p class="mb-2"><strong>Product Name:</strong> Projector</p>
                         <p class="mb-2"><strong>Quantity:</strong> 1</p>
                     </div>
-
+                    @endforeach
+            
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
                         <table id="SetItemTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
@@ -202,12 +207,13 @@
                                 </tr>
                             </thead>
                             <tbody id="tableViewBody">
+                            @foreach($mergedItems as $item)
                                 <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->ProductName }}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->BrandName }}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->Type }}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->Quantity }}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->SKU }}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <button id="addEquipBTN" type="button">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
@@ -216,7 +222,7 @@
                                         </button>
                                     </td>
                                 </tr>
-
+                                @endforeach
                                 <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
@@ -228,7 +234,6 @@
                     </div>
                 </div>
             </div>
-
 
 
             <!-- Completed Popup Card -->

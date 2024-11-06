@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SuppliesController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\Events\ApproveController;
+use App\Http\Controllers\Events\ApprovalController;
+use App\Http\Controllers\Events\CompleteController;
 use App\Http\Controllers\FacilityModule\RoomController;
 
 Route::get('/', function () {
@@ -141,6 +144,22 @@ Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('ad
 Route::get('/admin_facilitySpecRoom', [RoomController::class, 'specialIndex'])->name('admin_facilitySpecRoom');
 Route::post('/rooms/store', [RoomController::class, 'store'])->name('room.store');
 
+//Events and Activities
+Route::post('/events/store', [ApprovalController::class, 'store'])->name('events.store');
+Route::get('/admin_eventsForApproval', [ApprovalController::class, 'index'])->name('admin_eventsForApproval');
+Route::get('/apr/event/details', [ApprovalController::class, 'getEventDetails'])->name('event_details');
+Route::post('/events/approve', [ApprovalController::class, 'approve'])->name('events.approve');
+Route::post('/events/decline', [ApprovalController::class, 'decline'])->name('events.decline');
+
+//Approve Request
+Route::get('/admin_eventsAprRequest', [ApproveController::class, 'index'])->name('admin_eventsAprRequest');
+Route::get('/events/{eventId}/merged-items', [ApproveController::class, 'mergedItems'])->name('set_items');
+Route::get('/event/details', [ApproveController::class, 'getEventDetails'])->name('events_details');
+
+
+//Complete Request
+Route::get('/admin_eventsComRequest', [CompleteController::class, 'index'])->name('admin_eventsComRequest');
+
 
 // OFFICE ROOM
 Route::get('/admin_facilityOfficeRoom', function () {
@@ -161,24 +180,6 @@ Route::get('/admin_mainteInventory', function () {
     return view('adminPages.admin_mainteInventory');
 })->name('admin_mainteInventory');
 
-
-
-
-// EVENT AND ACTIVITIES FOR APPROVAL
-Route::get('/admin_eventsForApproval', function () {
-    return view('adminPages.admin_eventsForApproval');
-})->name('admin_eventsForApproval');
-
-
-// EVENT AND ACTIVITIES FOR APPROVAL REQUEST
-Route::get('/admin_eventsAprRequest', function () {
-    return view('adminPages.admin_eventsAprRequest');
-})->name('admin_eventsAprRequest');
-
-// EVENT AND ACTIVITIES FOR COMPLETED REQUEST
-Route::get('/admin_eventsComRequest', function () {
-    return view('adminPages.admin_eventsComRequest');
-})->name('admin_eventsComRequest');
 
 // EVENT AND ACTIVITIES FOR HISTORY
 Route::get('/admin_eventsHistory', function () {

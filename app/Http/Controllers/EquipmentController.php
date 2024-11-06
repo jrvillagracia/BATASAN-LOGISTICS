@@ -140,62 +140,6 @@ class EquipmentController extends Controller
         ]);
     }
 
-    public function addEquipment(Request $request)
-    {
-        // Validate the incoming request
-        $validated = $request->validate([
-            'EquipmentType' => 'required|string|max:255',
-            'EquipmentColor' => 'required|string|max:255',
-            'EquipmentUnit' => 'required|string|max:255',
-            'EquipmentQuantity' => 'required|integer|min:1',
-            'EquipmentDate' => 'required|date',
-            'EquipmentUnitPrice' => 'required|numeric|min:0',
-            'EquipmentClassification' => 'required|string|max:255',
-            'EquipmentSerialNo' => 'required|string|max:255',
-            'selectedBrandName' => 'required|string|max:255', // Assuming you have this in your form
-            'EquipmentName' => 'required|string|max:255', // Assuming you have this in your form
-        ]);
-
-        // Extract the brand name and equipment name
-        $brandName = $validated['selectedBrandName'];
-        $equipmentName = $validated['EquipmentName'];
-
-        // Generate Control Number
-        $prefix = strtoupper(substr($equipmentName, 0, 3)); // Get the first 3 letters of Equipment Name
-        $latestEquipment = Equipment::where('EquipmentName', $equipmentName)
-            ->where('BrandName', $brandName)
-            ->orderBy('ControlNumber', 'desc') // Assuming ControlNumber is the field to check
-            ->first();
-
-        // Determine the next control number
-        if ($latestEquipment) {
-            $latestControlNo = $latestEquipment->ControlNumber;
-            $number = (int)substr($latestControlNo, 4); // Get the numeric part
-            $nextControlNo = $prefix . '-' . str_pad($number + 1, 4, '0', STR_PAD_LEFT);
-        } else {
-            $nextControlNo = $prefix . '-0001'; // If no previous entry, start with 0001
-        }
-
-        // Create the new equipment entry
-        $equipment = new Equipment();
-        $equipment->ControlNumber = $nextControlNo;
-        $equipment->BrandName = $brandName;
-        $equipment->EquipmentName = $equipmentName;
-        $equipment->Type = $validated['EquipmentType'];
-        $equipment->Color = $validated['EquipmentColor'];
-        $equipment->Unit = $validated['EquipmentUnit'];
-        $equipment->Quantity = $validated['EquipmentQuantity'];
-        $equipment->Date = $validated['EquipmentDate'];
-        $equipment->UnitPrice = $validated['EquipmentUnitPrice'];
-        $equipment->Classification = $validated['EquipmentClassification'];
-        $equipment->SerialNumber = $validated['EquipmentSerialNo'];
-
-        // Save the equipment entry
-        $equipment->save();
-
-        return response()->json(['message' => 'Equipment added successfully!']);
-    }
-
 
     public function equipmentDetails(Request $request)
     {
