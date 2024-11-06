@@ -153,8 +153,10 @@ Route::post('/events/decline', [ApprovalController::class, 'decline'])->name('ev
 
 //Approve Request
 Route::get('/admin_eventsAprRequest', [ApproveController::class, 'index'])->name('admin_eventsAprRequest');
-Route::get('/events/{eventId}/merged-items', [ApproveController::class, 'mergedItems'])->name('set_items');
 Route::get('/event/details', [ApproveController::class, 'getEventDetails'])->name('events_details');
+Route::get('/events_Apr_details', [ApproveController::class, 'getEventDetails'])->name('events_Apr_details');
+Route::post('/cancel-event', [ApprovalController::class, 'cancel'])->name('cancel.event');
+
 
 
 //Complete Request

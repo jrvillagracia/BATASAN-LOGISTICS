@@ -61,20 +61,28 @@ class ApproveController extends Controller
             'EventApprQuantity' => 'required|integer',
         ]);
 
+        // Format date and time fields using Carbon
+        $eventApprDate = Carbon::parse($validatedData['EventApprDate'])->format('m/j/Y');
+        $startEventApprDate = Carbon::parse($validatedData['StartEventApprDate'])->format('m/j/Y');
+        $endEventApprDate = Carbon::parse($validatedData['EndEventApprDate'])->format('m/j/Y');
+        $eventApprTime = Carbon::parse($validatedData['EventApprTime'])->format('H:i');
+        $startEventApprTime = Carbon::parse($validatedData['StartEventApprTime'])->format('H:i');
+        $endEventApprTime = Carbon::parse($validatedData['EndEventApprTime'])->format('H:i');
+        
         // Generate a new eventId
         $eventId = $this->generateEventId();
 
-        // Insert the validated data into the approved_req table
+        // Insert the validated and formatted data into the approved_req table
         ApprovedReq::create([
-            'EventApprTime' => $validatedData['EventApprTime'],
-            'EventApprDate' => $validatedData['EventApprDate'],
+            'EventApprTime' => $eventApprTime,
+            'EventApprDate' => $eventApprDate,
             'EventApprRequestOffice' => $validatedData['EventApprRequestOffice'],
             'EventApprRequestFor' => $validatedData['EventApprRequestFor'],
             'EventApprName' => $validatedData['EventApprName'],
-            'StartEventApprDate' => $validatedData['StartEventApprDate'],
-            'EndEventApprDate' => $validatedData['EndEventApprDate'],
-            'StartEventApprTime' => $validatedData['StartEventApprTime'],
-            'EndEventApprTime' => $validatedData['EndEventApprTime'],
+            'StartEventApprDate' => $startEventApprDate,
+            'EndEventApprDate' => $endEventApprDate,
+            'StartEventApprTime' => $startEventApprTime,
+            'EndEventApprTime' => $endEventApprTime,
             'EventApprLocation' => $validatedData['EventApprLocation'],
             'EventApprProductName' => $validatedData['EventApprProductName'],
             'EventApprQuantity' => $validatedData['EventApprQuantity'],
@@ -169,5 +177,44 @@ class ApproveController extends Controller
 
         // Return the event details
         return response()->json(['eventDetails' => $eventDetails], 200);
+    }
+
+    public function cancel(Request $request)
+    {
+        // Check if the request contains an ID
+        if (!$request->has('id')) {
+            return response()->json(['message' => 'Event ID is required'], 400);
+        }
+
+        // Find the event by its ID
+        $event = Events::find($request->id);
+
+        if ($event) {
+            // Insert the event details into the 'complete_req' table using the same 'eventId'
+            CompleteReq::create([
+                'eventId' => $event->eventId,
+                'EventApprTime' => $event->EventApprTime,
+                'EventApprDate' => $event->EventApprDate,
+                'EventApprRequestOffice' => $event->EventApprRequestOffice,
+                'EventApprRequestFor' => $event->EventApprRequestFor,
+                'EventApprName' => $event->EventApprName,
+                'StartEventApprDate' => $event->StartEventApprDate,
+                'EndEventApprDate' => $event->EndEventApprDate,
+                'StartEventApprTime' => $event->StartEventApprTime,
+                'EndEventApprTime' => $event->EndEventApprTime,
+                'EventApprLocation' => $event->EventApprLocation,
+                'EventApprProductName' => $event->EventApprProductName,
+                'EventApprQuantity' => $event->EventApprQuantity,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Optionally, delete the event from the original table (Events) if required
+            $event->delete();
+
+            return response()->json(['message' => 'Event declined and moved to complete requests successfully!']);
+        } else {
+            return response()->json(['message' => 'Event not found'], 404);
+        }
     }
 }
