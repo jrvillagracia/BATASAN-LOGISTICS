@@ -18,7 +18,7 @@ class SuppliesController extends Controller
                 'SuppliesQuantity',
                 'SuppliesSKU',
                 DB::raw('COUNT(*) as SuppliesQuantity'),
-                DB::raw('SUM(COALESCE(SuppliesUnitPrice, 0) * COALESCE(SuppliesQuantity, 0)) as totalPrice'),
+                DB::raw('SUM(COALESCE("SuppliesUnitPrice", 0) * COALESCE("SuppliesQuantity", 0)) AS totalPrice'),
                 DB::raw('COUNT(*) as totalItems')
             )
             ->groupBy('SuppliesBrandName', 'SuppliesName', 'SuppliesCategory', 'SuppliesQuantity' , 'SuppliesSKU')

@@ -3,6 +3,28 @@ $(document).ready(function() {
     $('#EventFormButton').click(function(event) {
         event.preventDefault();
         console.log('Show Event Form Button Clicked');
+
+        // Set current date and time in the input fields
+        const currentDate = new Date();
+        
+        // Format date as MM/DD/YYYY
+        const formattedDate = currentDate.toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+        });
+        
+        // Format time as HH:MM in 24-hour format
+        const formattedTime = currentDate.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+        
+        // Set the values to the input fields
+        $('#EventApprDate').val(formattedDate);
+        $('#EventApprTime').val(formattedTime);
+
         $('#EventFormCard').removeClass('hidden'); 
     });
 
@@ -370,3 +392,10 @@ document.addEventListener("DOMContentLoaded", function () {
 //     });
 // });
 
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get today's date in the format YYYY-MM-DD
+    let today = new Date().toISOString().split("T")[0];
+    // Set the date input to today's date
+    document.getElementById("EventApprDate").value = today;
+});

@@ -55,22 +55,83 @@ $(document).ready(function() {
 
 // ======================== SET ITEM BUTTON ============================= //
 $(document).ready(function () {
-    $('.EventApprReqSetItemBTN').click(function () {
-        console.log('View Event Button is Clicked.');
-        $('#SetItemEventApprReqPopupCard').removeClass('hidden');
+    // Event Set Item Button - Show Event Details
+    $(document).on('click', '.EventApprReqSetItemBTN', function (event) {
+        event.preventDefault();
+        console.log('Set Item Button is Clicked.');
+
+        // Get the event ID from the clicked button
+        let eventId = $(this).data('id');
+
+        if (eventId) {
+            $.ajax({
+                url: '/events_Apr_details',  // Updated URL
+                type: 'GET',
+                data: { id: eventId },
+                success: function (response) {
+                    if (response.eventDetails) {
+                        // Populate the modal with the event details
+                        $('#SetItemEventApprReqPopupCard').html(`
+                            <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-8xl h-auto overflow-auto">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 class="text-lg font-semibold">Set Item</h2>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4 text-sm w-full">
+                                    <div>
+                                        <p class="mb-2"><strong>Date:</strong> ${response.eventDetails.EventApprDate}</p>
+                                        <p class="mb-2"><strong>Time:</strong> ${response.eventDetails.EventApprTime}</p>
+                                        <p class="mb-2"><strong>Requesting Office/Unit:</strong> ${response.eventDetails.EventApprRequestOffice}</p>
+                                    </div>
+
+                                    <div>
+                                        <p class="mb-2"><strong>Event Name:</strong> ${response.eventDetails.EventApprName}</p>
+                                        <p class="mb-2"><strong>Event Date:</strong> ${response.eventDetails.StartEventApprDate}</p>
+                                        <p class="mb-2"><strong>Event Time:</strong> ${response.eventDetails.StartEventApprTime}</p>
+                                        <p class="mb-2"><strong>Event Location:</strong> ${response.eventDetails.EventApprLocation}</p>
+                                    </div>
+                                </div>
+
+                                <div class="text-sm">
+                                    <p class="mb-2"><strong>Required Equipment and Supplies</strong></p>
+                                    <p class="mb-2"><strong>Product Name:</strong> ${response.eventDetails.EventApprProductName}</p>
+                                    <p class="mb-2"><strong>Quantity:</strong> ${response.eventDetails.EventApprQuantity}</p>
+                                </div>
+                            </div>
+                        `);
+                        // Show the modal
+                        $('#SetItemEventApprReqPopupCard').removeClass('hidden');
+                    } else {
+                        alert('Event details could not be loaded.');
+                    }
+                },
+                error: function (xhr) {
+                    alert('Error loading event details: ' + xhr.responseText);
+                }
+            });
+        }
     });
 
+    // Close the popup modal when clicking the close button
     $('.closeSetItemEventApprReqPopupCard').click(function (event) {
         event.preventDefault();  // Prevent form submission or link navigation
         console.log('Close View Button is Clicked.');
-        $('.SetItemEventApprReqPopupCard').addClass('hidden');
+        $('#SetItemEventApprReqPopupCard').addClass('hidden');
     });
 
+    // Close the modal when clicking outside the popup area
+    $(window).on('click', function (e) {
+        if ($(e.target).is('#SetItemEventApprReqPopupCard')) {
+            $('#SetItemEventApprReqPopupCard').addClass('hidden');
+        }
+    });
 
-    // Close the popup
+    // Close the popup explicitly when clicking on the close button inside
     $('#closeSetItemEventApprReqPopupCard').click(function () {
         $('#SetItemEventApprReqPopupCard').addClass('hidden');
     });
+});
+
 
     $(document).ready(function() {
         $("#submitSetItemEventApprReqPopupCard").click(function () {
@@ -86,57 +147,14 @@ $(document).ready(function () {
             });
         });
     });
-});
 
 
 // ======================== COMPLETED BUTTON ============================= //
 $(document).ready(function () {
-    $('#EventApprReqCompletedBTN').click(function () {
+    // Completed button event delegation
+    $(document).on('click', '.EventApprReqCompletedBTN', function () {
         console.log('Completed Event Button is Clicked.');
         $('#CompletedEventApprReqPopupCard').removeClass('hidden');
-
-        // Get the eventId (you might need to modify this based on where the ID is stored)
-        let eventId = 1; // Replace this with the actual event ID
-
-        // AJAX call to fetch the merged items data
-        $.ajax({
-            url: `/events/${eventId}/merged-items`,
-            method: 'GET',
-            success: function (response) {
-                if (response.error) {
-                    console.error(response.error);
-                    return;
-                }
-
-                let items = response.mergedItems;
-                let tableBody = $('#tableViewBody');
-                tableBody.empty(); // Clear existing rows
-
-                // Loop through the items and append rows
-                items.forEach(item => {
-                    let row = `
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="${item.SKU}">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${item.ProductName}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${item.BrandName}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${item.Type}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${item.Quantity}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${item.SKU}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <button id="addEquipBTN" type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-                                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.append(row);
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching event details:', error);
-            }
-        });
     });
 
     $('#closeCompletedEventApprReqPopupCard').click(function (event) {
@@ -160,17 +178,19 @@ $(document).ready(function () {
 });
 
 
-
-
 // ======================== CANCEL BUTTON ============================= //
 $(document).ready(function () {
-    // Show the popup when the button is clicked
-    $("#EventApprReqCancelBTN").click(function () {
+    // Show the popup when the EventApprReqCancelBTN button is clicked
+    $(".EventApprReqCancelBTN").click(function () {
         $("#CancelEventPopupCard").removeClass("hidden");
+
+        // Store the event ID in the submit button's data attribute
+        const eventId = $(this).data("event-id");
+        $("#submitCancelEventPopupCard").data("event-id", eventId);
     });
 
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeCancelEventPopupCard").click(function () {
+    // Close popup and show cancellation message when Cancel button is clicked
+    $("#closeCancelEventPopupCard").click(function (event) {
         event.preventDefault();
         Swal.fire({
             icon: 'error',
@@ -183,21 +203,48 @@ $(document).ready(function () {
         });
     });
 
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitCancelEventPopupCard").click(function () {
+    // AJAX request for submitting the cancel action
+    $(".submitCancelEventPopupCard").click(function (event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'This request has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#CancelEventPopupCard").addClass("hidden");
+
+        // Get the event ID stored in the submit button's data attribute
+        const eventId = $(this).data("event-id");
+        console.log("Submitting cancellation for Event ID:", eventId);
+
+        // AJAX call to cancel the event
+        $.ajax({
+            url: "/cancel-event", // Laravel route for canceling the event
+            method: "POST",
+            data: {
+                id: eventId,
+                _token: $('meta[name="csrf-token"]').attr("content") // CSRF token
+            },
+            success: function (response) {
+                console.log("Success response:", response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Submitted',
+                    text: response.message,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    $("#CancelEventPopupCard").addClass("hidden");
+                    // Optionally, refresh the list or update the UI
+                });
+            },
+            error: function (xhr) {
+                console.error("Error response:", xhr.responseJSON);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: xhr.responseJSON ? xhr.responseJSON.message : 'Something went wrong!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            }
         });
     });
 });
-
 
 
 

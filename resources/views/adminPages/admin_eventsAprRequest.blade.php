@@ -4,6 +4,7 @@
 
 @section('content')
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <section>
     <div class="flex items-center pb-8">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9">
@@ -111,8 +112,8 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <button data-id="{{ $event->id }}" type="button" class=" EventApprReqViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                             <button data-id="{{ $event->id }}" type="button" class=" EventApprReqSetItemBTN bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Set Item</button>
-                            <button id="EventApprReqCompletedBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Completed</button>
-                            <button id="EventApprReqCancelBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
+                            <button data-id="{{ $event->id }}" type="button" class=" EventApprReqCompletedBTN bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Completed</button>
+                            <button data-id="{{ $event->id }}" type="button" class=" EventApprReqCancelBTN bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
                         </td>
                     </tr>
                     @endforeach
@@ -177,10 +178,9 @@
 
                     <div class="text-sm">
                         <p class="mb-2"><strong>Required Equipment and Supplies</strong></p>
-                        <p class="mb-2"><strong>Product Name:</strong> Projector</p>
-                        <p class="mb-2"><strong>Quantity:</strong> 1</p>
+                        <p class="mb-2"><strong>Product Name:</strong>{{$event->EventApprProductName}}</p>
+                        <p class="mb-2"><strong>Quantity:</strong>{{$event->EventApprQuantity}}</p>
                     </div>
-                    @endforeach
             
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
                         <table id="SetItemTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -206,8 +206,10 @@
                                     </th>
                                 </tr>
                             </thead>
+                            @endforeach
+                            
                             <tbody id="tableViewBody">
-                            @foreach($mergedItems as $item)
+                                @foreach($mergedItems as $item)
                                 <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->ProductName }}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->BrandName }}</td>
@@ -227,14 +229,12 @@
                             </tbody>
                         </table>
                     </div>
-
                     <div class="flex justify-end space-x-4 mt-10">
                         <button id="submitSetItemEventApprReqPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
                         <button id="closeSetItemEventApprReqPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
-
 
             <!-- Completed Popup Card -->
             <div id="CompletedEventApprReqPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
@@ -302,6 +302,7 @@
             </div>
 
             <!-- Cancel Popup Card -->
+            @foreach ($events as $event)
             <div id="CancelEventPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -311,12 +312,12 @@
                     <textarea id="CancelEventRemarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..." style="resize: none; overflow-y: auto;"></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitCancelEventPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
+                        <button data-id="{{ $event->id }}" class=" submitCancelEventPopupCard bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
                         <button id="closeCancelEventPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
-
+            @endforeach
 
             <!-- Pagination -->
         </div>
