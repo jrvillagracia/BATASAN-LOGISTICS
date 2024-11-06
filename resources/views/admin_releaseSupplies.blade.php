@@ -9,20 +9,27 @@
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
     <script src="{{asset('js/admin_requestSupplies.js')}}"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
+
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_requestSupplies.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css"> -->
 
-    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script> -->
 
 </head>
 
-<body class="h-screen">
+<body class="h-screen overflow-x-hidden">
     <div class="flex">
         <!-- Sidebar --> <!-- May na Update dito -->
         <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -70,9 +77,9 @@
                         <li class="p-3 rounded-md relative">
                             <!-- Dropdown Button -->
                             <button type="button" class="dropdownButton flex items-center w-full p-2 -ml-1 text-base text-white transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0">
-                                <path d="M120-120v-80h80v-640h400v40h160v600h80v80H680v-600h-80v600H120Zm320-320q17 0 28.5-11.5T480-480q0-17-11.5-28.5T440-520q-17 0-28.5 11.5T400-480q0 17 11.5 28.5T440-440Z"/>
-                            </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0">
+                                    <path d="M120-120v-80h80v-640h400v40h160v600h80v80H680v-600h-80v600H120Zm320-320q17 0 28.5-11.5T480-480q0-17-11.5-28.5T440-520q-17 0-28.5 11.5T400-480q0 17 11.5 28.5T440-440Z" />
+                                </svg>
                                 <span class="ml-3 flex-1 sidebar-text font-bold text-left rtl:text-right whitespace-nowrap">Facility</span>
                                 <svg id="dropdownIcon" class="w-3 h-3 transition-transform duration-300 transform" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
@@ -81,17 +88,19 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="{{route('admin_facilityRegRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Regular Room</a>
+                                    <a href="{{route('admin_facilityRegRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Instructional Room</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('admin_facilitySpecRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Special Room</a>
-
+                                    <a href="{{route('admin_facilitySpecRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Laboratory Room</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin_facilityOfficeRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Office Room</a>
                                 </li>
                             </ul>
                         </li>
 
                         <li class="hover:bg-gray-200 p-3 rounded-md">
-                            <a href="#" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <a href="{{route('admin_eventsForApproval')}}" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-7 h-7">
                                     <path d="M438-223.37 293.37-367.76l60.39-60.39L438-343.91l168.24-168.24 60.39 60.39L438-223.37ZM202.87-71.87q-37.78 0-64.39-26.61t-26.61-64.39v-554.26q0-37.78 26.61-64.39t64.39-26.61H240v-80h85.5v80h309v-80H720v80h37.13q37.78 0 64.39 26.61t26.61 64.39v554.26q0 37.78-26.61 64.39t-64.39 26.61H202.87Zm0-91h554.26V-560H202.87v397.13Z" />
                                 </svg>
@@ -116,7 +125,6 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('admin_equipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
-
                                 </li>
                             </ul>
                         </li>
@@ -140,6 +148,28 @@
                                 <li>
                                     <a href="{{ route('admin_approvalEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Equipment</a>
 
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="p-3 rounded-md relative">
+                            <!-- Dropdown Button -->
+                            <button type="button" class="dropdownButton flex items-center w-full p-2 -ml-1 text-base text-white transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0">
+                                    <path d="M686-132 444-376q-20 8-40.5 12t-43.5 4q-100 0-170-70t-70-170q0-36 10-68.5t28-61.5l146 146 72-72-146-146q29-18 61.5-28t68.5-10q100 0 170 70t70 170q0 23-4 43.5T584-516l244 242q12 12 12 29t-12 29l-84 84q-12 12-29 12t-29-12Z" />
+                                </svg>
+                                <span class="ml-3 flex-1 sidebar-text font-bold text-left rtl:text-right whitespace-nowrap">Maintenance</span>
+                                <svg id="dropdownIcon" class="w-3 h-3 transition-transform duration-300 transform" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                                </svg>
+                            </button>
+
+                            <ul id="dropdownContent" class="hidden py-2 space-y-2">
+                                <li>
+                                    <a href="#" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Facility</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin_mainteInventory') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Inventory</a>
                                 </li>
                             </ul>
                         </li>
@@ -268,36 +298,34 @@
 
                     <!-- Table -->
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <table id="reqSuppTable" class="w-full text-sm text-left rtl:text-right text-black border-2 border-gray-300">
-                            <thead class="table_color text-xs text-white uppercase">
+                        <table id="reqSuppTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-sm text-white dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
-                                        <span class="flex items-center">
-                                            Status
-                                        </span>
+                                    <th scope="col" class="px-6 py-3">
+                                        Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
-                                        <span class="flex items-center">
-                                            Name
-                                        </span>
+                                    <th scope="col" class="px-6 py-3">
+                                        Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
-                                        <span class="flex items-center">
-                                            Department
-                                        </span>
+                                    <th scope="col" class="px-6 py-3">
+                                        Department
                                     </th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">Date</th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">Action</th>
+                                    <th scope="col" class="px-6 py-30">
+                                        Date
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody" class="">
 
-                                <tr class="cursor-pointer table-row border-b border-gray-300" data-index="" data-id="">
-                                    <td class="px-6 py-3 border-b border-gray-300">Waiting for Pickup</td>
-                                    <td class="px-6 py-3 border-b border-gray-300">VicThor</td>
-                                    <td class="px-6 py-3 border-b border-gray-300">Faculty Teacher</td>
-                                    <td class="px-6 py-3 border-b border-gray-300">2024-08-23</td>
-                                    <td class="px-6 py-3 border-b border-gray-300">
+                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Waiting for Pickup</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">VicThor</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Faculty Teacher</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">2024-08-23</td>
+                                    <td class="px-6 py-4">
                                         <button id="ViewSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                                         <button id="RelSupBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Release</button>
                                         <button id="RevSupBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Revoke</button>
@@ -353,7 +381,7 @@
                         </div>
 
 
-                        <!-- Revoke Popup Card -->      
+                        <!-- Revoke Popup Card -->
                         <div id="RevSupPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                             <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -374,7 +402,7 @@
                                     <button id="closeRevSupPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
                                 </div>
                             </div>
-                        </div>  
+                        </div>
 
 
 

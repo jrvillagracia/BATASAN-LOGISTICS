@@ -13,13 +13,19 @@ return new class extends Migration
     {
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
+            $table->string('EquipmentControlNo');
+            $table->string('EquipmentBrandName');
             $table->string('EquipmentName');
             $table->string('EquipmentCategory');
+            $table->string('EquipmentType');
+            $table->string('EquipmentColor');
+            $table->string('EquipmentUnit');
             $table->integer('EquipmentQuantity');
             $table->date('EquipmentDate');
-            $table->decimal('EquipmentPrice', 65, 2);
-            $table->string('EquipmentDepartment');
+            $table->decimal('EquipmentUnitPrice', 65, 2);
+            $table->string('EquipmentClassification');
             $table->string('EquipmentSKU');
+            $table->string('EquipmentSerialNo');
             $table->timestamps();
         });
     }

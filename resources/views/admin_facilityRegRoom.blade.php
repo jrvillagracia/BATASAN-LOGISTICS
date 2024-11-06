@@ -10,20 +10,26 @@
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/admin_facilityRegRoom.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_facilityRegRoom.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css"> -->
 
-    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script> -->
+
 </head>
 
-<body class="h-screen">
+<body class="h-screen overflow-x-hidden">
     <div class="flex">
         <!-- Sidebar --> <!-- May na Update dito -->
         <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -82,17 +88,19 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="{{route('admin_facilityRegRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Regular Room</a>
+                                    <a href="{{route('admin_facilityRegRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Instructional Room</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('admin_facilitySpecRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Special Room</a>
-
+                                    <a href="{{route('admin_facilitySpecRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Laboratory Room</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin_facilityOfficeRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Office Room</a>
                                 </li>
                             </ul>
                         </li>
 
                         <li class="hover:bg-gray-200 p-3 rounded-md">
-                            <a href="#" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <a href="{{route('admin_eventsForApproval')}}" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-7 h-7">
                                     <path d="M438-223.37 293.37-367.76l60.39-60.39L438-343.91l168.24-168.24 60.39 60.39L438-223.37ZM202.87-71.87q-37.78 0-64.39-26.61t-26.61-64.39v-554.26q0-37.78 26.61-64.39t64.39-26.61H240v-80h85.5v80h309v-80H720v80h37.13q37.78 0 64.39 26.61t26.61 64.39v554.26q0 37.78-26.61 64.39t-64.39 26.61H202.87Zm0-91h554.26V-560H202.87v397.13Z" />
                                 </svg>
@@ -144,6 +152,28 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="p-3 rounded-md relative">
+                            <!-- Dropdown Button -->
+                            <button type="button" class="dropdownButton flex items-center w-full p-2 -ml-1 text-base text-white transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-6 h-7 flex-shrink-0">
+                                    <path d="M686-132 444-376q-20 8-40.5 12t-43.5 4q-100 0-170-70t-70-170q0-36 10-68.5t28-61.5l146 146 72-72-146-146q29-18 61.5-28t68.5-10q100 0 170 70t70 170q0 23-4 43.5T584-516l244 242q12 12 12 29t-12 29l-84 84q-12 12-29 12t-29-12Z" />
+                                </svg>
+                                <span class="ml-3 flex-1 sidebar-text font-bold text-left rtl:text-right whitespace-nowrap">Maintenance</span>
+                                <svg id="dropdownIcon" class="w-3 h-3 transition-transform duration-300 transform" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                                </svg>
+                            </button>
+
+                            <ul id="dropdownContent" class="hidden py-2 space-y-2">
+                                <li>
+                                    <a href="#" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Facility</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin_mainteInventory') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Inventory</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -171,7 +201,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
-                    <h1 class="text-3xl font-bold ml-2">Facility Regular Room</h1>
+                    <h1 class="text-3xl font-bold ml-2">Instructional Facility</h1>
                 </div>
 
                 <!-- Breadcrumb -->
@@ -187,7 +217,7 @@
                                 <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                                 </svg>
-                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Regular Rooms</a>
+                                <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Instructional Rooms</a>
                             </div>
                         </li>
                         <!-- Add additional breadcrumbs here -->
@@ -203,7 +233,7 @@
                     <div class="flex justify-between items-center mt-4 px-9 py-2">
                         <!-- Left-Aligned Buttons -->
                         <div id="tabs-container" class="relative">
-                            <a href="#" class="button border-b-2 border-blue-500  py-2 px-4 transition-all duration-300 translate-x-2">Room Regular Facility</a>
+                            <a href="#" class="button border-b-2 border-blue-500  py-2 px-4 transition-all duration-300 translate-x-2">Instructional Room Facility</a>
                         </div>
 
                         <div class=" flex items-center space-x-4">
@@ -296,46 +326,49 @@
 
                     <!-- Table -->
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <table id="RegFacTable" class="w-full text-sm text-left rtl:text-right text-black border-2 border-gray-300">
-                            <thead class="table_color text-xs text-white uppercase ">
+                        <table id="RegFacTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-sm text-white dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
-                                        <span class="flex items-center">
-                                            Building Name
-                                        </span>
+                                    <th scope="col" class="px-6 py-3">
+                                        Building Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
-                                        <span class="flex items-center">
-                                            Room
-                                        </span>
+                                    <th scope="col" class="px-6 py-3">
+                                        Room
                                     </th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
-                                        <span class="flex items-center">
-                                            Status
-                                        </span>
+                                    <th scope="col" class="px-6 py-3">
+                                        Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
-                                        <span class="flex items-center">
-                                            Capacity
-                                        </span>
+                                    <th scope="col" class="px-6 py-3">
+                                        Capacity
                                     </th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">
-                                        <span class="flex items-center">
-                                            Shift Type
-                                        </span>
+                                    <th scope="col" class="px-6 py-3">
+                                        Shift Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3 border-b border-gray-300">Action</th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Assigned
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
                                 @foreach($regularRooms as $room)
-                                <tr class="cursor-pointer table-row border-b border-gray-300 lefttxtdata" data-index="{{$loop->index}}" data-id="{{$room->id}}">
-                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->BldName}}</td>
-                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->Room}} </td>
-                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->facilityStatus}}</td>
-                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->Capacity}}</td>
-                                    <td class="px-6 py-3 border-b border-gray-300 lefttxtdata">{{$room->facilityShift}}</td>
-                                    <td class="px-6 py-3 border-b border-gray-300"></td>
+                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="{{$loop->index}}" data-id="{{$room->id}}">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->BldName}}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->Room}} </td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->facilityStatus}}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->Capacity}}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->facilityShift}}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->facilityShift}}</td>
+                                    <td class="px-6 py-4">
+                                        <button id="editINSTButton" type="button">
+                                            <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
+                                                <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </td>
                                 </tr>
                                 @endforeach
                                 <!-- Dynamic rows will be inserted here -->

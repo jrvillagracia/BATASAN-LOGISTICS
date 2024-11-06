@@ -3,18 +3,12 @@
 }
 
 
-#RegFacTable tbody tr:nth-child(even) {
-    background-color: #dfdfdf; /* Light gray for even rows */
-}
-#RegFacTable tbody tr:nth-child(odd) {
-    background-color: #ffffff; /* White for odd rows */
+#RegFacTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
 }
 
-.table_color{
-    background-color: #163172;
-}
-
-.lefttxtdata
-{
-    text-align: left !important;
+#RegFacTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
 }

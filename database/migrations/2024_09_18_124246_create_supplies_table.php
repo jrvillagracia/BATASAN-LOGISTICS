@@ -13,13 +13,19 @@ return new class extends Migration
     {
         Schema::create('supplies', function (Blueprint $table) {
             $table->id();
+            $table->string('SuppliesControlNo');
+            $table->string('SuppliesBrandName');
             $table->string('SuppliesName');
             $table->string('SuppliesCategory');
+            $table->string('SuppliesType');
+            $table->string('SuppliesColor');
+            $table->string('SuppliesUnit');
             $table->integer('SuppliesQuantity');
             $table->date('SuppliesDate');
-            $table->decimal('SuppliesPrice', 65, 2);
-            $table->string('SuppliesDepartment');
+            $table->decimal('SuppliesUnitPrice', 65, 2);
+            $table->string('SuppliesClassification');
             $table->string('SuppliesSKU');
+            $table->string('SuppliesSerialNo');
             $table->timestamps();
         });
     }

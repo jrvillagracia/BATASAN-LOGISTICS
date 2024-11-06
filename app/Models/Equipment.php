@@ -12,12 +12,19 @@ class Equipment extends Model
     protected $table = 'equipment';
 
     protected $fillable = [
+        'EquipmentControlNo',
+        'EquipmentBrandName',
         'EquipmentName',
         'EquipmentCategory',
+        'EquipmentType',
+        'EquipmentColor',
+        'EquipmentUnit',
         'EquipmentQuantity',
         'EquipmentDate',
-        'EquipmentPrice',
+        'EquipmentUnitPrice',
         'EquipmentDepartment',
-        'EquipmentSKU'
+        'EquipmentClassification',
+        'EquipmentSKU',
+        'EquipmentSerialNo'
     ];
 }

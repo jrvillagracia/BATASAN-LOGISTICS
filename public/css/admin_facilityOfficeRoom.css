@@ -1,0 +1,14 @@
+#OfficeFormCard {
+    z-index: 50; /* Increase the z-index  */
+}
+
+
+#OfficeFacTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+#OfficeFacTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}

@@ -12,12 +12,19 @@ class Supplies extends Model
     protected $table = 'supplies';
 
     protected $fillable = [
+        'SuppliesControlNo',
+        'SuppliesBrandName',
         'SuppliesName',
         'SuppliesCategory',
+        'SuppliesType',
+        'SuppliesColor',
+        'SuppliesUnit',
         'SuppliesQuantity',
         'SuppliesDate',
-        'SuppliesPrice',
+        'SuppliesUnitPrice',
         'SuppliesDepartment',
-        'SuppliesSKU'
+        'SuppliesClassification',
+        'SuppliesSKU',
+        'SuppliesSerialNo'
     ];
 }
