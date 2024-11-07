@@ -18,7 +18,7 @@ class EquipmentController extends Controller
                 'EquipmentSKU',
                 'EquipmentQuantity',
                 DB::raw('COUNT(*) as EquipmentQuantity'),
-                DB::raw('SUM(COALESCE(EquipmentUnitPrice, 0) * COALESCE(EquipmentQuantity, 0)) AS totalPrice'),
+                DB::raw('SUM(COALESCE("EquipmentUnitPrice", 0) * COALESCE("EquipmentQuantity", 0)) AS totalPrice'),
                 DB::raw('COUNT(*) as totalItems') 
             )
             ->groupBy('EquipmentBrandName', 'EquipmentName', 'EquipmentCategory', 'EquipmentSKU', 'EquipmentQuantity')
