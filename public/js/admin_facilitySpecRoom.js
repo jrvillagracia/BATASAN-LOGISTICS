@@ -103,6 +103,74 @@ $(document).ready(function () {
     });
 });
 
+
+// SELECT ALL BUTTOn
+$(document).ready(function() {
+    let isAllChecked = false;
+
+    $('#SpecRoomSelectAllBtn').click(function() {
+        isAllChecked = !isAllChecked;
+        $('#SpecFacTable').find('input[type="checkbox"]').prop('checked', isAllChecked);
+
+        if (isAllChecked) {
+            $(this).text('Unselect All');
+        } else {
+            $(this).text('Select All');
+        }
+    });
+});
+
+
+
+// VIEW 
+$(document).ready(function () {
+    $('#viewLABButton').click(function () {
+        console.log('View Laboratory Button is Clicked.');
+        $('#ViewLABPopupCard').removeClass('hidden');
+    });
+
+    $('#closeViewLABPopupCard').click(function () {
+        console.log('Close "X" Equipment Button is Clicked.');
+        $('#ViewLABPopupCard').addClass('hidden');
+    });
+});
+
+
+
+// EDIT
+$(document).ready(function () {
+    $('#editLABButton').click(function () {
+        console.log('Show Add Facility Button Clicked');
+        $('#SpecEditFormCard').removeClass('hidden');
+    });
+
+
+    $('#SpecEditCloseFormBtn').click(function () {
+        console.log('Close Add Facility Button Clicked');
+        $('#SpecEditFormCard').addClass('hidden');
+    });
+
+
+    $('#SpecEditCancelFormBtn').click(function () {
+        console.log('Close Add Facility Button Clicked');
+        $('#SpecEditFormCard').addClass('hidden');
+    });
+
+    $('#SpecEditSaveFormBtn').click(function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Saved!',
+            text: 'Your action has been successfully saved',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#SpecEditFormCard").addClass("hidden");
+        });
+    });
+});
+
+
+
 // MAIN TABLE DATATABLES
 document.addEventListener("DOMContentLoaded", function() {
     // Check if the table exists and simple-datatables is loaded
