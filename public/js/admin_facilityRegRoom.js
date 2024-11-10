@@ -73,7 +73,15 @@ $(document).ready(function () {
                 $('#RegFormCard').addClass('hidden');
 
                 // Show success message
-                Swal.fire("Saved!", "", "success");
+                // Swal.fire("Saved!", "", "success");
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Saved!',
+                    text: 'Your action has been successfully submitted',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
 
                 // Optionally, you can append the new data to the table or reload the table
                 $('#tableBody').append(
@@ -102,8 +110,74 @@ $(document).ready(function () {
 });
 
 
+// SELECT ALL BUTTOn
+$(document).ready(function() {
+    let isAllChecked = false;
+
+
+    $('#RegRoomSelectAllBtn').click(function() {
+        isAllChecked = !isAllChecked;
+        $('#RegFacTable').find('input[type="checkbox"]').prop('checked', isAllChecked);
+
+        if (isAllChecked) {
+            $(this).text('Unselect All');
+        } else {
+            $(this).text('Select All');
+        }
+    });
+});
+
+
+// VIEW 
+$(document).ready(function () {
+    $('#viewINSTpButton').click(function () {
+        console.log('View Instructional Button is Clicked.');
+        $('#ViewINSTPopupCard').removeClass('hidden');
+    });
+
+    $('#closeViewINSTPopupCard').click(function () {
+        console.log('Close "X" Equipment Button is Clicked.');
+        $('#ViewINSTPopupCard').addClass('hidden');
+    });
+});
+
+
+// EDIT
+$(document).ready(function () {
+    $('#editINSTButton').click(function () {
+        console.log('Show Add Facility Button Clicked');
+        $('#RegEditFormCard').removeClass('hidden');
+    });
+
+
+    $('#RegEditCloseFormBtn').click(function () {
+        console.log('Close Add Facility Button Clicked');
+        $('#RegEditFormCard').addClass('hidden');
+    });
+
+
+    $('#RegEditCancelFormBtn').click(function () {
+        console.log('Close Add Facility Button Clicked');
+        $('#RegEditFormCard').addClass('hidden');
+    });
+
+    $('#RegEditSaveFormBtn').click(function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Saved!',
+            text: 'Your action has been successfully saved',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#RegEditFormCard").addClass("hidden");
+        });
+    });
+});
+
+
+
 // MAIN TABLE DATATABLES
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Check if the table exists and simple-datatables is loaded
     if (document.getElementById("RegFacTable") && typeof simpleDatatables !== 'undefined') {
         const dataTable = new simpleDatatables.DataTable("#RegFacTable", {
@@ -114,12 +188,12 @@ document.addEventListener("DOMContentLoaded", function() {
             nextPrev: true,
             sortable: true,
 
-            labels:{
+            labels: {
                 info: "Showing <strong>{start}</strong> - <strong>{end}</strong> of <strong>{rows}</strong>",
             }
         });
 
-        document.getElementById("RegSearch").addEventListener("keyup", function() {
+        document.getElementById("RegSearch").addEventListener("keyup", function () {
             let searchTerm = this.value;
             dataTable.search(searchTerm);
         });

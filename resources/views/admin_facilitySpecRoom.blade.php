@@ -237,6 +237,7 @@
                         <!-- Left-Aligned Buttons -->
                         <div id="tabs-container" class="relative">
                             <a href="#" class="button border-b-2 border-blue-500  py-2 px-4 transition-all duration-300 translate-x-2">Laboratory Facility</a>
+                            <a href="#" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
                         </div>
 
                         <div class=" flex items-center space-x-4">
@@ -256,7 +257,8 @@
 
                             <!-- Add Item Button -->
                             <button id="SpecRoomFormBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">&plus; Add Facility</button>
-
+                            <button id="SpecRoomExportBtn" class="bg-green-500 text-white p-2 rounded hover:bg-green-600">Export File</button>
+                            <button id="SpecRoomSelectAllBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Select all</button>
                         </div>
                     </div>
 
@@ -265,7 +267,7 @@
                         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
 
                             <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-xl font-bold mb-4">Add Special Room</h2>
+                                <h2 class="text-xl font-bold mb-4">Add Facility Room</h2>
                                 <button id="SpecCloseFormBtn" class="text-gray-500 hover:text-gray-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -275,6 +277,19 @@
 
                             <form id="SpecForm" action="{{route ('room.store') }}" method="POST">
                                 @csrf
+
+                                <div class="mb-4">
+                                    <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input id="SpecRoomDate" datepicker datepicker-buttons datepicker-autoselect-today type="text" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                    </div>
+                                </div>
+
                                 <div class="mb-4">
                                     <label for="name" class="block text-sm font-semibold mb-2">Building Name</label>
                                     <input type="text" id="SpecBldName" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Building Name">
@@ -286,35 +301,8 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="shift" class="block text-sm font-semibold mb-2">Shift</label>
-                                    <select id="facilityShiftSpec" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                        <option value="">Select Shift</option>
-                                        <option value="morning">Morning</option>
-                                        <option value="night">Night</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="status" class="block text-sm font-semibold mb-2">Status</label>
-                                    <select id="facilityStatusSpec" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                        <option value="">Select Status</option>
-                                        <option value="Available">Available</option>
-                                        <option value="Not Available">Not Available</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-4">
                                     <label for="SpecCapacity" class="block text-sm font-semibold mb-2">Capacity</label>
                                     <input type="number" id="SpecCapacity" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Capacity">
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="status" class="block text-sm font-semibold mb-2">Room Type</label>
-                                    <select id="facilityRTSpec" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                        <option value="">Select Room Type</option>
-                                        <option value="Regular">Regular</option>
-                                        <option value="Special">Special</option>
-                                    </select>
                                 </div>
 
                                 <div class="flex justify-end space-x-2">
@@ -352,6 +340,8 @@
                                     <th scope="col" class="px-6 py-3">
                                         Action
                                     </th>
+                                    <th scope="col" class="px-6 py-3">
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
@@ -364,12 +354,26 @@
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->facilityShift}}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
                                     <td class="px-6 py-4">
+                                        <button id="viewLABButton" type="button">
+                                            <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </button>
+
                                         <button id="editLABButton" type="button">
                                             <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                                 <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
                                                 <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
                                             </svg>
                                         </button>
+
+                                    <td scope="col" class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <input id="SpecRoomCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                        </div>
+                                    </td>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -377,7 +381,90 @@
                             </tbody>
                         </table>
 
+                        <!-- View Popup Card -->
+                        <div id="ViewLABPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                            <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 class="text-lg font-semibold">Room/Facility Information</h2>
+                                    <button id="closeViewLABPopupCard" class="text-gray-500 hover:text-gray-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="text-sm">
+                                    <p class="mb-2"><strong>Status:</strong> in Use</p>
+                                    <p class="mb-2"><strong>Building Name:</strong> Liban A</p>
+                                    <p class="mb-2"><strong>Room:</strong> 101</p>
+                                    <p class="mb-2"><strong>Capacity:</strong> 45</p>
+                                    <p class="mb-2"><strong>Shift Type:</strong> AM</p>
+                                    <p class="mb-2"><strong>Facility Type:</strong> Instructional</p>
+                                    <p class="mb-2"><strong>Assigned Date:</strong> 09/12/2024</p>
+                                    <p class="mb-2"><strong>Assigned:</strong> Grade 8 Agoho <br> Grade 9 Aluminum</p>
+                                    <div class="pt-4">
+                                        <h2 class="text-lg font-semibold">Inventory in the Room</h2>
+                                    </div>
+                                    <p class="mb-2"><strong>Supplies:</strong></p>
+                                    <p class="ml-5">Chalk</p>
+                                    <p class="mb-2"><strong>Equipment:</strong></p>
+                                    <p class="ml-5">Chair: 45</p>
+                                    <p class="ml-5">TV: 1</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Edit Popup Card -->
+                        <div id="SpecEditFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                            <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
+
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 class="text-xl font-bold mb-4">Edit Facility Room</h2>
+                                    <button id="SpecEditCloseFormBtn" class="text-gray-500 hover:text-gray-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <form id="SpecEditForm" action="" method="">
+                                    @csrf
+
+                                    <div class="mb-4">
+                                        <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                </svg>
+                                            </div>
+                                            <input id="SpecEditRoomDate" datepicker datepicker-buttons datepicker-autoselect-today type="text" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="name" class="block text-sm font-semibold mb-2">Building Name</label>
+                                        <input type="text" id="SpecEditBldName" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Building Name">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="room" class="block text-sm font-semibold mb-2">Room</label>
+                                        <input type="text" id="SpecEditRoom" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Room">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="SpecCapacity" class="block text-sm font-semibold mb-2">Capacity</label>
+                                        <input type="number" id="SpecEditCapacity" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Capacity">
+                                    </div>
+
+                                    <div class="flex justify-end space-x-2">
+                                        <button id="SpecEditCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                                        <button id="SpecEditSaveFormBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
