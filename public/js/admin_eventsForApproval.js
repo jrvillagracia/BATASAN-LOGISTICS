@@ -4,47 +4,24 @@ $(document).ready(function() {
         event.preventDefault();
         console.log('Show Event Form Button Clicked');
 
-        // Set current date and time in the input fields
         const currentDate = new Date();
-        
-        // Format date as MM/DD/YYYY
-        const formattedDate = currentDate.toLocaleDateString('en-US', {
-            month: '2-digit',
-            day: '2-digit',
-            year: 'numeric'
-        });
-        
-        // Format time as HH:MM in 24-hour format
-        const formattedTime = currentDate.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
-        
-        // Set the values to the input fields
+        const formattedDate = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+        const formattedTime = currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+
         $('#EventApprDate').val(formattedDate);
         $('#EventApprTime').val(formattedTime);
 
         $('#EventFormCard').removeClass('hidden'); 
     });
 
-    // Hide the form card when the close button is clicked
-    $('#EventCancelFormBtn').click(function(event) {
+    $('#EventCancelFormBtn, #EventCloseFormBtn').click(function(event) {
         event.preventDefault();
-        console.log('Close Form Button Clicked');
-        $('#EventFormCard').addClass('hidden'); 
-    });
-
-    $('#EventCloseFormBtn').click(function(event) {
-        event.preventDefault();
-        console.log('Close X Button Clicked');
         $('#EventFormCard').addClass('hidden'); 
     });
 
     $("#EventSubmitFormBtn").click(function(event) {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault(); 
 
-        // Gather data from the form inputs
         const eventData = {
             EventApprTime: $('#EventApprTime').val(),
             EventApprDate: $('#EventApprDate').val(),
@@ -58,16 +35,17 @@ $(document).ready(function() {
             EventApprLocation: $('#EventApprLocation').val(),
             EventApprProductName: $('#EventApprProductName').val(),
             EventApprQuantity: $('#EventApprQuantity').val(),
-            _token: $('meta[name="csrf-token"]').attr('content'), // Include CSRF token
+            _token: $('meta[name="csrf-token"]').attr('content'),
         };
 
-        // Perform AJAX request to save event data
+        // Check if the table is empty
+        const isTableEmpty = $('#tableBody').length === 0;
+
         $.ajax({
-            url: '/events/store', // Adjust the URL to your route
+            url: '/events/store',
             method: 'POST',
             data: eventData,
             success: function(response) {
-                console.log(response); // Handle the success response
                 Swal.fire({
                     icon: 'success',
                     title: 'Submitted',
@@ -76,10 +54,16 @@ $(document).ready(function() {
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
                     $("#EventFormCard").addClass("hidden"); 
+                    if (isTableEmpty) {
+                        // Reload the page if the table was initially empty
+                        location.reload();
+                    } else {
+                        // If table has entries, add the new row without reloading
+                        $('#yourTableId tbody').append(`<tr><td>${response.newDataField}</td></tr>`);
+                    }
                 });
             },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+            error: function(xhr) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -91,6 +75,7 @@ $(document).ready(function() {
         });
     });
 });
+
 
 
 // ======================== END FOR ADD EVENT BUTTON ============================= //

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Events\Events;
 use App\Models\Events\ApprovedReq;
+use App\Models\Events\CompleteReq;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -187,7 +188,7 @@ class ApproveController extends Controller
         }
 
         // Find the event by its ID
-        $event = Events::find($request->id);
+        $event = ApprovedReq::find($request->id);
 
         if ($event) {
             // Insert the event details into the 'complete_req' table using the same 'eventId'

@@ -206,7 +206,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            @endforeach
+                    
                             
                             <tbody id="tableViewBody">
                                 @foreach($mergedItems as $item)
@@ -235,6 +235,7 @@
                     </div>
                 </div>
             </div>
+            @endforeach
 
             <!-- Completed Popup Card -->
             <div id="CompletedEventApprReqPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
@@ -302,7 +303,6 @@
             </div>
 
             <!-- Cancel Popup Card -->
-            @foreach ($events as $event)
             <div id="CancelEventPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -317,7 +317,6 @@
                     </div>
                 </div>
             </div>
-            @endforeach
 
             <!-- Pagination -->
         </div>

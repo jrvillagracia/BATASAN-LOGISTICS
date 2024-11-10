@@ -55,13 +55,14 @@ $(document).ready(function() {
 
 // ======================== SET ITEM BUTTON ============================= //
 $(document).ready(function () {
-    // Event Set Item Button - Show Event Details
+    // Event Set Item Button - Show Event Details and Table
     $(document).on('click', '.EventApprReqSetItemBTN', function (event) {
         event.preventDefault();
         console.log('Set Item Button is Clicked.');
 
         // Get the event ID from the clicked button
         let eventId = $(this).data('id');
+        console.log('Event ID:', eventId);
 
         if (eventId) {
             $.ajax({
@@ -70,37 +71,14 @@ $(document).ready(function () {
                 data: { id: eventId },
                 success: function (response) {
                     if (response.eventDetails) {
-                        // Populate the modal with the event details
-                        $('#SetItemEventApprReqPopupCard').html(`
-                            <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-8xl h-auto overflow-auto">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h2 class="text-lg font-semibold">Set Item</h2>
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-4 text-sm w-full">
-                                    <div>
-                                        <p class="mb-2"><strong>Date:</strong> ${response.eventDetails.EventApprDate}</p>
-                                        <p class="mb-2"><strong>Time:</strong> ${response.eventDetails.EventApprTime}</p>
-                                        <p class="mb-2"><strong>Requesting Office/Unit:</strong> ${response.eventDetails.EventApprRequestOffice}</p>
-                                    </div>
-
-                                    <div>
-                                        <p class="mb-2"><strong>Event Name:</strong> ${response.eventDetails.EventApprName}</p>
-                                        <p class="mb-2"><strong>Event Date:</strong> ${response.eventDetails.StartEventApprDate}</p>
-                                        <p class="mb-2"><strong>Event Time:</strong> ${response.eventDetails.StartEventApprTime}</p>
-                                        <p class="mb-2"><strong>Event Location:</strong> ${response.eventDetails.EventApprLocation}</p>
-                                    </div>
-                                </div>
-
-                                <div class="text-sm">
-                                    <p class="mb-2"><strong>Required Equipment and Supplies</strong></p>
-                                    <p class="mb-2"><strong>Product Name:</strong> ${response.eventDetails.EventApprProductName}</p>
-                                    <p class="mb-2"><strong>Quantity:</strong> ${response.eventDetails.EventApprQuantity}</p>
-                                </div>
-                            </div>
-                        `);
                         // Show the modal
                         $('#SetItemEventApprReqPopupCard').removeClass('hidden');
+
+                        // Assuming the event details contain the table data in HTML format
+                        $('#eventDetailsContainer').html(response.eventDetails);
+
+                        // Ensure the table inside the modal is displayed
+                        $('#eventDetailsTable').removeClass('hidden'); // Make sure the table is visible
                     } else {
                         alert('Event details could not be loaded.');
                     }
@@ -113,8 +91,8 @@ $(document).ready(function () {
     });
 
     // Close the popup modal when clicking the close button
-    $('.closeSetItemEventApprReqPopupCard').click(function (event) {
-        event.preventDefault();  // Prevent form submission or link navigation
+    $(document).on('click', '.closeSetItemEventApprReqPopupCard', function (event) {
+        event.preventDefault();
         console.log('Close View Button is Clicked.');
         $('#SetItemEventApprReqPopupCard').addClass('hidden');
     });
@@ -127,43 +105,41 @@ $(document).ready(function () {
     });
 
     // Close the popup explicitly when clicking on the close button inside
-    $('#closeSetItemEventApprReqPopupCard').click(function () {
+    $(document).on('click', '#closeSetItemEventApprReqPopupCard', function () {
         $('#SetItemEventApprReqPopupCard').addClass('hidden');
+    });
+
+    // Submit Set Item Event
+    $(document).on('click', '#submitSetItemEventApprReqPopupCard', function () {
+        event.preventDefault();
+        Swal.fire({
+            icon: 'success',
+            title: 'Submitted',
+            text: 'Item Set successfully submitted',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#SetItemEventApprReqPopupCard").addClass("hidden");
+        });
     });
 });
 
 
-    $(document).ready(function() {
-        $("#submitSetItemEventApprReqPopupCard").click(function () {
-            event.preventDefault();
-            Swal.fire({
-                icon: 'success',
-                title: 'Submitted',
-                text: 'Item Set successfully submitted',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                $("#SetItemEventApprReqPopupCard").addClass("hidden");
-            });
-        });
-    });
-
-
 // ======================== COMPLETED BUTTON ============================= //
 $(document).ready(function () {
-    // Completed button event delegation
+    // Event delegation for Completed button
     $(document).on('click', '.EventApprReqCompletedBTN', function () {
         console.log('Completed Event Button is Clicked.');
         $('#CompletedEventApprReqPopupCard').removeClass('hidden');
     });
 
-    $('#closeCompletedEventApprReqPopupCard').click(function (event) {
+    $(document).on('click', '#closeCompletedEventApprReqPopupCard', function (event) {
         event.preventDefault();
         console.log('Close Completed Button is Clicked.');
         $('#CompletedEventApprReqPopupCard').addClass('hidden');
     });
 
-    $('#submitCompletedEventApprReqPopupCard').click(function (event) {
+    $(document).on('click', '#submitCompletedEventApprReqPopupCard', function (event) {
         event.preventDefault();
         Swal.fire({
             icon: 'success',
@@ -177,7 +153,6 @@ $(document).ready(function () {
     });
 });
 
-
 // ======================== CANCEL BUTTON ============================= //
 $(document).ready(function () {
     // Show the popup when the EventApprReqCancelBTN button is clicked
@@ -185,8 +160,8 @@ $(document).ready(function () {
         $("#CancelEventPopupCard").removeClass("hidden");
 
         // Store the event ID in the submit button's data attribute
-        const eventId = $(this).data("event-id");
-        $("#submitCancelEventPopupCard").data("event-id", eventId);
+        const eventId = $(this).data("id");
+        $("#submitCancelEventPopupCard").data("id", eventId);
     });
 
     // Close popup and show cancellation message when Cancel button is clicked
@@ -208,7 +183,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         // Get the event ID stored in the submit button's data attribute
-        const eventId = $(this).data("event-id");
+        const eventId = $(this).data("id");
         console.log("Submitting cancellation for Event ID:", eventId);
 
         // AJAX call to cancel the event
@@ -230,6 +205,7 @@ $(document).ready(function () {
                 }).then(() => {
                     $("#CancelEventPopupCard").addClass("hidden");
                     // Optionally, refresh the list or update the UI
+                    location.reload();
                 });
             },
             error: function (xhr) {
@@ -245,7 +221,6 @@ $(document).ready(function () {
         });
     });
 });
-
 
 
 

@@ -155,7 +155,7 @@ Route::post('/events/decline', [ApprovalController::class, 'decline'])->name('ev
 Route::get('/admin_eventsAprRequest', [ApproveController::class, 'index'])->name('admin_eventsAprRequest');
 Route::get('/event/details', [ApproveController::class, 'getEventDetails'])->name('events_details');
 Route::get('/events_Apr_details', [ApproveController::class, 'getEventDetails'])->name('events_Apr_details');
-Route::post('/cancel-event', [ApprovalController::class, 'cancel'])->name('cancel.event');
+Route::post('/cancel-event', [ApproveController::class, 'cancel'])->name('cancel.event');
 
 
 
