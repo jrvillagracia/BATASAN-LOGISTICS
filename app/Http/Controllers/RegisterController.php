@@ -21,8 +21,9 @@ class RegisterController extends Controller
         return view('employee_login');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+
         return view('admin_dashboard');
     }
 

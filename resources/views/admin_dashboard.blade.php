@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+
+    <script src="{{asset('js/admin_dashboard.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 </head>
 
 <body class="h-screen overflow-x-hidden">
@@ -158,6 +162,18 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="hover:bg-gray-200 p-3 rounded-md">
+                            <a href="http://192.168.2.62:5173/admin/dashboard" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                                <span class="material-symbols-outlined">account_box</span>
+                                <span class="sidebar-text font-bold">Student Information</span>
+                            </a>
+                        </li>
+                        <li class="hover:bg-gray-200 p-3 rounded-md">
+                            <a href="http://192.168.2.237:9901/admin/home" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                                <span class="material-symbols-outlined">groups_2</span>
+                                <span class="sidebar-text font-bold">Human Resources</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -166,19 +182,37 @@
 
 
 
+
+
         <!-- Main Content --> <!-- EASE IN OUT n MARGIN SIZE-->
         <main id="main-content" class="flex-1 p-8 transition-all duration-300 ease-in-out ml-80">
             <header class="flex justify-end mb-8">
-                <div class="bg-gray-200 rounded-full px-4 py-2 inline-flex items-center space-x-4">
+                <form action="/logout" method="POST">
+                    @csrf
+                    @method('POST')
                     <div>
-                        <span class="font-semibold text-black">Jersom Tumacder</span>
-                        <p class="text-gray-600 text-xs pl-11">administrator</p>
+                        <div class="text-sm bg-gray-200 rounded-full pr-2 pl-1 py-1 inline-flex items-center space-x-4" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <span class="sr-only">Open user menu</span>
+                            <div>
+                                <span id="userFullName"  class="font-semibold text-black">Robert Badong</span>
+                                <p class="text-gray-600 text-xs pl-11">administrator</p>
+                            </div>
+                            <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+                            </svg>
+                        </>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
-                        <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
-                    </svg>
-
-                </div>
+                    <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
+                        <ul id="dropdownContent" class="py-1" role="none">
+                            <li>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 " role="menuitem">My Account</a>
+                            </li>
+                            <li>
+                                <button type="logout-button" class="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100  " role="menuitem">Log Out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
             </header>
             <section>
                 <div class="flex items-center pb-8">
