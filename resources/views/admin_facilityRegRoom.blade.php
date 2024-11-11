@@ -265,7 +265,7 @@
                         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
 
                             <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-xl font-bold mb-4">Add Facility</h2>
+                                <h2 class="text-xl font-bold mb-4">Add Instructional Facility</h2>
                                 <button id="RegCloseFormBtn" class="text-gray-500 hover:text-gray-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -276,6 +276,9 @@
                             <form id="RegForm" action="{{route ('room.store') }}" method="POST">
                                 @csrf
                                 <!-- Input Fields -->
+
+                                <input type="hidden" id="facilityRoomType" value="Instructional">
+                                
                                 <div class="mb-4">
                                     <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
                                     <div class="relative">
@@ -284,13 +287,22 @@
                                                 <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                             </svg>
                                         </div>
-                                        <input id="RegRoomDate" datepicker datepicker-buttons datepicker-autoselect-today type="text" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                        <input id="RegRoomDate" name="facilityRoomDate" datepicker datepicker-buttons datepicker-autoselect-today type="text" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                                     </div>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="name" class="block text-sm font-semibold mb-2">Building Name</label>
                                     <input type="text" id="RegBldName" name="buildingName" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Building Name">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="status" class="block text-sm font-semibold mb-2">Status</label>
+                                    <select id="facilityStatusReg" name="status" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="">Select Status</option>
+                                        <option value="Available">Available</option>
+                                        <option value="Not Available">Not Available</option>
+                                    </select>
                                 </div>
 
                                 <div class="mb-4">
@@ -302,6 +314,8 @@
                                     <label for="RegCapacity" class="block text-sm font-semibold mb-2">Capacity</label>
                                     <input type="number" id="RegCapacity" name="capacity" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Capacity">
                                 </div>
+
+                                
 
                                 <div class="flex justify-end space-x-2">
                                     <button id="RegCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
@@ -343,13 +357,13 @@
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
-                                @foreach($regularRooms as $room)
+                                @foreach($instructionalRooms as $room)
                                 <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="{{$loop->index}}" data-id="{{$room->id}}">
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->BldName}}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->Room}} </td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->facilityStatus}}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->Capacity}}</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$room->facilityShift}}</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
                                     <td class="px-6 py-4">
                                         <button id="viewINSTpButton" type="button">
@@ -365,7 +379,7 @@
                                                 <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
                                             </svg>
                                         </button>
-                                        
+
                                     <td scope="col" class="px-6 py-4">
                                         <div class="flex items-center">
                                             <input id="RegRoomCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -439,6 +453,7 @@
                                             <input id="RegEditDate" datepicker datepicker-buttons datepicker-autoselect-today type="text" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                                         </div>
                                     </div>
+
                                     <div class="mb-4">
                                         <label for="name" class="block text-sm font-semibold mb-2">Building Name</label>
                                         <input type="text" id="RegEditBldName" name="buildingName" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Building Name">

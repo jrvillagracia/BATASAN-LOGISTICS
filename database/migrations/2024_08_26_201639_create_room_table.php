@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('BldName');
             $table->integer('Room');
-            $table->string('facilityShift');
             $table->string('facilityStatus');
             $table->integer('Capacity');
             $table->string('facilityRoomType');
+            $table->date('facilityRoomDate');
             $table->timestamps();
         });
     }

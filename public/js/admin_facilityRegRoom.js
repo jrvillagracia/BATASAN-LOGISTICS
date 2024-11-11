@@ -33,13 +33,13 @@ $(document).ready(function () {
 
         const buildingName = $('#RegBldName').val();
         const room = $('#RegRoom').val();
-        const shift = $('#facilityShiftReg').val();
         const status = $('#facilityStatusReg').val();
         const capacity = $('#RegCapacity').val();
-        const roomType = $('#facilityRoomType').val();
+        const facilityRoomDate = $('#RegRoomDate').val(); // Get the date value
+        
 
         // Check if all values are entered
-        if (buildingName === '' || room === '' || shift === '' || status === '' || capacity === '' || roomType === '') {
+        if (buildingName === '' || room === '' || status === '' || capacity === '' || facilityRoomDate === '') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -50,14 +50,24 @@ $(document).ready(function () {
         }
 
 
+        // Determine facilityRoomType based on the current page/form
+        let facilityRoomType = '';
+        if (window.location.pathname.includes('admin_facilityRegRoom')) {
+            facilityRoomType = 'Instructional';
+        } else if (window.location.pathname.includes('admin_facilitySpecRoom')) {
+            facilityRoomType = 'Laboratory';
+        } else if (window.location.pathname.includes('admin_facilityOfficeRoom')) {
+            facilityRoomType = 'Office';
+        }
+
         // Prepare data for AJAX request
         const formData = {
             buildingName: buildingName,
             room: room,
             status: status,
             capacity: capacity,
-            shift: shift,
-            facilityRoomType: roomType
+            facilityRoomDate: facilityRoomDate,
+            facilityRoomType: facilityRoomType,
         };
 
         // AJAX request
@@ -66,14 +76,20 @@ $(document).ready(function () {
             type: 'POST',  // Request type
             data: formData,  // Data to be sent to the server
             success: function (response) {
-                // Clear form
-                $('#RegForm')[0].reset();
+                console.log(response); // Log the response
+                $('#RegForm')[0].reset(); // Reset form
+                $('#RegFormCard').addClass('hidden'); // Hide the form card
 
-                // Hide form card
-                $('#RegFormCard').addClass('hidden');
-
-                // Show success message
-                // Swal.fire("Saved!", "", "success");
+                // Append the new row to the table
+                const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
+                                   <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
+                                   <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
+                                   <td class="px-6 py-6 border-b border-gray-300">${response.status}</td>
+                                   <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
+                                   <td class="px-6 py-6 border-b border-gray-300"></td>
+                                   <td class="px-6 py-6 border-b border-gray-300"></td>
+                               </tr>`;
+                $('#tableBody').append(newRow);
 
                 Swal.fire({
                     icon: 'success',
@@ -82,18 +98,6 @@ $(document).ready(function () {
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#3085d6'
                 });
-
-                // Optionally, you can append the new data to the table or reload the table
-                $('#tableBody').append(
-                    `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
-                        <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
-                        <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
-                        <td class="px-6 py-6 border-b border-gray-300">${response.status}</td>
-                        <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
-                        <td class="px-6 py-6 border-b border-gray-300">${response.shift}</td>
-                        <td class="px-6 py-6 border-b border-gray-300"></td>
-                    </tr>`
-                );
             },
             error: function (xhr, status, error) {
                 console.log(xhr.responseText);
@@ -108,6 +112,7 @@ $(document).ready(function () {
         });
     });
 });
+
 
 
 // SELECT ALL BUTTOn

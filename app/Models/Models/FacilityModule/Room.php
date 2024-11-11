@@ -18,5 +18,6 @@ class Room extends Model
         'facilityStatus',
         'Capacity',
         'facilityRoomType',
+        'facilityRoomDate',
     ];
 }
