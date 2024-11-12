@@ -5,67 +5,134 @@ namespace App\Http\Controllers\FacilityModule;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Models\FacilityModule\Room;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+
 
 class RoomController extends Controller
 {
-    public function room (Request $request)
+    public function room(Request $request)
     {
         $room = Room::all();
-
-        return response()->json(['room'=> $room]);
+        return response()->json(['room' => $room]);
     }
 
     public function index()
     {
-        $regularRooms = Room::where('facilityRoomType', 'Regular')->get();
+        // Fetch data from the external API
+    $response = Http::get('http://192.168.2.62:3000/api/v1/sis/section/rooms');
+    $foundSections = $response->json()['foundSections'] ?? [];  // Get 'foundSections' from the response
+
+    // Fetch the rooms from your own database
+    $instructionalRooms = Room::where('facilityRoomType', 'Instructional')->get();
+
+    // Map instructionalRooms by id for easy lookup
+    $instructionalRoomsMapped = $instructionalRooms->keyBy('id');
+
+    // Merge the fetched sections with instructional rooms
+    $combinedRooms = array_map(function($section) use ($instructionalRoomsMapped) {
+        // Check if a roomId exists in instructionalRooms to match with foundSections
+        if (isset($section['roomId']) && $section['roomId'] !== null) {
+            $instructionalRoom = $instructionalRoomsMapped->get($section['roomId']);
+            if ($instructionalRoom) {
+                // Merge the instructional room data with the found section
+                $section = array_merge($section, [
+                    'facilityRoom' => [
+                        'BldName' => $instructionalRoom->BldName,
+                        'Room' => $instructionalRoom->Room,
+                        'facilityStatus' => $instructionalRoom->facilityStatus,
+                        'Capacity' => $instructionalRoom->Capacity,
+                        'facilityRoomType' => $instructionalRoom->facilityRoomType,
+                    ]
+                ]);
+            }
+        }
+        return $section;
+    }, $foundSections);
+
+    // foreach($combinedRooms as $room){
+
+    // }
+    // dd($combinedRooms);
+
+        // return response()->json([
+        //     'rooms' => $combinedRooms,
+        //     'message' => 'Combined rooms fetched successfully!',
+        // ], 200);
+
         return view('admin_facilityRegRoom', [
-            'regularRooms' => $regularRooms,
+            'combinedRooms' => $combinedRooms
         ]);
     }
 
     public function specialIndex()
     {
-        $specialRooms = Room::where('facilityRoomType', 'Special')->get();
+        // Retrieve Laboratory rooms (previously 'Special')
+        $laboratoryRooms = Room::where('facilityRoomType', 'Special')->get();
+        
+        // Retrieve Instructional rooms (previously 'Regular')
+        $instructionalRooms = Room::where('facilityRoomType', 'Regular')->get();
+
+        // Check if there are any Laboratory rooms
+        if ($laboratoryRooms->isNotEmpty()) {
+            return view('admin_facilitySpecRoom', [
+                'laboratoryRooms' => $laboratoryRooms, // Changed variable name
+            ]);
+        }
+
+        // Check if there are any Instructional rooms
+        if ($instructionalRooms->isNotEmpty()) {
+            return view('admin_facilityRegRoom', [
+                'instructionalRooms' => $instructionalRooms, // Changed variable name
+            ]);
+        }
+
+        // Default view if no matching room types are found
         return view('admin_facilitySpecRoom', [
-            'specialRooms' => $specialRooms,
+            'laboratoryRooms' => $laboratoryRooms, // Changed variable name
         ]);
     }
 
-
-    public function store (Request $request)
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
             'buildingName' => 'required|string|max:255',
             'room' => 'required|integer',
-            'shift' => 'required|string',
             'status' => 'required|string',
             'capacity' => 'required|integer',
-            'facilityRoomType' => 'required|string',
+            'facilityRoomDate' => 'required|string',
         ]);
+
+        // Convert the 'facilityRoomDate' to 'Y-m-d' format
+        $facilityRoomDate = Carbon::createFromFormat('m/d/Y', $validatedData['facilityRoomDate'])->format('Y-m-d');
+
 
         // Create a new room entry
         $room = new Room();
         $room->BldName = $validatedData['buildingName'];
         $room->Room = $validatedData['room'];
-        $room->facilityShift = $validatedData['shift'];
         $room->facilityStatus = $validatedData['status'];
         $room->Capacity = $validatedData['capacity'];
-        $room->facilityRoomType = $validatedData['facilityRoomType'];
-        
-        // Save the room entry to the database
+        $room->facilityRoomDate = $facilityRoomDate;  // Use the formatted date
+        $room->facilityRoomType = $request->facilityRoomType;  // Add the facility room type
         $room->save();
 
-        // Redirect back with a success message
+        $foundSections = Room::all()->map(function($room) {
+            return [
+                'id' => $room->id,
+                'buildingName' => $room->BldName,
+                'room' => $room->Room,
+                'facilityStatus' => $room->facilityStatus,
+                'capacity' => $room->Capacity,
+                'facilityRoomDate' => $room->facilityRoomDate,
+                'facilityRoomType' => $room->facilityRoomType,
+                // Include additional fields if needed
+            ];
+        });
+    
         return response()->json([
-            'id' => $room->id,
-            'buildingName' => $room->BldName,
-            'room' => $room->Room,
-            'shift' => $room->facilityShift,
-            'status' => $room->facilityStatus,
-            'capacity' => $room->Capacity,
-            'roomType' => $room->facilityRoomType, // Returning room type
+            'foundSections' => $foundSections,
             'message' => 'Room added successfully!',
         ], 201);
-
-}
+    }
 }

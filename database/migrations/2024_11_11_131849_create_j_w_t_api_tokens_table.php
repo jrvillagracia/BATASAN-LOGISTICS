@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room', function (Blueprint $table) {
+        Schema::create('j_w_t_api_tokens', function (Blueprint $table) {
             $table->id();
-            $table->string('BldName');
-            $table->integer('Room');
-            $table->string('facilityStatus');
-            $table->integer('Capacity');
-            $table->string('facilityRoomType');
-            $table->date('facilityRoomDate');
+            $table->string('faculty_code')->nullable();
+            $table->longtext('token');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('room');
+        Schema::dropIfExists('j_w_t_api_tokens');
     }
 };

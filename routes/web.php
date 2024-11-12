@@ -8,85 +8,96 @@ use App\Http\Controllers\Events\ApproveController;
 use App\Http\Controllers\Events\ApprovalController;
 use App\Http\Controllers\Events\CompleteController;
 use App\Http\Controllers\FacilityModule\RoomController;
+use App\Http\Controllers\JWTApiTokenController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
 
-Route::get('/admin_dashboard', function () {
-    return view('admin_dashboard');
-})->name('admin_dashboard');
+Route::middleware("jwt-verify")->group(function() {
 
-// routes/web.php
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    
+    // routes/web.php
+    Route::get('/register', function () {
+        return view('register');
+    })->name('register');
+    
+    Route::get('/employee_login', function () {
+        return view('employee_login');
+    })->name('employee_login');
+    
+    Route::get('/admin_dashboard', function (Request $request) 
+    {        
+        $request->session()->put("token", $request->access_token);
+        // dd(session("token"));
+        return view('admin_dashboard');
+    })->name('admin_dashboard');
+    
+    
+    // CONDEMNED MODULE FOR EQUIPMENT
+    Route::get('/admin_equipCondemned', function () {
+        return view('admin_equipCondemned');
+    })->name('admin_equipCondemned');
+    
+    
+    // USED MODULE FOR EQUIPMENT
+    Route::get('/admin_equipUsed', function () {
+        return view('admin_equipUsed');
+    })->name('admin_equipUsed');
+    
+    
+    // HISTORY FOR EQUIPMENT
+    Route::get('/admin_equipHistory', function () {
+        return view('admin_equipHistory');
+    })->name('admin_equipHistory');
+    
+    // HISTORY FOR SUPPLIES
+    Route::get('/admin_suppliesHistory', function () {
+        return view('admin_suppliesHistory');
+    })->name('admin_suppliesHistory');
+    
+    
+    // USED FOR SUPPLIES
+    Route::get('/admin_suppliesUsed', function () {
+        return view('admin_suppliesUsed');
+    })->name('admin_suppliesUsed');
+    
+    
+    
+    // REQUEST MODULE FOR SUPPLIES
+    Route::get('/admin_approvalSupplies', function () {
+        return view('admin_approvalSupplies');
+    })->name('admin_approvalSupplies');
+    
+    Route::get('/admin_releaseSupplies', function () {
+        return view('admin_releaseSupplies');
+    })->name('admin_releaseSupplies');
+    
+    Route::get('/admin_com_rqstSupplies', function () {
+        return view('admin_com_rqstSupplies');
+    })->name('admin_com_rqstSupplies');
+    
+    
+    // REQUEST MODULE FOR EQUIPMENT
+    Route::get('/admin_approvalEquipment', function () {
+        return view('admin_approvalEquipment');
+    })->name('admin_approvalEquipment');
+    
+    Route::get('/admin_releaseEquipment', function () {
+        return view('admin_releaseEquipment');
+    })->name('admin_releaseEquipment');
+    
+    Route::get('/admin_com_rqstEquipment', function () {
+        return view('admin_com_rqstEquipment');
+    })->name('admin_com_rqstEquipment');
 
-Route::get('/employee_login', function () {
-    return view('employee_login');
-})->name('employee_login');
-
-Route::get('/admin_dashboard', function () {
-    return view('admin_dashboard');
-})->name('admin_dashboard');
-
-
-// CONDEMNED MODULE FOR EQUIPMENT
-Route::get('/admin_equipCondemned', function () {
-    return view('admin_equipCondemned');
-})->name('admin_equipCondemned');
-
-
-// USED MODULE FOR EQUIPMENT
-Route::get('/admin_equipUsed', function () {
-    return view('admin_equipUsed');
-})->name('admin_equipUsed');
-
-
-// HISTORY FOR EQUIPMENT
-Route::get('/admin_equipHistory', function () {
-    return view('admin_equipHistory');
-})->name('admin_equipHistory');
-
-// HISTORY FOR SUPPLIES
-Route::get('/admin_suppliesHistory', function () {
-    return view('admin_suppliesHistory');
-})->name('admin_suppliesHistory');
-
-
-// USED FOR SUPPLIES
-Route::get('/admin_suppliesUsed', function () {
-    return view('admin_suppliesUsed');
-})->name('admin_suppliesUsed');
 
 
 
-// REQUEST MODULE FOR SUPPLIES
-Route::get('/admin_approvalSupplies', function () {
-    return view('admin_approvalSupplies');
-})->name('admin_approvalSupplies');
 
-Route::get('/admin_releaseSupplies', function () {
-    return view('admin_releaseSupplies');
-})->name('admin_releaseSupplies');
-
-Route::get('/admin_com_rqstSupplies', function () {
-    return view('admin_com_rqstSupplies');
-})->name('admin_com_rqstSupplies');
-
-
-// REQUEST MODULE FOR EQUIPMENT
-Route::get('/admin_approvalEquipment', function () {
-    return view('admin_approvalEquipment');
-})->name('admin_approvalEquipment');
-
-Route::get('/admin_releaseEquipment', function () {
-    return view('admin_releaseEquipment');
-})->name('admin_releaseEquipment');
-
-Route::get('/admin_com_rqstEquipment', function () {
-    return view('admin_com_rqstEquipment');
-})->name('admin_com_rqstEquipment');
 
 
 
@@ -155,7 +166,7 @@ Route::post('/events/decline', [ApprovalController::class, 'decline'])->name('ev
 Route::get('/admin_eventsAprRequest', [ApproveController::class, 'index'])->name('admin_eventsAprRequest');
 Route::get('/event/details', [ApproveController::class, 'getEventDetails'])->name('events_details');
 Route::get('/events_Apr_details', [ApproveController::class, 'getEventDetails'])->name('events_Apr_details');
-Route::post('/cancel-event', [ApprovalController::class, 'cancel'])->name('cancel.event');
+Route::post('/cancel-event', [ApproveController::class, 'cancel'])->name('cancel.event');
 
 
 
@@ -187,3 +198,14 @@ Route::get('/admin_mainteInventory', function () {
 Route::get('/admin_eventsHistory', function () {
     return view('adminPages.admin_eventsHistory');
 })->name('admin_eventsHistory');
+
+    Route::post('/logout', function(Request $request){
+
+        // dd('sanity check'); 
+
+        Session::remove("token");
+
+        return redirect()->away("http://192.168.2.237:9901/faculty/login");
+    });
+
+});
