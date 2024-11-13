@@ -20,7 +20,7 @@ class RoomController extends Controller
     public function index()
     {
         // Fetch data from the external API
-    $response = Http::get('http://192.168.2.62:3000/api/v1/sis/section/rooms');
+    $response = Http::get('https://batasan-logistics.onrender.com/admin_dashboard');
     $foundSections = $response->json()['foundSections'] ?? [];  // Get 'foundSections' from the response
 
     // Fetch the rooms from your own database

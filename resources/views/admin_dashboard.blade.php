@@ -163,7 +163,7 @@
                             </ul>
                         </li>
                         <li class="hover:bg-gray-200 p-3 rounded-md">
-                            <a href="http://192.168.2.62:5173/admin/dashboard" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <a href="https://bhnhs-sis.onrender.com/admin/dashboard" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <span class="material-symbols-outlined">account_box</span>
                                 <span class="sidebar-text font-bold">Student Information</span>
                             </a>
