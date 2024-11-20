@@ -14,19 +14,55 @@ class RoomController extends Controller
     public function room(Request $request)
     {
         $room = Room::all();
+        \Log::debug('Rooms:', $room);
         return response()->json(['room' => $room]);
     }
 
     public function index()
     {
-            // Fetch the rooms from your own database
-            $instructionalRooms = Room::where('facilityRoomType', 'Instructional')->get();
-        
-            // Return the view with the rooms data
-            return view('adminPages.admin_facilityRegRoom', [
-                'rooms' => $instructionalRooms
-            ]);
+        // Fetch the API response
+        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms');
+        $foundSections = $response->json()['foundSections'] ?? [];  // Default to an empty array if not found
+
+        // Fetch the rooms from your own database
+        $instructionalRooms = Room::where('facilityRoomType', 'Instructional')->get();
+
+        // Map instructionalRooms by id for easy lookup
+        $instructionalRoomsMapped = $instructionalRooms->keyBy('id');
+
+        // Start with all instructional rooms
+        $combinedRooms = $instructionalRooms->map(function($room) {
+            return [
+                'roomId' => $room->id,
+                'facilityRoom' => [
+                    'BldName' => $room->BldName,
+                    'Room' => $room->Room,
+                    'facilityStatus' => $room->facilityStatus,
+                    'Capacity' => $room->Capacity,
+                    'facilityRoomType' => $room->facilityRoomType,
+                ],
+                'session' => null,       // Default values for missing API data
+                'gradeLevel' => null,
+                'sectionName' => null,
+            ];
+        })->keyBy('roomId')->toArray();
+
+        // Merge API sections into the instructional rooms
+        foreach ($foundSections as $section) {
+            if (isset($section['roomId']) && $section['roomId'] !== null) {
+                $combinedRooms[$section['roomId']] = array_merge($combinedRooms[$section['roomId']] ?? [], [
+                    'session' => $section['session'] ?? null,
+                    'gradeLevel' => $section['gradeLevel'] ?? null,
+                    'sectionName' => $section['sectionName'] ?? null,
+                ]);
+            }
+        }
+
+        return view('adminPages.admin_facilityRegRoom', [
+            'combinedRooms' => $combinedRooms
+        ]);
     }
+
 
     public function specialIndex()
     {

@@ -207,49 +207,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-$(document).ready(function () {
-    $.ajax({
-      url: "https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms", // API URL
-      type: "GET",  // Request type
-      dataType: "json",  // Expected data format
-      success: function (response) {
-        console.log(response); // Debugging the response to inspect the data
-        if (response.foundSections && response.foundSections.length > 0) {
-          // Iterate over each row in the table
-          $("#tableBody tr").each(function () {
-            const row = $(this);
-            const roomId = row.data("id").toString(); // Get the roomId from the row's data attribute (ensure it's a string)
-            
-            // Find the matching room in the API response
-            const matchingRoom = response.foundSections.find(room => room.roomId.toString() == roomId);
-  
-            if (matchingRoom) {
-              const shiftType = matchingRoom.session;  // Shift type from API response
-              const assigned = `${matchingRoom.gradeLevel} - ${matchingRoom.sectionName}`;  // Merging grade level and section name
-              const capacity = `${matchingRoom.currentEnrollment}/${row.find("td:nth-child(4)").text().trim()}`;  // Format the capacity: enrollment/current capacity
-              
-              // Update the table row with the corresponding data
-              row.find("td:nth-child(5)").text(shiftType);  // Update shift type column
-              row.find("td:nth-child(6)").text(assigned);  // Update assigned column
-              row.find("td:nth-child(4)").text(capacity);  // Update capacity column
-            }
-          });
-        } else {
-          console.error("No rooms found in the API response.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error fetching data:", error);
-        console.log(xhr.responseText);  // Log the response for debugging
-        alert("An error occurred while fetching room data.");
-      }
-    });
-  });
-  
+console.log(combinedRooms);
 
-
-
-
+$(document).ready(function() {
+    // Check if data is available
+    if (combinedRooms && combinedRooms.length > 0) {
+        updateTableData(combinedRooms);
+    } else {
+        console.log('No data available to populate the table.');
+    }
+});
 
 
 
