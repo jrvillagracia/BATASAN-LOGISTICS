@@ -60,7 +60,7 @@ class RoomController extends Controller
         //     'message' => 'Combined rooms fetched successfully!',
         // ], 200);
 
-        return view('admin_facilityRegRoom', [
+        return view('adminPages.admin_facilityRegRoom', [
             'combinedRooms' => $combinedRooms
         ]);
     }
@@ -75,20 +75,20 @@ class RoomController extends Controller
 
         // Check if there are any Laboratory rooms
         if ($laboratoryRooms->isNotEmpty()) {
-            return view('admin_facilitySpecRoom', [
+            return view('adminPages.admin_facilitySpecRoom', [
                 'laboratoryRooms' => $laboratoryRooms, // Changed variable name
             ]);
         }
 
         // Check if there are any Instructional rooms
         if ($instructionalRooms->isNotEmpty()) {
-            return view('admin_facilityRegRoom', [
+            return view('adminPages.admin_facilityRegRoom', [
                 'instructionalRooms' => $instructionalRooms, // Changed variable name
             ]);
         }
 
         // Default view if no matching room types are found
-        return view('admin_facilitySpecRoom', [
+        return view('adminPages.admin_facilitySpecRoom', [
             'laboratoryRooms' => $laboratoryRooms, // Changed variable name
         ]);
     }

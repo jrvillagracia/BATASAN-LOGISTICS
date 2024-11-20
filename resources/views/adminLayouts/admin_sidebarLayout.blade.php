@@ -40,6 +40,8 @@
     <script src="{{asset('js/admin_supplies.js')}}"></script>
 
     <script src="{{asset('js/admin_facilityOfficeRoom.js')}}"></script> <!-- FACILITY MODULE -->
+    <script src="{{asset('js/admin_facilityRegRoom.js')}}"></script>
+    <script src="{{asset('js/admin_facilitySpecRoom.js')}}"></script>
 
     <script src="{{asset('js/admin_ForApprMainteFacility.js')}}"></script> <!-- MAINTENANCE FACILITY MODULE -->
     <script src="{{asset('js/admin_ForRepMainteFacility.js')}}"></script>
@@ -69,6 +71,8 @@
     <link rel="stylesheet" href="{{asset('css/admin_requestSupplies.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_supplies.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_facilityOfficeRoom.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_facilityRegRoom.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_facilitySpecRoom.css')}}">
 
 
 
