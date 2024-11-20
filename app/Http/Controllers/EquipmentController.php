@@ -223,7 +223,6 @@ class EquipmentController extends Controller
         $request->validate([
             'id' => 'required|integer|exists:equipment,id',
             'FullEquipmentSerialNoEdit' => 'required|string|max:255',
-            'FullEquipmentControlNoEdit' => 'required|string|max:255',
             'FullEquipmentTypeEdit' => 'required|string|max:255',
             'FullEquipmentColorEdit' => 'required|string|max:255',
             'FullEquipmentUnitEdit' => 'required|string|max:255',
@@ -235,7 +234,6 @@ class EquipmentController extends Controller
         $equipment = Equipment::findOrFail($request->input('id'));
 
         $equipment->EquipmentSerialNo = $request->input('FullEquipmentSerialNoEdit');
-        $equipment->EquipmentControlNo = $request->input('FullEquipmentControlNoEdit');
         $equipment->EquipmentType = $request->input('FullEquipmentTypeEdit');
         $equipment->EquipmentColor = $request->input('FullEquipmentColorEdit');
         $equipment->EquipmentUnit = $request->input('FullEquipmentUnitEdit');

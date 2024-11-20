@@ -78,10 +78,6 @@
                     <div class="grid grid-cols-2 gap-2">
                         <!-- First column label/input -->
                         <div>
-                            <label for="EquipmentControlNo" class="block text-sm font-semibold mb-1">Control Number</label>
-                            <input type="text" name="EquipmentControlNo" id="EquipmentControlNo" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Control Number">
-                        </div>
-                        <div>
                             <label for="EquipmentBrandName" class="block text-sm font-semibold mb-1">Brand Name</label>
                             <input type="text" name="EquipmentBrandName" id="EquipmentBrandName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Brand Name">
                         </div>
@@ -380,9 +376,6 @@
 
                     <label for="FullEquipmentSerialNoEdit" class="block text-sm font-semibold mb-1">Serial Number</label>
                     <input type="text" name="FullEquipmentSerialNoEdit" id="FullEquipmentSerialNoEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Serial Number">
-
-                    <label for="FullEquipmentControlNoEdit" class="block text-sm font-semibold mb-1">Control Number</label>
-                    <input type="text" name="FullEquipmentControlNoEdit" id="FullEquipmentControlNoEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Control Number">
 
                     <label for="FullEquipmentTypeEdit" class="block text-sm font-semibold mb-1">Type</label>
                     <input type="text" name="FullEquipmentTypeEdit" id="FullEquipmentTypeEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Type" pattern="[A-Za-z ]*" title="Only characters are allowed">

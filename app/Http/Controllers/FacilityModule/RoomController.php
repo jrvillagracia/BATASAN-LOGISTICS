@@ -19,77 +19,37 @@ class RoomController extends Controller
 
     public function index()
     {
-        // Fetch data from the external API
-    $response = Http::get('https://batasan-logistics.onrender.com/admin_dashboard');
-    $foundSections = $response->json()['foundSections'] ?? [];  // Get 'foundSections' from the response
-
-    // Fetch the rooms from your own database
-    $instructionalRooms = Room::where('facilityRoomType', 'Instructional')->get();
-
-    // Map instructionalRooms by id for easy lookup
-    $instructionalRoomsMapped = $instructionalRooms->keyBy('id');
-
-    // Merge the fetched sections with instructional rooms
-    $combinedRooms = array_map(function($section) use ($instructionalRoomsMapped) {
-        // Check if a roomId exists in instructionalRooms to match with foundSections
-        if (isset($section['roomId']) && $section['roomId'] !== null) {
-            $instructionalRoom = $instructionalRoomsMapped->get($section['roomId']);
-            if ($instructionalRoom) {
-                // Merge the instructional room data with the found section
-                $section = array_merge($section, [
-                    'facilityRoom' => [
-                        'BldName' => $instructionalRoom->BldName,
-                        'Room' => $instructionalRoom->Room,
-                        'facilityStatus' => $instructionalRoom->facilityStatus,
-                        'Capacity' => $instructionalRoom->Capacity,
-                        'facilityRoomType' => $instructionalRoom->facilityRoomType,
-                    ]
-                ]);
-            }
-        }
-        return $section;
-    }, $foundSections);
-
-    // foreach($combinedRooms as $room){
-
-    // }
-    // dd($combinedRooms);
-
-        // return response()->json([
-        //     'rooms' => $combinedRooms,
-        //     'message' => 'Combined rooms fetched successfully!',
-        // ], 200);
-
-        return view('adminPages.admin_facilityRegRoom', [
-            'combinedRooms' => $combinedRooms
-        ]);
+            // Fetch the rooms from your own database
+            $instructionalRooms = Room::where('facilityRoomType', 'Instructional')->get();
+        
+            // Return the view with the rooms data
+            return view('adminPages.admin_facilityRegRoom', [
+                'rooms' => $instructionalRooms
+            ]);
     }
 
     public function specialIndex()
     {
         // Retrieve Laboratory rooms (previously 'Special')
         $laboratoryRooms = Room::where('facilityRoomType', 'Special')->get();
-        
-        // Retrieve Instructional rooms (previously 'Regular')
-        $instructionalRooms = Room::where('facilityRoomType', 'Regular')->get();
 
         // Check if there are any Laboratory rooms
         if ($laboratoryRooms->isNotEmpty()) {
             return view('adminPages.admin_facilitySpecRoom', [
-                'laboratoryRooms' => $laboratoryRooms, // Changed variable name
+                'laboratoryRooms' => $laboratoryRooms,
             ]);
         }
 
         // Check if there are any Instructional rooms
         if ($instructionalRooms->isNotEmpty()) {
             return view('adminPages.admin_facilityRegRoom', [
-                'instructionalRooms' => $instructionalRooms, // Changed variable name
+                'instructionalRooms' => $instructionalRooms, 
             ]);
         }
 
         // Default view if no matching room types are found
         return view('adminPages.admin_facilitySpecRoom', [
-            'laboratoryRooms' => $laboratoryRooms, // Changed variable name
+            'laboratoryRooms' => $laboratoryRooms,
         ]);
     }
 
@@ -100,7 +60,7 @@ class RoomController extends Controller
             'room' => 'required|integer',
             'status' => 'required|string',
             'capacity' => 'required|integer',
-            'facilityRoomDate' => 'required|string',
+            'facilityRoomDate' => 'required|date_format:m/d/Y',
         ]);
 
         // Convert the 'facilityRoomDate' to 'Y-m-d' format

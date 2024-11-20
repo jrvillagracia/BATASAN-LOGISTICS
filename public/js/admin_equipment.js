@@ -22,7 +22,6 @@ $(document).ready(function() {
         e.preventDefault();
         console.log('Save Button Clicked');
     
-        const controlNo = $('#EquipmentControlNo').val().trim();
         const brandName = $('#EquipmentBrandName').val().trim();
         const name = $('#EquipmentName').val().trim();
         const category = $('#EquipmentCategory').val();
@@ -37,7 +36,7 @@ $(document).ready(function() {
         const serialNo = $('#EquipmentSerialNo').val().trim();
     
         // Check if all fields are filled (same as before)
-        if (controlNo === '' || brandName === '' || name === '' || category === '' || type === '' || color === '' || unit === '' || 
+        if ( brandName === '' || name === '' || category === '' || type === '' || color === '' || unit === '' || 
             quantity === '' || date === '' || uPrice === '' || classification === '' || sku === '' || serialNo === '') {
             Swal.fire({
                 icon: "error",
@@ -58,7 +57,6 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 _token: $('#csrf-token').data('token'),  // CSRF token
-                EquipmentControlNo: controlNo,
                 EquipmentBrandName: brandName,
                 EquipmentName: name,
                 EquipmentCategory: category,
@@ -556,8 +554,7 @@ $(document).ready(function() {
         $('#editFullEquipModal').removeClass('hidden');
 
         // Populate the edit modal fields with data from the row
-        $('#editFullEquipForm').find('#FullEquipmentSerialNoEdit').val(row.find('td').eq(0).text().trim());
-        $('#editFullEquipForm').find('#FullEquipmentControlNoEdit').val(row.find('td').eq(1).text().trim()); 
+        $('#editFullEquipForm').find('#FullEquipmentSerialNoEdit').val(row.find('td').eq(0).text().trim()); 
         $('#editFullEquipForm').find('#FullEquipmentTypeEdit').val(row.find('td').eq(2).text().trim()); 
         $('#editFullEquipForm').find('#FullEquipmentColorEdit').val(row.find('td').eq(3).text().trim());
         $('#editFullEquipForm').find('#FullEquipmentUnitEdit').val(row.find('td').eq(4).text().trim());
@@ -594,8 +591,8 @@ $(document).ready(function() {
                     data: formData,
                     success: function() {
                         Swal.fire("Saved!", "", "success").then(() => {
-                            updateTableRow(equipId); // Update the table row with new data
-                            $('#editFullEquipModal').addClass('hidden'); // Close the modal after saving
+                            updateTableRow(equipId); 
+                            $('#editFullEquipModal').addClass('hidden'); 
                         });
                     },
                     error: function(xhr, status, error) {
@@ -617,7 +614,6 @@ $(document).ready(function() {
 
         if (row.length > 0) { 
             row.find('td').eq(0).text($('#FullEquipmentSerialNoEdit').val().trim());
-            row.find('td').eq(1).text($('#FullEquipmentControlNoEdit').val().trim()); 
             row.find('td').eq(2).text($('#FullEquipmentTypeEdit').val().trim()); 
             row.find('td').eq(3).text($('#FullEquipmentColorEdit').val().trim()); 
             row.find('td').eq(4).text($('#FullEquipmentUnitEdit').val().trim()); 
@@ -630,16 +626,9 @@ $(document).ready(function() {
         }
     }
 
-    // Handle closing the edit modal
-    $('#closeFullEquipFormButton').on('click', function() {
-        $('#editFullEquipModal').addClass('hidden');
-    });
-
-    // Close modal when clicking outside of it
-    $(window).on('click', function(e) {
-        if ($(e.target).is('#editFullEquipModal')) {
-            $('#editFullEquipModal').addClass('hidden');
-        }
+    $('#editFullEquipModal').click(function(event) {
+        event.preventDefault();
+        $('#editFullEquipModal').addClass('hidden'); 
     });
 });
 

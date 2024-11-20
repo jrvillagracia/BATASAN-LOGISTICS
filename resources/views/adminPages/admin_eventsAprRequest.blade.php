@@ -303,6 +303,7 @@
             </div>
 
             <!-- Cancel Popup Card -->
+        @if(isset($event))
             <div id="CancelEventPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -317,10 +318,10 @@
                     </div>
                 </div>
             </div>
-
+        @else
             <!-- Pagination -->
         </div>
     </div>
-
+@endif
 </section>
 @endsection
