@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
 
 Route::middleware("jwt-verify")->group(function() {
-use Illuminate\Http\Request;
+
 
     Route::get('/', function () {
         return view('welcome');
@@ -34,7 +34,7 @@ use Illuminate\Http\Request;
     {        
         $request->session()->put("token", $request->access_token);
         // dd(session("token"));
-        return view('admin_dashboard');
+        return view('adminPages.admin_dashboard');
     })->name('admin_dashboard');
     
     
@@ -98,12 +98,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin_dashboard', function (Request $request) 
-{        
-    $request->session()->put("token", $request->access_token);
-    // dd(session("token"));
-    return view('adminPages.admin_dashboard');
-})->name('admin_dashboard');
 
 // routes/web.php
 Route::get('/register', function () {
