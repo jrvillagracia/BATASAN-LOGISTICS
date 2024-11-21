@@ -26,7 +26,8 @@
     <script src="{{asset('js/admin_eventsHistory.js')}}"></script>
     <script src="{{asset('js/admin_eventsComRequest.js')}}"></script>
 
-    <script src="{{asset('js/admin_equipCondemned.js')}}"></script> <!-- INVENTORY EQUIPMENT MODULE -->
+    <script src="{{asset('js/admin_EQUIPMENT.js')}}"></script>         <!-- INVENTORY EQUIPMENT MODULE -->
+    <script src="{{asset('js/admin_equipCondemned.js')}}"></script> 
     <script src="{{asset('js/admin_equipUsed.js')}}"></script>
     <script src="{{asset('js/admin_equipHistory.js')}}"></script>
 
@@ -36,7 +37,7 @@
     <script src="{{asset('js/admin_suppliesHistory.js')}}"></script> <!-- INVENTORY SUPPLIES MODULE -->
     <script src="{{asset('js/admin_suppliesUsed.js')}}"></script>
 
-    <script src="{{asset('js/admin_equipment.js')}}"></script> <!-- INVENTORY SUPPLIES & EQUIPMENT MODULE -->
+    <script src="{{asset('js/admin_StockInEquipment.js')}}"></script> <!-- INVENTORY SUPPLIES & EQUIPMENT MODULE -->
     <script src="{{asset('js/admin_supplies.js')}}"></script>
 
     <script src="{{asset('js/admin_facilityOfficeRoom.js')}}"></script> <!-- FACILITY MODULE -->
@@ -66,7 +67,7 @@
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_mainteEquipment.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_events.css')}}">
-    <link rel="stylesheet" href="{{asset('css/admin_equipment.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_StockInEquipment.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_requestEquipment.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_requestSupplies.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_supplies.css')}}">
@@ -179,7 +180,7 @@
                                     <a href="{{ route('admin_supplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Supplies</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin_equipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
+                                    <a href="{{ route('admin_StockInEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
                                 </li>
                             </ul>
                         </li>
