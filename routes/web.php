@@ -204,7 +204,7 @@ Route::get('/employee/login', [RegisterController::class, 'login'])->name('emplo
 
 
 //Equipment
-Route::get('/admin_equipment', [EquipmentController::class, 'index'])->name('admin_equipment');
+Route::get('/admin_StockInEquipment', [EquipmentController::class, 'index'])->name('admin_StockInEquipment');
 Route::get('/equipment/details', [EquipmentController::class,'equipmentDetails'])->name('equipment.details');
 Route::post('/equipment/store', [EquipmentController::class, 'store'])->name('equipment.store');
 Route::post('/equipment/delete', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
@@ -213,9 +213,9 @@ Route::post('/equipment/update-main', [EquipmentController::class, 'updateMain']
 Route::post('/equipment/update-view', [EquipmentController::class, 'updateView'])->name('equipment.updateView');
 Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewing'])->name('equipment.finalViewing');
 
-Route::get('/admin_StockInEquipment', function () {
-    return view('adminPages.admin_StockInEquipment');
-})->name('admin_StockInEquipment');
+Route::get('/admin_EQUIPMENT', function () {
+    return view('adminPages.admin_EQUIPMENT');
+})->name('admin_EQUIPMENT');
 
 //Supplies
 Route::get('/admin_supplies', [SuppliesController::class, 'index'])->name('admin_supplies');

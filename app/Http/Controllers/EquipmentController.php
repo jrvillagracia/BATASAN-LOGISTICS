@@ -24,7 +24,7 @@ class EquipmentController extends Controller
             ->groupBy('EquipmentBrandName', 'EquipmentName', 'EquipmentCategory', 'EquipmentSKU', 'EquipmentQuantity')
             ->get();
             
-        return view('adminPages.admin_equipment', compact('equipment'));
+        return view('adminPages.admin_StockInEquipment', compact('equipment'));
     }
 
     public function finalViewing(Request $request)
@@ -68,7 +68,7 @@ class EquipmentController extends Controller
 
     public function create()
     {
-        return view('adminPages.admin_equipment');
+        return view('adminPages.admin_StockInEquipment');
     }
 
     public function store(Request $request)
