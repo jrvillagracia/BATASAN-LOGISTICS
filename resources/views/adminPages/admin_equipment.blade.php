@@ -438,28 +438,8 @@
                     <label for="FullEQUIPMENTSerialNoEDT" class="block text-sm font-semibold mb-1">Serial Number</label>
                     <input type="text" name="FullEQUIPMENTSerialNoEDT" id="FullEQUIPMENTSerialNoEDT" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Serial Number">
 
-<<<<<<< HEAD
-                    <label for="FullEquipmentTypeEdit" class="block text-sm font-semibold mb-1">Type</label>
-                    <input type="text" name="FullEquipmentTypeEdit" id="FullEquipmentTypeEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Type" pattern="[A-Za-z ]*" title="Only characters are allowed">
-
-                    <label for="FullEquipmentColorEdit" class="block text-sm font-semibold mb-1">Color</label>
-                    <input type="text" name="FullEquipmentColorEdit" id="FullEquipmentColorEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Color" pattern="[A-Za-z ]*" title="Only characters are allowed">
-
-                    <label for="FullEquipmentUnitEdit" class="block text-sm font-semibold mb-1">Unit</label>
-                    <input type="text" name="FullEquipmentUnitEdit" id="FullEquipmentUnitEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Unit" pattern="[A-Za-z ]*" title="Only characters are allowed">
-
-                    <label for="FullEquipmentUnitPriceEdit" class="block text-sm font-semibold mb-1">Unit Price</label>
-                    <input type="number" name="FullEquipmentUnitPriceEdit" id="FullEquipmentUnitPriceEdit" class="border border-gray-400 p-2 rounded w-full mb-4" placeholder="Price">
-
-                    <label for="FullEquipmentClassificationEditn" class="block text-sm font-semibold mb-1">Classification</label>
-                    <input type="text" name="FullEquipmentClassificationEdit" id="FullEquipmentClassificationEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Classification" pattern="[A-Za-z ]*" title="Only characters are allowed">
-
-                    <label for="FullEquipmentDateEdit" class="block text-sm font-semibold mb-1">Date</label>
-                    <input type="text" id="FullEquipmentDateEdit" name="FullEquipmentDateEdit" datepicker datepicker-format="yyyy-mm-dd" class="border border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
-=======
                     <label for="FullEQUIPMENTControlNoEDT" class="block text-sm font-semibold mb-1">Control Number</label>
                     <input type="text" name="FullEQUIPMENTControlNoEDT" id="FullEQUIPMENTControlNoEDT" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Control Number">
->>>>>>> Front-end-UI
 
 
                     <div class="flex justify-end space-x-2">
