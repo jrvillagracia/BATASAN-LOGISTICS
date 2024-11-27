@@ -12,17 +12,33 @@ class EquipmentController extends Controller
     public function index()
     {
         $equipment = Equipment::select(
-                'EquipmentBrandName',
-                'EquipmentName',
-                'EquipmentCategory',
-                'EquipmentSKU',
-                'EquipmentQuantity',
-                DB::raw('COUNT(*) as EquipmentQuantity'),
-                DB::raw('SUM(COALESCE("EquipmentUnitPrice", 0) * COALESCE("EquipmentQuantity", 0)) AS totalPrice'),
-                DB::raw('COUNT(*) as totalItems') 
-            )
-            ->groupBy('EquipmentBrandName', 'EquipmentName', 'EquipmentCategory', 'EquipmentSKU', 'EquipmentQuantity')
-            ->get();
+            DB::raw('"EquipmentBrandName"'),
+            DB::raw('"EquipmentName"'),
+            DB::raw('"EquipmentCategory"'),
+            DB::raw('"EquipmentClassification"'),
+            DB::raw('"EquipmentColor"'),
+            DB::raw('"EquipmentType"'),
+            DB::raw('"EquipmentUnit"'),
+            DB::raw('"EquipmentUnitPrice"'),
+            DB::raw('"EquipmentDate"'),
+            DB::raw('"EquipmentSKU"'),
+            DB::raw('SUM(COALESCE("EquipmentQuantity", 0)) AS "EquipmentQuantity"'),
+            DB::raw('SUM(COALESCE("EquipmentUnitPrice", 0) * COALESCE("EquipmentQuantity", 0)) AS "totalPrice"'),
+            DB::raw('COUNT(*) AS "totalItems"')
+        )
+        ->groupBy(
+            DB::raw('"EquipmentBrandName"'),
+            DB::raw('"EquipmentName"'),
+            DB::raw('"EquipmentCategory"'),
+            DB::raw('"EquipmentClassification"'),
+            DB::raw('"EquipmentColor"'),
+            DB::raw('"EquipmentType"'),
+            DB::raw('"EquipmentUnit"'),
+            DB::raw('"EquipmentUnitPrice"'),
+            DB::raw('"EquipmentDate"'),
+            DB::raw('"EquipmentSKU"')
+        )
+        ->get();
             
         return view('adminPages.admin_StockInEquipment', compact('equipment'));
     }

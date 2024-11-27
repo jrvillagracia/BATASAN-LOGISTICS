@@ -228,10 +228,14 @@ Route::post('/supplies/update-view', [SuppliesController::class, 'updateView'])-
 Route::get('/supplies/final-viewing', [SuppliesController::class, 'finalViewing'])->name('supplies.finalViewing');
 
 
-//Room
+//Instructional Room
 Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('admin_facilityRegRoom');
-Route::get('/admin_facilitySpecRoom', [RoomController::class, 'specialIndex'])->name('admin_facilitySpecRoom');
 Route::post('/rooms/store', [RoomController::class, 'store'])->name('room.store');
+Route::post('/room/edit', [RoomController::class, 'edit'])->name('room.edit');
+
+//Laboratory Room
+Route::get('/admin_facilitySpecRoom', [RoomController::class, 'labindex'])->name('admin_facilitySpecRoom');
+Route::get('/rooms/lab/store', [RoomController::class, 'store'])->name('rooms.lab.store');
 
 //Events and Activities
 Route::post('/events/store', [ApprovalController::class, 'store'])->name('events.store');

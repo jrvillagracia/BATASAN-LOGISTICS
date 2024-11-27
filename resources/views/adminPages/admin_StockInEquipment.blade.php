@@ -140,7 +140,7 @@
 
                         <div>
                             <label for="EquipmentClassification" class="block text-sm font-semibold mb-1">Classification</label>
-                            <input type="text" name="EquipmentClassification" id="EquipmentClassification" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Classification" pattern="[A-Za-z ]*" title="Only characters are allowed">
+                            <input type="text" name="EquipmentClassification" id="EquipmentClassification" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Classification" >
                         </div>
 
                         <div>
@@ -208,7 +208,7 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentQuantity}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->totalPrice, 2)}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentSKU}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">CLASSIFICATION</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentClassification}}</td>
                         <td class="px-6 py-4">
                             <button id="viewEquipButton" type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

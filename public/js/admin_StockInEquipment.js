@@ -22,7 +22,6 @@ $(document).ready(function () {
         e.preventDefault();
         console.log('Save Button Clicked');
 
-        const controlNo = $('#EquipmentControlNo').val().trim();
         const brandName = $('#EquipmentBrandName').val().trim();
         const name = $('#EquipmentName').val().trim();
         const category = $('#EquipmentCategory').val();
@@ -36,8 +35,8 @@ $(document).ready(function () {
         const sku = $('#EquipmentSKU').val().trim();
         const serialNo = $('#EquipmentSerialNo').val().trim();
 
-        // Check if all fields are filled (same as before)
-        if (controlNo === '' || brandName === '' || name === '' || category === '' || type === '' || color === '' || unit === '' ||
+        // Check if all fields are filled
+        if (brandName === '' || name === '' || category === '' || type === '' || color === '' || unit === '' ||
             quantity === '' || date === '' || uPrice === '' || classification === '' || sku === '' || serialNo === '') {
             Swal.fire({
                 icon: "error",
@@ -49,78 +48,64 @@ $(document).ready(function () {
             return;
         }
 
-        // Hide the form immediately
-        $('#EquipFormCard').addClass('hidden');
+        // Show confirmation dialog
+        Swal.fire({
+            icon: "question",
+            title: "Confirmation",
+            text: "Are you sure all the inputs are correct?",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Save it!",
+            cancelButtonText: "Cancel",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Hide the form immediately
+                $('#EquipFormCard').addClass('hidden');
 
-        // AJAX request
-        $.ajax({
-            url: '/equipment/store',
-            type: 'POST',
-            data: {
-                _token: $('#csrf-token').data('token'),  // CSRF token
-                EquipmentControlNo: controlNo,
-                EquipmentBrandName: brandName,
-                EquipmentName: name,
-                EquipmentCategory: category,
-                EquipmentType: type,
-                EquipmentColor: color,
-                EquipmentUnit: unit,
-                EquipmentQuantity: quantity,
-                EquipmentDate: date,
-                EquipmentUnitPrice: uPrice,
-                EquipmentClassification: classification,
-                EquipmentSKU: sku,
-                EquipmentSerialNo: serialNo
-            },
-            success: function (response) {
-                console.log('Success:', response);
-                Swal.fire({
-                    icon: "success",
-                    title: response.message,
-                    showConfirmButton: true,
-                    confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    // Append the new row with the same structure as provided
-                    const newRow = `
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="${response.equipmentId}">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${brandName}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${name}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${category}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${quantity}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱${parseFloat(uPrice).toFixed(2)}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${sku}</td>
-                            <td class="px-6 py-4">
-                                <button id="viewEquipButton" type="button">
-                                    <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    </svg>
-                                </button>
-                                <button id="editEquipButton" type="button">
-                                    <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
-                                        <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                    $('#dynamicTable').append(newRow);
-
-                    // Clear input fields
-                    $('#EquipFormCard').find('input[type="text"], input[type="number"], input[type="date"], select').val('');
-                });
-            },
-            error: function (xhr) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: xhr.responseText
+                // AJAX request
+                $.ajax({
+                    url: '/equipment/store',
+                    type: 'POST',
+                    data: {
+                        _token: $('#csrf-token').data('token'), // CSRF token
+                        EquipmentBrandName: brandName,
+                        EquipmentName: name,
+                        EquipmentCategory: category,
+                        EquipmentType: type,
+                        EquipmentColor: color,
+                        EquipmentUnit: unit,
+                        EquipmentQuantity: quantity,
+                        EquipmentDate: date,
+                        EquipmentUnitPrice: uPrice,
+                        EquipmentClassification: classification,
+                        EquipmentSKU: sku,
+                        EquipmentSerialNo: serialNo
+                    },
+                    success: function (response) {
+                        console.log('Success:', response);
+                        Swal.fire({
+                            icon: "success",
+                            title: response.message,
+                            showConfirmButton: true,
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: xhr.responseText
+                        });
+                    }
                 });
             }
         });
     });
 });
+
 
 $(window).on('click', function (e) {
     if ($(e.target).is('#EquipFormCard')) {
@@ -285,6 +270,8 @@ $(document).on('click', '#deleteEquipButton', function (event) {
                     Swal.fire("Deleted!", response.message, "success").then(() => {
                         $('#editEquipModal').addClass('hidden');
                         $(`tr[data-brand="${equipBrand}"]`).remove();
+                    }).then(() => {
+                        location.reload();
                     });
                 },
                 error: function (xhr) {
