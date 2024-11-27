@@ -34,11 +34,12 @@
     <script src="{{asset('js/admin_requestEquipment.js')}}"></script> <!-- REQUEST MODULE -->
     <script src="{{asset('js/admin_requestSupplies.js')}}"></script>
 
-    <script src="{{asset('js/admin_suppliesHistory.js')}}"></script> <!-- INVENTORY SUPPLIES MODULE -->
+    <script src="{{asset('js/admin_supplies.js')}}"></script>           <!-- INVENTORY SUPPLIES MODULE -->
+    <script src="{{asset('js/admin_suppliesHistory.js')}}"></script> 
     <script src="{{asset('js/admin_suppliesUsed.js')}}"></script>
 
     <script src="{{asset('js/admin_StockInEquipment.js')}}"></script> <!-- INVENTORY SUPPLIES & EQUIPMENT MODULE -->
-    <script src="{{asset('js/admin_supplies.js')}}"></script>
+    <script src="{{asset('js/admin_StockInSupplies.js')}}"></script>
 
     <script src="{{asset('js/admin_facilityOfficeRoom.js')}}"></script> <!-- FACILITY MODULE -->
     <script src="{{asset('js/admin_facilityRegRoom.js')}}"></script>
@@ -177,7 +178,7 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="{{ route('admin_supplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Supplies</a>
+                                    <a href="{{ route('admin_StockInSupplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Supplies</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('admin_StockInEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
