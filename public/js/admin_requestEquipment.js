@@ -1,3 +1,35 @@
+// FUNCTION TO DISABLE THE PAST DATES/MONTHS
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the current date
+    const currentDate = new Date();
+
+    // Format the date as MM/DD/YYYY
+    const formatDate = (date) => {
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
+    };
+
+    // Calculate max date (e.g., one year from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 1);
+
+    // Initialize the input field with min and max dates
+    const datepickerInput = document.getElementById("ReqEquipDate");
+    datepickerInput.setAttribute("datepicker-min-date", formatDate(currentDate));
+    datepickerInput.setAttribute("datepicker-max-date", formatDate(maxDate));
+
+    // Initialize the datepicker (assuming a library like Flowbite/Flatpickr is being used)
+    datepickerInput.datepicker = new Datepicker(datepickerInput, {
+        minDate: currentDate,
+        maxDate: maxDate,
+        autoselectToday: true,
+    });
+});
+
+
+// ADD FORM BUTTON
 $(document).ready(function () {
     $('#ReqEquipFormBtn').click(function () {
         console.log('Show Request Equipment Button Clicked');
@@ -19,103 +51,37 @@ $(document).ready(function () {
     });
 });
 
-// FOR VALIDATION SWEETALERT2 AFTER FILLING UP THE FORM CARD
-// Handle form submission and add data to the table
-$(document).ready(function () {
-    $('#ReqEquipSubmitFormBtn').click(function (event) {
-        event.preventDefault();  // Prevent default form submission
-
-        Swal.fire({
-            title: "Are you sure all input data are correct?",
-            showDenyButton: true,
-            confirmButtonText: "Yes",
-            denyButtonText: "No"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Get form values
-                const name = $('#name').val();
-                const department = $('#EquipmentDepartment').val();
-                const date = $('#ReqEquipDate').val();
-                const reason = $('#ReqEquipReason').val();
-                const remarks = $('#ReqEquipRemarks').val();
-
-                // Check if all values are entered
-                if (!name || !department || !date || !reason || !remarks) {
-                    Swal.fire("All fields are required!", "", "error");
-                    return;
-                }
-
-                // Append new row to the table  // THIS IS FOR EXAMPLE ONLY TO CHECK IF SWEETALERT2 IS APPLIED
-                $('#reqEquipTable tbody').append(`
-                    <tr>
-                        <td class="py-6 px-3 border-b border-gray-300"></td>
-                        <td class="py-6 px-3 border-b border-gray-300"></td>
-                        <td class="py-6 px-3 border-b border-gray-300"></td>
-                        <td class="py-6 px-3 border-b border-gray-300"></td>
-                        <td class="py-6 px-3 border-b border-gray-300">
-                            <button id="ViewEquipBtn" type="button">
-                                <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
-                            </button>
-                            <button id="ApprEquipBtn" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000FF">
-                                    <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
-                                </svg>
-                            </button>
-                            <button id="DclnEquipBtn" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#D1191A"><path d="M200-440v-80h560v80H200Z"/>
-                                </svg>
-                            </button>
-                        </td>
-                    </tr>
-                `);
-
-                // Clear form
-                $('#ReqEquipForm')[0].reset();
-
-                // Hide form card
-                $('#ReqEquipFormCard').addClass('hidden');
-
-                Swal.fire("Saved!", "", "success");
-            } else if (result.isDenied) {
-                Swal.fire("Changes are not saved", "", "info");
-            }
-        });
-    });
-});
-
-// ========================================== //
-
-
 
 
 // ======================== FOR APPROVAL MODULE ============================= //
-// VIEW BUTTON CARD FORM      // THIS IS VIEW BUTTON IS APPLICABLE TO FOR APPROVAL, RELEASE, COMPLETED REQUEST
+// VIEW BUTTON CARD FORM      
 $(document).ready(function () {
     $('#ViewEquipBtn').click(function () {
         console.log('View Equipment Button is Clicked.');
-        $('#ViewEquipPopupCard').removeClass('hidden');
+        $('#ViewReqEquipPopupCard').removeClass('hidden');
     });
-});
 
-$(document).ready(function () {
-    $('#closeViewEquipPopupCard').click(function () {
+    $('#closeReqViewEquipPopupCard').click(function () {
         console.log('Close "X" Equipment Button is Clicked.');
-        $('#ViewEquipPopupCard').addClass('hidden');
+        $('#ViewReqEquipPopupCard').addClass('hidden');
+    });
+
+    $('#cancelReqEquipmentInventoryPopupCard').click(function () {
+        console.log('Close "X" Equipment Button is Clicked.');
+        $('#ViewReqEquipPopupCard').addClass('hidden');
     });
 });
 
 
-// APPROVE BUTTON CARD FORM
+
+// // APPROVE BUTTON CARD FORM
 $(document).ready(function () {
     $("#ApprEquipBtn").click(function () {
-        $("#ApprEquipPopupCard").removeClass("hidden");
+        $("#ApprReqEquipPopupCard").removeClass("hidden");
     });
 
     // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeApprEquipPopupCard").click(function () {
+    $("#closeApprReqEquipPopupCard").click(function () {
         Swal.fire({
             icon: 'error',
             title: 'Cancelled',
@@ -123,12 +89,12 @@ $(document).ready(function () {
             confirmButtonText: 'OK',
             confirmButtonColor: '#D1191A'
         }).then(() => {
-            $("#ApprEquipPopupCard").addClass("hidden");
+            $("#ApprReqEquipPopupCard").addClass("hidden");
         });
     });
 
     // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitApprEquipPopupCard").click(function () {
+    $("#submitApprReqEquipPopupCard").click(function () {
         Swal.fire({
             icon: 'success',
             title: 'Submitted',
@@ -136,7 +102,7 @@ $(document).ready(function () {
             confirmButtonText: 'OK',
             confirmButtonColor: '#3085d6'
         }).then(() => {
-            $("#ApprEquipPopupCard").addClass("hidden");
+            $("#ApprReqEquipPopupCard").addClass("hidden");
         });
     });
 });
@@ -144,12 +110,11 @@ $(document).ready(function () {
 
 // DECLINE BUTTON CARD FORM
 $(document).ready(function () {
-    // Show the popup when the button is clicked
     $("#DclnEquipBtn").click(function () {
         $("#DclnEquipPopupCard").removeClass("hidden");
     });
 
-    // Hide the popup and show Cancel message when Cancel button is clicked
+  
     $("#closeDclnEquipPopupCard").click(function () {
         Swal.fire({
             icon: 'error',
@@ -162,7 +127,7 @@ $(document).ready(function () {
         });
     });
 
-    // Hide the popup and show Submitted message when Submit button is clicked
+
     $("#submitDclnEquipPopupCard").click(function () {
         Swal.fire({
             icon: 'success',
@@ -174,86 +139,27 @@ $(document).ready(function () {
             $("#DclnEquipPopupCard").addClass("hidden");
         });
     });
-});// ========================================== //
-
-
-
-
-
-
-
-// ======================== FOR RELEASE MODULE ============================= //
-
-// RELEASE BUTTON FORM CARD
-$(document).ready(function () {
-    // Show the popup when the button is clicked
-    $("#RelEquipBtn").click(function () {
-        $("#RelEquipPopupCard").removeClass("hidden");
-    });
-
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeRelEquipPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Release process has been cancelled',
-            confirmButtonText: 'OK',
-        }).then(() => {
-            $("#RelEquipPopupCard").addClass("hidden");
-        });
-    });
-
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitRelEquipPopupCard").click(function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'The release process has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#RelEquipPopupCard").addClass("hidden");
-        });
-    });
 });
+// ========================================== //
 
 
-// REVOKE BUTTON FORM CARD
-$(document).ready(function () {
-    // Show the popup when the button is clicked
-    $("#RevEquipBtn").click(function () {
-        $("#RevEquipPopupCard").removeClass("hidden");
-    });
 
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeRevEquipPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Revoke Process is cancel',
-            confirmButtonText: 'OK',
-        }).then(() => {
-            $("#RevEquipPopupCard").addClass("hidden");
-        });
-    });
-
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitRevEquipPopupCard").click(function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Revoke Successfully',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#RevEquipPopupCard").addClass("hidden");
-        });
-    });
-});
-
-
-// ======================== COMPLETED REQUEST ============================= //
-
+// $(document).ready(function () {
+//     // When a building is selected, filter the room dropdown
+//     $('#buildingName').change(function () {
+//       const selectedBuilding = $(this).val();
+//       $('#room option').each(function () {
+//         const roomBuilding = $(this).data('building');
+//         if (roomBuilding === selectedBuilding || $(this).val() === "") {
+//           $(this).show();
+//         } else {
+//           $(this).hide();
+//         }
+//       });
+//       // Reset room selection
+//       $('#room').val('');
+//     });
+//   });
 
 
 // ======================== DATATABLES ============================= //

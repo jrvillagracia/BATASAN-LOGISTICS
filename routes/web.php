@@ -162,13 +162,18 @@ Route::get('/admin_REQapprovalEquipment', function () {
     return view('adminPages.admin_REQapprovalEquipment');
 })->name('admin_REQapprovalEquipment');
 
-Route::get('/admin_REQreleaseEquipment', function () {
-    return view('adminPages.admin_REQreleaseEquipment');
-})->name('admin_REQreleaseEquipment');
+Route::get('/admin_REQAprRequestEquipment', function () {
+    return view('adminPages.admin_REQAprRequestEquipment');
+})->name('admin_REQAprRequestEquipment');
 
-Route::get('/admin_REQrqstEquipment', function () {
-    return view('adminPages.admin_REQrqstEquipment');
-})->name('admin_REQrqstEquipment');
+Route::get('/admin_REQComRequestEquipment', function () {
+    return view('adminPages.admin_REQComRequestEquipment');
+})->name('admin_REQComRequestEquipment');
+
+
+Route::get('/admin_REQHistoryEquipment', function () {
+    return view('adminPages.admin_REQHistoryEquipment');
+})->name('admin_REQHistoryEquipment');
 
 
 

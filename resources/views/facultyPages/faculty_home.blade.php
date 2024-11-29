@@ -1,7 +1,7 @@
 <!-- resources/views/facultyPages/faculty_home.blade.php -->
 @extends('facultyLayouts.layout')
 
-@section('title', 'Downloadable Forms')
+@section('title', 'Dashboard')
 
 @section('content')
 <!-- User Greeting -->
@@ -9,7 +9,7 @@
     <h2 class="text-lg font-semibold">Hello, Sir. Jersom Tumacder</h2>
 </section>
 
-<!-- Downloadable Forms Table -->
+<!-- Dashboard Table -->
 <section class="bg-white p-6 mt-6 shadow rounded">
     <div class="grid grid-cols-3 gap-4 mt-8 pb-8">
         <!-- Card 1 -->

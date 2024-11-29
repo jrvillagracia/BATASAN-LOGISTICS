@@ -6,3 +6,44 @@
     background-color: #163172; /* Your custom background color */
     color: white; /* Your custom text color */
 }
+
+#reqSETITEMEquipTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+/*Approve Request: SET ITEM BUTTON  */
+#SetItemAprReqEquipPopupCard {
+    z-index: 50; /* Leave this as is */
+}
+
+
+/*Approve Request: SET ITEM BUTTON   */
+#reqItemNumEquipTable {
+    z-index: 200; /* Set this higher than the SetItem card */
+    position: fixed; /* Ensure it respects z-index */
+}
+
+
+/*Approve Request: SET ITEM BUTTON  */
+#reqItemNumEquipTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+
+/*Approve Request: COMPLETE BUTTON  */
+#reqCOMPLETEEquipTable thead{
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+/*Complete Request: VIEW BUTTon */
+#COMReqEquipPopupCard {
+    z-index: 50; /* Leave this as is */
+}
+
+#reqCOMREQEquipTable thead{
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}

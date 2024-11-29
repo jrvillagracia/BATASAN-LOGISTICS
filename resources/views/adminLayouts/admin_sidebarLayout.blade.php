@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 
     <!-- FOR GENERATE TO PDF SCRIPT LIBRARY -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
@@ -16,6 +18,9 @@
     <!-- LOCAL JS FILES -->
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
+
+
+    <script src="{{asset('js/admin_dashboard.js')}}"></script>          <!-- DASHBOARD MODULE -->
 
     <script src="{{asset('js/admin_ForApprMainteEquip.js')}}"></script> <!-- MAINTENANCE INVENTORY MODULE -->
     <script src="{{asset('js/admin_ForRepMainteEquip.js')}}"></script>
@@ -31,7 +36,13 @@
     <script src="{{asset('js/admin_equipUsed.js')}}"></script>
     <script src="{{asset('js/admin_equipHistory.js')}}"></script>
 
-    <script src="{{asset('js/admin_requestEquipment.js')}}"></script> <!-- REQUEST MODULE -->
+    <script src="{{asset('js/admin_requestEquipment.js')}}"></script> <!-- REQUEST EQUIPMENT MODULE -->
+    <script src="{{asset('js/admin_REQAprRequestEquipment.js')}}"></script>
+    <script src="{{asset('js/admin_REQComRequestEquipment.js')}}"></script>
+
+
+
+
     <script src="{{asset('js/admin_requestSupplies.js')}}"></script>
 
     <script src="{{asset('js/admin_supplies.js')}}"></script>           <!-- INVENTORY SUPPLIES MODULE -->
