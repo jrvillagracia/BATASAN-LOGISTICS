@@ -1,6 +1,6 @@
 @extends('adminLayouts.admin_sidebarLayout')
 
-@section('title', 'Request Equipment | BHNHS')
+@section('title', 'Request Supplies | BHNHS')
 
 @section('content')
 
@@ -10,7 +10,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9">
             <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
         </svg>
-        <h1 class="text-3xl font-bold ml-2">Inventory Request Equipment</h1>
+        <h1 class="text-3xl font-bold ml-2">Inventory Request Supplies</h1>
     </div>
 
     <!-- Breadcrumb -->
@@ -42,23 +42,23 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
-                <a href="{{route('admin_REQapprovalEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
-                <a href="{{route('admin_REQAprRequestEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
-                <a href="{{route('admin_REQComRequestEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_REQHistoryEquipment')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{route('admin_REQapprovalSupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
+                <a href="{{route('admin_REQAprRequestSupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
+                <a href="{{route('admin_REQComRequestSupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_REQHistorySupplies')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
             </div>
 
             <!-- Search Bar -->
             <div class=" flex items-center space-x-4">
                 <label for="maintenance-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only dark:text-white">Search</label>
-                <form id="RequestEquipmentSearchForm" class="flex items-center space-x-4">
+                <form id="REQSuppliesSearchForm" class="flex items-center space-x-4">
                     <div class="relative w-96">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="RequestEquipmentSearch" name="RequestEquipmentSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                        <input type="search" id="REQSuppliesSearch" name="REQSuppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
                     </div>
                     <!-- Add Item Button -->
 
@@ -71,7 +71,7 @@
 
         <!-- Table -->
         <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-            <table id="reqEquipTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table id="reqSuppTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="table_color text-xs text-white uppercase">
                     <tr>
                         <th scope="col" class="px-6 py-3">

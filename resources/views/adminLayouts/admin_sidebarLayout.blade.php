@@ -41,9 +41,9 @@
     <script src="{{asset('js/admin_REQComRequestEquipment.js')}}"></script>
 
 
-
-
-    <script src="{{asset('js/admin_requestSupplies.js')}}"></script>
+    <script src="{{asset('js/admin_requestSupplies.js')}}"></script>    <!-- REQUEST SUPPLIES MODULE -->
+    <script src="{{asset('js/admin_REQAprRequestSupplies.js')}}"></script>
+    <script src="{{asset('js/admin_REQComRequestSupplies.js')}}"></script>
 
     <script src="{{asset('js/admin_supplies.js')}}"></script>           <!-- INVENTORY SUPPLIES MODULE -->
     <script src="{{asset('js/admin_suppliesHistory.js')}}"></script> 

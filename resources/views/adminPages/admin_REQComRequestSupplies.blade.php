@@ -1,16 +1,15 @@
 @extends('adminLayouts.admin_sidebarLayout')
 
-@section('title', 'Request Equipment | BHNHS')
+@section('title', 'Request Supplies | BHNHS')
 
 @section('content')
-
 
 <section>
     <div class="flex items-center pb-8">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9">
             <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
         </svg>
-        <h1 class="text-3xl font-bold ml-2">Inventory Request Equipment</h1>
+        <h1 class="text-3xl font-bold ml-2">Inventory Request Supplies</h1>
     </div>
 
     <!-- Breadcrumb -->
@@ -42,37 +41,35 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
-                <a href="{{route('admin_REQapprovalEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
-                <a href="{{route('admin_REQAprRequestEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
-                <a href="{{route('admin_REQComRequestEquipment')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_REQHistoryEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{route('admin_REQapprovalSupplies')}}" class="button border-b-2  py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
+                <a href="{{route('admin_REQAprRequestSupplies')}}" class="button border-b-2  py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
+                <a href="{{route('admin_REQComRequestSupplies')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_REQHistorySupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
             </div>
 
             <!-- Search Bar -->
             <div class=" flex items-center space-x-4">
                 <label for="maintenance-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only dark:text-white">Search</label>
-                <form id="RequestEquipmentSearchForm" class="flex items-center space-x-4">
+                <form id="REQSuppliesSearchForm" class="flex items-center space-x-4">
                     <div class="relative w-96">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="RequestEquipmentSearch" name="RequestEquipmentSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                        <input type="search" id="REQSuppliesSearch" name="REQSuppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
                     </div>
                     <!-- Add Item Button -->
-
             </div>
         </div>
 
         <!-- Floating Card with Form (Initially Hidden) -->
 
 
-
         <!-- Table -->
         <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-            <table id="reqEquipTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="table_color text-xs text-white uppercase">
+            <table id="reqSuppTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-sm text-white dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -90,28 +87,29 @@
                             Quantity
                         </th>
                         <th scope="col" class="px-6 py-30">
-                            Request Office/Unit
+                            Requesting Office/Unit
                         </th>
                         <th scope="col" class="px-6 py-30">
-                            Date Complete
+                            Date Requested
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Action
+                            Actions
                         </th>
                     </tr>
                 </thead>
                 <tbody id="tableBody" class="">
 
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Completed</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">R000001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">264gb</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">R00001</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">MNI</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Elem Faculty</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/21/2024</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button id="COMReqViewEquipBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Elementary Faculty</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/12/2024</td>
+                        <td class="px-6 py-4">
+                            <button id="COMReqViewSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+
                         </td>
                     </tr>
 
@@ -119,12 +117,13 @@
                 </tbody>
             </table>
 
+
             <!-- View Popup Card -->
-            <div id="COMReqEquipPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div id="COMReqSupPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-8xl max-h-[80vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold ">Set Item</h2>
-                        <button id="closeCOMReqViewEquipPopupCard" class="text-gray-500 hover:text-gray-700">
+                        <button id="closeCOMReqViewSupPopupCard" class="text-gray-500 hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -148,7 +147,7 @@
                     </div>
 
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
-                        <table id="reqCOMREQEquipTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <table id="reqCOMREQSupTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Category</th>
@@ -173,18 +172,18 @@
                     </div>
 
                     <div class="flex justify-end space-x-4 pt-4">
-                        <button id="COMReqSeeMoretBTN" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">See More</button>
-                        <button id="COMReqCancelBTN" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="COMReqSupSeeMoretBTN" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">See More</button>
+                        <button id="COMReqSupCancelBTN" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
 
             <!-- See More Popup Card -->
-            <div id="COMReqSeeMorequipPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div id="COMReqSeeMoreSupPopupCard" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-5xl max-h-[80vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold">Item Checklist</h2>
-                        <button id="closeCOMReqSeeMoreEquipPopupCard" class="text-gray-500 hover:text-gray-700">
+                        <button id="closeCOMReqSeeMoreSupPopupCard" class="text-gray-500 hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -204,8 +203,6 @@
                                     <th scope="col" class="px-6 py-3">Product Name</th>
                                     <th scope="col" class="px-6 py-3">Type</th>
                                     <th scope="col" class="px-6 py-3">SKU</th>
-                                    <th scope="col" class="px-6 py-3">Control Number</th>
-                                    <th scope="col" class="px-6 py-3">Serial Number</th>
                                 </tr>
                             </thead>
                             <tbody id="tableViewBody">
@@ -215,8 +212,6 @@
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Product Name</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">64gb</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">LAP000001</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">CONTROLNO</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">SERIALNO</td>
                                 </tr>
 
                                 <!-- Dynamic rows will be inserted here -->
@@ -225,11 +220,13 @@
                     </div>
 
                     <div class="flex justify-end space-x-4 pt-4">
-                        <button id="COMReqSeeMoreCloseBTN" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
+                        <button id="COMReqSupSeeMoreCloseBTN" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
                     </div>
 
                 </div>
             </div>
+
+
             <!-- Pagination -->
         </div>
     </div>

@@ -42,14 +42,25 @@
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
                 <a href="{{route('admin_REQapprovalSupplies')}}" class="button border-b-2 border-blue-500  py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
-                <a href="{{route('admin_REQreleaseSupplies')}}" class="button border-b-2  py-2 px-4 transition-all duration-300 translate-x-2">For Release</a>
-                <a href="{{route('admin_REQrqstSupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_REQAprRequestSupplies')}}" class="button border-b-2  py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
+                <a href="{{route('admin_REQComRequestSupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_REQHistorySupplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
             </div>
 
 
             <div class=" flex items-center space-x-4">
-                <!-- Add Item Button -->
-                <button id="ReqSupFormBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">&plus; Add Request</button>
+                <label for="maintenance-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only dark:text-white">Search</label>
+                <form id="REQSuppliesSearchForm" class="flex items-center space-x-4">
+                    <div class="relative w-96">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="search" id="REQSuppliesSearch" name="REQSuppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                    </div>
+                    <!-- Add Item Button -->
+                    <button id="ReqSupFormBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">&plus; Add Request</button>
             </div>
         </div>
 
@@ -68,36 +79,82 @@
 
                 <form id="ReqSupForm">
                     <div class="mb-4">
-                        <label for="name" class="block text-sm font-semibold mb-2">Name:</label>
-                        <input type="text" id="name" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Name">
+                        <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+                            <input id="ReqSuppDate" type="text" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                        </div>
+
+                        <label for="time" class="block text-sm font-semibold mb-2">Select time:</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <input type="time" id="ReqSupTime" name="ReqSupTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                        </div>
                     </div>
 
                     <div class="mb-4">
-                        <label for="department" class="block text-sm font-semibold mb-2">Department:</label>
-                        <select id="SuppliesDepartment" class="w-full px-2 py-1 border border-gray-400 rounded">
-                            <option value="">Select Department</option>
-                            <option value="hr">HR</option>
-                            <option value="it">IT</option>
-                            <option value="sales">Sales</option>
-                        </select>
+                        <label for="ReqSupRequestOffice/Unit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
                     </div>
 
                     <div class="mb-4">
-                        <label for="ReqSupDate" class="block text-sm font-semibold mb-2">Date:</label>
-                        <input type="text" id="ReqSupDate" name="ReqSupDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
+                        <div class="flex space-x-4">
+                            <!-- Building Dropdown -->
+                            <div class="flex-1">
+                                <label for="ReqSupBldName" class="block text-sm font-semibold mb-2">Building Name</label>
+                                <select id="ReqSupBldName" name="ReqSupBldName" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Building</option>
+                                    <option value="BuildingA">Building A</option>
+                                    <option value="BuildingB">Building B</option>
+                                    <option value="BuildingC">Building C</option>
+                                </select>
+                            </div>
+
+                            <!-- Room Dropdown -->
+                            <div class="flex-1">
+                                <label for="ReqSupRoom" class="block text-sm font-semibold mb-2">Room</label>
+                                <select id="ReqSupRoom" name="ReqSupRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Room</option>
+                                    <!-- These options will depend on the selected building -->
+                                    <option value="Room101" data-building="BuildingA">Room 101</option>
+                                    <option value="Room102" data-building="BuildingA">Room 102</option>
+                                    <option value="Room201" data-building="BuildingB">Room 201</option>
+                                    <option value="Room202" data-building="BuildingB">Room 202</option>
+                                    <option value="Room301" data-building="BuildingC">Room 301</option>
+                                    <option value="Room302" data-building="BuildingC">Room 302</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-4">
-                        <label for="ReqSupReason" class="block text-sm font-semibold mb-2">Reason:</label>
-                        <input type="text" id="ReqSupReason" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Reason">
+                        <label for="ReqSupRequestFOR" class="block text-sm font-semibold mb-2">Requesting for</label>
+
                     </div>
 
                     <div class="mb-4">
-                        <label for="ReqSupRemarks" class="block text-sm font-semibold mb-2">Remarks:</label>
-                        <textarea id="ReqSupRemarks" class="w-full px-2 py-1 border border-gray-400 rounded h-20" placeholder="Enter your Remarks here"></textarea>
+                        <label for="ReqSupCategoryName" class="block text-sm font-semibold mb-1">Category:</label>
+                        <input type="text" id="ReqSupCategoryName" name="ReqSupCategoryName" class="border border-gray-400 p-2 rounded w-full" placeholder="Category">
                     </div>
 
-                    <div class="flex justify-end space-x-2">
+                    <div class="mb-4">
+                        <label for="ReqSupType" class="block text-sm font-semibold mb-1">Type:</label>
+                        <input type="text" name="ReqSupType" id="ReqSupType" class="border border-gray-400 p-2 rounded w-full" placeholder="Type" pattern="[A-Za-z ]*" title="Only characters are allowed">
+                    </div>
+
+                    <div>
+                        <label for="ReqSupQuantity" class="block text-sm font-semibold mb-1">Quantity:</label>
+                        <input type="number" name="ReqSupQuantity" id="ReqSupQuantity" class="border border-gray-400 p-2 rounded w-full" placeholder="Quantity">
+                    </div>
+
+                    <div class="flex justify-end space-x-2 pt-3">
                         <button id="ReqSupCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                         <button id="ReqSupSubmitFormBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
                     </div>
@@ -115,13 +172,22 @@
                             Status
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Name
+                            Request ID
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Department
+                            Category
                         </th>
                         <th scope="col" class="px-6 py-30">
-                            Date
+                            Type
+                        </th>
+                        <th scope="col" class="px-6 py-30">
+                            Quantity
+                        </th>
+                        <th scope="col" class="px-6 py-30">
+                            Requesting Office/Unit
+                        </th>
+                        <th scope="col" class="px-6 py-30">
+                            Date Requested
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Actions
@@ -131,27 +197,17 @@
                 <tbody id="tableBody" class="">
 
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Rey</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">IT</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">2024-08-23</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">R00001</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">MNI</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Elementary Faculty</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/12/2024</td>
                         <td class="px-6 py-4">
-                            <button id="ViewSupBtn" type="button">
-                                <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                    <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
-                            </button>
-                            <button id="ApprSupBtn" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000FF">
-                                    <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
-                                </svg>
-                            </button>
-                            <button id="DclnSupBtn" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#D1191A">
-                                    <path d="M200-440v-80h560v80H200Z" />
-                                </svg>
-                            </button>
+                            <button id="ViewSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                            <button id="ApprSupBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
+                            <button id="DclnSupBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
                         </td>
                     </tr>
 
@@ -160,11 +216,11 @@
             </table>
 
             <!-- View Popup Card -->
-            <div id="ViewSupPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
+            <div id="ViewReqSuppliesPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">View Request</h2>
-                        <button id="closeViewSupPopupCard" class="text-gray-500 hover:text-gray-700">
+                        <h2 class="text-lg font-semibold">Request Supplies Slip</h2>
+                        <button id="closeReqViewSuppliesPopupCard" class="text-gray-500 hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -172,31 +228,34 @@
                     </div>
 
                     <div class="text-sm">
-                        <p class="mb-2"><strong>Name:</strong> Rey</p>
-                        <p class="mb-2"><strong>Position:</strong> Faculty Teacher</p>
-                        <p class="mb-2"><strong>Date:</strong> 2024-08/23</p>
-                        <p class="mb-2"><strong>Product Name:</strong> Chalk Box</p>
-                        <p class="mb-2"><strong>Category:</strong> Classroom Supply</p>
-                        <p class="mb-2"><strong>Quantity:</strong> 1</p>
-                        <p class="mb-2"><strong>Reason:</strong> For Teaching Use</p>
-                        <div class="mb-4">
-                            <label for="Remarks" class="block text-sm font-semibold mb-2">Remarks:</label>
-                            <textarea id="Remarks" class="w-full px-2 py-1 border border-gray-400 rounded h-20">For teaching .. etc</textarea>
+                        <p class="mb-2"><strong>Date:</strong></p>
+                        <p class="mb-2"><strong>Time:</strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit:</strong></p>
+                        <p class="mb-2"><strong>Building Name:</strong></p>
+                        <p class="mb-2"><strong>Room:</strong></p>
+                        <p class="mb-2"><strong>Requesting For:</strong></p>
+
+                        <div class="pt-4">
                         </div>
+                        <p class="mb-2"><strong>Category:</strong></p>
+                        <p class="mb-2"><strong>Quantity:</strong></p>
+                        <p class="mb-2"><strong>Type:</strong></p>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button id="printReqSuppliesInventoryPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Print</button>
+                        <button id="cancelReqSuppliesInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
 
 
             <!-- Approval Pop Up Card -->
-            <div id="ApprSupPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+            <div id="ApprReqSupPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-                    <h2 class="text-xl font-bold mb-4 text-center">Are you Sure?</h2>
-                    <p class="mb-4 text-center">Product name: Chalk Box</p>
-                    <p class="mb-4 text-center">Available Stock(s): 20</p>
+                    <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to approve this request?</h2>
                     <div class="flex justify-center space-x-4">
-                        <button id="submitApprSupPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeApprSupPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitApprReqSupPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="closeApprReqSupPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -205,18 +264,7 @@
             <!-- Decline Pop Up Card -->
             <div id="DclnSupPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-
-                    <!-- Reason Dropdown -->
-                    <label for="reason" class="block mb-2">Reason</label>
-                    <select id="reason" class="mb-4 w-full p-2 rounded border border-gray-400">
-                        <option value="no-supply">No Supply</option>
-                        <option value="wrong-order">Wrong Order</option>
-                        <option value="damaged">Damaged Product</option>
-                    </select>
-
-                    <!-- Remarks Textarea -->
-                    <label for="remarks" class="block mb-2">Remarks</label>
-                    <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
+                    <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to decline this request?</h2>
 
                     <div class="flex justify-center space-x-4">
                         <button id="submitDclnSupPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>

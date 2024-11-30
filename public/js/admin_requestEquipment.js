@@ -51,6 +51,20 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $("#ReqEquipSubmitFormBtn").click(function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Submit',
+            text: 'Successfully Added to the table',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#ReqEquipFormCard").addClass("hidden");
+        });
+    });
+});
+
 
 
 // ======================== FOR APPROVAL MODULE ============================= //

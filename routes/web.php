@@ -73,9 +73,9 @@ Route::middleware("jwt-verify")->group(function() {
         return view('admin_approvalSupplies');
     })->name('admin_approvalSupplies');
     
-    Route::get('/admin_releaseSupplies', function () {
-        return view('admin_releaseSupplies');
-    })->name('admin_releaseSupplies');
+    Route::get('/admin_AprRequestSupplies', function () {
+        return view('admin_AprRequestSupplies');
+    })->name('admin_AprRequestSupplies');
     
     Route::get('/admin_com_rqstSupplies', function () {
         return view('admin_com_rqstSupplies');
@@ -87,9 +87,9 @@ Route::middleware("jwt-verify")->group(function() {
         return view('admin_approvalEquipment');
     })->name('admin_approvalEquipment');
     
-    Route::get('/admin_releaseEquipment', function () {
-        return view('admin_releaseEquipment');
-    })->name('admin_releaseEquipment');
+    Route::get('/admin_AprRequestEquipment', function () {
+        return view('admin_AprRequestEquipment');
+    })->name('admin_AprRequestEquipment');
     
     Route::get('/admin_com_rqstEquipment', function () {
         return view('admin_com_rqstEquipment');
@@ -148,14 +148,17 @@ Route::get('/admin_REQapprovalSupplies', function () {
     return view('adminPages.admin_REQapprovalSupplies');
 })->name('admin_REQapprovalSupplies');
 
-Route::get('/admin_REQreleaseSupplies', function () {
-    return view('adminPages.admin_REQreleaseSupplies');
-})->name('admin_REQreleaseSupplies');
+Route::get('/admin_REQAprRequestSupplies', function () {
+    return view('adminPages.admin_REQAprRequestSupplies');
+})->name('admin_REQAprRequestSupplies');
 
-Route::get('/admin_REQrqstSupplies', function () {
-    return view('adminPages.admin_REQrqstSupplies');
-})->name('admin_REQrqstSupplies');
+Route::get('/admin_REQComRequestSupplies', function () {
+    return view('adminPages.admin_REQComRequestSupplies');
+})->name('admin_REQComRequestSupplies');
 
+Route::get('/admin_REQHistorySupplies', function () {
+    return view('adminPages.admin_REQHistorySupplies');
+})->name('admin_REQHistorySupplies');
 
 // REQUEST MODULE FOR EQUIPMENT
 Route::get('/admin_REQapprovalEquipment', function () {

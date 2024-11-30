@@ -84,8 +84,9 @@
                                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                 </svg>
                             </div>
-                            <input id="MainteEquipDate" datepicker datepicker-buttons datepicker-autoselect-today type="text" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                            <input id="MainteEquipDate" type="text" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                         </div>
+
 
                         <label for="time" class="block text-sm font-semibold mb-2">Select time:</label>
                         <div class="relative">
@@ -100,12 +101,40 @@
 
                     <div class="mb-4">
                         <label for="MainteEquipReqUnit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
-                        <input type="text" id="MainteEquipReqUnit" name="MainteEquipReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Requesting Office/Unit">
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex space-x-4">
+                            <!-- Building Dropdown -->
+                            <div class="flex-1">
+                                <label for="MainteEquipBuildingName" class="block text-sm font-semibold mb-2">Building Name</label>
+                                <select id="MainteEquipBuildingName" name="MainteEquipBuildingName" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Building</option>
+                                    <option value="BuildingA">Building A</option>
+                                    <option value="BuildingB">Building B</option>
+                                    <option value="BuildingC">Building C</option>
+                                </select>
+                            </div>
+
+                            <!-- Room Dropdown -->
+                            <div class="flex-1">
+                                <label for="MainteEquipRoom" class="block text-sm font-semibold mb-2">Room</label>
+                                <select id="MainteEquipRoom" name="MainteEquipRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Room</option>
+                                    <!-- These options will depend on the selected building -->
+                                    <option value="Room101" data-building="BuildingA">Room 101</option>
+                                    <option value="Room102" data-building="BuildingA">Room 102</option>
+                                    <option value="Room201" data-building="BuildingB">Room 201</option>
+                                    <option value="Room202" data-building="BuildingB">Room 202</option>
+                                    <option value="Room301" data-building="BuildingC">Room 301</option>
+                                    <option value="Room302" data-building="BuildingC">Room 302</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-4">
                         <label for="MainteEquipReqFOR" class="block text-sm font-semibold mb-2">Requesting for</label>
-                        <textarea id="MainteEquipReqFOR" class="w-full p-2 rounded border border-gray-400 mb-4 max-h-40 overflow-y-scroll" rows="3" placeholder="Enter your requesting here for..."></textarea>
                     </div>
 
                     <!-- Two-column section for the specified fields -->
@@ -247,8 +276,8 @@
                         <p class="mb-2"><strong>Control Number: </strong></p>
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="printForApprMainteInventoryPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Print</button>
-                        <button id="cancelForApprMainteInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="printForApprMainteInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
+                        <button id="cancelForApprMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
 
@@ -262,8 +291,8 @@
                     <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitApprMainteInventoryPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeApprMainteInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitApprMainteInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="closeApprMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -280,8 +309,8 @@
                     <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitDclnMainteInventoryPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeDclnMainteInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitDclnMainteInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="closeDclnMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
