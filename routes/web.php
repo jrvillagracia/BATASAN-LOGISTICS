@@ -1,16 +1,17 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SuppliesController;
-use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\JWTApiTokenController;
 use App\Http\Controllers\Events\ApproveController;
 use App\Http\Controllers\Events\ApprovalController;
 use App\Http\Controllers\Events\CompleteController;
 use App\Http\Controllers\FacilityModule\RoomController;
-use App\Http\Controllers\JWTApiTokenController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Equipments\EquipmentController;
+use App\Http\Controllers\Equipments\EquipmentStockController;
 
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
 
@@ -171,27 +172,6 @@ Route::get('/admin_REQrqstEquipment', function () {
 })->name('admin_REQrqstEquipment');
 
 
-
-
-
-
-
-
-
-// // FACILITY MODULE FOR REGULAR ROOM
-// Route::get('/admin_facilityRegRoom', function () {
-//     return view('admin_facilityRegRoom');
-// })->name('admin_facilityRegRoom');
-
-
-
-// // FACILITY MODULE FOR MORNING SPECIAL ROOM
-// Route::get('/admin_facilitySpecRoom', function () {
-//     return view('admin_facilitySpecRoom');
-// })->name('admin_facilitySpecRoom');
-
-
-
 //Register
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'registerPost'])->name('register.post');
@@ -203,8 +183,9 @@ Route::get('/admin/dashboard', [RegisterController::class, 'index'])->name('admi
 Route::get('/employee/login', [RegisterController::class, 'login'])->name('employee_login');
 
 
-//Equipment
+//Equipment Stock In
 Route::get('/admin_StockInEquipment', [EquipmentController::class, 'index'])->name('admin_StockInEquipment');
+Route::post('/equipment/approved', [EquipmentController::class, 'approve'])->name('equipment.approve');
 Route::get('/equipment/details', [EquipmentController::class,'equipmentDetails'])->name('equipment.details');
 Route::post('/equipment/store', [EquipmentController::class, 'store'])->name('equipment.store');
 Route::post('/equipment/delete', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
@@ -213,9 +194,9 @@ Route::post('/equipment/update-main', [EquipmentController::class, 'updateMain']
 Route::post('/equipment/update-view', [EquipmentController::class, 'updateView'])->name('equipment.updateView');
 Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewing'])->name('equipment.finalViewing');
 
-Route::get('/admin_EQUIPMENT', function () {
-    return view('adminPages.admin_EQUIPMENT');
-})->name('admin_EQUIPMENT');
+//Equipment
+Route::get('/admin_equipment', [EquipmentStockController::class, 'index'])->name('admin_EQUIPMENT');
+
 
 //Supplies
 Route::get('/admin_supplies', [SuppliesController::class, 'index'])->name('admin_supplies');
@@ -235,7 +216,7 @@ Route::post('/room/edit', [RoomController::class, 'edit'])->name('room.edit');
 
 //Laboratory Room
 Route::get('/admin_facilitySpecRoom', [RoomController::class, 'labindex'])->name('admin_facilitySpecRoom');
-Route::get('/rooms/lab/store', [RoomController::class, 'store'])->name('rooms.lab.store');
+Route::post('/rooms/lab/store', [RoomController::class, 'store'])->name('rooms.lab.store');
 
 //Events and Activities
 Route::post('/events/store', [ApprovalController::class, 'store'])->name('events.store');

@@ -213,7 +213,7 @@
                         <p class="mb-2"><strong>Capacity:</strong>{{ $room['currentEnrollment'] . '/' . $room['facilityRoom']['Capacity'] }}</p>
                         <p class="mb-2"><strong>Shift Type:</strong>{{$room['session']}}</p>
                         <p class="mb-2"><strong>Facility Type:</strong>Instructional</p>
-                        <p class="mb-2"><strong>Assigned Date:</strong> 09/12/2024</p>
+                        <p class="mb-2"><strong>Assigned Date:</strong>{{ $room ['assignedDate'] }}</p>
                         <p class="mb-2"><strong>Assigned:</strong>{{$room['gradeLevel'] . ' - ' . $room['sectionName']}}</p>
                         <div class="pt-4">
                             <h2 class="text-lg font-semibold">Inventory in the Room</h2>
@@ -240,7 +240,8 @@
                             </svg>
                         </button>
                     </div>
-
+                    
+                    @foreach($combinedRooms as $room)
                     <form id="RegEditForm" action="" method="">
                         @csrf
                         <!-- Input Fields -->
@@ -279,6 +280,7 @@
                             <button type="button" data-id="{{$room['roomId']}}" class=" RegEditSaveFormBtn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Save</button>
                         </div>
                     </form>
+                    @endforeach
                 </div>
             </div>
         </div>

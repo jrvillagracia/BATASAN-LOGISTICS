@@ -20,7 +20,11 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#EquipmentSaveButton').on('click', function (e) {
         e.preventDefault();
-        console.log('Save Button Clicked');
+        
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+       
+        $('#EquipmentDate').val(formattedDate);
 
         const brandName = $('#EquipmentBrandName').val().trim();
         const name = $('#EquipmentName').val().trim();
@@ -160,10 +164,11 @@ $(document).ready(function () {
         $('#editEquipModal').removeClass('hidden');
 
         // Populate the edit modal fields with data from the row
-        $('#editForm').find('#EquipmentBrandNameEdit').val(row.find('td').eq(0).text().trim());
-        $('#editForm').find('#EquipmentNameEdit').val(row.find('td').eq(1).text().trim());
+        $('#editForm').find('#EquipmentBrandNameEdit').val(row.find('td').eq(2).text().trim());
+        $('#editForm').find('#EquipmentNameEdit').val(row.find('td').eq(3).text().trim());
         $('#editForm').find('#EquipmentCategoryEdit').val(row.find('td').eq(3).text().trim());
         $('#editForm').find('#EquipmentSKUEdit').val(row.find('td').eq(6).text().trim());
+        $('#editForm').find('#EquipmentClassificationEdit').val(row.find('td').eq(7).text().trim());
 
         // Set the hidden input field with the equipment brand
         $('#editForm').find('input[name="brand"]').val(equipBrand);
@@ -372,15 +377,9 @@ document.addEventListener("DOMContentLoaded", function () {
 $(document).ready(function () {
     // Bind click event for the edit button (or any button intended to view details)
     $(document).on('click', '#viewEquipButton', function () {
-        // Use closest 'tr' to find the correct row and get data attributes
-        const row = $(this).closest('tr');
-        var brandName = row.attr('data-brand');
-        const equipmentId = row.attr('data-id');
-
-
+        const button = $(this);
+        const brandName = button.data('brand');
         console.log('Brand Name:', brandName);
-        console.log('Equipment ID:', equipmentId);
-        console.log(row);
 
         // Show the modal for viewing/editing details
         $('#ViewEquipModal').removeClass('hidden');
@@ -402,12 +401,6 @@ $(document).ready(function () {
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${equipment.EquipmentSerialNo}</td>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${equipment.EquipmentControlNo}</td>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <button class="viewEquipBTN" type="button">
-                                        <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        </svg>
-                                    </button>
                                     <button class="editEquipBTN" data-form-type="second" type="button">
                                         <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                             <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
@@ -418,13 +411,27 @@ $(document).ready(function () {
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <input id="StockInCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 </td>
-                                
                             </tr>
                         `;
-
                         // Append the new row to the table
                         $('#ViewDynamicTable tbody').append(newRow);
                     });
+
+                    // Populate the modal with detailed equipment information
+                    const equipmentDetails = `
+                        <p><strong>Brand Name:</strong> ${response.equipmentDetails[0].EquipmentBrandName || 'N/A'}</p>
+                        <p><strong>Product Name:</strong> ${response.equipmentDetails[0].EquipmentName || 'N/A'}</p>
+                        <p><strong>Category:</strong> ${response.equipmentDetails[0].EquipmentCategory || 'N/A'}</p>
+                        <p><strong>SKU:</strong> ${response.equipmentDetails[0].EquipmentSKU || 'N/A'}</p>
+                        <p><strong>Color:</strong> ${response.equipmentDetails[0].EquipmentColor || 'N/A'}</p>
+                        <p><strong>Type:</strong> ${response.equipmentDetails[0].EquipmentType || 'N/A'}</p>
+                        <p><strong>Unit:</strong> ${response.equipmentDetails[0].EquipmentUnit || 'N/A'}</p>
+                        <p><strong>Unit Price:</strong> ₱${response.equipmentDetails[0].EquipmentUnitPrice ? Number(response.equipmentDetails[0].EquipmentUnitPrice).toFixed(2) : '0.00'}</p>
+                        <p><strong>Classification:</strong> ${response.equipmentDetails[0].EquipmentClassification || 'N/A'}</p>
+                        <p><strong>Date:</strong> ${response.equipmentDetails[0].EquipmentDate || 'N/A'}</p>
+                    `;
+
+                    $('#equipmentDetails').html(equipmentDetails);
                 } else {
                     alert('No equipment details found.');
                 }
@@ -436,7 +443,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
     // Close modal when close button is clicked
     $(document).on('click', '#closeViewEquipFormButton', function () {
@@ -453,64 +459,64 @@ $(document).ready(function () {
 
 
 // VIEWING FULL INFORMATION SMALL CARD
-$(document).ready(function () {
-    // Listen for clicks on any row's view button
-    $(document).on('click', '.viewEquipBTN', function (event) {
-        event.preventDefault();
-        console.log('Show View Full Equip Form Button Clicked');
+// $(document).ready(function () {
+//     // Listen for clicks on any row's view button
+//     $(document).on('click', '.viewEquipBTN', function (event) {
+//         event.preventDefault();
+//         console.log('Show View Full Equip Form Button Clicked');
 
-        // Get the clicked row
-        var row = $(this).closest('tr');
-        var equipId = row.data('id'); // Ensure your table row has data-id attribute
+//         // Get the clicked row
+//         var row = $(this).closest('tr');
+//         var equipId = row.data('id'); // Ensure your table row has data-id attribute
 
-        if (equipId) {
-            console.log('Final Viewing button clicked for equipment ID:', equipId);
+//         if (equipId) {
+//             console.log('Final Viewing button clicked for equipment ID:', equipId);
 
-            // Make an AJAX call to fetch the details
-            $.ajax({
-                url: '/equipment/final-viewing',
-                type: 'GET',
-                data: { id: equipId },
-                success: function (response) {
-                    // Populate the modal with the equipment details
-                    let equipmentDetails = `
-                        <p><strong>Serial Number:</strong> ${response.EquipmentSerialNo}</p>
-                        <p><strong>Control Number:</strong> ${response.EquipmentControlNo}</p>
-                        <p><strong>Brand Name:</strong> ${response.EquipmentBrandName}</p>
-                        <p><strong>Product Name:</strong> ${response.EquipmentName}</p>
-                        <p><strong>Category:</strong> ${response.EquipmentCategory}</p>
-                        <p><strong>Type:</strong> ${response.EquipmentType}</p>
-                        <p><strong>Color:</strong> ${response.EquipmentColor}</p>
-                        <p><strong>Unit:</strong> ${response.EquipmentUnit}</p>
-                        <p><strong>Unit Price:</strong> ₱${Number(response.EquipmentUnitPrice).toFixed(2)}</p>
-                        <p><strong>Classification:</strong> ${response.EquipmentClassification}</p>
-                        <p><strong>Date:</strong> ${response.EquipmentDate}</p>
-                    `;
-                    $('#equipmentDetails').html(equipmentDetails);
-                    $('#ViewFullEquipModal').removeClass('hidden'); // Show the modal
-                },
-                error: function (xhr) {
-                    console.error('Error fetching equipment details:', xhr.responseJSON);
-                }
-            });
-        } else {
-            console.log('No equipment ID found.');
-        }
-    });
+//             // Make an AJAX call to fetch the details
+//             $.ajax({
+//                 url: '/equipment/final-viewing',
+//                 type: 'GET',
+//                 data: { id: equipId },
+//                 success: function (response) {
+//                     // Populate the modal with the equipment details
+//                     let equipmentDetails = `
+//                         <p><strong>Serial Number:</strong> ${response.EquipmentSerialNo}</p>
+//                         <p><strong>Control Number:</strong> ${response.EquipmentControlNo}</p>
+//                         <p><strong>Brand Name:</strong> ${response.EquipmentBrandName}</p>
+//                         <p><strong>Product Name:</strong> ${response.EquipmentName}</p>
+//                         <p><strong>Category:</strong> ${response.EquipmentCategory}</p>
+//                         <p><strong>Type:</strong> ${response.EquipmentType}</p>
+//                         <p><strong>Color:</strong> ${response.EquipmentColor}</p>
+//                         <p><strong>Unit:</strong> ${response.EquipmentUnit}</p>
+//                         <p><strong>Unit Price:</strong> ₱${Number(response.EquipmentUnitPrice).toFixed(2)}</p>
+//                         <p><strong>Classification:</strong> ${response.EquipmentClassification}</p>
+//                         <p><strong>Date:</strong> ${response.EquipmentDate}</p>
+//                     `;
+//                     $('#equipmentDetails').html(equipmentDetails);
+//                     $('#ViewFullEquipModal').removeClass('hidden'); // Show the modal
+//                 },
+//                 error: function (xhr) {
+//                     console.error('Error fetching equipment details:', xhr.responseJSON);
+//                 }
+//             });
+//         } else {
+//             console.log('No equipment ID found.');
+//         }
+//     });
 
-    // Hide the modal when the close button is clicked
-    $('#closeViewFullEquipModal').click(function (event) {
-        event.preventDefault();
-        $('#ViewFullEquipModal').addClass('hidden');
-    });
+//     // Hide the modal when the close button is clicked
+//     $('#closeViewFullEquipModal').click(function (event) {
+//         event.preventDefault();
+//         $('#ViewFullEquipModal').addClass('hidden');
+//     });
 
-    // Hide modal on click outside
-    $(window).on('click', function (e) {
-        if ($(e.target).is('#ViewFullEquipModal')) {
-            $('#ViewFullEquipModal').addClass('hidden');
-        }
-    });
-});
+//     // Hide modal on click outside
+//     $(window).on('click', function (e) {
+//         if ($(e.target).is('#ViewFullEquipModal')) {
+//             $('#ViewFullEquipModal').addClass('hidden');
+//         }
+//     });
+// });
 
 
 //EDIT FUNCTION FOR VIEW TABLE
@@ -688,13 +694,23 @@ $(document).ready(function () {
 });
 
 
+
+//Stock In 
 $(document).ready(function () {
-    $("#editStockInButton").click(function () {
+    // Show the popup card on editStockInButton click
+    $(document).on('click', '.editStockInButton', function () {
         $("#StockInEquipmentPopupCard").removeClass("hidden");
+
+        // Store the clicked row's brand data in a hidden input for later use
+        const brandName = $(this).closest('tr').data('brand'); // Get data-brand from the parent <tr>
+        console.log("Selected brand:", brandName);
+
+        // Add the brandName to a hidden input inside the popup (if necessary)
+        $("#StockInEquipmentPopupCard").data('brand', brandName);
     });
 
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeStockInEquipPopupCard").click(function () {
+    // Cancel button
+    $("#closeStockInEquipPopupCard").click(function (event) {
         event.preventDefault();
         Swal.fire({
             icon: 'error',
@@ -707,19 +723,65 @@ $(document).ready(function () {
         });
     });
 
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitStockInEquipPopupCard").click(function () {
+    // Submit button
+    $("#submitStockInEquipPopupCard").click(function (event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#StockInEquipmentPopupCard").addClass("hidden");
+
+        // Get the brandName stored in the popup card's data
+        const brandName = $("#StockInEquipmentPopupCard").data('brand');
+        if (!brandName) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No brand name found. Please contact the administrator.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
+            return;
+        }
+
+        console.log("equipBrand to be sent:", brandName);
+
+        $.ajax({
+            url: '/equipment/approved',
+            method: 'POST',
+            data: {
+                id: brandName,
+                _token: $('meta[name="csrf-token"]').attr('content') // Ensure CSRF token is included
+            },
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Approved',
+                    text: 'Stock in successfully!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    $("#StockInEquipmentPopupCard").addClass("hidden");
+                    location.reload(); // Reload the page to reflect changes
+                });
+            },
+            error: function (xhr) {
+                console.log("Error response:", xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'There was an error approving the equipment. Please try again.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33'
+                });
+            }
         });
     });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Get today's date in the format YYYY-MM-DD
+    let today = new Date().toISOString().split("T")[0];
+    // Set the date input to today's date
+    document.getElementById("EquipmentDate").value = today;
 });
 
 

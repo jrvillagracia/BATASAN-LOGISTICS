@@ -15,24 +15,31 @@ class RoomController extends Controller
     public function room(Request $request)
     {
         $room = Room::all();
-        \Log::debug('Rooms:', $room);
         return response()->json(['room' => $room]);
     }
 
     public function index()
     {
         // Fetch the API response
-        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms');
-        $foundSections = $response->json()['foundSections'] ?? [];  // Default to an empty array if not found
+        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear/2020-2021');
+        $foundSections = $response->json()['foundSections'] ?? []; // Default to an empty array if not found
 
         // Fetch the rooms from your own database
         $instructionalRooms = Room::where('facilityRoomType', 'Instructional')->get();
 
-        // Map instructionalRooms by id for easy lookup
-        $instructionalRoomsMapped = $instructionalRooms->keyBy('id');
+        if ($instructionalRooms->isEmpty()) {
+            // If no instructional rooms exist, return empty data structures
+            return view('adminPages.admin_facilityRegRoom', [
+                'combinedRooms' => [],
+                'emptyRooms' => []
+            ]);
+        }
+
+        $currentDate = Carbon::now()->format('m/d/Y');
+
 
         // Start with all instructional rooms
-        $combinedRooms = $instructionalRooms->map(function($room) {
+        $combinedRooms = $instructionalRooms->map(function ($room) use ($currentDate) {
             return [
                 'roomId' => $room->id,
                 'facilityRoom' => [
@@ -46,8 +53,12 @@ class RoomController extends Controller
                 'gradeLevel' => null,
                 'sectionName' => null,
                 'currentEnrollment' => 0,
+                'assignedDate' => $currentDate
             ];
         })->keyBy('roomId')->toArray();
+
+        // Empty rooms list
+        $emptyRooms = $combinedRooms;
 
         // Merge API sections into the instructional rooms
         foreach ($foundSections as $section) {
@@ -57,12 +68,17 @@ class RoomController extends Controller
                     'gradeLevel' => $section['gradeLevel'] ?? null,
                     'sectionName' => $section['sectionName'] ?? null,
                     'currentEnrollment' => $section['currentEnrollment'] ?? 0,
+                    'assignedDate' => $currentDate
                 ]);
+
+                // Remove from emptyRooms since it's now populated
+                unset($emptyRooms[$section['roomId']]);
             }
         }
 
         return view('adminPages.admin_facilityRegRoom', [
-            'combinedRooms' => $combinedRooms
+            'combinedRooms' => $combinedRooms, // Rooms with data
+            'emptyRooms' => $emptyRooms         // Rooms without data
         ]);
     }
 
@@ -70,49 +86,70 @@ class RoomController extends Controller
     public function labindex()
     {
         // Fetch the API response
-        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms');
-        $foundSections = $response->json()['foundSections'] ?? [];  // Default to an empty array if not found
+        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear/2020-2021');
+        $foundSections = $response->json()['foundSections'] ?? []; // Default to an empty array if not found
 
-        // Fetch the rooms from your own database
+        // Fetch laboratory rooms from your database
         $laboratoryRooms = Room::where('facilityRoomType', 'Laboratory')->get();
 
-        // Map instructionalRooms by id for easy lookup
-        $laboratoryRoomsMapped = $laboratoryRooms->keyBy('id');
+        // Handle empty laboratory rooms
+        if ($laboratoryRooms->isEmpty()) {
+            return view('adminPages.admin_facilitySpecRoom', [
+                'populatedLaboratoryRooms' => [],
+                'emptyLaboratoryRooms' => [],
+            ]);
+        }
 
-        // Start with all instructional rooms
-        $combinedRooms = $laboratoryRooms->map(function($room) {
-            return [
-                'roomId' => $room->id,
-                'facilityRoom' => [
-                    'BldName' => $room->BldName,
-                    'Room' => $room->Room,
-                    'facilityStatus' => $room->facilityStatus,
-                    'Capacity' => $room->Capacity,
-                    'facilityRoomType' => $room->facilityRoomType,
-                ],
-                'session' => null,       // Default values for missing API data
-                'gradeLevel' => null,
-                'sectionName' => null,
-                'currentEnrollment' => 0,
-            ];
-        })->keyBy('roomId')->toArray();
+        // Function to map room data
+        $mapRooms = function ($rooms) {
+            return $rooms->map(function ($room) {
+                return [
+                    'roomId' => $room->id,
+                    'facilityRoom' => [
+                        'BldName' => $room->BldName,
+                        'Room' => $room->Room,
+                        'facilityStatus' => $room->facilityStatus,
+                        'Capacity' => $room->Capacity,
+                        'facilityRoomType' => $room->facilityRoomType,
+                    ],
+                    'session' => null,       // Default values for missing API data
+                    'gradeLevel' => null,
+                    'sectionName' => null,
+                    'currentEnrollment' => 0,
+                ];
+            })->keyBy('roomId')->toArray();
+        };
 
-        // Merge API sections into the instructional rooms
+        // Map laboratory rooms
+        $laboratoryCombined = $mapRooms($laboratoryRooms);
+
+        // Initialize empty laboratory rooms
+        $emptyLaboratoryRooms = $laboratoryCombined;
+
+        // Merge API sections into laboratory rooms
         foreach ($foundSections as $section) {
             if (isset($section['roomId']) && $section['roomId'] !== null) {
-                $combinedRooms[$section['roomId']] = array_merge($combinedRooms[$section['roomId']] ?? [], [
-                    'session' => $section['session'] ?? null,
-                    'gradeLevel' => $section['gradeLevel'] ?? null,
-                    'sectionName' => $section['sectionName'] ?? null,
-                    'currentEnrollment' => $section['currentEnrollment'] ?? 0,
-                ]);
+                if (isset($laboratoryCombined[$section['roomId']])) {
+                    $laboratoryCombined[$section['roomId']] = array_merge(
+                        $laboratoryCombined[$section['roomId']] ?? [],
+                        [
+                            'session' => $section['session'] ?? null,
+                            'gradeLevel' => $section['gradeLevel'] ?? null,
+                            'sectionName' => $section['sectionName'] ?? null,
+                            'currentEnrollment' => $section['currentEnrollment'] ?? 0,
+                        ]
+                    );
+                    unset($emptyLaboratoryRooms[$section['roomId']]);
+                }
             }
         }
 
         return view('adminPages.admin_facilitySpecRoom', [
-            'combinedRooms' => $combinedRooms
+            'populatedLaboratoryRooms' => $laboratoryCombined,       // Rooms with data
+            'emptyLaboratoryRooms' => $emptyLaboratoryRooms          // Rooms without data
         ]);
     }
+
 
     public function store(Request $request)
     {

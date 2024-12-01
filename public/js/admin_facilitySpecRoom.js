@@ -78,6 +78,8 @@ $(document).ready(function () {
                 $('#SpecForm')[0].reset();
                 $('#SpecFormCard').addClass('hidden');
 
+                let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
+
                 // Optionally, you can append the new data to the table or update the UI
                 const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
                                    <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
@@ -202,4 +204,18 @@ document.addEventListener("DOMContentLoaded", function() {
             dataTable.search(searchTerm);
         });
     }
+});
+
+
+//Automatic Set Date
+document.addEventListener("DOMContentLoaded", function() {
+    function formatDateToMMDDYYYY(date) {
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
+    }
+
+    const today = formatDateToMMDDYYYY(new Date());
+    document.getElementById("SpecRoomDate").value = today;
 });

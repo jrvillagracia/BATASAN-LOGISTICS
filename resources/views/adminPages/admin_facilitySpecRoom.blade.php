@@ -104,15 +104,6 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="status" class="block text-sm font-semibold mb-2">Status</label>
-                        <select id="facilityStatusSpec" name="status" class="w-full px-2 py-1 border border-gray-400 rounded">
-                            <option value="">Select Status</option>
-                            <option value="Available">Available</option>
-                            <option value="Not Available">Not Available</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
                         <label for="room" class="block text-sm font-semibold mb-2">Room</label>
                         <input type="text" id="SpecRoom" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Room">
                     </div>
@@ -162,7 +153,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    @foreach($combinedRooms as $room)
+                    @foreach($populatedLaboratoryRooms  as $room)
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="{{$loop->index}}" data-id="{{$room['roomId']}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $room['facilityRoom']['BldName']}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $room['facilityRoom']['Room'] }}</td>

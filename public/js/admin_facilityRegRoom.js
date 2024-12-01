@@ -93,7 +93,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: 'success',
                     title: 'Saved!',
-                    text: 'Your action has been successfully submitted',
+                    text: 'Room has been successfully added',
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
@@ -215,6 +215,7 @@ $(document).ready(function () {
                         Swal.fire("Saved!", "", "success").then(() => {
                             updateTableRow(response.room); // Update the table row with new data
                             $('#RegEditFormCard').addClass('hidden');
+                            location.reload();
                         });
                     },
                     error: function (xhr, status, error) {
