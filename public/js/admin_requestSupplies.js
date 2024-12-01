@@ -1,110 +1,97 @@
+// FUNCTION TO DISABLE THE PAST DATES/MONTHS
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the current date
+    const currentDate = new Date();
+
+    // Format the date as MM/DD/YYYY
+    const formatDate = (date) => {
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
+    };
+
+    // Calculate max date (e.g., one year from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 1);
+
+    // Initialize the input field with min and max dates
+    const datepickerInput = document.getElementById("ReqSuppDate");
+    datepickerInput.setAttribute("datepicker-min-date", formatDate(currentDate));
+    datepickerInput.setAttribute("datepicker-max-date", formatDate(maxDate));
+
+    // Initialize the datepicker (assuming a library like Flowbite/Flatpickr is being used)
+    datepickerInput.datepicker = new Datepicker(datepickerInput, {
+        minDate: currentDate,
+        maxDate: maxDate,
+        autoselectToday: true,
+    });
+});
+
+
 // ======================== ADD A REQUEST BUTTON FORM ============================= //
 $(document).ready(function () {
     $('#ReqSupFormBtn').click(function () {
         console.log('Show Request Supplies Button Clicked');
         $('#ReqSupFormCard').removeClass('hidden');
     });
-});
 
-$(document).ready(function () {
     $('#ReqSupCloseFormBtn').click(function () {
         console.log('Close Request Supplies Button Clicked');
         $('#ReqSupFormCard').addClass('hidden');
     });
-});
 
-$(document).ready(function () {
     $('#ReqSupCancelFormBtn').click(function () {
         console.log('Close Request Supplies Button Clicked');
         $('#ReqSupFormCard').addClass('hidden');
     });
-});
 
-// FOR VALIDATION SWEETALERT2 AFTER FILLING UP THE FORM CARD
-// Handle form submission and add data to the table
-$(document).ready(function () {
-    $('#ReqSupSubmitFormBtn').click(function (event) {
-        event.preventDefault();  // Prevent default form submission
 
+    $("#ReqSupSubmitFormBtn").click(function () {
         Swal.fire({
-            title: "Are you sure all input data are correct?",
-            showDenyButton: true,
-            confirmButtonText: "Yes",
-            denyButtonText: "No"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Get form values
-                const name = $('#name').val();
-                const department = $('#SuppliesDepartment').val();
-                const date = $('#ReqSupDate').val();
-                const reason = $('#ReqSupReason').val();
-                const remarks = $('#ReqSupRemarks').val();
-
-                // Check if all values are entered
-                if (!name || !department || !date || !reason || !remarks) {
-                    Swal.fire("All fields are required!", "", "error");
-                    return;
-                }
-
-                // Append new row to the table  // THIS IS FOR EXAMPLE ONLY TO CHECK IF SWEETALERT2 IS APPLIED
-                $('#dynamicTable tbody').append(`
-                    <tr>
-                        <td class="py-6 px-3 border-b border-gray-300"></td>
-                        <td class="py-6 px- border-b border-gray-3003">${name}</td>
-                        <td class="py-6 px-3 border-b border-gray-300">${department}</td>
-                        <td class="py-6 px-3 border-b border-gray-300">${date}</td>
-                        <td class="py-6 px-3 border-b border-gray-300">
-                            <button id="ViewSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                            <button id="ApprSupBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
-                            <button id="DclnSupBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
-                        </td>
-                    </tr>
-                `);
-
-                // Clear form
-                $('#ReqSupForm')[0].reset();
-
-                // Hide form card
-                $('#ReqSupFormCard').addClass('hidden');
-
-                Swal.fire("Saved!", "", "success");
-            } else if (result.isDenied) {
-                Swal.fire("Changes are not saved", "", "info");
-            }
+            icon: 'success',
+            title: 'Submit',
+            text: 'Successfully Added to the table',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#ReqSupFormCard").addClass("hidden");
         });
     });
 });
-
-// ========================================== //
-
 
 
 
 
 // ======================== FOR APPROVAL MODULE ============================= //
-// VIEW BUTTON CARD FORM      // THIS IS VIEW BUTTON IS APPLICABLE TO FOR APPROVAL, RELEASE, COMPLETED REQUEST
+// VIEW BUTTON CARD FORM 
 $(document).ready(function () {
     $('#ViewSupBtn').click(function () {
         console.log('View Supplies Button is Clicked.');
-        $('#ViewSupPopupCard').removeClass('hidden');
+        $('#ViewReqSuppliesPopupCard').removeClass('hidden');
+    });
+
+    $('#closeReqViewSuppliesPopupCard').click(function () {
+        console.log('Close "X" Supplies Button is Clicked.');
+        $('#ViewReqSuppliesPopupCard').addClass('hidden');
+    });
+
+    $('#cancelReqSuppliesInventoryPopupCard').click(function () {
+        console.log('Cancel Supplies Button is Clicked.');
+        $('#ViewReqSuppliesPopupCard').addClass('hidden');
     });
 });
 
-$(document).ready(function () {
-    $('#closeViewSupPopupCard').click(function () {
-        console.log('Close "X" Supplies Button is Clicked.');
-        $('#ViewSupPopupCard').addClass('hidden');
-    });
-});
+
 
 // APPROVE BUTTON CARD FORM
 $(document).ready(function () {
     $("#ApprSupBtn").click(function () {
-        $("#ApprSupPopupCard").removeClass("hidden");
+        $("#ApprReqSupPopupCard").removeClass("hidden");
     });
 
     // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeApprSupPopupCard").click(function () {
+    $("#closeApprReqSupPopupCard").click(function () {
         Swal.fire({
             icon: 'error',
             title: 'Cancelled',
@@ -112,12 +99,12 @@ $(document).ready(function () {
             confirmButtonText: 'OK',
             confirmButtonColor: '#D1191A'
         }).then(() => {
-            $("#ApprSupPopupCard").addClass("hidden");
+            $("#ApprReqSupPopupCard").addClass("hidden");
         });
     });
 
     // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitApprSupPopupCard").click(function () {
+    $("#submitApprReqSupPopupCard").click(function () {
         Swal.fire({
             icon: 'success',
             title: 'Submitted',
@@ -125,7 +112,7 @@ $(document).ready(function () {
             confirmButtonText: 'OK',
             confirmButtonColor: '#3085d6'
         }).then(() => {
-            $("#ApprSupPopupCard").addClass("hidden");
+            $("#ApprReqSupPopupCard").addClass("hidden");
         });
     });
 });
@@ -165,83 +152,6 @@ $(document).ready(function () {
     });
 });
 // ========================================== //
-
-
-
-
-
-
-// ======================== FOR RELEASE MODULE ============================= //
-
-// RELEASE BUTTON FORM CARD
-$(document).ready(function () {
-    // Show the popup when the button is clicked
-    $("#RelSupBtn").click(function () {
-        $("#RelSupPopupCard").removeClass("hidden");
-    });
-
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeRelSupPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Release process has been cancelled',
-            confirmButtonText: 'OK',
-        }).then(() => {
-            $("#RelSupPopupCard").addClass("hidden");
-        });
-    });
-
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitRelSupPopupCard").click(function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'The release process has been successfully submitted',
-            confirmButtonText: 'OK',
-        }).then(() => {
-            $("#RelSupPopupCard").addClass("hidden");
-        });
-    });
-});
-
-
-// REVOKE BUTTON FORM CARD
-$(document).ready(function () {
-    // Show the popup when the button is clicked
-    $("#RevSupBtn").click(function () {
-        $("#RevSupPopupCard").removeClass("hidden");
-    });
-
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeRevSupPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Revoke Process is cancel',
-            confirmButtonText: 'OK',
-        }).then(() => {
-            $("#RevSupPopupCard").addClass("hidden");
-        });
-    });
-
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitRevSupPopupCard").click(function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Revoke Successfully',
-            confirmButtonText: 'OK',
-        }).then(() => {
-            $("#RevSupPopupCard").addClass("hidden");
-        });
-    });
-});
-
-
-
-
-// ======================== COMPLETED REQUEST ============================= //
 
 
 // ======================== DATATABLES ============================= //

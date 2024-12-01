@@ -134,7 +134,9 @@
 
                     <div class="text-sm">
                         <p class="mb-2"><strong>Date/Time Requested: </strong></p>
-                        <p class="mb-2"><strong>Requesting Office/Unit: </strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit </strong></p>
+                        <p class="mb-2"><strong>Building Name: </strong></p>
+                        <p class="mb-2"><strong>Room: </strong></p>
                         <p class="mb-2"><strong>Requesting for: </strong></p>
 
                         <div class="pt-4">
@@ -147,7 +149,7 @@
                         <p class="mb-2"><strong>Type: </strong></p>
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="cancelViewForReprMainteInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="cancelViewForReprMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
 
@@ -167,7 +169,9 @@
 
                     <div class="text-sm">
                         <p class="mb-2"><strong>Date/Time Requested: </strong></p>
-                        <p class="mb-2"><strong>Requesting Office/Unit: </strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit </strong></p>
+                        <p class="mb-2"><strong>Building Name: </strong></p>
+                        <p class="mb-2"><strong>Room: </strong></p>
                         <p class="mb-2"><strong>Requesting for: </strong></p>
 
                         <div class="pt-4">
@@ -187,10 +191,11 @@
                         <p class="mb-2"><strong>Job Done By: </strong></p>
                         <p class="mb-2"><strong>Date and Time accomplished: </strong></p>
                         <p class="mb-2"><strong>Check By: </strong></p>
+                        
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="printSetForRepMainteInventoryPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Print</button>
-                        <button id="cancelSetForReprMainteInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="printSetForRepMainteInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
+                        <button id="cancelSetForReprMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
 
@@ -205,8 +210,8 @@
                     <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitCompMainteInventoryPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="cancelCompMainteInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitCompMainteInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="cancelCompMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -220,8 +225,8 @@
                     <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitMainteInventoryPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="cancelMainteInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitMainteInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="cancelMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>

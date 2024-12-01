@@ -36,13 +36,13 @@
     <div class="bg-blue-200 w-full">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Centered Navigation Bar -->
-            <nav class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4 py-4">
+            <nav class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-10 py-4">
                 <!-- Menu items will stack vertically on small screens and align horizontally on larger screens -->
-                <a href="/" class="block text-center text-gray-700 hover:text-gray-900">Home</a>
-                <a href="#" class="block text-center text-gray-700 hover:text-gray-900">Master List</a>
-                <a href="#" class="block text-center text-gray-700 hover:text-gray-900">Grade Report</a>
-                <a href="#" class="block text-center text-gray-700 hover:text-gray-900">Faculty Load</a>
-                <a href="#" class="block text-center text-black border-b-2 border-black hover:text-gray-900">Resources</a>
+                <a href="#" class="block text-center text-black border-b-2 border-black hover:text-gray-900">Dashboard</a>
+                <a href="#" class="block text-center text-gray-700 hover:text-gray-900">Events and Activities</a>
+                <a href="#" class="block text-center text-gray-700 hover:text-gray-900">Inventory</a>
+                <a href="#" class="block text-center text-gray-700 hover:text-gray-900">Repair</a>
+                
             </nav>
         </div>
     </div>
