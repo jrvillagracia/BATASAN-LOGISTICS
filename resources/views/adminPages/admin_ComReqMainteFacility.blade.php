@@ -145,7 +145,7 @@
 
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="closeViewComReqrMainteFacilityPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Close</button>
+                        <button id="closeViewComReqrMainteFacilityPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
                     </div>
                 </div>
 

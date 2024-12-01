@@ -39,56 +39,72 @@
     </nav>
 
 
-    <div class="grid grid-cols-3 gap-4 mt-8 pb-8">
-        <!-- Card 1 -->
-        <div class="block max-w-screen-md p-6 bg-white border border-gray-200 rounded-lg shadow transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-            <img class="w-full" src="{{asset('img/facility.jpg')}}" alt="Facility">
-            <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">School Facility Analytics</div>
-                <p class="text-gray-700 text-base">
-                    Look up at the night sky, and find yourself <span class="font-semibold">immersed</span> in the amazing mountain range of Aspen.
-                </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 pt-5 flex-1 overflow-x-auto">
+
+        <!-- Facility Card -->
+        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold">Facility</h2>
+                <div class="bg-black h-5 w-5"></div>
             </div>
-            <div class="px-6 py-4 flex justify-end">
-                <button class="bg-blue-100 text-blue-700 font-semibold py-2 px-4 rounded hover:bg-blue-200 transition duration-300">
-                    Explore →
-                </button>
-            </div>
+            <p class="mt-4 text-lg font-bold">No. of facility: <span class="font-extrabold">10</span></p>
         </div>
 
-
-        <!-- Card 2 -->
-        <div class="block max-w-screen-md p-6 bg-white border border-gray-200 rounded-lg shadow transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-            <img class="w-full" src="{{asset('img/eventactivities.jpg')}}" alt="Facility">
-            <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">Event and Activities</div>
-                <p class="text-gray-700 text-base">
-                    Look up at the night sky, and find yourself <span class="font-semibold">immersed</span> in the amazing mountain range of Aspen.
-                </p>
+        <!-- Inventory Card -->
+        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold">Inventory</h2>
+                <div class="bg-black h-5 w-5"></div>
             </div>
-            <div class="px-6 py-4 flex justify-end">
-                <button class="bg-blue-100 text-blue-700 font-semibold py-2 px-4 rounded hover:bg-blue-200 transition duration-300">
-                    Explore →
-                </button>
-            </div>
+            <p class="mt-4">No. of Equipment: <span class="font-extrabold">10</span></p>
+            <p class="mt-1">No. of Supplies: <span class="font-extrabold">10</span></p>
         </div>
 
-        <!-- Card 3 -->
-        <div class="block max-w-screen-md p-6 bg-white border border-gray-200 rounded-lg shadow transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-            <img class="w-full" src="{{asset('img/inventory.jpg')}}" alt="Facility">
-            <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">Inventory</div>
-                <p class="text-gray-700 text-base">
-                    Look up at the night sky, and find yourself <span class="font-semibold">immersed</span> in the amazing mountain range of Aspen.
-                </p>
+        <!-- Event and Activity Card -->
+        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold">Event and Activity</h2>
+                <div class="bg-black h-5 w-5"></div>
             </div>
-            <div class="px-6 py-4 flex justify-end">
-                <button class="bg-blue-100 text-blue-700 font-semibold py-2 px-4 rounded hover:bg-blue-200 transition duration-300">
-                    Explore →
-                </button>
-            </div>
+            <p class="mt-4 text-lg font-bold">No. of Events: <span class="font-extrabold">10</span></p>
         </div>
+
+        <!-- Maintenance Card -->
+        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold">Maintenance</h2>
+                <div class="bg-black h-5 w-5"></div>
+            </div>
+            <p class="mt-4">No. of Pending maintenance requests: <span class="font-extrabold">10</span></p>
+            <p class="mt-1">No. of Pending maintenance requests: <span class="font-extrabold">10</span></p>
+            <p class="mt-1">No. of Pending maintenance requests: <span class="font-extrabold">10</span></p>
+        </div>
+
     </div>
+
+    <!-- Chart Section -->
+    <div class="mt-10 max-w-lg w-full">
+        <h2 class="text-2xl font-bold mb-5">Charts</h2>
+        <div id="chart" class="w-full max-w-[500px]"></div>
+    </div>
+    <script>
+        var options = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            series: [{
+                name: 'Requests',
+                data: [10, 15, 20, 25]
+            }],
+            xaxis: {
+                categories: ['Facilities', 'Inventory', 'Activities', 'Maintenance']
+            }
+        }
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
     <!-- Add additional content here -->
 </section>
 @endsection

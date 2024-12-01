@@ -1,3 +1,38 @@
+// FUNCTION TO DISABLE THE PAST DATES/MONTHS
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the current date
+    const currentDate = new Date();
+
+    // Format the date as MM/DD/YYYY
+    const formatDate = (date) => {
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
+    };
+
+    // Calculate max date (e.g., one year from today)
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 1);
+
+    // Initialize the input field with min and max dates
+    const datepickerInput = document.getElementById("MainteEquipDate");
+    datepickerInput.setAttribute("datepicker-min-date", formatDate(currentDate));
+    datepickerInput.setAttribute("datepicker-max-date", formatDate(maxDate));
+
+    // Initialize the datepicker (assuming a library like Flowbite/Flatpickr is being used)
+    datepickerInput.datepicker = new Datepicker(datepickerInput, {
+        minDate: currentDate,
+        maxDate: maxDate,
+        autoselectToday: true,
+    });
+});
+
+
+
+
+
+
 // ======================= ADD REQUEST ========================== //
 $(document).ready(function () {
     $('#MainteEquipmentREQFormButton').click(function () {

@@ -131,7 +131,9 @@
 
                     <div class="text-sm">
                         <p class="mb-2"><strong>Date/Time Requested: </strong></p>
-                        <p class="mb-2"><strong>Requesting Office/Unit: </strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit </strong></p>
+                        <p class="mb-2"><strong>Building Name: </strong></p>
+                        <p class="mb-2"><strong>Room: </strong></p>
                         <p class="mb-2"><strong>Requesting for: </strong></p>
 
                         <div class="pt-4">
@@ -154,7 +156,7 @@
                         
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="closeViewComReqrMainteInventoryPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Close</button>
+                        <button id="closeViewComReqrMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
                     </div>
                 </div>
 
