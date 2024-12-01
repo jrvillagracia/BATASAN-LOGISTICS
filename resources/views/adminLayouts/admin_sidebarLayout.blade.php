@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
@@ -15,33 +16,67 @@
     <!-- LOCAL JS FILES -->
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
-    <script src="{{asset('js/admin_mainteInventory.js')}}"></script>
-    <script src="{{asset('js/admin_eventsForApproval.js')}}"></script>
+
+    <script src="{{asset('js/admin_ForApprMainteEquip.js')}}"></script> <!-- MAINTENANCE INVENTORY MODULE -->
+    <script src="{{asset('js/admin_ForRepMainteEquip.js')}}"></script>
+    <script src="{{asset('js/admin_ComReqMainteEquip.js')}}"></script>
+
+    <script src="{{asset('js/admin_eventsForApproval.js')}}"></script> <!-- EVENTS AND ACTIVITIES MODULE -->
     <script src="{{asset('js/admin_eventsAprRequest.js')}}"></script>
     <script src="{{asset('js/admin_eventsHistory.js')}}"></script>
     <script src="{{asset('js/admin_eventsComRequest.js')}}"></script>
+
+    <script src="{{asset('js/admin_EQUIPMENT.js')}}"></script>         <!-- INVENTORY EQUIPMENT MODULE -->
+    <script src="{{asset('js/admin_equipCondemned.js')}}"></script> 
+    <script src="{{asset('js/admin_equipUsed.js')}}"></script>
+    <script src="{{asset('js/admin_equipHistory.js')}}"></script>
+
+    <script src="{{asset('js/admin_requestEquipment.js')}}"></script> <!-- REQUEST MODULE -->
+    <script src="{{asset('js/admin_requestSupplies.js')}}"></script>
+
+    <script src="{{asset('js/admin_suppliesHistory.js')}}"></script> <!-- INVENTORY SUPPLIES MODULE -->
+    <script src="{{asset('js/admin_suppliesUsed.js')}}"></script>
+
+    <script src="{{asset('js/admin_StockInEquipment.js')}}"></script> <!-- INVENTORY SUPPLIES & EQUIPMENT MODULE -->
+    <script src="{{asset('js/admin_supplies.js')}}"></script>
+
+    <script src="{{asset('js/admin_facilityOfficeRoom.js')}}"></script> <!-- FACILITY MODULE -->
+    <script src="{{asset('js/admin_facilityRegRoom.js')}}"></script>
+    <script src="{{asset('js/admin_facilitySpecRoom.js')}}"></script>
+
+    <script src="{{asset('js/admin_ForApprMainteFacility.js')}}"></script> <!-- MAINTENANCE FACILITY MODULE -->
+    <script src="{{asset('js/admin_ForRepMainteFacility.js')}}"></script>
+    <script src="{{asset('js/admin_ComReqMainteFacility.js')}}"></script>
 
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
 
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
 
 
     <!-- LOCAL CSS FILES -->
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
-    <link rel="stylesheet" href="{{asset('css/admin_mainteInventory.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_mainteEquipment.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_events.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_StockInEquipment.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_requestEquipment.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_requestSupplies.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_supplies.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_facilityOfficeRoom.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_facilityRegRoom.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_facilitySpecRoom.css')}}">
 
 
 
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css"> -->
 
 
@@ -50,6 +85,7 @@
 </head>
 
 <body class="h-screen overflow-x-hidden">
+    <div id="csrf-token" data-token="{{ csrf_token() }}"></div>
     <div class="flex">
         <!-- Sidebar --> <!-- May na Update dito -->
         <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -86,7 +122,7 @@
                 <nav class="mt-7">
                     <ul class="space-y-2">
                         <li class="hover:bg-gray-200 p-3 rounded-md shadow-sm">
-                            <a href="{{ route('admin_dashboard') }}" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <a href="{{route('admin_dashboard')}}" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-7 h-7">
                                     <path d="M111.87-520v-328.13H440V-520H111.87Zm0 408.13V-440H440v328.13H111.87ZM520-520v-328.13h328.13V-520H520Zm0 408.13V-440h328.13v328.13H520Z" />
                                 </svg>
@@ -144,7 +180,7 @@
                                     <a href="{{ route('admin_supplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Supplies</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin_equipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
+                                    <a href="{{ route('admin_StockInEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
                                 </li>
                             </ul>
                         </li>
@@ -163,10 +199,10 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="{{ route('admin_approvalSupplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Supplies</a>
+                                    <a href="{{ route('admin_REQapprovalSupplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Supplies</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin_approvalEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Equipment</a>
+                                    <a href="{{ route('admin_REQapprovalEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Equipment</a>
                                 </li>
                             </ul>
                         </li>
@@ -185,14 +221,25 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="#" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Facility</a>
+                                    <a href="{{ route('admin_mainteFacility')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Facility</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin_mainteInventory') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Inventory</a>
+                                    <a href="{{ route('admin_mainteEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Inventory</a>
                                 </li>
                             </ul>
                         </li>
-                        
+                        <li class="hover:bg-gray-200 p-3 rounded-md">
+                            <a href="https://bhnhs-sis.onrender.com/admin/dashboard" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                                <span class="material-symbols-outlined">account_box</span>
+                                <span class="sidebar-text font-bold">Student Information</span>
+                            </a>
+                        </li>
+                        <li class="hover:bg-gray-200 p-3 rounded-md">
+                            <a href="http://192.168.2.237:9901/admin/home" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                                <span class="material-symbols-outlined">groups_2</span>
+                                <span class="sidebar-text font-bold">Human Resources</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -204,16 +251,32 @@
         <!-- Main Content --> <!-- EASE IN OUT n MARGIN SIZE-->
         <main id="main-content" class="flex-1 p-8 transition-all duration-300 ease-in-out ml-80">
             <header class="flex justify-end mb-8">
-                <div class="bg-gray-200 rounded-full px-4 py-2 inline-flex items-center space-x-4">
+                <form action="/logout" method="POST">
+                    @csrf
+                    @method('POST')
                     <div>
-                        <span class="font-semibold text-black">Andres Santiago</span>
-                        <p class="text-gray-600 text-xs pl-11">administrator</p>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
-                        <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
-                    </svg>
-
-                </div>
+                        <div class="text-sm bg-gray-200 rounded-full pr-2 pl-1 py-1 inline-flex items-center space-x-4" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <span class="sr-only">Open user menu</span>
+                            <div>
+                                <span id="userFullName" class="font-semibold text-black">Robert Badong</span>
+                                <p class="text-gray-600 text-xs pl-11">administrator</p>
+                            </div>
+                            <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+                            </svg>
+                            </>
+                        </div>
+                        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
+                            <ul id="dropdownContent" class="py-1" role="none">
+                                <li>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 " role="menuitem">My Account</a>
+                                </li>
+                                <li>
+                                    <button type="logout-button" class="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100  " role="menuitem">Log Out</a>
+                                </li>
+                            </ul>
+                        </div>
+                </form>
             </header>
             @yield('content')
         </main>

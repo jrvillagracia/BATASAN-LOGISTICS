@@ -1,31 +1,48 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Equipments;
 
 use Illuminate\Http\Request;
-use App\Models\Equipment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Models\Equipments\Equipment;
+use App\Models\Equipments\EquipmentStock;
 
 class EquipmentController extends Controller
 {
     public function index()
     {
         $equipment = Equipment::select(
-                'EquipmentBrandName',
-                'EquipmentName',
-                'EquipmentCategory',
-                'EquipmentSKU',
-                'EquipmentQuantity',
-                DB::raw('COUNT(*) as EquipmentQuantity'),
-                DB::raw('SUM(COALESCE("EquipmentUnitPrice", 0) * COALESCE("EquipmentQuantity", 0)) AS totalPrice'),
-                DB::raw('COUNT(*) as totalItems') 
-            )
-            ->groupBy('EquipmentBrandName', 'EquipmentName', 'EquipmentCategory', 'EquipmentSKU', 'EquipmentQuantity')
-            ->get();
+            DB::raw('"EquipmentBrandName"'),
+            DB::raw('"EquipmentName"'),
+            DB::raw('"EquipmentCategory"'),
+            DB::raw('"EquipmentClassification"'),
+            DB::raw('"EquipmentColor"'),
+            DB::raw('"EquipmentType"'),
+            DB::raw('"EquipmentUnit"'),
+            DB::raw('"EquipmentUnitPrice"'),
+            DB::raw('"EquipmentDate"'),
+            DB::raw('"EquipmentSKU"'),
+            DB::raw('SUM(COALESCE("EquipmentQuantity", 0)) AS "EquipmentQuantity"'),
+            DB::raw('SUM(COALESCE("EquipmentUnitPrice", 0) * COALESCE("EquipmentQuantity", 0)) AS "totalPrice"'),
+            DB::raw('COUNT(*) AS "totalItems"')
+        )
+        ->groupBy(
+            DB::raw('"EquipmentBrandName"'),
+            DB::raw('"EquipmentName"'),
+            DB::raw('"EquipmentCategory"'),
+            DB::raw('"EquipmentClassification"'),
+            DB::raw('"EquipmentColor"'),
+            DB::raw('"EquipmentType"'),
+            DB::raw('"EquipmentUnit"'),
+            DB::raw('"EquipmentUnitPrice"'),
+            DB::raw('"EquipmentDate"'),
+            DB::raw('"EquipmentSKU"')
+        )
+        ->get();
             
-
-        return view('admin_equipment', compact('equipment'));
+        return view('adminPages.admin_StockInEquipment', compact('equipment'));
     }
 
     public function finalViewing(Request $request)
@@ -69,7 +86,7 @@ class EquipmentController extends Controller
 
     public function create()
     {
-        return view('admin_equipment');
+        return view('adminPages.admin_StockInEquipment');
     }
 
     public function store(Request $request)
@@ -154,9 +171,12 @@ class EquipmentController extends Controller
         $equipmentDetails = Equipment::select(
                 'id',
                 'EquipmentControlNo',
-                'EquipmentSerialNo',
                 'EquipmentBrandName',
                 'EquipmentName',
+                'EquipmentCategory',
+                'EquipmentSKU',
+                'EquipmentColor',
+                'EquipmentType',
                 'EquipmentUnit',
                 'EquipmentUnitPrice',
                 'EquipmentClassification',
@@ -176,9 +196,12 @@ class EquipmentController extends Controller
                 return [
                     'id' => $equipment->id, // Include ID
                     'EquipmentControlNo' => $equipment->EquipmentControlNo,
-                    'EquipmentSerialNo' => $equipment->EquipmentSerialNo,
                     'EquipmentBrandName' => $equipment->EquipmentBrandName,
                     'EquipmentName' => $equipment->EquipmentName,
+                    'EquipmentCategory' => $equipment->EquipmentCategory,
+                    'EquipmentSKU' => $equipment->EquipmentSKU,
+                    'EquipmentColor' => $equipment->EquipmentColor,
+                    'EquipmentType' => $equipment->EquipmentType,
                     'EquipmentUnit' => $equipment->EquipmentUnit,
                     'EquipmentUnitPrice' => $equipment->EquipmentUnitPrice,
                     'EquipmentClassification' => $equipment->EquipmentClassification,
@@ -224,7 +247,6 @@ class EquipmentController extends Controller
         $request->validate([
             'id' => 'required|integer|exists:equipment,id',
             'FullEquipmentSerialNoEdit' => 'required|string|max:255',
-            'FullEquipmentControlNoEdit' => 'required|string|max:255',
             'FullEquipmentTypeEdit' => 'required|string|max:255',
             'FullEquipmentColorEdit' => 'required|string|max:255',
             'FullEquipmentUnitEdit' => 'required|string|max:255',
@@ -236,7 +258,6 @@ class EquipmentController extends Controller
         $equipment = Equipment::findOrFail($request->input('id'));
 
         $equipment->EquipmentSerialNo = $request->input('FullEquipmentSerialNoEdit');
-        $equipment->EquipmentControlNo = $request->input('FullEquipmentControlNoEdit');
         $equipment->EquipmentType = $request->input('FullEquipmentTypeEdit');
         $equipment->EquipmentColor = $request->input('FullEquipmentColorEdit');
         $equipment->EquipmentUnit = $request->input('FullEquipmentUnitEdit');
@@ -287,6 +308,53 @@ class EquipmentController extends Controller
             return response()->json(['message' => 'Equipment item not found.'], 404);
         }
     }
-}
 
+    public function approve(Request $request)
+    {
+        // Validate the incoming request
+        $validated = $request->validate([
+            'id' => 'required|string', // The EquipmentBrandName from the request
+        ]);
+
+        // Find equipment with the specified EquipmentBrandName
+        $equipment = Equipment::where('EquipmentBrandName', $validated['id'])->get();
+
+        if ($equipment->isEmpty()) {
+            return response()->json(['message' => 'No equipment found for the given brand name'], 404);
+        }
+
+        $firstBrandName = $equipment->first()->EquipmentBrandName;
+
+        try {
+            // Insert all equipment details into the 'equipment_stock'
+            foreach ($equipment as $item) {
+                EquipmentStock::create([
+                    'EquipmentBrandName' => $item->EquipmentBrandName,
+                    'EquipmentName' => $item->EquipmentName,
+                    'EquipmentCategory' => $item->EquipmentCategory,
+                    'EquipmentType' => $item->EquipmentType,
+                    'EquipmentColor' => $item->EquipmentColor,
+                    'EquipmentUnit' => $item->EquipmentUnit,
+                    'EquipmentQuantity' => $item->EquipmentQuantity,
+                    'EquipmentControlNo' => $item->EquipmentControlNo,
+                    'EquipmentDate' => $item->EquipmentDate,
+                    'EquipmentUnitPrice' => $item->EquipmentUnitPrice,
+                    'EquipmentClassification' => $item->EquipmentClassification,
+                    'EquipmentSKU' => $item->EquipmentSKU,
+                    'EquipmentSerialNo' => $item->EquipmentSerialNo,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            // Delete all equipment records with the specified EquipmentBrandName
+            Equipment::where('EquipmentBrandName', $firstBrandName)->delete();
+
+            return response()->json(['message' => 'Equipment approved successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error approving equipment: ' . $e->getMessage()], 500);
+        }
+    }
+
+}
     

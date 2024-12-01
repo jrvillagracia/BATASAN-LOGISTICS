@@ -182,7 +182,7 @@
                         <p class="mb-2"><strong>Quantity:</strong>{{$event->EventApprQuantity}}</p>
                     </div>
             
-                    <div class="relative shadow-md sm:rounded-lg px-9 py-5">
+                    <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
                         <table id="SetItemTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
                                 <tr>
@@ -217,11 +217,7 @@
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->Quantity }}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->SKU }}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <button id="addEquipBTN" type="button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-                                                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                                            </svg>
-                                        </button>
+                                        <input type="text" value="1" class="border-0 border-b border-gray-500 px-2 py-1 w-20 text-center">
                                     </td>
                                 </tr>
                                 @endforeach
@@ -303,6 +299,7 @@
             </div>
 
             <!-- Cancel Popup Card -->
+        @if(isset($event))
             <div id="CancelEventPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -317,10 +314,10 @@
                     </div>
                 </div>
             </div>
-
+        @else
             <!-- Pagination -->
         </div>
     </div>
-
+@endif
 </section>
 @endsection

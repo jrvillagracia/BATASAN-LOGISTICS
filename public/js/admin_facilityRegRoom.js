@@ -23,7 +23,7 @@ $(document).ready(function () {
 //ADD FACILITY REGULAR
 $(document).ready(function () {
     $('#RegSubFormBtn').click(function (event) {
-        event.preventDefault();  // Prevent default form submission
+        event.preventDefault(); 
 
         $.ajaxSetup({
             headers: {
@@ -33,13 +33,12 @@ $(document).ready(function () {
 
         const buildingName = $('#RegBldName').val();
         const room = $('#RegRoom').val();
-        const status = $('#facilityStatusReg').val();
         const capacity = $('#RegCapacity').val();
-        const facilityRoomDate = $('#RegRoomDate').val(); // Get the date value
+        const facilityRoomDate = $('#RegRoomDate').val(); 
         
 
         // Check if all values are entered
-        if (buildingName === '' || room === '' || status === '' || capacity === '' || facilityRoomDate === '') {
+        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -64,7 +63,6 @@ $(document).ready(function () {
         const formData = {
             buildingName: buildingName,
             room: room,
-            status: status,
             capacity: capacity,
             facilityRoomDate: facilityRoomDate,
             facilityRoomType: facilityRoomType,
@@ -73,18 +71,19 @@ $(document).ready(function () {
         // AJAX request
         $.ajax({
             url: '/rooms/store',
-            type: 'POST',  // Request type
-            data: formData,  // Data to be sent to the server
+            type: 'POST',  
+            data: formData,  
             success: function (response) {
-                console.log(response); // Log the response
-                $('#RegForm')[0].reset(); // Reset form
-                $('#RegFormCard').addClass('hidden'); // Hide the form card
+                console.log(response);
+                $('#RegForm')[0].reset(); 
+                $('#RegFormCard').addClass('hidden');
+                
+                let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
 
                 // Append the new row to the table
                 const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
                                    <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
                                    <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.status}</td>
                                    <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
                                    <td class="px-6 py-6 border-b border-gray-300"></td>
                                    <td class="px-6 py-6 border-b border-gray-300"></td>
@@ -94,9 +93,11 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: 'success',
                     title: 'Saved!',
-                    text: 'Your action has been successfully submitted',
+                    text: 'Room has been successfully added',
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    location.reload();
                 });
             },
             error: function (xhr, status, error) {
@@ -135,25 +136,112 @@ $(document).ready(function() {
 
 // VIEW 
 $(document).ready(function () {
-    $('#viewINSTpButton').click(function () {
-        console.log('View Instructional Button is Clicked.');
-        $('#ViewINSTPopupCard').removeClass('hidden');
+    // Handle "View" button click
+    $('.viewINSTpButton').click(function () {
+        const roomId = $(this).data('id'); // Get the room ID
+        const roomIndex = $(this).data('index'); // Get the room index
+        console.log(`View Instructional Button Clicked: Room ID = ${roomId}, Index = ${roomIndex}`);
+
+        // Show the specific popup card for the room
+        $(`#ViewINSTPopupCard-${roomIndex}`).removeClass('hidden');
     });
 
-    $('#closeViewINSTPopupCard').click(function () {
-        console.log('Close "X" Equipment Button is Clicked.');
-        $('#ViewINSTPopupCard').addClass('hidden');
+    // Handle "Close" button click inside the popup
+    $('.closeViewINSTPopupCard').click(function () {
+        const roomIndex = $(this).data('id'); // Use data-id to target the index
+        console.log(`Close "X" Button Clicked: Index = ${roomIndex}`);
+
+        // Hide the specific popup card
+        $(`#ViewINSTPopupCard-${roomIndex}`).addClass('hidden');
     });
 });
 
 
+
 // EDIT
 $(document).ready(function () {
-    $('#editINSTButton').click(function () {
-        console.log('Show Add Facility Button Clicked');
-        $('#RegEditFormCard').removeClass('hidden');
+    var csrfToken = $('meta[name="csrf-token"]').attr('content') || $('#csrf-token').data('token');
+    console.log('CSRF Token:', csrfToken);
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        }
     });
 
+    // Event delegation for the edit button click
+    $(document).on('click', '.editINSTButton', function (event) {
+        event.preventDefault();
+        console.log('Edit Room Button Clicked');
+
+        // Get room ID from the clicked button's data-id attribute
+        var roomId = $(this).data('id');
+        var row = $(this).closest('tr'); // Closest row containing the button
+        console.log('Editing Room with ID:', roomId);
+
+        // Show the edit modal
+        $('#RegEditFormCard').removeClass('hidden');
+
+        // Populate the form with data from the selected row
+        $('#RegEditForm').find('#RegEditBldName').val(row.find('td').eq(0).text().trim());
+        $('#RegEditForm').find('#RegEditRoom').val(row.find('td').eq(1).text().trim());
+        $('#RegEditForm').find('#RegEditCapacity').val(row.find('td').eq(2).text().trim()); // Adjusted index for capacity
+
+        // Set the hidden input field with the room ID
+        $('#RegEditForm').find('input[name="id"]').val(roomId);
+    });
+
+    // Handle the save button click
+    $('.RegEditSaveFormBtn').on('click', function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: "Are you sure all input data are correct?",
+            showDenyButton: true,
+            confirmButtonText: "Yes",
+            denyButtonText: "No",
+            confirmButtonColor: '#3085d6',
+            denyButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = $('#RegEditForm').serialize();
+                console.log('Form data:', formData);
+
+                $.ajax({
+                    url: '/room/edit',
+                    method: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        Swal.fire("Saved!", "", "success").then(() => {
+                            updateTableRow(response.room); // Update the table row with new data
+                            $('#RegEditFormCard').addClass('hidden');
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage = xhr.responseJSON?.message || error;
+                        console.log('Error:', errorMessage);
+                        Swal.fire("Error!", "Failed to update room: " + errorMessage, "error");
+                    }
+                });
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        });
+    });
+
+    // Function to update the table row with new data
+    function updateTableRow(room) {
+        var row = $(`tr[data-id="${room.id}"]`); // Locate the row using data-id
+        if (row.length > 0) {
+            row.find('td').eq(0).text(room.BuildingName); // Update building name
+            row.find('td').eq(1).text(room.Room);         // Update room name
+            row.find('td').eq(2).text(room.capacity);     // Update capacity
+            console.log('Row updated successfully');
+        } else {
+            console.warn('Row not found for room ID:', room.id);
+        }
+    }
 
     $('#RegEditCloseFormBtn').click(function () {
         console.log('Close Add Facility Button Clicked');
@@ -165,19 +253,40 @@ $(document).ready(function () {
         console.log('Close Add Facility Button Clicked');
         $('#RegEditFormCard').addClass('hidden');
     });
-
-    $('#RegEditSaveFormBtn').click(function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Saved!',
-            text: 'Your action has been successfully saved',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#RegEditFormCard").addClass("hidden");
-        });
-    });
 });
+
+
+
+// $(document).ready(function () {
+//     $('#editINSTButton').click(function () {
+//         console.log('Show Add Facility Button Clicked');
+//         $('#RegEditFormCard').removeClass('hidden');
+//     });
+
+
+//     $('#RegEditCloseFormBtn').click(function () {
+//         console.log('Close Add Facility Button Clicked');
+//         $('#RegEditFormCard').addClass('hidden');
+//     });
+
+
+//     $('#RegEditCancelFormBtn').click(function () {
+//         console.log('Close Add Facility Button Clicked');
+//         $('#RegEditFormCard').addClass('hidden');
+//     });
+
+//     $('#RegEditSaveFormBtn').click(function () {
+//         Swal.fire({
+//             icon: 'success',
+//             title: 'Saved!',
+//             text: 'Your action has been successfully saved',
+//             confirmButtonText: 'OK',
+//             confirmButtonColor: '#3085d6'
+//         }).then(() => {
+//             $("#RegEditFormCard").addClass("hidden");
+//         });
+//     });
+// });
 
 
 
@@ -206,70 +315,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-// Return data from SIS 
-$.ajax({
-    url: 'http://your-laravel-app-url/api/rooms',  // Ensure you're calling the correct route
-    type: 'GET',
-    dataType: 'json',
-    success: function(response) {
-        try {
-            console.log('Full response:', response.rooms);  // Log the rooms data to see the structure
-
-            if (response && response.rooms && Array.isArray(response.rooms)) {
-                $('#tableBody').empty();
-
-                response.rooms.forEach(function(room) {
-                    console.log('Room:', room);  // Log each room to check its structure
-
-                    const newRow = `<tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="${room.id}" data-id="${room.id}">
-                                       <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${room.buildingName || 'N/A'}</td>
-                                       <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${room.room || 'N/A'}</td>
-                                       <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${room.facilityStatus || 'N/A'}</td>
-                                       <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${room.capacity || 'N/A'}</td>
-                                       <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${room.session || 'N/A'}</td>
-                                       <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${room.sectionName || 'N/A'} - Grade ${room.gradeLevel || 'N/A'}</td>
-                                       <td class="px-6 py-4">
-                                            <button id="viewINSTpButton" type="button">
-                                                <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                                    <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
-                                            </button>
-
-                                            <button id="editINSTButton" type="button">
-                                                <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
-                                                    <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </td>
-                                   <td class="px-6 py-4">
-                                        <div class="flex items-center">
-                                            <input id="RegRoomCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                                        </div>
-                                    </td>
-                               </tr>`;
-
-                    $('#tableBody').append(newRow);
-                });
-            } else {
-                console.log('No rooms found:', response);
-            }
-        } catch (e) {
-            console.error('Error processing response:', e);
-        }
-    },
-    error: function(error) {
-        console.error('Error:', error);
+//Automatic Set Date
+document.addEventListener("DOMContentLoaded", function() {
+    function formatDateToMMDDYYYY(date) {
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
     }
+
+    const today = formatDateToMMDDYYYY(new Date());
+    document.getElementById("RegRoomDate").value = today;
 });
-
-
-
-
-
-
-
-

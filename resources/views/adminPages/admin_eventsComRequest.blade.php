@@ -145,7 +145,7 @@
                         <p class="mb-2"><strong>Quantity:</strong> 1</p>
                     </div>
 
-                    <div class="relative shadow-md sm:rounded-lg px-9 py-5">
+                    <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
                         <table id="ViewCompletedReqTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
                                 <tr>

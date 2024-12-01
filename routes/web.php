@@ -1,20 +1,22 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SuppliesController;
-use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\JWTApiTokenController;
 use App\Http\Controllers\Events\ApproveController;
 use App\Http\Controllers\Events\ApprovalController;
 use App\Http\Controllers\Events\CompleteController;
 use App\Http\Controllers\FacilityModule\RoomController;
-use App\Http\Controllers\JWTApiTokenController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Equipments\EquipmentController;
+use App\Http\Controllers\Equipments\EquipmentStockController;
 
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
 
 Route::middleware("jwt-verify")->group(function() {
+
 
     Route::get('/', function () {
         return view('welcome');
@@ -33,7 +35,7 @@ Route::middleware("jwt-verify")->group(function() {
     {        
         $request->session()->put("token", $request->access_token);
         // dd(session("token"));
-        return view('admin_dashboard');
+        return view('adminPages.admin_dashboard');
     })->name('admin_dashboard');
     
     
@@ -93,27 +95,81 @@ Route::middleware("jwt-verify")->group(function() {
     Route::get('/admin_com_rqstEquipment', function () {
         return view('admin_com_rqstEquipment');
     })->name('admin_com_rqstEquipment');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+// routes/web.php
+Route::get('/register', function () {
+    return view('register');
+})->name('register');
+
+Route::get('/employee_login', function () {
+    return view('employee_login');
+})->name('employee_login');
+
+// Route::get('/admin_dashboard', function () {
+//     return view('admin_dashboard');
+// })->name('admin_dashboard');
+
+
+// CONDEMNED MODULE FOR EQUIPMENT
+Route::get('/admin_equipCondemned', function () {
+    return view('adminPages.admin_equipCondemned');
+})->name('admin_equipCondemned');
+
+
+// USED MODULE FOR EQUIPMENT
+Route::get('/admin_equipUsed', function () {
+    return view('adminPages.admin_equipUsed');
+})->name('admin_equipUsed');
+
+
+// HISTORY FOR EQUIPMENT
+Route::get('/admin_equipHistory', function () {
+    return view('adminPages.admin_equipHistory');
+})->name('admin_equipHistory');
+
+// HISTORY FOR SUPPLIES
+Route::get('/admin_suppliesHistory', function () {
+    return view('adminPages.admin_suppliesHistory');
+})->name('admin_suppliesHistory');
+
+
+// USED FOR SUPPLIES
+Route::get('/admin_suppliesUsed', function () {
+    return view('adminPages.admin_suppliesUsed');
+})->name('admin_suppliesUsed');
 
 
 
+// REQUEST MODULE FOR SUPPLIES
+Route::get('/admin_REQapprovalSupplies', function () {
+    return view('adminPages.admin_REQapprovalSupplies');
+})->name('admin_REQapprovalSupplies');
+
+Route::get('/admin_REQreleaseSupplies', function () {
+    return view('adminPages.admin_REQreleaseSupplies');
+})->name('admin_REQreleaseSupplies');
+
+Route::get('/admin_REQrqstSupplies', function () {
+    return view('adminPages.admin_REQrqstSupplies');
+})->name('admin_REQrqstSupplies');
 
 
+// REQUEST MODULE FOR EQUIPMENT
+Route::get('/admin_REQapprovalEquipment', function () {
+    return view('adminPages.admin_REQapprovalEquipment');
+})->name('admin_REQapprovalEquipment');
 
+Route::get('/admin_REQreleaseEquipment', function () {
+    return view('adminPages.admin_REQreleaseEquipment');
+})->name('admin_REQreleaseEquipment');
 
-
-
-// // FACILITY MODULE FOR REGULAR ROOM
-// Route::get('/admin_facilityRegRoom', function () {
-//     return view('admin_facilityRegRoom');
-// })->name('admin_facilityRegRoom');
-
-
-
-// // FACILITY MODULE FOR MORNING SPECIAL ROOM
-// Route::get('/admin_facilitySpecRoom', function () {
-//     return view('admin_facilitySpecRoom');
-// })->name('admin_facilitySpecRoom');
-
+Route::get('/admin_REQrqstEquipment', function () {
+    return view('adminPages.admin_REQrqstEquipment');
+})->name('admin_REQrqstEquipment');
 
 
 //Register
@@ -127,8 +183,9 @@ Route::get('/admin/dashboard', [RegisterController::class, 'index'])->name('admi
 Route::get('/employee/login', [RegisterController::class, 'login'])->name('employee_login');
 
 
-//Equipment
-Route::get('/admin_equipment', [EquipmentController::class, 'index'])->name('admin_equipment');
+//Equipment Stock In
+Route::get('/admin_StockInEquipment', [EquipmentController::class, 'index'])->name('admin_StockInEquipment');
+Route::post('/equipment/approved', [EquipmentController::class, 'approve'])->name('equipment.approve');
 Route::get('/equipment/details', [EquipmentController::class,'equipmentDetails'])->name('equipment.details');
 Route::post('/equipment/store', [EquipmentController::class, 'store'])->name('equipment.store');
 Route::post('/equipment/delete', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
@@ -137,6 +194,8 @@ Route::post('/equipment/update-main', [EquipmentController::class, 'updateMain']
 Route::post('/equipment/update-view', [EquipmentController::class, 'updateView'])->name('equipment.updateView');
 Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewing'])->name('equipment.finalViewing');
 
+//Equipment
+Route::get('/admin_equipment', [EquipmentStockController::class, 'index'])->name('admin_EQUIPMENT');
 
 
 //Supplies
@@ -150,10 +209,14 @@ Route::post('/supplies/update-view', [SuppliesController::class, 'updateView'])-
 Route::get('/supplies/final-viewing', [SuppliesController::class, 'finalViewing'])->name('supplies.finalViewing');
 
 
-//Room
+//Instructional Room
 Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('admin_facilityRegRoom');
-Route::get('/admin_facilitySpecRoom', [RoomController::class, 'specialIndex'])->name('admin_facilitySpecRoom');
 Route::post('/rooms/store', [RoomController::class, 'store'])->name('room.store');
+Route::post('/room/edit', [RoomController::class, 'edit'])->name('room.edit');
+
+//Laboratory Room
+Route::get('/admin_facilitySpecRoom', [RoomController::class, 'labindex'])->name('admin_facilitySpecRoom');
+Route::post('/rooms/lab/store', [RoomController::class, 'store'])->name('rooms.lab.store');
 
 //Events and Activities
 Route::post('/events/store', [ApprovalController::class, 'store'])->name('events.store');
@@ -176,7 +239,7 @@ Route::get('/admin_eventsComRequest', [CompleteController::class, 'index'])->nam
 
 // OFFICE ROOM
 Route::get('/admin_facilityOfficeRoom', function () {
-    return view('admin_facilityOfficeRoom');
+    return view('adminPages.admin_facilityOfficeRoom');
 })->name('admin_facilityOfficeRoom');
 
 
@@ -188,11 +251,48 @@ Route::get('/faculty_home', function () {
 
 
 
-// MAINTENANCE INVENTORY
-Route::get('/admin_mainteInventory', function () {
-    return view('adminPages.admin_mainteInventory');
-})->name('admin_mainteInventory');
 
+// MAINTENANCE For Approval INVENTORY
+Route::get('/admin_mainteEquipment', function () {
+    return view('adminPages.admin_mainteEquipment');
+})->name('admin_mainteEquipment');
+
+
+// MAINTENANCE For Repair INVENTORY
+Route::get('/admin_mainteForRepEquip', function () {
+    return view('adminPages.admin_mainteForRepEquip');
+})->name('admin_mainteForRepEquip');
+
+// MAINTENANCE COMPLETED REQUEST INVENTORY
+Route::get('/admin_ComReqMainteEquip', function () {
+    return view('adminPages.admin_ComReqMainteEquip');
+})->name('admin_ComReqMainteEquip');
+
+// MAINTENANCE HISTORY INVENTORY
+Route::get('/admin_HistoryMainteEquip', function () {
+    return view('adminPages.admin_HistoryMainteEquip');
+})->name('admin_HistoryMainteEquip');
+
+
+// MAINTENANCE For Approval FACILITY
+Route::get('/admin_mainteFacility', function () {
+    return view('adminPages.admin_mainteFacility');
+})->name('admin_mainteFacility');
+
+// MAINTENANCE For Repair FACILITY
+Route::get('/admin_mainteForRepFacility', function () {
+    return view('adminPages.admin_mainteForRepFacility');
+})->name('admin_mainteForRepFacility');
+
+// MAINTENANCE COMPLETED REQUEST FACILITY
+Route::get('/admin_ComReqMainteFacility', function () {
+    return view('adminPages.admin_ComReqMainteFacility');
+})->name('admin_ComReqMainteFacility');
+
+// MAINTENANCE HISOTRY FACILITY
+Route::get('/admin_HistoryMainteFacility', function () {
+    return view('adminPages.admin_HistoryMainteFacility');
+})->name('admin_HistoryMainteFacility');
 
 // EVENT AND ACTIVITIES FOR HISTORY
 Route::get('/admin_eventsHistory', function () {

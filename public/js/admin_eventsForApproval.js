@@ -133,7 +133,6 @@ $(document).ready(function() {
 
 
 
-
 // APPROVE BUTTON CARD FORM
 $(document).ready(function () {
     // Event Approve Button - Show Approval Modal
@@ -141,13 +140,6 @@ $(document).ready(function () {
         console.log('Approve Button Clicked - Showing Approval Modal');
         $(".ApprEventPopupCard").removeClass("hidden");
     });
-
-     // Additional check to confirm if modal is visible
-     if (!$(".ApprEventPopupCard").hasClass("hidden")) {
-        console.log('Approval Modal is now visible');
-    } else {
-        console.log('Approval Modal is still hidden');
-    }
 
     // Cancel Approval Modal
     $(".closeApprEventPopupCard").click(function() {
@@ -376,11 +368,3 @@ document.addEventListener("DOMContentLoaded", function () {
 //         $("#ViewEventApprPopupCard").addClass("hidden");
 //     });
 // });
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Get today's date in the format YYYY-MM-DD
-    let today = new Date().toISOString().split("T")[0];
-    // Set the date input to today's date
-    document.getElementById("EventApprDate").value = today;
-});

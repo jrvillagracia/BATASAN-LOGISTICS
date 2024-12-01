@@ -35,13 +35,11 @@ $(document).ready(function () {
         // Gather form data
         const buildingName = $('#SpecBldName').val();
         const room = $('#SpecRoom').val();
-        const status = $('#facilityStatusSpec').val();
         const capacity = $('#SpecCapacity').val();
-        const shift = $('#facilityShiftSpec').val();
-        const roomType = $('#facilityRTSpec').val();
+        const facilityRoomDate = $('#SpecRoomDate').val(); 
 
         // Check if all values are entered
-        if (buildingName === '' || room === '' || status === '' || capacity === '' || shift === ''|| roomType === '') {
+        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -51,47 +49,60 @@ $(document).ready(function () {
             return;
         }
 
+        let facilityRoomType = '';
+        if (window.location.pathname.includes('admin_facilityRegRoom')) {
+            facilityRoomType = 'Instructional';
+        } else if (window.location.pathname.includes('admin_facilitySpecRoom')) {
+            facilityRoomType = 'Laboratory';
+        } else if (window.location.pathname.includes('admin_facilityOfficeRoom')) {
+            facilityRoomType = 'Office';
+        }
+
         // Prepare data for AJAX request
         const formData = {
             _token: $('meta[name="csrf-token"]').attr('content'),  // Laravel CSRF token
             buildingName: buildingName,
             room: room,
-            status: status,
             capacity: capacity,
-            shift: shift,
-            facilityRoomType: roomType  // Adjust this name to match your backend field
+            facilityRoomDate: facilityRoomDate,
+            facilityRoomType: facilityRoomType,  // Adjust this name to match your backend field
         };
 
 
         // AJAX request
         $.ajax({
-            url: '/rooms/store',  // The correct way to include the Blade route
+            url: '/rooms/lab/store',  // The correct way to include the Blade route
             type: 'POST',
             data: formData,
             success: function (response) {
-                // Clear form
                 $('#SpecForm')[0].reset();
-
-                // Hide form card
                 $('#SpecFormCard').addClass('hidden');
 
-                // Show success message
-                Swal.fire("Saved!", response.message, "success");
+                let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
 
                 // Optionally, you can append the new data to the table or update the UI
-                $('#tableBody').append(
-                    `<tr class="cursor-pointer table-row" data-index="${response.index}" data-id="${response.id}">
-                        <td class="px-6 py-3">${response.buildingName}</td>
-                        <td class="px-6 py-3">${response.room}</td>
-                        <td class="px-6 py-3">${response.status}</td>
-                        <td class="px-6 py-3">${response.capacity}</td>
-                        <td class="px-6 py-4">${response.shift}</td>
-                    </tr>`
-                );
+                const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
+                                   <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
+                                   <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
+                                   <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
+                                   <td class="px-6 py-6 border-b border-gray-300"></td>
+                                   <td class="px-6 py-6 border-b border-gray-300"></td>
+                               </tr>`;
+                $('#tableBody').append(newRow);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Saved!',
+                    text: 'Your action has been successfully submitted',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    location.reload();
+                });
             },
             error: function (xhr, status, error) {
+                console.log(xhr.responseText);
                 // Handle error response
-                console.error("Error details:", xhr.responseText);
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
@@ -193,4 +204,18 @@ document.addEventListener("DOMContentLoaded", function() {
             dataTable.search(searchTerm);
         });
     }
+});
+
+
+//Automatic Set Date
+document.addEventListener("DOMContentLoaded", function() {
+    function formatDateToMMDDYYYY(date) {
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
+    }
+
+    const today = formatDateToMMDDYYYY(new Date());
+    document.getElementById("SpecRoomDate").value = today;
 });

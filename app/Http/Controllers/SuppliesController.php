@@ -26,7 +26,7 @@ class SuppliesController extends Controller
 
         Log::info('Supplies Data:', $supplies->toArray());
 
-        return view('admin_supplies', compact('supplies'));
+        return view('adminPages.admin_supplies', compact('supplies'));
     }
 
     public function finalViewing(Request $request)
@@ -69,7 +69,7 @@ class SuppliesController extends Controller
 
     public function create()
     {
-        return view('admin_supplies');
+        return view('adminPages.admin_supplies');
     }
 
     public function store(Request $request)
