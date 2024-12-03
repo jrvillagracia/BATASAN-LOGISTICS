@@ -101,10 +101,10 @@ class EquipmentController extends Controller
             'EquipmentUnit' => 'required|string|max:255',
             'EquipmentQuantity' => 'required|integer',
             'EquipmentDate' => 'required|date',
-            'EquipmentUnitPrice' => 'required|numeric',
-            'EquipmentClassification' => 'required|string|max:255',
+            'EquipmentUnitPrice' => 'required|numeric|max:5000',
+            'EquipmentClassification' => 'required|string',
             'EquipmentSKU' => 'required|string|max:255',
-            'EquipmentSerialNo' => 'required|string|max:255',
+            'EquipmentSerialNo' => 'nullable|string|max:255',
         ]);
     
         // Create a new equipment entry in the database
@@ -144,8 +144,8 @@ class EquipmentController extends Controller
                 'EquipmentUnitPrice' => $validatedData['EquipmentUnitPrice'],
                 'EquipmentClassification' => $validatedData['EquipmentClassification'],
                 'EquipmentSKU' => $validatedData['EquipmentSKU'],
-                'EquipmentSerialNo' => $validatedData['EquipmentSerialNo'],
-                'EquipmentControlNo' => $controlNumber, // Save the generated control number
+                'EquipmentSerialNo' => $validatedData['EquipmentSerialNo'] ?? null,
+                'EquipmentControlNo' => $controlNumber, 
             ]);
         }
         
@@ -214,23 +214,37 @@ class EquipmentController extends Controller
 
     public function updateMain(Request $request)
     {
-        Log::info('Incoming request data for Main Edit:', $request->all());
+        Log::info('Incoming request data for Main :', $request->all());
     
         // Validate the incoming request data for the main table
         $validatedData = $request->validate([
-            'EquipmentBrandName' => 'required|string|max:255',
-            'EquipmentName' => 'required|string|max:255',
-            'EquipmentCategory' => 'required|string',
-            'EquipmentSKU' => 'required|string|max:255',
-            'brand' => 'required|string|max:255', // Ensure brand is validated
+            'EquipmentBrandNameEdit' => 'required|string|max:255',
+            'EquipmentNameEdit' => 'required|string|max:255',
+            'EquipmentCategoryEdit' => 'required|string',
+            'otherEquipCategoryEdit' => 'nullable|string|max:255',
+            'EquipmentQuantityEdit' => 'required|integer',
+            'EquipmentColorEdit' => 'required|string|max:255',
+            'EquipmentTypeEdit' => 'required|string|max:255',
+            'EquipmentUnitEdit' => 'required|string|max:255',
+            'EquipmentUnitPriceEdit' => 'required|numeric',
+            'EquipmentClassificationEdit' => 'required|string|max:255',
+            'EquipmentSKUEdit' => 'required|string|max:255',
+            'brand' => 'required|string|max:255', 
         ]);
+        
     
         // Update the equipment based on the brand
         $updateCount = Equipment::where('EquipmentBrandName', $validatedData['brand'])->update([
-            'EquipmentBrandName' => $validatedData['EquipmentBrandName'],
-            'EquipmentName' => $validatedData['EquipmentName'],
-            'EquipmentCategory' => $validatedData['EquipmentCategory'],
-            'EquipmentSKU' => $validatedData['EquipmentSKU'], // Fixed typo from 'EquipmenntSKU'
+            'EquipmentBrandName' => $validatedData['EquipmentBrandNameEdit'],
+            'EquipmentName' => $validatedData['EquipmentNameEdit'],
+            'EquipmentCategory' => $validatedData['EquipmentCategoryEdit'],
+            'EquipmentQuantity' => $validatedData['EquipmentQuantityEdit'],
+            'EquipmentColor' => $validatedData['EquipmentColorEdit'],
+            'EquipmentType' => $validatedData['EquipmentTypeEdit'],
+            'EquipmentUnit' => $validatedData['EquipmentUnitEdit'],
+            'EquipmentUnitPrice' => $validatedData['EquipmentUnitPriceEdit'],
+            'EquipmentClassification' => $validatedData['EquipmentClassificationEdit'],
+            'EquipmentSKU' => $validatedData['EquipmentSKUEdit'],
         ]);
     
         // Check if any rows were updated
@@ -246,24 +260,24 @@ class EquipmentController extends Controller
     {
         $request->validate([
             'id' => 'required|integer|exists:equipment,id',
-            'FullEquipmentSerialNoEdit' => 'required|string|max:255',
-            'FullEquipmentTypeEdit' => 'required|string|max:255',
-            'FullEquipmentColorEdit' => 'required|string|max:255',
-            'FullEquipmentUnitEdit' => 'required|string|max:255',
-            'FullEquipmentUnitPriceEdit' => 'required|numeric',
-            'FullEquipmentClassificationEdit' => 'required|string|max:255',
-            'FullEquipmentDateEdit' => 'required|date',
+            'FullEquipmentSerialNo' => 'required|string|max:255',
+            'FullEquipmentType' => 'required|string|max:255',
+            'FullEquipmentColor' => 'required|string|max:255',
+            'FullEquipmentUnit' => 'required|string|max:255',
+            'FullEquipmentUnitPrice' => 'required|numeric',
+            'FullEquipmentClassification' => 'required|string|max:255',
+            'FullEquipmentDate' => 'required|date',
         ]);
 
         $equipment = Equipment::findOrFail($request->input('id'));
 
-        $equipment->EquipmentSerialNo = $request->input('FullEquipmentSerialNoEdit');
-        $equipment->EquipmentType = $request->input('FullEquipmentTypeEdit');
-        $equipment->EquipmentColor = $request->input('FullEquipmentColorEdit');
-        $equipment->EquipmentUnit = $request->input('FullEquipmentUnitEdit');
-        $equipment->EquipmentUnitPrice = $request->input('FullEquipmentUnitPriceEdit');
-        $equipment->EquipmentClassification = $request->input('FullEquipmentClassificationEdit');
-        $equipment->EquipmentDate = $request->input('FullEquipmentDateEdit');
+        $equipment->EquipmentSerialNo = $request->input('FullEquipmentSerialNo');
+        $equipment->EquipmentType = $request->input('FullEquipmentType');
+        $equipment->EquipmentColor = $request->input('FullEquipmentColor');
+        $equipment->EquipmentUnit = $request->input('FullEquipmentUnit');
+        $equipment->EquipmentUnitPrice = $request->input('FullEquipmentUnitPrice');
+        $equipment->EquipmentClassification = $request->input('FullEquipmentClassification');
+        $equipment->EquipmentDate = $request->input('FullEquipmentDate');
 
         $equipment->save();
 
@@ -291,7 +305,7 @@ class EquipmentController extends Controller
     }   
 
 
-    public function destroyEdit2(Request $request)
+    public function destroy2(Request $request)
     {
         // Validate the incoming request
         $request->validate([

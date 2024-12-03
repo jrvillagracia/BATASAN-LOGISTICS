@@ -18,17 +18,31 @@ $(document).ready(function () {
 
 // Function to add a new Equipment
 $(document).ready(function () {
+    // Show the "Other Category" input when "Other" is selected
+    $('#EquipmentCategory').on('change', function () {
+        const category = $(this).val();
+        if (category === 'other') {
+            $('#otherEquipCategoryDiv').removeClass('hidden');
+        } else {
+            $('#otherEquipCategoryDiv').addClass('hidden');
+        }
+    });
+
+    $('#EquipmentUnitPriceEdit').on('input', function() {
+        var value = $(this).val().replace(/,/g, ''); // Remove existing commas
+        var formattedValue = parseFloat(value).toLocaleString('en-US'); // Format with commas
+        $(this).val(formattedValue);
+    });
+
+
+    // Save equipment
     $('#EquipmentSaveButton').on('click', function (e) {
         e.preventDefault();
-        
-        const currentDate = new Date();
-        const formattedDate = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-       
-        $('#EquipmentDate').val(formattedDate);
 
         const brandName = $('#EquipmentBrandName').val().trim();
         const name = $('#EquipmentName').val().trim();
         const category = $('#EquipmentCategory').val();
+        const otherCategory = $('#otherEquipCategory').val().trim();  // Get the value of "Other Category"
         const type = $('#EquipmentType').val();
         const color = $('#EquipmentColor').val().trim();
         const unit = $('#EquipmentUnit').val().trim();
@@ -37,10 +51,25 @@ $(document).ready(function () {
         const uPrice = $('#EquipmentUnitPrice').val().trim();
         const classification = $('#EquipmentClassification').val();
         const sku = $('#EquipmentSKU').val().trim();
-        const serialNo = $('#EquipmentSerialNo').val().trim();
+        const serialNo = null;
+
+        // If "Other" is selected, use the value from the "Other Category" field
+        if (category === 'other' && otherCategory === '') {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please enter a category name for 'Other'!",
+                showConfirmButton: true,
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        // Use the entered "Other Category" if selected, otherwise use the selected category
+        const finalCategory = category === 'other' ? otherCategory : category;
 
         // Check if all fields are filled
-        if (brandName === '' || name === '' || category === '' || type === '' || color === '' || unit === '' ||
+        if (brandName === '' || name === '' || finalCategory === '' || type === '' || color === '' || unit === '' ||
             quantity === '' || date === '' || uPrice === '' || classification === '' || sku === '' || serialNo === '') {
             Swal.fire({
                 icon: "error",
@@ -75,7 +104,7 @@ $(document).ready(function () {
                         _token: $('#csrf-token').data('token'), // CSRF token
                         EquipmentBrandName: brandName,
                         EquipmentName: name,
-                        EquipmentCategory: category,
+                        EquipmentCategory: finalCategory,  // Use the final category
                         EquipmentType: type,
                         EquipmentColor: color,
                         EquipmentUnit: unit,
@@ -94,6 +123,8 @@ $(document).ready(function () {
                             showConfirmButton: true,
                             confirmButtonColor: '#3085d6'
                         }).then(() => {
+                            // Reload table data without showing "Other"
+                            $('#EquipmentTable').DataTable().ajax.reload();  // Reload the DataTable (if you're using DataTables)
                             location.reload();
                         });
                     },
@@ -117,27 +148,6 @@ $(window).on('click', function (e) {
     }
 });
 
-$(document).ready(function () {
-    $('#EquipmentCategory').change(function () {
-        if ($(this).val() === 'other') {
-            $('#otherEquipCategoryDiv').removeClass('hidden');
-        } else {
-            $('#otherEquipCategoryDiv').addClass('hidden');
-        }
-    });
-});
-
-$(document).ready(function () {
-    $('#EquipmentCategoryEdit').change(function () {
-        if ($(this).val() === 'other') {
-            $('#otherEquipCategoryDiv').removeClass('hidden');
-        } else {
-            $('#otherEquipCategoryDiv').addClass('hidden');
-        }
-    });
-});
-
-
 
 // EQUIPMENT EDIT FUNCTION
 $(document).ready(function () {
@@ -150,6 +160,22 @@ $(document).ready(function () {
         }
     });
 
+    $('#EquipmentCategoryEdit').on('change', function () {
+        const category = $(this).val();
+        if (category === 'other') {
+            $('#otherEquipCategoryDivEdit').removeClass('hidden');
+        } else {
+            $('#otherEquipCategoryDivEdit').addClass('hidden');
+        }
+    });
+
+    $('#EquipmentUnitPriceEdit').on('input', function() {
+        var value = $(this).val().replace(/,/g, ''); // Remove existing commas
+        var formattedValue = parseFloat(value).toLocaleString('en-US'); // Format with commas
+        $(this).val(formattedValue);
+    });
+
+
     // Event delegation for the edit button click
     $(document).on('click', '#editEquipButton', function (event) {
         event.preventDefault();
@@ -157,21 +183,43 @@ $(document).ready(function () {
 
         // Get the clicked row
         var row = $(this).closest('tr');
-        var equipBrand = row.data('brand'); // Retrieve the equipment brand from the row's data-brand attribute
+        var equipBrand = row.data('brand');
+        var equipType = row.data('type');
+        var equipUnit = row.data('unit');
+        var equipUnitPrice = row.data('unit-price');
+        var equipColor = row.data('color');
+        var otherCategory = row.data('other-category');
         console.log('Edit button clicked for equipment Brand:', equipBrand);
 
         // Show the edit modal
         $('#editEquipModal').removeClass('hidden');
 
         // Populate the edit modal fields with data from the row
-        $('#editForm').find('#EquipmentBrandNameEdit').val(row.find('td').eq(2).text().trim());
-        $('#editForm').find('#EquipmentNameEdit').val(row.find('td').eq(3).text().trim());
+        $('#editForm').find('#EquipmentBrandNameEdit').val(row.find('td').eq(1).text().trim());
+        $('#editForm').find('#EquipmentNameEdit').val(row.find('td').eq(2).text().trim());
         $('#editForm').find('#EquipmentCategoryEdit').val(row.find('td').eq(3).text().trim());
+        $('#editForm').find('#EquipmentQuantityEdit').val(row.find('td').eq(4).text().trim());
         $('#editForm').find('#EquipmentSKUEdit').val(row.find('td').eq(6).text().trim());
         $('#editForm').find('#EquipmentClassificationEdit').val(row.find('td').eq(7).text().trim());
+        
+        // Populate additional fields from data attributes
+        $('#editForm').find('#EquipmentColorEdit').val(equipColor);
+        $('#editForm').find('#EquipmentTypeEdit').val(equipType);
+        $('#editForm').find('#EquipmentUnitEdit').val(equipUnit);
+        $('#editForm').find('#EquipmentUnitPriceEdit').val(equipUnitPrice);
 
         // Set the hidden input field with the equipment brand
         $('#editForm').find('input[name="brand"]').val(equipBrand);
+
+        if (equipCategory === 'other') {
+            // Show the "Other" category input and populate it
+            $('#otherEquipCategoryDivEdit').removeClass('hidden');
+            $('#editForm').find('#otherEquipCategoryEdit').val(otherCategory);
+        } else {
+            // Hide the "Other" category input
+            $('#otherEquipCategoryDivEdit').addClass('hidden');
+            $('#editForm').find('#otherEquipCategoryEdit').val('');
+        }
     });
 
     // Handle saving the changes
@@ -202,11 +250,12 @@ $(document).ready(function () {
                         Swal.fire("Saved!", "", "success").then(() => {
                             updateTableRow(equipBrand); // Update the table row with new data
                             $('#editEquipModal').addClass('hidden');
+                            location.reload();
                         });
                     },
                     error: function (xhr, status, error) {
                         var errorMessage = xhr.responseJSON.message || error;
-                        console.log('Error:', errorMessage);
+                        console.log(xhr.responseText);
                         Swal.fire("Error!", "Failed to update equipment: " + errorMessage, "error");
                     }
                 });
@@ -222,10 +271,17 @@ $(document).ready(function () {
         console.log('Updating row:', row);
 
         if (row.length > 0) { // Check if the row exists
-            row.find('td').eq(0).text($('#EquipmentBrandNameEdit').val().trim()); // Update brand name
-            row.find('td').eq(1).text($('#EquipmentNameEdit').val().trim()); // Update equipment name
-            row.find('td').eq(3).text($('#EquipmentCategoryEdit').val().trim()); // Update category
-            row.find('td').eq(6).text($('#EquipmentSKUEdit').val().trim()); // Update SKU
+            row.find('td').eq(1).text($('#EquipmentBrandNameEdit').val().trim()); 
+            row.find('td').eq(2).text($('#EquipmentNameEdit').val().trim()); 
+            row.find('td').eq(3).text($('#EquipmentCategoryEdit').val().trim());
+            row.find('td').eq(4).text($('#EquipmentQuantityEdit').val().trim()); 
+            row.find('td').eq(6).text($('#EquipmentSKUEdit').val().trim()); 
+            row.find('td').eq(7).text($('#EquipmentClassificationEdit').val().trim()); 
+           
+            row.data('color', $('#EquipmentColorEdit').val().trim());
+            row.data('type', $('#EquipmentTypeEdit').val().trim());
+            row.data('unit', $('#EquipmentUnitEdit').val().trim());
+            row.data('unit-price', $('#EquipmentUnitPriceEdit').val().trim());
             console.log('Row updated successfully');
         } else {
             console.log('Row not found for brand:', equipBrand);
@@ -244,7 +300,6 @@ $(document).ready(function () {
         }
     });
 });
-
 
 
 
@@ -538,21 +593,15 @@ $(document).ready(function () {
         var equipId = row.data('id');
         console.log('Editing equipment with ID:', equipId);
 
-        // Show the edit modal
+       
         $('#editFullEquipModal').removeClass('hidden');
 
-        // Populate the edit modal fields with data from the row
+       
         $('#editFullEquipForm').find('#FullEquipmentSerialNoEdit').val(row.find('td').eq(0).text().trim());
         $('#editFullEquipForm').find('#FullEquipmentControlNoEdit').val(row.find('td').eq(1).text().trim());
-        $('#editFullEquipForm').find('#FullEquipmentTypeEdit').val(row.find('td').eq(2).text().trim());
-        $('#editFullEquipForm').find('#FullEquipmentColorEdit').val(row.find('td').eq(3).text().trim());
-        $('#editFullEquipForm').find('#FullEquipmentUnitEdit').val(row.find('td').eq(4).text().trim());
-        $('#editFullEquipForm').find('#FullEquipmentUnitPriceEdit').val(row.find('td').eq(5).text().trim());
-        $('#editFullEquipForm').find('#FullEquipmentClassificationEdit').val(row.find('td').eq(6).text().trim());
-        $('#editFullEquipForm').find('#FullEquipmentDateEdit').val(row.find('td').eq(7).text().trim());
 
-        // Set the hidden input field with the equipment ID for form submission
-        $('#editFullEquipForm').find('input[name="id"]').val(equipId); // Use equipment ID instead of brand
+        
+        $('#editFullEquipForm').find('input[name="id"]').val(equipId);
     });
 
     // Handle saving the changes
@@ -604,24 +653,18 @@ $(document).ready(function () {
         if (row.length > 0) {
             row.find('td').eq(0).text($('#FullEquipmentSerialNoEdit').val().trim());
             row.find('td').eq(1).text($('#FullEquipmentControlNoEdit').val().trim());
-            row.find('td').eq(2).text($('#FullEquipmentTypeEdit').val().trim());
-            row.find('td').eq(3).text($('#FullEquipmentColorEdit').val().trim());
-            row.find('td').eq(4).text($('#FullEquipmentUnitEdit').val().trim());
-            row.find('td').eq(5).text($('#FullEquipmentUnitPriceEdit').val().trim());
-            row.find('td').eq(6).text($('#FullEquipmentClassificationEdit').val().trim());
-            row.find('td').eq(7).text($('#FullEquipmentDateEdit').val().trim());
             console.log('Row updated successfully');
         } else {
             console.log('Row not found for ID:', equipId);
         }
     }
 
-    // Handle closing the edit modal
-    $('#closeFullEquipFormButton').on('click', function () {
+    // Handle closing the edit modal when the close button is clicked
+    $('#closeEditFullEquipModal').on('click', function () {
         $('#editFullEquipModal').addClass('hidden');
     });
 
-    // Close modal when clicking outside of it
+    // Close modal when clicking outside of it (but not on the modal content)
     $(window).on('click', function (e) {
         if ($(e.target).is('#editFullEquipModal')) {
             $('#editFullEquipModal').addClass('hidden');
@@ -669,7 +712,6 @@ $(document).ready(function () {
                         }).then(() => {
                             // Remove the deleted equipment row from the table
                             $('tr[data-id="' + equipmentId + '"]').remove(); // Ensure row removal is correct
-                            $('#editFullEquipModal').addClass('hidden'); // Optionally close the modal
                         });
                     },
                     error: function (xhr) {
@@ -686,11 +728,6 @@ $(document).ready(function () {
             }
         });
     });
-
-    $(document).on('click', '#closeEditFullEquipModal', function () {
-        $('#editFullEquipModal').addClass('hidden');
-    });
-
 });
 
 
@@ -778,16 +815,16 @@ $(document).ready(function () {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Get today's date in the format YYYY-MM-DD
-    let today = new Date().toISOString().split("T")[0];
-    // Set the date input to today's date
+    function formatDateToMMDDYYYY(date) {
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
+    }
+
+    const today = formatDateToMMDDYYYY(new Date());
     document.getElementById("EquipmentDate").value = today;
 });
-
-
-
-
-// ADD BUTTON TO FULL INFORMATION CARD
 
 
 

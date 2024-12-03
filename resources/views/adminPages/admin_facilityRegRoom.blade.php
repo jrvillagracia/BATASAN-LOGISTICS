@@ -229,6 +229,7 @@
             @endforeach
 
             <!-- Edit Popup Card -->
+            @foreach($combinedRooms as $room)
             <div id="RegEditFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
 
@@ -241,25 +242,11 @@
                         </button>
                     </div>
                     
-                    @foreach($combinedRooms as $room)
+
                     <form id="RegEditForm" action="" method="">
-                        @csrf
-                        <!-- Input Fields -->
-                        <!-- <div class="mb-4">
-                            <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                    </svg>
-                                </div>
-                                <input id="RegEditDate" datepicker datepicker-buttons datepicker-autoselect-today type="text" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
-                            </div>
-                        </div> -->
-
+                    @csrf
                         <input type="hidden" name="id" id="RegEditRoomId" value="">
-
-
+                        
                         <div class="mb-4">
                             <label for="name" class="block text-sm font-semibold mb-2">Building Name</label>
                             <input type="text" id="RegEditBldName" name="buildingName" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Building Name">
@@ -274,7 +261,7 @@
                             <label for="RegCapacity" class="block text-sm font-semibold mb-2">Capacity</label>
                             <input type="number" id="RegEditCapacity" name="capacity" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Capacity">
                         </div>
-
+    
                         <div class="flex justify-end space-x-2">
                             <button id="RegEditCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                             <button type="button" data-id="{{$room['roomId']}}" class=" RegEditSaveFormBtn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Save</button>

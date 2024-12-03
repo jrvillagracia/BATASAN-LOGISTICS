@@ -36,7 +36,6 @@ $(document).ready(function () {
         const capacity = $('#RegCapacity').val();
         const facilityRoomDate = $('#RegRoomDate').val(); 
         
-
         // Check if all values are entered
         if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '') {
             Swal.fire({
@@ -47,7 +46,6 @@ $(document).ready(function () {
             });
             return;
         }
-
 
         // Determine facilityRoomType based on the current page/form
         let facilityRoomType = '';
@@ -68,46 +66,60 @@ $(document).ready(function () {
             facilityRoomType: facilityRoomType,
         };
 
-        // AJAX request
-        $.ajax({
-            url: '/rooms/store',
-            type: 'POST',  
-            data: formData,  
-            success: function (response) {
-                console.log(response);
-                $('#RegForm')[0].reset(); 
-                $('#RegFormCard').addClass('hidden');
-                
-                let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
+        // Confirmation dialog
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to submit this room information?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, submit it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // AJAX request
+                $.ajax({
+                    url: '/rooms/store',
+                    type: 'POST',  
+                    data: formData,  
+                    success: function (response) {
+                        console.log(response);
+                        $('#RegForm')[0].reset(); 
+                        $('#RegFormCard').addClass('hidden');
+                        
+                        let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
 
-                // Append the new row to the table
-                const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300"></td>
-                                   <td class="px-6 py-6 border-b border-gray-300"></td>
-                               </tr>`;
-                $('#tableBody').append(newRow);
+                        // Append the new row to the table
+                        const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300"></td>
+                                           <td class="px-6 py-6 border-b border-gray-300"></td>
+                                       </tr>`;
+                        $('#tableBody').append(newRow);
 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Saved!',
-                    text: 'Room has been successfully added',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    location.reload();
-                });
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr.responseText);
-                // Handle error response
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                    showConfirmButton: true
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Saved!',
+                            text: 'Room has been successfully added',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        // Handle error response
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                            showConfirmButton: true
+                        });
+                    }
                 });
             }
         });
@@ -254,40 +266,6 @@ $(document).ready(function () {
         $('#RegEditFormCard').addClass('hidden');
     });
 });
-
-
-
-// $(document).ready(function () {
-//     $('#editINSTButton').click(function () {
-//         console.log('Show Add Facility Button Clicked');
-//         $('#RegEditFormCard').removeClass('hidden');
-//     });
-
-
-//     $('#RegEditCloseFormBtn').click(function () {
-//         console.log('Close Add Facility Button Clicked');
-//         $('#RegEditFormCard').addClass('hidden');
-//     });
-
-
-//     $('#RegEditCancelFormBtn').click(function () {
-//         console.log('Close Add Facility Button Clicked');
-//         $('#RegEditFormCard').addClass('hidden');
-//     });
-
-//     $('#RegEditSaveFormBtn').click(function () {
-//         Swal.fire({
-//             icon: 'success',
-//             title: 'Saved!',
-//             text: 'Your action has been successfully saved',
-//             confirmButtonText: 'OK',
-//             confirmButtonColor: '#3085d6'
-//         }).then(() => {
-//             $("#RegEditFormCard").addClass("hidden");
-//         });
-//     });
-// });
-
 
 
 // MAIN TABLE DATATABLES

@@ -220,14 +220,16 @@ Route::get('/admin_supplies', function () {
     return view('adminPages.admin_supplies');
 })->name('admin_supplies');
 
-//Instructional Room
+//Rooms
 Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('admin_facilityRegRoom');
 Route::post('/rooms/store', [RoomController::class, 'store'])->name('room.store');
 Route::post('/room/edit', [RoomController::class, 'edit'])->name('room.edit');
 
-//Laboratory Room
 Route::get('/admin_facilitySpecRoom', [RoomController::class, 'labindex'])->name('admin_facilitySpecRoom');
+Route::post('/room/lab/edit', [RoomController::class, 'edit'])->name('room.lab.edit');
 Route::post('/rooms/lab/store', [RoomController::class, 'store'])->name('rooms.lab.store');
+Route::get('/buildings-rooms', [RoomController::class, 'getBuildingAndRooms'])->name('getBuildingandRooms');
+
 
 //Events and Activities
 Route::post('/events/store', [ApprovalController::class, 'store'])->name('events.store');

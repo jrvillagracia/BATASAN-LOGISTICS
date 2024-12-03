@@ -353,6 +353,7 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full">
+                    @foreach($supplies as $item)
                         <div>
                             <p class="mb-2"><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</p>
                             <p class="mb-2"><strong>Product Name:</strong>{{$item->SuppliesName}}</p>
@@ -369,7 +370,7 @@
                             <p class="mb-2"><strong>Date:</strong>{{$item->SuppliesDate}}</p>
                         </div>
                     </div>
-
+                    @endforeach
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
                         <table id="ViewDynamicTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
