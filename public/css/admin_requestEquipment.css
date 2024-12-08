@@ -13,7 +13,7 @@
 }
 
 /*Approve Request: SET ITEM BUTTON  */
-#SetItemAprReqEquipPopupCard {
+#SetItemReqEquipPopupCard {
     z-index: 50; /* Leave this as is */
 }
 
@@ -46,4 +46,8 @@
 #reqCOMREQEquipTable thead{
     background-color: #163172; /* Your custom background color */
     color: white; /* Your custom text color */
+}
+
+#ViewReqEquipPopupCard{
+    z-index: 50;
 }

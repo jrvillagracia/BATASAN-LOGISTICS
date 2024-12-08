@@ -489,7 +489,7 @@
                     <p><strong>Type:</strong>{{$item->EquipmentType}}</p>
                     <p><strong>Color:</strong>{{$item->EquipmentColor}}</p>
                     <p><strong>Unit:</strong>{{$item->EquipmentUnit}}</p>
-                    <p><strong>Unit Price:</strong>₱{{number_format($item->EquipmentUnitPrice, 2)}}</p>
+                    <p><strong>Unit Price:</strong>₱{{$item->EquipmentUnitPrice}}</p>
                     <p><strong>Classification:</strong>{{$item->EquipmentClassification}}</p>
                     <p><strong>Date:</strong>{{$item->EquipmentDate}}</p>
                 </div>

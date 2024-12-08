@@ -58,6 +58,69 @@ $(document).ready(function () {
             $("#ReqSupFormCard").addClass("hidden");
         });
     });
+
+    // Go to Step 2
+    $('#RequestSuppGoToStep2').click(function () {
+        $('#RequestSuppStep1Content').addClass('hidden');
+        $('#RequestSupStep2Content').removeClass('hidden');
+        $('#RequestSuppStep1Icon').addClass('text-gray-500').removeClass('text-blue-600');
+        $('#RequestSuppStep2Icon').addClass('text-blue-600').removeClass('text-gray-500');
+    });
+
+    // Go back to Step 1
+    $('#RequestSupBackToStep1').click(function () {
+        $('#RequestSupStep2Content').addClass('hidden');
+        $('#RequestSuppStep1Content').removeClass('hidden');
+        $('#RequestSuppStep2Icon').addClass('text-gray-500').removeClass('text-blue-600');
+        $('#RequestSuppStep1Icon').addClass('text-blue-600').removeClass('text-gray-500');
+    });
+
+    // Add a new inventory row to the table
+    $('#RequestSupAddRowBtn').click(function () {
+        const newRow = `
+            <tr class="RequestSup-Rows">
+                <td class="p-2">
+                    <select id="ReqSupCategoryName" name="ReqSupCategoryName" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="ReqSupCategoryName" disabled selected>Select Category</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="Laptop" data-building="">Laptop</option>
+                        <option value="Printer" data-building="">Printer</option>
+                    </select>
+                </td>
+                <td class="p-2">
+                    <select id="ReqSupType" name="ReqSupType" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="ReqSupType" disabled selected>Select Type</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="64gb" data-building="">64gb</option>
+                        <option value="Nikon" data-building="">Nikon</option>
+                    </select>
+                </td>
+                <td class="p-2">
+                    <select id="ReqSupUnit" name="ReqSupUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="ReqSupUnit" disabled selected>Select Unit</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="Box" data-building="">Box</option>
+                        <option value="Unit" data-building="">Unit</option>
+                    </select>
+                </td>
+                <td class="p-2 flex justify-center">
+                    <input type="number" id="ReqSupQuantity" class="w-20 border rounded p-2" placeholder="">
+                </td>
+
+                <td class="p-2 text-center">
+                    <button type="button" class="RequestSupDelete-row-btn text-red-500 hover:text-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>`;
+        $('#RequestSup-TablBody').append(newRow);
+    });
+
+    $('#RequestSup-TablBody').on('click', '.RequestSupDelete-row-btn', function () {
+        $(this).closest('tr').remove();
+    });
 });
 
 
@@ -79,6 +142,65 @@ $(document).ready(function () {
     $('#cancelReqSuppliesInventoryPopupCard').click(function () {
         console.log('Cancel Supplies Button is Clicked.');
         $('#ViewReqSuppliesPopupCard').addClass('hidden');
+    });
+
+    $('#ViewReqSuppliesAddRowBTN').click(function () {
+        console.log('Request Supplies Add Row Button is Clicked.');
+        const ReqSuppliesNewRow = `
+             <tr class="ViewRequestSup-Rows">
+                <td class="p-2">
+                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="" disabled selected>Select Category</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="Laptop" data-building="">Laptop</option>
+                        <option value="Printer" data-building="">Printer</option>
+                    </select>
+                </td>
+                <td class="p-2">
+                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="" disabled selected>Select Type</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="64gb" data-building="">64gb</option>
+                        <option value="Nikon" data-building="">Nikon</option>
+                    </select>
+                </td>
+                <td class="p-2">
+                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="" disabled selected>Select Unit</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="Box" data-building="">Box</option>
+                        <option value="Unit" data-building="">Unit</option>
+                    </select>
+                </td>
+                <td class="p-2 flex justify-center">
+                    <input type="number" class="w-20 border rounded p-2" placeholder="">
+                </td>
+
+               <td class="p-2 text-center">
+                    <button type="button" class="ViewReqApprovalSup-DeleteBTN text-red-500 hover:text-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>`;
+        $('#ViewRequestSup-TablBody').append(ReqSuppliesNewRow);
+    });
+
+    $('#ViewRequestSup-TablBody').on('click', '.ViewReqApprovalSup-DeleteBTN', function () {
+        $(this).closest('tr').remove();
+    });
+
+    $("#saveReqSuppliesInventoryPopupCard").click(function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Submitted',
+            text: 'Your action has been successfully submitted',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#ViewReqSuppliesPopupCard").addClass("hidden");
+        });
     });
 });
 
@@ -152,6 +274,37 @@ $(document).ready(function () {
     });
 });
 // ========================================== //
+
+
+// SET ITEM BUTTON CARD
+$(document).ready(function () {
+    $('#SetItemSupBtn').click(function () {
+        console.log('View Equipment Button is Clicked.');
+        $('#SetItemReqSupPopupCard').removeClass('hidden');
+    });
+
+    $('#closeSetItemReqViewSupPopupCard').click(function () {
+        console.log('Close "X" Set Item Equipment Button is Clicked.');
+        $('#SetItemReqSupPopupCard').addClass('hidden');
+    });
+
+    $('#SetItemCancelSupBTN').click(function () {
+        console.log('Close Cancel Set Item Button is Clicked.');
+        $('#SetItemReqSupPopupCard').addClass('hidden');
+    });
+
+    $("#SetItemSubmitSupBTN").click(function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Submitted',
+            text: 'Successfully Set Item!',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#SetItemReqSupPopupCard").addClass("hidden");
+        });
+    });
+});
 
 
 // ======================== DATATABLES ============================= //

@@ -58,7 +58,7 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="MainteEquipmentSearch" name="MainteEquipmentSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />  
+                        <input type="search" id="MainteEquipmentSearch" name="MainteEquipmentSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
                     </div>
 
                     <!-- Add Item Button -->
@@ -68,132 +68,138 @@
 
         <!-- Floating Card with Form (Initially Hidden) -->
         <div id="MainteEquipmentFormBtn" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-            <div class="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
+            <div class="bg-white p-4 rounded-lg shadow-lg max-w-4xl w-full">
 
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold mb-4">Maintenance Request</h2>
+                <div class="flex justify-center items-center mb-4 relative">
+                    <h2 class="text-xl font-bold">Maintenance Request</h2>
+                    <button id="closeAddReqMainteEquipInventoryPopupCard" class="absolute right-0 text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
 
-                <form id="MainteEquipmentForm" action="" method="POST">
-                    <!-- Input Fields -->
-                    <div class="mb-4">
-                        <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                </svg>
-                            </div>
-                            <input id="MainteEquipDate" type="text" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
-                        </div>
-
-
-                        <label for="time" class="block text-sm font-semibold mb-2">Select time:</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <input type="time" id="MainteEquipTime" name="MainteEquipTime" readonly class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="MainteEquipReqUnit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
-                    </div>
-
-                    <div class="mb-4">
-                        <div class="flex space-x-4">
-                            <!-- Building Dropdown -->
-                            <div class="flex-1">
-                                <label for="MainteEquipBuildingName" class="block text-sm font-semibold mb-2">Building Name</label>
-                                <select id="MainteEquipBuildingName" name="MainteEquipBuildingName" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                    <option value="" disabled selected>Select Building</option>
-                                    <option value="BuildingA">Building A</option>
-                                    <option value="BuildingB">Building B</option>
-                                    <option value="BuildingC">Building C</option>
-                                </select>
+                <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse" id="stepper">
+                    <li id="MainteEquipStep1Icon" class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
+                            1
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Fill Up Details</h3>
+                        </span>
+                    </li>
+                    <li id="MainteEquipStep2Icon" class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                            2
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Add a Maintenance Request Inventory </h3>
+                        </span>
+                    </li>
+                </ol>
+                <!-- Step 1 Content -->
+                <div id="MainteEquipStep1Content" class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
+                    <form id="MainteEquipmentForm" action="" method="POST">
+                        <!-- Input Fields -->
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
+                                    </div>
+                                    <input id="MainteEquipDate" type="text" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                </div>
                             </div>
 
-                            <!-- Room Dropdown -->
-                            <div class="flex-1">
-                                <label for="MainteEquipRoom" class="block text-sm font-semibold mb-2">Room</label>
-                                <select id="MainteEquipRoom" name="MainteEquipRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                    <option value="" disabled selected>Select Room</option>
-                                    <!-- These options will depend on the selected building -->
-                                    <option value="Room101" data-building="BuildingA">Room 101</option>
-                                    <option value="Room102" data-building="BuildingA">Room 102</option>
-                                    <option value="Room201" data-building="BuildingB">Room 201</option>
-                                    <option value="Room202" data-building="BuildingB">Room 202</option>
-                                    <option value="Room301" data-building="BuildingC">Room 301</option>
-                                    <option value="Room302" data-building="BuildingC">Room 302</option>
-                                </select>
+                            <div>
+                                <label for="time" class="block text-sm font-semibold mb-2">Time:</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <input type="time" id="MainteEquipTime" name="MainteEquipTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mb-4">
-                        <label for="MainteEquipReqFOR" class="block text-sm font-semibold mb-2">Requesting for</label>
-                    </div>
-
-                    <!-- Two-column section for the specified fields -->
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label for="EquipmentBrandName" class="block text-sm font-semibold mb-1">Brand Name:</label>
-                            <input type="text" id="EquipmentBrandName" name="EquipmentBrandName" class="border border-gray-400 p-2 rounded w-full" placeholder="Brand Name">
-                        </div>
-
-                        <div>
-                            <label for="EquipmentName" class="block text-sm font-semibold mb-1">Product Name:</label>
-                            <input type="text" name="EquipmentName" id="EquipmentName" class="border border-gray-400 p-2 rounded w-full" placeholder="Product Name">
-                        </div>
-
-                        <div>
-                            <label for="EquipmentCategory" class="block text-sm font-semibold mb-1">Category:</label>
-                            <select name="EquipmentCategory" id="EquipmentCategory" class="border border-gray-400 p-2 rounded w-full">
-                                <option value="" disabled selected>Select a category</option>
-                                <option value="textbook">Textbook</option>
-                                <option value="office">Office Supplies</option>
-                                <option value="electronics">Electronics</option>
-                                <option value="other">Other</option>
+                        <div class="mb-4">
+                            <label for="MainteEquipReqUnit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
+                            <select id="MainteEquipReqUnit" name="MainteEquipReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                <option value="" disabled selected>Select Office/Unit</option>
+                                <option value="">TLE Department</option>
+                                <option value="">English Department</option>
+                                <option value="">Storage Office</option>
                             </select>
                         </div>
 
-                        <div>
-                            <label for="EquipmentSKU" class="block text-sm font-semibold mb-1">SKU:</label>
-                            <input type="text" id="EquipmentSKU" class="border border-gray-400 p-2 rounded w-full" placeholder="SKU">
+                        <div class="mb-4">
+                            <label for="MainteEquipReqFOR" class="block text-sm font-semibold mb-2">Requesting for</label>
+                            <textarea id="MainteEquipReqFOR" class="w-full p-2 rounded border border-gray-400 mb-4 max-h-40 overflow-y-scroll" rows="3" placeholder="Enter your requesting here for..."></textarea>
                         </div>
 
-                        <div>
-                            <label for="EquipmentColor" class="block text-sm font-semibold mb-1">Color:</label>
-                            <input type="text" name="EquipmentColor" id="EquipmentColor" class="border border-gray-400 p-2 rounded w-full" placeholder="Color" pattern="[A-Za-z ]*" title="Only characters are allowed">
-                        </div>
 
-                        <div>
-                            <label for="EquipmentType" class="block text-sm font-semibold mb-1">Type:</label>
-                            <input type="text" name="EquipmentType" id="EquipmentType" class="border border-gray-400 p-2 rounded w-full" placeholder="Type" pattern="[A-Za-z ]*" title="Only characters are allowed">
+                        <div class="flex justify-end">
+                            <button id="MainteEquipGoToStep2" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded">Next</button>
                         </div>
+                    </form>
+                </div>
 
-                        <div>
-                            <label for="EquipmentSerialNo" class="block text-sm font-semibold mb-1">Serial Number:</label>
-                            <input type="text" name="EquipmentSerialNo" id="EquipmentSerialNo" class="border border-gray-400 p-2 rounded w-full" placeholder="Serial Number">
-                        </div>
-
-                        <div>
-                            <label for="EquipmentControlNo" class="block text-sm font-semibold mb-1">Control Number:</label>
-                            <input type="text" name="EquipmentControlNo" id="EquipmentControlNo" class="border border-gray-400 p-2 rounded w-full" placeholder="Control Number">
+                <!-- Step 2 Content -->
+                <div id="MainteEquipStep2Content" class="border w-full border-blue-900 rounded-md shadow sm:p-8 p-4 hidden">
+                    <!-- Add a wrapper div around the table for scrolling -->
+                    <div class="overflow-y-auto max-h-60">
+                        <table id="step2ContentTable" class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-200">
+                                    <th class="p-2 text-black">Serial Number</th>
+                                    <th class="p-2 text-black">Control Number</th>
+                                    <th class="p-2 text-black">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="MaintenanceEquip-TablBody">
+                                <!-- Single Inventory Item -->
+                                <tr class="MaintenanceEquip-Rows">
+                                    <td class="p-2">
+                                        <input type="text" class="w-full rounded p-2" placeholder="Serial Number">
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="text" class="w-full rounded p-2" placeholder="Control Number">
+                                    </td>
+                                    <td class="p-2 text-center">
+                                        <button id="viewMainteEquipReqBTN" type="button">
+                                            <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="MainteEquipDelete-row-btn text-red-500 hover:text-red-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- More inventory rows can be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-between pt-3">
+                        <button id="MainteEquipBackToStep1" type="button" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-5 py-2.5 rounded">Back</button>
+                        <div class="flex justify-end space-x-2">
+                            <button type="button" id="MainteEquipAddRowBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 rounded">+ Add Another Item</button>
+                            <button id="CloseMainteEquipForm" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
+                            <button id="SubmitMainteEquipForm" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
                         </div>
                     </div>
-
-                    <div class="flex justify-end space-x-2">
-                        <button id="CloseMainteEquipForm" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
-                        <button id="SubmitMainteEquipForm" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
-                    </div>
-                </form>
+                </div>
+                <!-- Submit & Cancel Buttons -->
             </div>
         </div>
-
 
         <!-- Table -->
         <div class="relative shadow-md sm:rounded-lg px-9 py-5">
@@ -266,6 +272,8 @@
 
                         <div class="pt-4">
                         </div>
+                        <p class="mb-2"><strong>Building Name: </strong></p>
+                        <p class="mb-2"><strong>Room: </strong></p>
                         <p class="mb-2"><strong>Brand Name: </strong></p>
                         <p class="mb-2"><strong>Product Name: </strong></p>
                         <p class="mb-2"><strong>Category: </strong></p>
@@ -303,7 +311,7 @@
 
                     <!-- Reason Dropdown -->
                     <label for="reason" class="block mb-2">Reason</label>
- 
+
                     <!-- Remarks Textarea -->
                     <label for="remarks" class="block mb-2">Remarks</label>
                     <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
@@ -315,8 +323,41 @@
                 </div>
             </div>
 
+            <!-- VIEWING BUTTON IN MAINTENANCE REQUEST -->
+            <div id="View-Mainte-Equip-InventoryPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Name of the [CATEGORY OF THE EQUIPMENT]</h2>
+                    </div>
 
-            <!-- Release Popup Card -->
+                    <div class="text-sm">
+                        <p class="mb-2"><strong>Brand Name: </strong></p>
+                        <p class="mb-2"><strong>Product Name: </strong></p>
+                        <p class="mb-2"><strong>Category: </strong></p>
+                        <p class="mb-2"><strong>SKU: </strong></p>
+                        <p class="mb-2"><strong>Color: </strong></p>
+                        <p class="mb-2"><strong>Type: </strong></p>
+
+                        <div class="pt-4">
+                            <hr>
+                        </div>
+
+                        <p class="mb-2"><strong>Building Name: </strong></p>
+                        <p class="mb-2"><strong>Room: </strong></p>
+
+                        <div class="pt-4">
+                            <hr>
+                        </div>
+
+                        <p class="mb-2"><strong>Serial Number: </strong></p>
+                        <p class="mb-2"><strong>Control Number: </strong></p>
+
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button id="closeView-Mainte-Equip-InventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
+                    </div>
+                </div>
+            </div>
 
 
             <!-- Pagination -->
