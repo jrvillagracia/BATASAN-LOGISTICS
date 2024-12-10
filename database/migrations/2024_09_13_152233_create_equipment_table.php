@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('equipment', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('equipmentId');
             $table->string('EquipmentControlNo');
             $table->string('EquipmentBrandName');
             $table->string('EquipmentName');
@@ -25,7 +25,8 @@ return new class extends Migration
             $table->decimal('EquipmentUnitPrice', 65, 2);
             $table->string('EquipmentClassification');
             $table->string('EquipmentSKU');
-            $table->string('EquipmentSerialNo');
+            $table->string('EquipmentSerialNo')->nullable();
+            $table->string('EquipmentStatus')->default('PENDING');
             $table->timestamps();
         });
     }

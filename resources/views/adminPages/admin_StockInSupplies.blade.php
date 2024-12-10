@@ -119,18 +119,26 @@
                         </div>
 
                         <div>
+                            <label for="SuppliesUnitPrice" class="block text-sm font-semibold mb-1">Unit Price</label>
+                            <input type="number" name="SuppliesUnitPrice" id="SuppliesUnitPrice" class="border border-gray-400 p-2 rounded w-full mb-4" placeholder="Price">
+                        </div>
+
+                        <div>
                             <label for="SuppliesQuantity" class="block text-sm font-semibold mb-1">Quantity</label>
                             <input type="number" name="SuppliesQuantity" id="SuppliesQuantity" class="border p-2 rounded w-full mb-2 border-gray-400" placeholder="Quantity">
                         </div>
 
-                        <div>
-                            <label for="SuppliesDate" class="block text-sm font-semibold mb-1">Date</label>
-                            <input type="text" id="SuppliesDate" name="SuppliesDate" datepicker datepicker-format="yyyy-mm-dd" class="border  border-gray-400 p-2 rounded w-full mb-4" placeholder="YYYY-MM-DD">
-                        </div>
 
                         <div>
-                            <label for="SuppliesUnitPrice" class="block text-sm font-semibold mb-1">Unit Price</label>
-                            <input type="number" name="SuppliesUnitPrice" id="SuppliesUnitPrice" class="border p-2 rounded w-full mb-4 border-gray-400" placeholder="Price">
+                            <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input id="SuppliesDate" name="SuppliesDate" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                            </div>
                         </div>
 
                         <div>
@@ -161,9 +169,6 @@
                 <thead class="text-sm text-white dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Status
-                        </th>
-                        <th scope="col" class="px-6 py-3">
                             Brand Name
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -192,14 +197,13 @@
                 <tbody id="tableBody">
                     @foreach($supplies as $item)
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}" data-brand="{{$item->SuppliesBrandName}}">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesBrandName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesCategory}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesQuantity}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->totalPrice,2)}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSKU}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">CLASSIFICATION</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesClassification}}</td>
                         <td class="px-6 py-4 border-b border-gray-300">
                             <button id="viewSuppButton" type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -213,7 +217,7 @@
                                     <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
                                 </svg>
                             </button>
-                            <button id="editStockInSuppButton" type="button">
+                            <button class="editStockInSuppButton" data-id="{{ $item->suppliesId }}"  type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
                                     <path d="M200-520q-33 0-56.5-23.5T120-600v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v160q0 33-23.5 56.5T760-520H200Zm0 400q-33 0-56.5-23.5T120-200v-160q0-33 23.5-56.5T200-440h560q33 0 56.5 23.5T840-360v160q0 33-23.5 56.5T760-120H200Z" />
                                 </svg>
@@ -352,8 +356,8 @@
                         </button>
                     </div>
 
+                    @if(isset($item))
                     <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full">
-                    @foreach($supplies as $item)
                         <div>
                             <p class="mb-2"><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</p>
                             <p class="mb-2"><strong>Product Name:</strong>{{$item->SuppliesName}}</p>
@@ -370,7 +374,10 @@
                             <p class="mb-2"><strong>Date:</strong>{{$item->SuppliesDate}}</p>
                         </div>
                     </div>
-                    @endforeach
+                    @endif
+                    @if($supplies->isEmpty())
+                    <p class="text-center text-gray-500">No Supplies details available.</p>
+                    @else
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
                         <table id="ViewDynamicTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
@@ -411,7 +418,7 @@
                             </tbody>
                         </table>
                     </div>
-
+                    @endif
                 </div>
             </div>
             <!-- END OF View 1 Popup Card -->
@@ -464,7 +471,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="text-sm text-gray-700 mb-4" id=equipmentDetails>>
+                    <div class="text-sm text-gray-700 mb-4" id=SuppliesDetails>>
                         <p><strong>Serial Number:</strong>{{$item->SuppliesSerialNo}}</p>
                         <p><strong>Control Number:</strong>{{$item->SuppliesControlNo}}</p>
                         <p><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</p>
@@ -483,9 +490,7 @@
             @endforeach
             <!-- END OF View 2 Table Pop Up Card -->
         </div>
-
     </div>
-
     <!-- Popup Card -->
 </section>
 @endsection

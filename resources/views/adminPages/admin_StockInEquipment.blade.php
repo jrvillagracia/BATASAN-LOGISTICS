@@ -76,7 +76,7 @@
                     <!-- Grid for Input Fields -->
                     <div class="grid grid-cols-2 gap-2">
                         <!-- First column label/input -->
-                        <input type="hidden" name="equipmentId" id="equipmentId" value="{{ $item->id ?? ''}}">
+                        <!--<input type="hidden" name="equipmentId" id="equipmentId" value="{{ $item->id ?? ''}}">-->
                         <div>
                             <label for="EquipmentBrandName" class="block text-sm font-semibold mb-1">Brand Name</label>
                             <input type="text" name="EquipmentBrandName" id="EquipmentBrandName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Brand Name">
@@ -197,14 +197,14 @@
                 </thead>
                 <tbody id="tableBody">
                     @foreach($equipment as $item)
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}" data-brand="{{$item->EquipmentBrandName}}"
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->equipmentId}}" data-brand="{{$item->EquipmentBrandName}}"
                         data-type="{{$item->EquipmentType}}" 
                         data-unit="{{$item->EquipmentUnit}}" 
                         data-color="{{$item->EquipmentColor}}"
                         data-category="{{$item->EquipmentCategory}}" 
                         data-other-category="{{$item->OtherCategory ?? ''}}"
                         data-unit-price="{{$item->EquipmentUnitPrice}}">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">STATUS</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentStatus}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentBrandName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentCategory}}</td>
@@ -213,7 +213,7 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentSKU}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentClassification}}</td>
                         <td class="px-6 py-4">
-                            <button id="viewEquipButton" data-id="{{ $item->id }}" data-brand="{{$item->EquipmentBrandName}}" type="button">
+                            <button id="viewEquipButton" data-id="{{ $item->equipmentId }}" data-brand="{{$item->EquipmentBrandName}}" type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -225,7 +225,7 @@
                                     <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
                                 </svg>
                             </button>
-                            <button class="editStockInButton"  data-id="{{ $item->id }}" type="button">
+                            <button class="editStockInButton"  data-id="{{ $item->equipmentId }}" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
                                     <path d="M200-520q-33 0-56.5-23.5T120-600v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v160q0 33-23.5 56.5T760-520H200Zm0 400q-33 0-56.5-23.5T120-200v-160q0-33 23.5-56.5T200-440h560q33 0 56.5 23.5T840-360v160q0 33-23.5 56.5T760-120H200Z" />
                                 </svg>
@@ -256,7 +256,8 @@
 
 
         <!-- Edit 1 Popup Card -->
-        <div id="editEquipModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+         @foreach($equipment as $item)
+        <div id="editEquipModal" data-brand="{{$item->EquipmentBrandName}}" class=" editEquipModal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl  overflow-y-auto">
                 <!-- Flex container for heading and close button -->
                 <div class="flex justify-between items-center mb-4">
@@ -267,11 +268,11 @@
                         </svg>
                     </button>
                 </div>
-                <form id="editForm" action="{{ route('equipment.updateMain') }}" method="POST">
+                <form id="editForm" data-brand="{{$item->EquipmentBrandName}}" action="{{ route('equipment.updateMain') }}" method="POST">
 
                     <div class="grid grid-cols-2 gap-2">
 
-                        <input type="hidden" name="brand" id="brandField" value="{{ $item->EquipmentBrandName }}">
+                        <input type="hidden" name="brand" id="brandField" value="">
 
                         <div>
                             <label for="EquipmentBrandName" class="block text-sm font-semibold mb-1">Brand Name</label>
@@ -339,15 +340,14 @@
 
                     <div class="flex justify-end space-x-2">
                         <button type="button" id="saveEquipButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                        @if(isset($item))
+                       
                         <button type="button" id="deleteEquipButton" data-brand="{{$item->EquipmentBrandName}}" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
-                        @else
-                        <button type="button" id="deleteEquipButton" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded" disabled>No Equipment to Delete</button>
-                        @endif
+                        
                     </div>
                 </form>
             </div>
         </div>
+        @endforeach
         <!-- END OF Edit 1 Popup Card -->
 
 
@@ -363,6 +363,7 @@
                     </button>
                 </div>
 
+                @if(isset($item))
                 <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full" id="equipmentDetails">
                     <div>
                         <p class="mb-2"><strong>Brand Name:</strong>{{$item->EquipmentBrandName}}</p>
@@ -380,7 +381,10 @@
                         <p class="mb-2"><strong>Date:</strong>{{$item->EquipmentDate}}</p>
                     </div>
                 </div>
-                
+                @endif
+                @if($equipment->isEmpty())
+                <p class="text-center text-gray-500">No equipment details available.</p>
+                @else
                 <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
                     <table id="ViewDynamicTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-sm text-white dark:text-gray-400">
@@ -399,13 +403,16 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="tableViewBody">
+                        <tbody id="tableViewBodyEquipment">
                             @foreach($equipment as $item)
-                            <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}">
+                            <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" 
+                                data-id="{{$item->equipmentId}}"
+                                data-brand="{{$item->EquipmentBrandName}}"
+                                data-serial="{{$item->EquipmentSerialNo}}">
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentSerialNo}}</td>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentControlNo}}</td>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <button class="editEquipBTN" data-id="{{ $item->id}}" type="button">
+                                    <button class="editEquipBTN" data-id="{{ $item->equipmentId}}" type="button">
                                         <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                             <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
                                             <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
@@ -421,6 +428,7 @@
                         </tbody>
                     </table>
                 </div>
+                @endif
             </div>
         </div>
         <!-- END OF View 1 Popup Card -->
@@ -440,18 +448,13 @@
                 </div>
                 <form id="editFullEquipForm" action="" method="POST">
 
-                    <input type="hidden" name="id" id="fullequipmentId">
-
-                    <!-- <label for="FullEquipmentSerialNoEdit" class="block text-sm font-semibold mb-1">Serial Number</label>
-                    <input type="text" name="FullEquipmentSerialNoEdit" id="FullEquipmentSerialNoEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Serial Number"> -->
+                    <input type="hidden" name="equipmentId" id="equipmentId">
 
                     <label for="EquipmentSerialNo" class="block text-sm font-semibold mb-1">Serial Number</label>
                     <input type="text" name="EquipmentSerialNo" id="EquipmentSerialNo" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Serial Number">
         
-
                     <label for="FullEquipmentControlNoEdit" class="block text-sm font-semibold mb-1">Control Number</label>
                     <input type="text" name="FullEquipmentControlNoEdit" id="FullEquipmentControlNoEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Control Number">
-
 
                     <div class="flex justify-end space-x-2">
                         <button type="button" id="saveFullEquipButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Supplies;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Supplies extends Model
 {
@@ -11,8 +11,9 @@ class Supplies extends Model
 
     protected $table = 'supplies';
 
+    protected $primaryKey = 'suppliesId';
+
     protected $fillable = [
-        'SuppliesControlNo',
         'SuppliesBrandName',
         'SuppliesName',
         'SuppliesCategory',
@@ -25,6 +26,5 @@ class Supplies extends Model
         'SuppliesDepartment',
         'SuppliesClassification',
         'SuppliesSKU',
-        'SuppliesSerialNo'
     ];
 }

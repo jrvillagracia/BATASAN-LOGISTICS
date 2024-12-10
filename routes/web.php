@@ -4,11 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\SuppliesController;
 use App\Http\Controllers\JWTApiTokenController;
 use App\Http\Controllers\Events\ApproveController;
 use App\Http\Controllers\Events\ApprovalController;
 use App\Http\Controllers\Events\CompleteController;
+use App\Http\Controllers\Supplies\SuppliesController;
 use App\Http\Controllers\FacilityModule\RoomController;
 use App\Http\Controllers\Equipments\EquipmentController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
@@ -197,7 +197,7 @@ Route::post('/equipment/approved', [EquipmentController::class, 'approve'])->nam
 Route::get('/equipment/details', [EquipmentController::class,'equipmentDetails'])->name('equipment.details');
 Route::post('/equipment/store', [EquipmentController::class, 'store'])->name('equipment.store');
 Route::post('/equipment/delete', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
-Route::post('/equipment/delete-view', [EquipmentController::class, 'destroyEdit2'])->name('equipment.destroy2');
+Route::post('/equipment/delete-view', [EquipmentController::class, 'destroy2'])->name('equipment.destroy2');
 Route::post('/equipment/update-main', [EquipmentController::class, 'updateMain'])->name('equipment.updateMain');
 Route::post('/equipment/update-view', [EquipmentController::class, 'updateView'])->name('equipment.updateView');
 Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewing'])->name('equipment.finalViewing');
@@ -208,6 +208,7 @@ Route::get('/admin_equipment', [EquipmentStockController::class, 'index'])->name
 
 //Supplies
 Route::get('/admin_StockInSupplies', [SuppliesController::class, 'index'])->name('admin_StockInSupplies');
+Route::post('/supplies/approved', [SuppliesController::class, 'approve'])->name('supplies.approve');
 Route::get('/supplies/details', [SuppliesController::class,'suppliesDetails'])->name('supplies.details');
 Route::post('/supplies/store', [SuppliesController::class, 'store'])->name('supplies.store');
 Route::post('/supplies/delete', [SuppliesController::class, 'destroy'])->name('supplies.destroy');
