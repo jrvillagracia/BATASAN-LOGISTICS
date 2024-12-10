@@ -171,10 +171,9 @@
 
                         <div class="pt-4">
                         </div>
-                        <p class="mb-2"><strong>Request By: </strong></p>
-                        <p class="mb-2"><strong>Job Done By: </strong></p>
-                        <p class="mb-2"><strong>Date and Time accomplished: </strong></p>
-                        <p class="mb-2"><strong>Check By: </strong></p>
+                        <p class="mb-2"><strong>Assigned Personnel: </strong></p>
+                        <p class="mb-2"><strong>Technician Name: </strong> </p>
+                        <p class="mb-2"><strong>Contact No: </strong> </p>
                     </div>
                     <div class="flex justify-end space-x-4">
                         <button id="printSetForRepMainteFacilityPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>

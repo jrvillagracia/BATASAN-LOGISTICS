@@ -20,7 +20,7 @@
     <script src="{{asset('js/main.js')}}"></script>
 
 
-    <script src="{{asset('js/admin_dashboard.js')}}"></script>          <!-- DASHBOARD MODULE -->
+    <script src="{{asset('js/admin_dashboard.js')}}"></script> <!-- DASHBOARD MODULE -->
 
     <script src="{{asset('js/admin_ForApprMainteEquip.js')}}"></script> <!-- MAINTENANCE INVENTORY MODULE -->
     <script src="{{asset('js/admin_ForRepMainteEquip.js')}}"></script>
@@ -31,22 +31,28 @@
     <script src="{{asset('js/admin_eventsHistory.js')}}"></script>
     <script src="{{asset('js/admin_eventsComRequest.js')}}"></script>
 
-    <script src="{{asset('js/admin_EQUIPMENT.js')}}"></script>         <!-- INVENTORY EQUIPMENT MODULE -->
-    <script src="{{asset('js/admin_equipCondemned.js')}}"></script> 
+    <script src="{{asset('js/admin_EQUIPMENT.js')}}"></script> <!-- INVENTORY EQUIPMENT MODULE -->
+    <script src="{{asset('js/admin_equipCondemned.js')}}"></script>
     <script src="{{asset('js/admin_equipUsed.js')}}"></script>
     <script src="{{asset('js/admin_equipHistory.js')}}"></script>
+
+
+    <script src="{{asset('js/admin_POInventory.js')}}"></script>    <!-- INVENTORY PRODUCT MODULE -->
+    <script src="{{asset('js/admin_POApprOrderInventory.js')}}"></script>
+    <script src="{{asset('js/admin_POCompleteOrderInventory.js')}}"></script>
+
 
     <script src="{{asset('js/admin_requestEquipment.js')}}"></script> <!-- REQUEST EQUIPMENT MODULE -->
     <script src="{{asset('js/admin_REQAprRequestEquipment.js')}}"></script>
     <script src="{{asset('js/admin_REQComRequestEquipment.js')}}"></script>
 
 
-    <script src="{{asset('js/admin_requestSupplies.js')}}"></script>    <!-- REQUEST SUPPLIES MODULE -->
+    <script src="{{asset('js/admin_requestSupplies.js')}}"></script> <!-- REQUEST SUPPLIES MODULE -->
     <script src="{{asset('js/admin_REQAprRequestSupplies.js')}}"></script>
     <script src="{{asset('js/admin_REQComRequestSupplies.js')}}"></script>
 
-    <script src="{{asset('js/admin_supplies.js')}}"></script>           <!-- INVENTORY SUPPLIES MODULE -->
-    <script src="{{asset('js/admin_suppliesHistory.js')}}"></script> 
+    <script src="{{asset('js/admin_supplies.js')}}"></script> <!-- INVENTORY SUPPLIES MODULE -->
+    <script src="{{asset('js/admin_suppliesHistory.js')}}"></script>
     <script src="{{asset('js/admin_suppliesUsed.js')}}"></script>
 
     <script src="{{asset('js/admin_StockInEquipment.js')}}"></script> <!-- INVENTORY SUPPLIES & EQUIPMENT MODULE -->
@@ -86,6 +92,7 @@
     <link rel="stylesheet" href="{{asset('css/admin_facilityOfficeRoom.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_facilityRegRoom.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin_facilitySpecRoom.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin_POInventory.css')}}">
 
 
 
@@ -133,6 +140,9 @@
 
                 <nav class="mt-7">
                     <ul class="space-y-2">
+                        <div class="ml-1">
+                            <p class="text-sm text-white sidebar-text">Main</p>
+                        </div>
                         <li class="hover:bg-gray-200 p-3 rounded-md shadow-sm">
                             <a href="{{route('admin_dashboard')}}" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-7 h-7">
@@ -142,6 +152,9 @@
                                 <span class="sidebar-text font-bold">Dashboard</span>
                             </a>
                         </li>
+                        <div class="ml-1">
+                            <p class="text-sm text-white sidebar-text">Management</p>
+                        </div>
                         <li class="p-3 rounded-md relative">
                             <!-- Dropdown Button -->
                             <button type="button" class="dropdownButton flex items-center w-full p-2 -ml-1 text-base text-white transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
@@ -188,6 +201,9 @@
                             </button>
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
+                                <li>
+                                    <a href="{{ route('admin_POInventory')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Product Order</a>
+                                </li>
                                 <li>
                                     <a href="{{ route('admin_StockInSupplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Supplies</a>
                                 </li>
@@ -240,6 +256,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <div class="pt-5">
+                            <hr>
+                        </div>
                         <li class="hover:bg-gray-200 p-3 rounded-md">
                             <a href="https://bhnhs-sis.onrender.com/admin/dashboard" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <span class="material-symbols-outlined">account_box</span>

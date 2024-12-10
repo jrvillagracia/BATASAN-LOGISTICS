@@ -323,3 +323,19 @@ Route::get('/admin_eventsHistory', function () {
     });
 
 });
+
+
+// PRODUCT ORDER FOR APPROVAL
+Route::get('/admin_POInventory', function () {
+    return view('adminPages.admin_POInventory');
+})->name('admin_POInventory');
+
+// PRODUCT ORDER APPROVE ORDER
+Route::get('/admin_POApprOrderInventory', function () {
+    return view('adminPages.admin_POApprOrderInventory');
+})->name('admin_POApprOrderInventory');
+
+// PRODUCT ORDER COMPLETED ORDER
+Route::get('/admin_POCompleteOrderInventory', function () {
+    return view('adminPages.admin_POCompleteOrderInventory');
+})->name('admin_POCompleteOrderInventory');
