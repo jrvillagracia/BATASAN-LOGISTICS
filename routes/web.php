@@ -11,6 +11,7 @@ use App\Http\Controllers\Events\CompleteController;
 use App\Http\Controllers\Supplies\SuppliesController;
 use App\Http\Controllers\FacilityModule\RoomController;
 use App\Http\Controllers\Equipments\EquipmentController;
+use App\Http\Controllers\Supplies\SuppliesStockController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
 
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
@@ -206,7 +207,7 @@ Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewin
 Route::get('/admin_equipment', [EquipmentStockController::class, 'index'])->name('admin_EQUIPMENT');
 
 
-//Supplies
+//Supplies Stock in
 Route::get('/admin_StockInSupplies', [SuppliesController::class, 'index'])->name('admin_StockInSupplies');
 Route::post('/supplies/approved', [SuppliesController::class, 'approve'])->name('supplies.approve');
 Route::get('/supplies/details', [SuppliesController::class,'suppliesDetails'])->name('supplies.details');
@@ -217,14 +218,15 @@ Route::post('/supplies/update-main', [SuppliesController::class, 'updateMain'])-
 Route::post('/supplies/update-view', [SuppliesController::class, 'updateView'])->name('equipment.updateView');
 Route::get('/supplies/final-viewing', [SuppliesController::class, 'finalViewing'])->name('supplies.finalViewing');
 
-Route::get('/admin_supplies', function () {
-    return view('adminPages.admin_supplies');
-})->name('admin_supplies');
+//Supplies
+Route::get('/admin_supplies', [SuppliesStockController::class, 'index'])->name('admin_supplies');
+
 
 //Rooms
 Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('admin_facilityRegRoom');
 Route::post('/rooms/store', [RoomController::class, 'store'])->name('room.store');
 Route::post('/room/edit', [RoomController::class, 'edit'])->name('room.edit');
+Route::get('/api/rooms', [RoomController::class, 'getRoomsBySchoolYear'])->name('room.schoolYear');
 
 Route::get('/admin_facilitySpecRoom', [RoomController::class, 'labindex'])->name('admin_facilitySpecRoom');
 Route::post('/room/lab/edit', [RoomController::class, 'edit'])->name('room.lab.edit');

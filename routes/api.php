@@ -10,3 +10,4 @@ Route::get('/user', function (Request $request) {
 
 
 Route::get('/roomdetails', [RoomController::class, 'room'])->name('room.details');
+Route::get('/v1/rooms', [RoomController::class, 'getRoomsBySchoolYear']);

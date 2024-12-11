@@ -143,9 +143,7 @@
                                     <label for="ReqSupBldName" class="block text-sm font-semibold mb-2">Building Name</label>
                                     <select id="ReqSupBldName" name="ReqSupBldName" class="w-full px-2 py-1 border border-gray-400 rounded">
                                         <option value="" disabled selected>Select Building</option>
-                                        <option value="BuildingA">Building A</option>
-                                        <option value="BuildingB">Building B</option>
-                                        <option value="BuildingC">Building C</option>
+                                        <option value=""></option>
                                     </select>
                                 </div>
 
@@ -155,13 +153,8 @@
                                     <select id="ReqSupRoom" name="ReqSupRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
                                         <option value="" disabled selected>Select Room</option>
                                         <!-- These options will depend on the selected building -->
-                                        <option value="Room101" data-building="BuildingA">Room 101</option>
-                                        <option value="Room102" data-building="BuildingA">Room 102</option>
-                                        <option value="Room201" data-building="BuildingB">Room 201</option>
-                                        <option value="Room202" data-building="BuildingB">Room 202</option>
-                                        <option value="Room301" data-building="BuildingC">Room 301</option>
-                                        <option value="Room302" data-building="BuildingC">Room 302</option>
-                                    </select>
+                                        <option value="" data-building=""></option>
+                                    </select>   
                                 </div>
                             </div>
                         </div>

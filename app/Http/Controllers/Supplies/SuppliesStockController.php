@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Supplies;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Supplies\Supplies;
+//use App\Models\Supplies\Supplies;
 use App\Models\Supplies\SuppliesStock;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Supplies\SuppliesStockController;
+//use App\Http\Controllers\Supplies\SuppliesStockController;
 
 class SuppliesStockController extends Controller
 {
     public function index() 
     {
-        $supplies = Supplies::select(
+        $supplies = SuppliesStock::select(
             DB::raw('"SuppliesBrandName"'),
             DB::raw('"SuppliesName"'),
             DB::raw('"SuppliesCategory"'),
@@ -44,4 +44,6 @@ class SuppliesStockController extends Controller
 
         return view('adminPages.admin_supplies', compact('supplies'));
     }
+
+
 }

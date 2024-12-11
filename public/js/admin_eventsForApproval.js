@@ -381,6 +381,48 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
+//Get Buildings and Room
+$(document).ready(function () {
+    // Fetch buildings and rooms via AJAX
+    $.ajax({
+        url: '/buildings-rooms',
+        method: 'GET',
+        success: function (data) {
+            // Populate Building dropdown
+            const buildingDropdown = $("#EventsActBldName");
+            buildingDropdown.empty().append('<option disabled selected>Select Building</option>');
+
+            const roomsByBuilding = {};
+
+            data.forEach(function (room) {
+                if (!roomsByBuilding[room.BldName]) {
+                    roomsByBuilding[room.BldName] = [];
+                    buildingDropdown.append(`<option value="${room.BldName}">${room.BldName}</option>`);
+                }
+                roomsByBuilding[room.BldName].push(room.Room);
+            });
+
+            // Filter Room dropdown based on selected building
+            $("#EventsActBldName").change(function () {
+                const selectedBuilding = $(this).val();
+                const roomDropdown = $("#EventsActRoom");
+                roomDropdown.empty().append('<option disabled selected>Select Room</option>');
+
+                if (roomsByBuilding[selectedBuilding]) {
+                    roomsByBuilding[selectedBuilding].forEach(function (room) {
+                        roomDropdown.append(`<option value="${room}">Room ${room}</option>`);
+                    });
+                }
+            });
+        },
+        error: function () {
+            alert('Failed to fetch data!');
+        }
+    });
+});
+
 // ======================== END OF DATATABLES ============================= //
 
 

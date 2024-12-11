@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Supplies;
 
 use App\Models\Supplies\Supplies;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\Supplies\SuppliesStock;
@@ -105,6 +106,8 @@ class SuppliesController extends Controller
             'SuppliesSKU' => 'required|string|max:255|unique:supplies,SuppliesSKU', // Ensure SKU is unique
         ]);
 
+        $validatedData['SuppliesDate'] = Carbon::parse($validatedData['SuppliesDate'])->format('Y-m-d');
+
         // Save the supplies
         $supplies = Supplies::create([
             'SuppliesBrandName' => $validatedData['SuppliesBrandName'],
@@ -181,19 +184,32 @@ class SuppliesController extends Controller
 
         // Validate the incoming request data for the supplies table
         $validatedData = $request->validate([
-            'SuppliesBrandName' => 'required|string|max:255',
-            'SuppliesName' => 'required|string|max:255',
-            'SuppliesCategory' => 'required|string',
-            'SuppliesSKU' => 'required|string|max:255',
-            'brand' => 'required|string|max:255', // Ensure brand is validated
+            'SuppliesBrandNameEdit' => 'required|string|max:255',
+            'SuppliesNameEdit' => 'required|string|max:255',
+            'SuppliesCategoryEdit' => 'required|string',
+            'otherSuppCategoryEdit' => 'nullable|string|max:255',
+            'SuppliesQuantityEdit' => 'required|integer',
+            'SuppliesColorEdit' => 'required|string|max:255',
+            'SuppliesTypeEdit' => 'required|string|max:255',
+            'SuppliesUnitEdit' => 'required|string|max:255',
+            'SuppliesUnitPriceEdit' => 'required|numeric',
+            'SuppliesClassificationEdit' => 'required|string|max:255',
+            'SuppliesSKUEdit' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
         ]);
 
         // Update the supplies based on the brand
         $updateCount = Supplies::where('SuppliesBrandName', $validatedData['brand'])->update([
-            'SuppliesBrandName' => $validatedData['SuppliesBrandName'],
-            'SuppliesName' => $validatedData['SuppliesName'],
-            'SuppliesCategory' => $validatedData['SuppliesCategory'],
-            'SuppliesSKU' => $validatedData['SuppliesSKU'],
+            'SuppliesBrandName' => $validatedData['SuppliesBrandNameEdit'],
+            'SuppliesName' => $validatedData['SuppliesNameEdit'],
+            'SuppliesCategory' => $validatedData['SuppliesCategoryEdit'],
+            'SuppliesQuantity' => (int)$validatedData['SuppliesQuantityEdit'],
+            'SuppliesColor' => $validatedData['SuppliesColorEdit'],
+            'SuppliesType' => $validatedData['SuppliesTypeEdit'],
+            'SuppliesUnit' => $validatedData['SuppliesUnitEdit'],
+            'SuppliesUnitPrice' => $validatedData['SuppliesUnitPriceEdit'],
+            'SuppliesClassification' => $validatedData['SuppliesClassificationEdit'],
+            'SuppliesSKU' => $validatedData['SuppliesSKUEdit'],
         ]);
 
         // Check if any rows were updated

@@ -37,9 +37,10 @@ $(document).ready(function () {
         const room = $('#SpecRoom').val();
         const capacity = $('#SpecCapacity').val();
         const facilityRoomDate = $('#SpecRoomDate').val(); 
+        const schoolYear =$('#SuppReqSchoolYear').val();
 
         // Check if all values are entered
-        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '') {
+        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === ''|| schoolYear ==='') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -65,7 +66,8 @@ $(document).ready(function () {
             room: room,
             capacity: capacity,
             facilityRoomDate: facilityRoomDate,
-            facilityRoomType: facilityRoomType, // Adjust this name to match your backend field
+            facilityRoomType: facilityRoomType,
+            schoolYear:schoolYear,
         };
 
         // Confirmation message
@@ -288,6 +290,52 @@ document.addEventListener("DOMContentLoaded", function() {
             dataTable.search(searchTerm);
         });
     }
+});
+
+//Get School Year
+$(document).ready(function () {
+    function fetchSchoolYears() {
+        // Define the API URL
+        const apiUrl = "http://192.168.2.62:3000/api/v1/sis/schoolYear";
+
+        // Make an AJAX GET request to the API
+        $.ajax({
+            url: apiUrl,
+            method: "GET",
+            success: function (response) {
+
+                const $dropdown = $('#SuppReqSchoolYear');
+                $dropdown.empty();
+
+                $dropdown.append('<option value="" disabled>Select School Year</option>');
+
+                $.each(response.foundSchoolYear, function (index, year) {
+                    const isSelected = year.schoolYear === "2024-2025" ? "selected" : "";
+                    $dropdown.append(
+                        `<option value="${year.schoolYear}" ${isSelected}>${year.schoolYear}</option>`
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Failed to fetch school years:", error);
+                // Handle error scenario
+                $('#SuppReqSchoolYear').append('<option value="" disabled>No data available</option>');
+            }
+        });
+    }
+
+    // Call the function to fetch school years on page load
+    fetchSchoolYears();
+
+
+    // Event listener for the dropdown change event
+    $('#SuppReqSchoolYear').change(function () {
+        const selectedOption = $(this).find('option:selected');
+        const selectedValue = selectedOption.val(); // Get the value (schoolYearId)
+
+        // Log the selected option
+        console.log(`Selected School Year: ${selectedValue}`);
+    });
 });
 
 

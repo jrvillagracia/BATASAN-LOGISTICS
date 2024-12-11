@@ -260,7 +260,7 @@ $(document).ready(function () {
         method: 'GET',
         success: function (data) {
             // Populate Building dropdown
-            const buildingDropdown = $("#MainteEquipBuildingName");
+            const buildingDropdown = $("#FacilityBuildingName");
             buildingDropdown.empty().append('<option disabled selected>Select Building</option>');
 
             const roomsByBuilding = {};
@@ -270,24 +270,70 @@ $(document).ready(function () {
                     roomsByBuilding[room.BldName] = [];
                     buildingDropdown.append(`<option value="${room.BldName}">${room.BldName}</option>`);
                 }
-                roomsByBuilding[room.BldName].push(room.Room);
+                roomsByBuilding[room.BldName].push(room);
             });
 
-            // Filter Room dropdown based on selected building
-            $("#MainteEquipBuildingName").change(function () {
+            // Filter facilityRoomType dropdown based on selected building
+            $("#FacilityBuildingName").change(function () {
                 const selectedBuilding = $(this).val();
-                const roomDropdown = $("#MainteEquipRoom");
+                const facilityTypeDropdown = $("#FacilityType");
+                const roomDropdown = $("#FacilityRoom");
+
+                // Reset the FacilityRoomType dropdown
+                facilityTypeDropdown.empty().append('<option disabled selected>Select Facility Type</option>');
                 roomDropdown.empty().append('<option disabled selected>Select Room</option>');
 
-                if (roomsByBuilding[selectedBuilding]) {
-                    roomsByBuilding[selectedBuilding].forEach(function (room) {
-                        roomDropdown.append(`<option value="${room}">Room ${room}</option>`);
+                // If a building is selected, populate FacilityRoomType dropdown
+                if (selectedBuilding && roomsByBuilding[selectedBuilding]) {
+                    const facilityTypes = new Set();
+
+                    roomsByBuilding[selectedBuilding].forEach(function (roomData) {
+                        facilityTypes.add(roomData.facilityRoomType);
+                    });
+
+                    // Add facility types to dropdown
+                    facilityTypes.forEach(function (facilityType) {
+                        facilityTypeDropdown.append(`<option value="${facilityType}">${facilityType}</option>`);
                     });
                 }
             });
+
+            // Filter Room dropdown based on selected building and facility type
+            $("#FacilityBuildingName, #FacilityRoomType").change(function () {
+                const selectedBuilding = $("#FacilityBuildingName").val();
+                const selectedFacilityType = $("#FacilityRoomType").val();
+                const roomDropdown = $("#FacilityRoom");
+
+                roomDropdown.empty().append('<option disabled selected>Select Room</option>');
+
+                if (selectedBuilding && roomsByBuilding[selectedBuilding]) {
+                    roomsByBuilding[selectedBuilding].forEach(function (roomData) {
+                        // Only show rooms that match the selected facility type (if any)
+                        if (!selectedFacilityType || roomData.facilityRoomType === selectedFacilityType) {
+                            roomDropdown.append(`<option value="${roomData.Room}">Room ${roomData.Room}</option>`);
+                        }
+                    });
+                }
+            });
+
         },
         error: function () {
             alert('Failed to fetch data!');
         }
     });
+});
+
+
+
+//Automatic Set Date
+document.addEventListener("DOMContentLoaded", function () {
+    function formatDateToMMDDYYYY(date) {
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
+    }
+
+    const today = formatDateToMMDDYYYY(new Date());
+    document.getElementById("MainteEquipDate").value = today;
 });

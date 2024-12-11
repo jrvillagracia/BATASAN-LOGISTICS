@@ -21,7 +21,7 @@ class RoomController extends Controller
     public function index()
 {
     // Fetch the API response
-    $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear/2020-2021');
+    $response = Http::get('http://192.168.2.62:3000/api/v1/sis/section/rooms/schoolYear');
     $foundSections = $response->json()['foundSections'] ?? []; // Default to an empty array if not found
 
     // Fetch the rooms from your own database
@@ -47,6 +47,7 @@ class RoomController extends Controller
                 'facilityStatus' => $room->facilityStatus,
                 'Capacity' => $room->Capacity,
                 'facilityRoomType' => $room->facilityRoomType,
+                'schoolYear' => $room->schoolYear ?? 'unknown',
             ],
             'session' => null,       // Default values for missing API data
             'gradeLevel' => null,
@@ -170,6 +171,7 @@ class RoomController extends Controller
             'capacity' => 'required|integer',
             'facilityRoomDate' => 'required|date_format:m/d/Y',
             'facilityRoomType' => 'required|string|in:Instructional,Laboratory,Office',
+            'schoolYear' => 'required|string|max:255',
         ]);
 
         // Convert the 'facilityRoomDate' to 'Y-m-d' format
@@ -182,8 +184,9 @@ class RoomController extends Controller
         $room->Room = $validatedData['room'];
         $room->facilityStatus = 'Available';
         $room->Capacity = $validatedData['capacity'];
-        $room->facilityRoomDate = $facilityRoomDate;  // Use the formatted date
-        $room->facilityRoomType = $request->facilityRoomType;  // Add the facility room type
+        $room->facilityRoomDate = $facilityRoomDate;  
+        $room->facilityRoomType = $request->facilityRoomType;  
+        $room->schoolYear = $validatedData['schoolYear'];
         $room->save();
 
         $foundSections = Room::all()->map(function($room) {
@@ -195,6 +198,7 @@ class RoomController extends Controller
                 'capacity' => $room->Capacity,
                 'facilityRoomDate' => $room->facilityRoomDate,
                 'facilityRoomType' => $room->facilityRoomType,
+                'schoolYear'=> $room->schoolYear,
             ];
         });
     
@@ -221,7 +225,6 @@ class RoomController extends Controller
                 'capacity' => $room['currentEnrollment'] . '/' . $room['Capacity'], 
                 'session' => $room['session'],             
                 'assigned' => $room['gradeLevel'] . ' - ' . $room['sectionName'], 
-                // Add other fields if necessary
             ];
         });
 
@@ -250,9 +253,26 @@ class RoomController extends Controller
     public function getBuildingAndRooms()
     {
         // Fetch unique buildings and associated rooms
-        $rooms = Room::select('BldName', 'Room')->get();
+        $rooms = Room::select('BldName', 'Room' , 'facilityRoomType')->get();
 
         return response()->json($rooms); // Return as JSON for frontend
     }
+
+    public function getRoomsBySchoolYear(Request $request)
+    {
+        $schoolYear = $request->query('schoolYear');
+    
+        if ($schoolYear) {
+            $rooms = Room::where('schoolYear', $schoolYear)->get();
+        } else {
+            $rooms = Room::all();
+        }
+    
+        // Return the filtered rooms as JSON
+        return response()->json([
+            'rooms' => $rooms,
+        ]);
+    }
+    
 
 }

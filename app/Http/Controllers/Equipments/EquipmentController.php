@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Equipments;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Equipments\Equipment;
@@ -68,6 +69,8 @@ class EquipmentController extends Controller
             'EquipmentClassification' => 'required|string',
             'EquipmentSKU' => 'required|string|max:255',
         ]);
+
+        $validatedData['EquipmentDate'] = Carbon::parse($validatedData['EquipmentDate'])->format('Y-m-d');
     
         // Create a new equipment entry in the database
         for ($i = 0; $i < $validatedData['EquipmentQuantity']; $i++) {

@@ -37,7 +37,7 @@
     <script src="{{asset('js/admin_equipHistory.js')}}"></script>
 
 
-    <script src="{{asset('js/admin_POInventory.js')}}"></script>    <!-- INVENTORY PRODUCT MODULE -->
+    <script src="{{asset('js/admin_POInventory.js')}}"></script> <!-- INVENTORY PRODUCT MODULE -->
     <script src="{{asset('js/admin_POApprOrderInventory.js')}}"></script>
     <script src="{{asset('js/admin_POCompleteOrderInventory.js')}}"></script>
 
@@ -259,11 +259,12 @@
                         <div class="pt-5">
                             <hr>
                         </div>
+
                         <li class="hover:bg-gray-200 p-3 rounded-md">
-                            <a href="https://bhnhs-sis.onrender.com/admin/dashboard" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <button id="student-info-link" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <span class="material-symbols-outlined">account_box</span>
                                 <span class="sidebar-text font-bold">Student Information</span>
-                            </a>
+                            </button>
                         </li>
                         <li class="hover:bg-gray-200 p-3 rounded-md">
                             <a href="http://192.168.2.237:9901/admin/home" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
@@ -275,8 +276,6 @@
                 </nav>
             </div>
         </aside>
-
-
 
 
         <!-- Main Content --> <!-- EASE IN OUT n MARGIN SIZE-->
@@ -313,6 +312,35 @@
         </main>
 
     </div>
+
+    <script>
+    // Ensure the DOM is fully loaded before adding the event listener
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("student-info-link").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent the default button action
+
+            // Retrieve the token from localStorage
+            const token = localStorage.getItem('token'); // Assuming the token is stored under the key 'access_token'
+
+            console.log("Token from localStorage: " + token); // Log token to console for debugging
+
+            if (token) {
+                // If the token exists, proceed with the redirection
+                const baseUrl = "http://192.168.2.62:5173/admin/dashboard";
+                const urlWithToken = `${baseUrl}?access_token=${token}`;
+
+                // Remove the token from localStorage
+                localStorage.removeItem('token'); // Remove the token after redirecting
+
+                // Redirect to the new URL with the token
+                window.location.href = urlWithToken;
+            } else {
+                // If no token is found, log an error (or handle the scenario as needed)
+                console.error("Token is missing!");
+            }
+        });
+    });
+</script>
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

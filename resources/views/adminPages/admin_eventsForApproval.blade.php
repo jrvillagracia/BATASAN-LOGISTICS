@@ -204,9 +204,7 @@
                                 <label for="EventsActBldName" class="block text-sm font-semibold mb-2">Building Name</label>
                                 <select id="EventsActBldName" name="EventsActBldName" class="w-full px-2 py-1 border border-gray-400 rounded">
                                     <option value="" disabled selected>Select Building</option>
-                                    <option value="BuildingA">Building A</option>
-                                    <option value="BuildingB">Building B</option>
-                                    <option value="BuildingC">Building C</option>
+                                    <option value=""></option>
                                 </select>
                             </div>
 
@@ -214,9 +212,7 @@
                                 <label for="EventsActRoom" class="block text-sm font-semibold mb-2">Room</label>
                                 <select id="EventsActRoom" name="EventsActRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
                                     <option value="" disabled selected>Select Room</option>
-                                    <option value="Room101">Room101</option>
-                                    <option value="Room102">Room102</option>
-                                    <option value="Room103">Room103</option>
+                                    <option value=""></option>
                                 </select>
                             </div>
 

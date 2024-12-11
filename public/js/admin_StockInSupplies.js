@@ -152,7 +152,12 @@ $(document).ready(function() {
 
         // Get the clicked row
         var row = $(this).closest('tr');
-        var suppliesBrand = row.data('brand'); // Retrieve the supplies brand from the row's data-brand attribute
+        var suppliesBrand = row.data('brand');
+        var suppliesType = row.data('type');
+        var suppliesUnit = row.data('unit');
+        var suppliesUnitPrice = row.data('unit-price');
+        var suppliesColor = row.data('color');
+        var otherCategory = row.data('other-category');
         console.log('Edit button clicked for supplies Brand:', suppliesBrand);
 
         // Show the edit modal
@@ -163,8 +168,25 @@ $(document).ready(function() {
         $('#editForm').find('#SuppliesNameEdit').val(row.find('td').eq(1).text().trim());
         $('#editForm').find('#SuppliesCategoryEdit').val(row.find('td').eq(2).text().trim());
         $('#editForm').find('#SuppliesSKUEdit').val(row.find('td').eq(5).text().trim());
+        $('#editForm').find('#SuppliesClassificationEdit').val(row.find('td').eq(6).text().trim());
         // Set the hidden input field with the supplies brand
+
+        $('#editForm').find('#SuppliesColorEdit').val(suppliesColor);
+        $('#editForm').find('#SuppliesTypeEdit').val(suppliesType);
+        $('#editForm').find('#SuppliesUnitEdit').val(suppliesUnit);
+        $('#editForm').find('#SuppliesUnitPriceEdit').val(suppliesUnitPrice);        
         $('#editForm').find('input[name="brand"]').val(suppliesBrand);
+
+        if (otherCategory === 'other') {
+            // Show the "Other" category input and populate it
+            $('#otherEquipCategoryDivEdit').removeClass('hidden');
+            $('#editForm').find('#otherEquipCategoryEdit').val(otherCategory);
+        } else {
+            // Hide the "Other" category input
+            $('#otherEquipCategoryDivEdit').addClass('hidden');
+            $('#editForm').find('#otherEquipCategoryEdit').val('');
+        }
+
     });
 
     // Handle saving the changes
@@ -464,7 +486,7 @@ $(document).ready(function() {
                         <p><strong>Classification:</strong> ${response.SuppliesClassification}</p>
                         <p><strong>Date:</strong> ${response.SuppliesDate}</p>
                     `;
-                    $('#equipmentDetails').html(suppliesDetails); 
+                    $('#SuppliesDetails').html(suppliesDetails); 
                     $('#ViewFullSuppModal').removeClass('hidden');
                 },
                 error: function(xhr) {

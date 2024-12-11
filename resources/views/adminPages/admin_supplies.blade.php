@@ -102,14 +102,14 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="" data-brand="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
+                    @foreach($supplies as $item)
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}" data-brand="">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesBrandName}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesName}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesCategory}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesQuantity}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->totalPrice, 2)}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSKU}}/td>
                         <td class="px-6 py-4 border-b border-gray-300">
                             <button id="viewSuppliesBTN" type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -128,6 +128,7 @@
                             <input id="SUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </td>
                     </tr>
+                    @endforeach
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>
@@ -249,17 +250,17 @@
                     </div>
 
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="equipmentDetails">
-                            <div><strong>Brand Name:</strong> Logitech</div>
-                            <div><strong>Color:</strong> Black</div>
-                            <div><strong>Product Name:</strong> Mouse</div>
-                            <div><strong>Unit:</strong> Boxes</div>
-                            <div><strong>Category:</strong> IT Department</div>
-                            <div><strong>Unit Price:</strong> ₱500</div>
-                            <div><strong>SKU:</strong> MOUSE0000001</div>
-                            <div><strong>Classification:</strong> DO</div>
-                            <div><strong>Type:</strong> TYPE</div>
-                            <div><strong>Date:</strong> 11/16/2024</div>
+                        <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="SuppliesDetails">
+                            <div><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</div>
+                            <div><strong>Color:</strong>{{$item->SuppliesColor}}</div>
+                            <div><strong>Product Name:</strong>{{$item->SuppliesName}}</div>
+                            <div><strong>Unit:</strong>{{$item->SuppliesUnit}}</div>
+                            <div><strong>Category:</strong>{{$item->SuppliesCategory}}</div>
+                            <div><strong>Unit Price:</strong>{{$item->SuppliesUnitPrice}}</div>
+                            <div><strong>SKU:</strong>{{$item->SuppliesSKU}}</div>
+                            <div><strong>Classification:</strong>{{$item->SuppliesClassification}}</div>
+                            <div><strong>Type:</strong>{{$item->SuppliesType}}</div>
+                            <div><strong>Date:</strong>{{$item->SuppliesDate}}</div>
                         </div>
 
                         <div class="flex justify-end space-x-4 items-center ml-auto">

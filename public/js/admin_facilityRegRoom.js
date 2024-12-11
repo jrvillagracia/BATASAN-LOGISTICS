@@ -23,7 +23,7 @@ $(document).ready(function () {
 //ADD FACILITY REGULAR
 $(document).ready(function () {
     $('#RegSubFormBtn').click(function (event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
         $.ajaxSetup({
             headers: {
@@ -34,10 +34,11 @@ $(document).ready(function () {
         const buildingName = $('#RegBldName').val();
         const room = $('#RegRoom').val();
         const capacity = $('#RegCapacity').val();
-        const facilityRoomDate = $('#RegRoomDate').val(); 
-        
+        const facilityRoomDate = $('#RegRoomDate').val();
+        const schoolYear = $('#ReqSchoolYear').val();
+
         // Check if all values are entered
-        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '') {
+        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '' || schoolYear ==='') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -64,6 +65,7 @@ $(document).ready(function () {
             capacity: capacity,
             facilityRoomDate: facilityRoomDate,
             facilityRoomType: facilityRoomType,
+            schoolYear:schoolYear,
         };
 
         // Confirmation dialog
@@ -81,13 +83,13 @@ $(document).ready(function () {
                 // AJAX request
                 $.ajax({
                     url: '/rooms/store',
-                    type: 'POST',  
-                    data: formData,  
+                    type: 'POST',
+                    data: formData,
                     success: function (response) {
                         console.log(response);
-                        $('#RegForm')[0].reset(); 
+                        $('#RegForm')[0].reset();
                         $('#RegFormCard').addClass('hidden');
-                        
+
                         let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
 
                         // Append the new row to the table
@@ -129,11 +131,11 @@ $(document).ready(function () {
 
 
 // SELECT ALL BUTTOn
-$(document).ready(function() {
+$(document).ready(function () {
     let isAllChecked = false;
 
 
-    $('#RegfoundSectionselectAllBtn').click(function() {
+    $('#RegfoundSectionselectAllBtn').click(function () {
         isAllChecked = !isAllChecked;
         $('#RegFacTable').find('input[type="checkbox"]').prop('checked', isAllChecked);
 
@@ -293,10 +295,59 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+// Get School Year
+$(document).ready(function () {
+    function fetchSchoolYears() {
+        const apiUrl = "http://192.168.2.62:3000/api/v1/sis/schoolYear";
+
+        $.ajax({
+            url: apiUrl,
+            method: "GET",
+            success: function (response) {
+                const $dropdown = $('#ReqSchoolYear');
+                $dropdown.empty();
+                $dropdown.append('<option value="" disabled>Select School Year</option>');
+                $.each(response.foundSchoolYear, function (index, year) {
+                    const isSelected = year.schoolYear === "2024-2025" ? "selected" : "";
+                    $dropdown.append(
+                        `<option value="${year.schoolYear}" ${isSelected}>${year.schoolYear}</option>`
+                    );
+                });
+            },
+            error: function () {
+                $('#ReqSchoolYear').append('<option value="" disabled>No data available</option>');
+            }
+        });
+    }
+
+    fetchSchoolYears();
+
+    // Filter table rows based on selected school year
+    $('#ReqSchoolYear').change(function () {
+        const selectedYear = $(this).val();
+
+        console.log(`Selected Year: ${selectedYear}`); // Debugging: Log selected year
+
+        $('#tableBody tr').each(function () {
+            const rowYear = $(this).data('school-year');
+
+            console.log(`Row Year: ${rowYear}`); // Debugging: Log row year
+
+            if (rowYear === selectedYear) {
+                $(this).show(); // Show rows that match the selected year
+            } else {
+                $(this).hide(); // Hide rows that do not match
+            }
+        });
+    });
+});
+
+
+
 //Automatic Set Date
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     function formatDateToMMDDYYYY(date) {
-        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         const year = date.getFullYear();
         return `${month}/${day}/${year}`;

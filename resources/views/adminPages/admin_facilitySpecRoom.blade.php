@@ -65,6 +65,9 @@
                 <button id="SpecRoomFormBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">&plus; Add Facility</button>
                 <button id="SpecRoomExportBtn" class="bg-green-500 text-white p-2 rounded hover:bg-green-600">Export File</button>
                 <button id="SpecRoomSelectAllBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Select all</button>
+                <select id="SuppReqSchoolYear" name="SuppReqSchoolYear" class="w-30 px-2 py-1 border border-gray-400 rounded">
+                    <option value="" disabled selected>Select school year</option>
+                </select>
             </div>
         </div>
 

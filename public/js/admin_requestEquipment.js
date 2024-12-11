@@ -433,6 +433,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+//Get Building and Rooms
 $(document).ready(function () {
     // Fetch buildings and rooms via AJAX
     $.ajax({

@@ -66,6 +66,11 @@
                 <button id="RegRoomExportBtn" class="bg-green-500 text-white p-2 rounded hover:bg-green-600">Export File</button>
                 <button id="RegRoomSelectAllBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Select all</button>
 
+                <!-- School Year filter --> 
+                <select id="ReqSchoolYear" name="ReqSchoolYear" class="w-30 px-2 py-1 border border-gray-400 rounded">
+                    <option value="" disabled selected></option>
+                </select>
+
             </div>
         </div>
 
@@ -158,7 +163,8 @@
                 </thead>
                 <tbody id="tableBody">
                     @foreach($combinedRooms as $room)
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="{{$loop->index}}" data-id="{{$room['roomId']}}">
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="{{$loop->index}}" data-id="{{$room['roomId']}}"
+                        data-school-year="{{ $room['facilityRoom']['schoolYear']}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $room['facilityRoom']['BldName']}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $room['facilityRoom']['Room'] }}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $room['facilityRoom']['facilityStatus'] }}</td>
@@ -172,7 +178,7 @@
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
                             </button>
-                            
+
                             <button class="editINSTButton" data-id="{{$room['roomId']}}" type="button">
                                 <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
@@ -241,12 +247,12 @@
                             </svg>
                         </button>
                     </div>
-                    
+
 
                     <form id="RegEditForm" action="" method="">
-                    @csrf
+                        @csrf
                         <input type="hidden" name="id" id="RegEditRoomId" value="">
-                        
+
                         <div class="mb-4">
                             <label for="name" class="block text-sm font-semibold mb-2">Building Name</label>
                             <input type="text" id="RegEditBldName" name="buildingName" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Building Name">
@@ -261,7 +267,7 @@
                             <label for="RegCapacity" class="block text-sm font-semibold mb-2">Capacity</label>
                             <input type="number" id="RegEditCapacity" name="capacity" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Capacity">
                         </div>
-    
+
                         <div class="flex justify-end space-x-2">
                             <button id="RegEditCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                             <button type="button" data-id="{{$room['roomId']}}" class=" RegEditSaveFormBtn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Save</button>
