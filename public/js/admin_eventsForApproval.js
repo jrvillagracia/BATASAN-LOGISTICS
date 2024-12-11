@@ -74,6 +74,79 @@ $(document).ready(function() {
             }
         });
     });
+
+
+
+     // Go to Step 2
+    $('#EventGoToStep2').click(function () {
+        $('#EventsActStep1Content').addClass('hidden');
+        $('#EventsActStep2Content').removeClass('hidden');
+        $('#EventsStep1Icon').addClass('text-gray-500').removeClass('text-blue-600');
+        $('#EventsStep2Icon').addClass('text-blue-600').removeClass('text-gray-500');
+    });
+
+    // Go back to Step 1
+    $('#EventBackToStep1').click(function () {
+        $('#EventsActStep2Content').addClass('hidden');
+        $('#EventsActStep1Content').removeClass('hidden');
+        $('#EventsStep2Icon').addClass('text-gray-500').removeClass('text-blue-600');
+        $('#EventsStep1Icon').addClass('text-blue-600').removeClass('text-gray-500');
+    });
+
+    $('#EventAddRowBtn').click(function () {
+        const newRow = `
+            <tr class="Events-Rows">
+                <td class="p-2">
+                    <select id="EventsActivityInventory" name="EventsActivityInventory" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="EventsActivityInventory" disabled selected>Select Inventory</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="Inventory" data-building="">Equipment</option>
+                        <option value="Supplies" data-building="">Supplies</option>
+                    </select>
+                </td>
+                <td class="p-2">
+                    <select id="EventActCategoryName" name="EventActCategoryName" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="EventActCategoryName" disabled selected>Select Category</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="Laptop" data-building="">Laptop</option>
+                        <option value="Printer" data-building="">Printer</option>
+                    </select>
+                </td>
+                <td class="p-2">
+                    <select id="EventActType" name="EventActType" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="EventActType" disabled selected>Select Type</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="64gb" data-building="">64gb</option>
+                        <option value="Nikon" data-building="">Nikon</option>
+                    </select>
+                </td>
+                <td class="p-2">
+                    <select id="EventActUnit" name="EventActUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
+                        <option value="EventActUnit" disabled selected>Select Unit</option>
+                        <!-- These options will depend on the selected building -->
+                        <option value="Box" data-building="">Box</option>
+                        <option value="Unit" data-building="">Unit</option>
+                    </select>
+                </td>
+                <td class="p-2">
+                    <input type="number" id="EventActQuantity" class="w-20 border rounded p-2" placeholder="">
+                </td>
+
+                <td class="p-2 text-center">
+                    <button type="button" class="EventActivitiesDelete-row-btn text-red-500 hover:text-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>`;
+        $('#Events-TablBody').append(newRow);
+    });
+
+    // Delete an inventory row from the table
+    $('#Events-TablBody').on('click', '.EventActivitiesDelete-row-btn', function () {
+        $(this).closest('tr').remove();
+    });
 });
 
 

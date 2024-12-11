@@ -59,10 +59,11 @@
                             </svg>
                         </div>
                         <input type="search" id="suppliesSearch" name="suppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
-                        <button type="submit" class="text-white absolute right-2.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                     </div>
 
                     <!-- Add Item Button-->
+                    <button id="SuppUsedExportBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Export</button>
+                    <button id="SuppUsedSelectAllBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Select All</button>
 
             </div>
         </div>
@@ -76,10 +77,7 @@
                 <thead class="text-sm text-white dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Serial Number
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Control Number
+
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Brand Name
@@ -88,43 +86,42 @@
                             Product Name
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            User ID
+                            Category
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Username
+                            Quantity
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Department
+                            Total
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Date Used
+                            SKU
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Actions
+                            Facility
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
                         </th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <input id="SUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Dell</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">XP</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">150,000</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">DEL-XPS13-BLK-256</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Offices</td>
                         <td class="px-6 py-4 border-b border-gray-300">
                             <button id="viewSuppUsedButton" type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
-                            </button>
-                            <button id="editSuppUsedButton" type="button">
-                                <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
-                                    <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
                                 </svg>
                             </button>
                         </td>
@@ -139,37 +136,178 @@
 
             <!-- View 1 Popup Card -->
             <div id="ViewSuppUsedModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
+                <div class="bg-white p-4 rounded-lg shadow-lg max-w-7xl w-full max-h-[90vh] overflow-y-auto"> <!-- Updated width and height -->
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">View Full Information</h2>
+                        <h2 class="text-lg font-semibold px-7">View Full Information</h2>
                         <button id="closeViewSuppUsedFormButton" class="text-gray-500 hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
-                    <div class="text-sm text-gray-700 mb-4">
-                        <p><strong>Serial Number:</strong></p>
-                        <p><strong>Control Number:</strong></p>
-                        <p><strong>Brand Name:</strong></p>
-                        <p><strong>Product Name:</strong></p>
-                        <p><strong>Category:</strong></p>
-                        <p><strong>Type:</strong></p>
-                        <p><strong>Color:</strong></p>
-                        <p><strong>Unit:</strong></p>
-                        <p><strong>Unit Price:</strong>₱</p>
-                        <p><strong>Classification:</strong></p>
-                        <p><strong>User ID:</strong></p>
-                        <p><strong>Username:</strong></p>
-                        <p><strong>Department</strong></p>
-                        <p><strong>Date Used:</strong></p>
-                        <p><strong>Admin:</strong></p>
-                        <p><strong>Remarks:</strong></p>
-                    </div>
 
+                    <div class="relative shadow-md sm:rounded-lg px-9 py-5">
+                        <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="SuppliesDetails">
+                            <div><strong>Brand Name:</strong> Logitech</div>
+                            <div><strong>Color:</strong> Black</div>
+                            <div><strong>Product Name:</strong> Mouse</div>
+                            <div><strong>Unit:</strong> Boxes</div>
+                            <div><strong>Category:</strong> IT Department</div>
+                            <div><strong>Unit Price:</strong> ₱500</div>
+                            <div><strong>SKU:</strong> MOUSE0000001</div>
+                            <div><strong>Classification:</strong> DO</div>
+                            <div><strong>Type:</strong> TYPE</div>
+                            <div><strong>Date:</strong> 11/16/2024</div>
+                        </div>
+
+                        <div class="flex justify-end space-x-4 items-center ml-auto">
+                            <!-- Search Form -->
+                            <form id="suppliesSearchForm" class="flex items-center space-x-4">
+                                <!-- Search Input -->
+                                <div class="relative w-96">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        </svg>
+                                    </div>
+                                    <input type="search" id="suppliesSearch" name="suppliesSearch" class="block w-64 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                                </div>
+
+                                <!-- Buttons -->
+
+                                <button id="ViewSuppUsedExportBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Export</button>
+                                <button id="ViewSuppUsedSelectAllBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Select All</button>
+                            </form>
+                        </div>
+
+                        <div class="overflow-x-auto"> <!-- Added for horizontal scrolling if needed -->
+                            <table id="ViewDynamicTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead class="text-sm text-white dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            User ID
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            User Name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Building Name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Room
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Date Used
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Facility
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableViewBody">
+                                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            <input id="ViewSUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        </td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">User ID</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">User Name</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Building Name</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Room</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Date Used</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Facility</td>
+                                    </tr>
+                                    <!-- Dynamic rows will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- END OF View 1 Popup Card -->
+
+            <!-- View Data Export Button Card-->
+            <div id="UsedSuppDataIncludedModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+                    <h2 class="text-lg font-semibold mb-4">Data Included</h2>
+
+                    <!-- Checklist Section -->
+                    <div id="UsedSuppCheckboxGroup" class="grid grid-cols-2 gap-4">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Type</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Unit</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Brand Name</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Unit Price</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Product Name</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Classification</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Category</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Date</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">SKU</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">User Name</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">User ID</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Building Name</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Room</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Facility</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm">Date Used</span>
+                        </label>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex justify-between mt-4">
+                        <button id="VIEWUsedSuppSelectAllBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Select All</button>
+                        <button id="VIEWUsedSuppExportFileBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Export File</button>
+                        <button id="VIEWUsedSuppCancelBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- END OF View Data Export Button Card -->
+
+
+
 
             <!-- Edit 2 Popup Card -->
 
