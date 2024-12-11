@@ -39,48 +39,57 @@
     </nav>
 
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 pt-5 flex-1 overflow-x-auto">
-
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 pt-5 flex-1">
         <!-- Facility Card -->
-        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5">
+        <div class="bg-blue-700 flex flex-col justify-between shadow-md rounded-lg p-5 hover:scale-105 hover:shadow-lg transition-transform duration-300 text-white">
             <div class="flex justify-between items-center">
                 <h2 class="text-lg font-bold">Facility</h2>
-                <div class="bg-black h-5 w-5"></div>
+                <div class=" flex items-center justify-center rounded text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="100px" viewBox="0 -960 960 960" width="100px" fill="currentColor" class="h-50 w-50">
+                        <path d="M120-120v-80h80v-640h400v40h160v600h80v80H680v-600h-80v600H120Zm320-320q17 0 28.5-11.5T480-480q0-17-11.5-28.5T440-520q-17 0-28.5 11.5T400-480q0 17 11.5 28.5T440-440Z" />
+                    </svg>
+                </div>
             </div>
             <p class="mt-4 text-lg font-bold">No. of facility: <span class="font-extrabold">10</span></p>
         </div>
 
         <!-- Inventory Card -->
-        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5">
+        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5 hover:scale-105 hover:shadow-lg transition-transform duration-300">
             <div class="flex justify-between items-center">
                 <h2 class="text-lg font-bold">Inventory</h2>
-                <div class="bg-black h-5 w-5"></div>
+                <div class="bg-black h-10 w-10 flex items-center justify-center rounded">
+                    <i class="fas fa-clipboard-list text-white text-xl"></i>
+                </div>
             </div>
             <p class="mt-4">No. of Equipment: <span class="font-extrabold">10</span></p>
             <p class="mt-1">No. of Supplies: <span class="font-extrabold">10</span></p>
         </div>
 
         <!-- Event and Activity Card -->
-        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5">
+        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5 hover:scale-105 hover:shadow-lg transition-transform duration-300">
             <div class="flex justify-between items-center">
                 <h2 class="text-lg font-bold">Event and Activity</h2>
-                <div class="bg-black h-5 w-5"></div>
+                <div class="bg-black h-10 w-10 flex items-center justify-center rounded">
+                    <i class="fas fa-calendar-alt text-white text-xl"></i>
+                </div>
             </div>
             <p class="mt-4 text-lg font-bold">No. of Events: <span class="font-extrabold">10</span></p>
         </div>
 
         <!-- Maintenance Card -->
-        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5">
+        <div class="bg-gray-200 flex flex-col justify-between shadow-md rounded-lg p-5 hover:scale-105 hover:shadow-lg transition-transform duration-300">
             <div class="flex justify-between items-center">
                 <h2 class="text-lg font-bold">Maintenance</h2>
-                <div class="bg-black h-5 w-5"></div>
+                <div class="bg-black h-10 w-10 flex items-center justify-center rounded">
+                    <i class="fas fa-cogs text-white text-xl"></i>
+                </div>
             </div>
             <p class="mt-4">No. of Pending maintenance requests: <span class="font-extrabold">10</span></p>
-            <p class="mt-1">No. of Pending maintenance requests: <span class="font-extrabold">10</span></p>
-            <p class="mt-1">No. of Pending maintenance requests: <span class="font-extrabold">10</span></p>
+            <p class="mt-1">No. of Approved maintenance requests: <span class="font-extrabold">10</span></p>
+            <p class="mt-1">No. of Completed maintenance requests: <span class="font-extrabold">10</span></p>
         </div>
-
     </div>
+
 
     <!-- Chart Section -->
     <div class="mt-10 max-w-lg w-full">
