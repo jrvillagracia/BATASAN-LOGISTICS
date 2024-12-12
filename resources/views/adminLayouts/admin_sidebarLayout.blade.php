@@ -267,7 +267,7 @@
                             </button>
                         </li>
                         <li class="hover:bg-gray-200 p-3 rounded-md">
-                            <a href="http://192.168.2.237:9901/admin/home" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <a href="https://bnhs-hr.onrender.com/admin/dashboard" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <span class="material-symbols-outlined">groups_2</span>
                                 <span class="sidebar-text font-bold">Human Resources</span>
                             </a>
