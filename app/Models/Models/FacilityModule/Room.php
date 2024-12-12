@@ -19,5 +19,6 @@ class Room extends Model
         'Capacity',
         'facilityRoomType',
         'facilityRoomDate',
+        'schoolYear',
     ];
 }

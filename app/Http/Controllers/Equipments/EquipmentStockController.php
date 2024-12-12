@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Equipments;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Equipments\Equipment;
+//use App\Models\Equipments\Equipment;
 use App\Models\Equipments\EquipmentStock;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Equipments\EquipmentStockController;
+//use App\Http\Controllers\Equipments\EquipmentStockController;
 
 class EquipmentStockController extends Controller
 {

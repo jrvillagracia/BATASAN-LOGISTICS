@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('Capacity');
             $table->string('facilityRoomType');
             $table->date('facilityRoomDate');
+            $table->string('schoolYear')->nullable();
             $table->timestamps();
         });
     }

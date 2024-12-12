@@ -23,14 +23,24 @@ $(document).ready(function() {
 
 // Function to add a new Supplies
 $(document).ready(function() {
+    // Show the "Other Category" input when "Other" is selected
+    $('#SuppliesCategory').change(function() {
+        if ($(this).val() === 'other') {
+            $('#otherSuppCategoryDiv').removeClass('hidden');
+        } else {
+            $('#otherSuppCategoryDiv').addClass('hidden');
+        }
+    });
+
+    // Save Supplies Data
     $('#SuppliesSaveButton').on('click', function (e) {
         e.preventDefault();
         console.log('Save Button Clicked');
 
-        const controlNo = $('#SuppliesControlNo').val().trim();
         const brandName = $('#SuppliesBrandName').val().trim();
         const name = $('#SuppliesName').val();
         const category = $('#SuppliesCategory').val();
+        const otherCategory = $('#otherSuppCategory').val().trim(); 
         const type = $('#SuppliesType').val();
         const color = $('#SuppliesColor').val().trim();
         const unit = $('#SuppliesUnit').val().trim();
@@ -39,20 +49,49 @@ $(document).ready(function() {
         const uPrice = $('#SuppliesUnitPrice').val();
         const classification = $('#SuppliesClassification').val();
         const sku = $('#SuppliesSKU').val().trim();
-        const serialNo = $('#SuppliesSerialNo').val().trim();
 
-        if (controlNo === '' || brandName === '' || name === '' || category === '' || type === '' || color === '' || unit === '' || 
-            quantity === '' || date === '' || uPrice === '' || classification === '' || sku === '' || serialNo === '') {
+        // If "Other" is selected but no custom category is entered, show error
+        if (category === 'other' && otherCategory === '') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
+                text: "Please enter a category name for 'Other'!",
                 showConfirmButton: true,
-                text: "Please fill all fields!",
                 confirmButtonColor: '#3085d6'
-
             });
             return;
         }
+
+        // Use the entered "Other Category" if selected, otherwise use the selected category
+        const finalCategory = category === 'other' ? otherCategory : category;
+
+        // Check if all fields are filled
+        if (brandName === '' || name === '' || finalCategory === '' || type === '' || color === '' || unit === '' || 
+            quantity === '' || date === '' || uPrice === '' || classification === '' || sku === '') {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please fill all fields!",
+                showConfirmButton: true,
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        Swal.fire({
+            icon: "question",
+            title: "Confirmation",
+            text: "Are you sure all the inputs are correct?",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Save it!",
+            cancelButtonText: "Cancel",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Hide the form immediately
+                $('#SuppliesFormCard').addClass('hidden');
+
 
         // AJAX request to save the data
         $.ajax({
@@ -60,10 +99,9 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 _token: $('input[name="_token"]').val(),  // Include the CSRF token
-                SuppliesControlNo: controlNo,
                 SuppliesBrandName: brandName,
                 SuppliesName: name,
-                SuppliesCategory: category,
+                SuppliesCategory: finalCategory,  // Use the final category (custom or selected)
                 SuppliesType: type,
                 SuppliesColor: color,
                 SuppliesUnit: unit,
@@ -72,7 +110,6 @@ $(document).ready(function() {
                 SuppliesUnitPrice: uPrice,
                 SuppliesClassification: classification,
                 SuppliesSKU: sku,
-                SuppliesSerialNo: serialNo
             },
             success: function (response) {
                 Swal.fire({
@@ -80,35 +117,7 @@ $(document).ready(function() {
                     title: response.message,
                     showConfirmButton: true
                 }).then(() => {
-
-                    $('#tableBody').append(`
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="${response.suppliesId}">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${brandName}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${name}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${category}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${quantity}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${uPrice}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${sku}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                 <button id="viewSuppButton" type="button">
-                                    <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    </svg>
-                                </button>
-                                <button id="editSupppButton" type="button">
-                                    <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
-                                        <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                    // Clear input fields
-                    $('#SuppliesFormCard').addClass('hidden');
+                    location.reload();
                 });
             },
             error: function (xhr) {
@@ -119,18 +128,11 @@ $(document).ready(function() {
                 });
             }
         });
-    });
-
-    $(document).ready(function() {
-        $('#SuppliesCategory').change(function() {
-            if ($(this).val() === 'other') {
-                $('#otherSuppCategoryDiv').removeClass('hidden');
-            } else {
-                $('#otherSuppCategoryDiv').addClass('hidden');
-            }
-        });
-    });
+    }
 });
+});
+});
+
 
 // SUPPLIES EDIT MAIN TABLE FUNCTION 
 $(document).ready(function() {
@@ -150,7 +152,12 @@ $(document).ready(function() {
 
         // Get the clicked row
         var row = $(this).closest('tr');
-        var suppliesBrand = row.data('brand'); // Retrieve the supplies brand from the row's data-brand attribute
+        var suppliesBrand = row.data('brand');
+        var suppliesType = row.data('type');
+        var suppliesUnit = row.data('unit');
+        var suppliesUnitPrice = row.data('unit-price');
+        var suppliesColor = row.data('color');
+        var otherCategory = row.data('other-category');
         console.log('Edit button clicked for supplies Brand:', suppliesBrand);
 
         // Show the edit modal
@@ -161,8 +168,25 @@ $(document).ready(function() {
         $('#editForm').find('#SuppliesNameEdit').val(row.find('td').eq(1).text().trim());
         $('#editForm').find('#SuppliesCategoryEdit').val(row.find('td').eq(2).text().trim());
         $('#editForm').find('#SuppliesSKUEdit').val(row.find('td').eq(5).text().trim());
+        $('#editForm').find('#SuppliesClassificationEdit').val(row.find('td').eq(6).text().trim());
         // Set the hidden input field with the supplies brand
+
+        $('#editForm').find('#SuppliesColorEdit').val(suppliesColor);
+        $('#editForm').find('#SuppliesTypeEdit').val(suppliesType);
+        $('#editForm').find('#SuppliesUnitEdit').val(suppliesUnit);
+        $('#editForm').find('#SuppliesUnitPriceEdit').val(suppliesUnitPrice);        
         $('#editForm').find('input[name="brand"]').val(suppliesBrand);
+
+        if (otherCategory === 'other') {
+            // Show the "Other" category input and populate it
+            $('#otherEquipCategoryDivEdit').removeClass('hidden');
+            $('#editForm').find('#otherEquipCategoryEdit').val(otherCategory);
+        } else {
+            // Hide the "Other" category input
+            $('#otherEquipCategoryDivEdit').addClass('hidden');
+            $('#editForm').find('#otherEquipCategoryEdit').val('');
+        }
+
     });
 
     // Handle saving the changes
@@ -462,7 +486,7 @@ $(document).ready(function() {
                         <p><strong>Classification:</strong> ${response.SuppliesClassification}</p>
                         <p><strong>Date:</strong> ${response.SuppliesDate}</p>
                     `;
-                    $('#equipmentDetails').html(suppliesDetails); 
+                    $('#SuppliesDetails').html(suppliesDetails); 
                     $('#ViewFullSuppModal').removeClass('hidden');
                 },
                 error: function(xhr) {
@@ -663,37 +687,81 @@ $(document).ready(function(){
 });
 
 
-// STOCK IN BUTTON
+//Stock In
 $(document).ready(function () {
-    $("#editStockInSuppButton").click(function () {
+    $(document).on('click', '.editStockInSuppButton', function () {
         $("#StockInSuppliesPopupCard").removeClass("hidden");
+
+        const brandName = $(this).closest('tr').data('brand'); 
+        console.log("Selected brand:", brandName);
+        
+        $("#StockInSuppliesPopupCard").data('brand', brandName);
     });
 
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeStockInSuppPopupCard").click(function () {
+    // Submit button
+    $("#submitStockInSuppPopupCard").click(function (event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Your action has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#D1191A'
-        }).then(() => {
-            $("#StockInSuppliesPopupCard").addClass("hidden");
-        });
-    });
 
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitStockInSuppPopupCard").click(function () {
-        event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#StockInSuppliesPopupCard").addClass("hidden");
+        // Get the brandName stored in the popup card's data
+        const brandName = $("#StockInSuppliesPopupCard").data('brand');
+        if (!brandName) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No brand name found. Please contact the administrator.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
+            return;
+        }
+
+        console.log("equipBrand to be sent:", brandName);
+
+        $.ajax({
+            url: '/supplies/approved',
+            method: 'POST',
+            data: {
+                id: brandName,
+                _token: $('meta[name="csrf-token"]').attr('content') 
+            },
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Approved',
+                    text: 'Stock in successfully!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    $("#StockInSuppliesPopupCard").addClass("hidden");
+                    location.reload();
+                });
+            },
+            error: function (xhr) {
+                console.log("Error response:", xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: xhr.responseJSON.message, 
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33'
+                });
+            }
         });
     });
 });
+
+
+
+//Auto Populate the Date
+document.addEventListener("DOMContentLoaded", function() {
+    function formatDateToMMDDYYYY(date) {
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
+    }
+
+    const today = formatDateToMMDDYYYY(new Date());
+    document.getElementById("SuppliesDate").value = today;
+});
+

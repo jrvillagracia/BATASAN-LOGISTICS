@@ -25,7 +25,7 @@ return new class extends Migration
             $table->decimal('EquipmentUnitPrice', 65, 2);
             $table->string('EquipmentClassification');
             $table->string('EquipmentSKU');
-            $table->string('EquipmentSerialNo');
+            $table->string('EquipmentSerialNo')->nullable();
             $table->timestamps();
         });
     }

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('supplies', function (Blueprint $table) {
-            $table->bigIncrements('suppliesId');
+        Schema::create('supplies_stock', function (Blueprint $table) {
+            $table->bigIncrements('suppliesStockId');
             $table->string('SuppliesBrandName');
             $table->string('SuppliesName');
             $table->string('SuppliesCategory');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal('SuppliesUnitPrice', 65, 2);
             $table->string('SuppliesClassification');
             $table->string('SuppliesSKU');
+
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('supplies');
+        Schema::dropIfExists('supplies_stock');
     }
 };

@@ -6,11 +6,13 @@ $(document).ready(function () {
     });
 
     $('#closeCOMReqViewEquipPopupCard').click(function () {
+        event.preventDefault();
         console.log('Close "X" Equipment Button is Clicked.');
         $('#COMReqEquipPopupCard').addClass('hidden');
     });
 
     $('#COMReqCancelBTN').click(function () {
+        event.preventDefault();
         console.log('Cancel View Button is Clicked.');
         $('#COMReqEquipPopupCard').addClass('hidden');
     });
@@ -21,16 +23,19 @@ $(document).ready(function () {
 // SEE MORE BUTTON
 $(document).ready(function () {
     $('#COMReqSeeMoretBTN').click(function () {
+        event.preventDefault();
         console.log('View Equipment Button is Clicked.');
         $('#COMReqSeeMorequipPopupCard').removeClass('hidden');
     });
 
     $('#closeCOMReqSeeMoreEquipPopupCard').click(function () {
+        event.preventDefault();
         console.log('Close "X" Equipment Button is Clicked.');
         $('#COMReqSeeMorequipPopupCard').addClass('hidden');
     });
 
     $('#COMReqSeeMoreCloseBTN').click(function () {
+        event.preventDefault();
         console.log('Cancel View Button is Clicked.');
         $('#COMReqSeeMorequipPopupCard').addClass('hidden');
     });

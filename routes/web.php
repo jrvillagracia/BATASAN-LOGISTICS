@@ -4,13 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\SuppliesController;
 use App\Http\Controllers\JWTApiTokenController;
 use App\Http\Controllers\Events\ApproveController;
 use App\Http\Controllers\Events\ApprovalController;
 use App\Http\Controllers\Events\CompleteController;
+use App\Http\Controllers\Supplies\SuppliesController;
 use App\Http\Controllers\FacilityModule\RoomController;
 use App\Http\Controllers\Equipments\EquipmentController;
+use App\Http\Controllers\Supplies\SuppliesStockController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
 
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
@@ -197,7 +198,7 @@ Route::post('/equipment/approved', [EquipmentController::class, 'approve'])->nam
 Route::get('/equipment/details', [EquipmentController::class,'equipmentDetails'])->name('equipment.details');
 Route::post('/equipment/store', [EquipmentController::class, 'store'])->name('equipment.store');
 Route::post('/equipment/delete', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
-Route::post('/equipment/delete-view', [EquipmentController::class, 'destroyEdit2'])->name('equipment.destroy2');
+Route::post('/equipment/delete-view', [EquipmentController::class, 'destroy2'])->name('equipment.destroy2');
 Route::post('/equipment/update-main', [EquipmentController::class, 'updateMain'])->name('equipment.updateMain');
 Route::post('/equipment/update-view', [EquipmentController::class, 'updateView'])->name('equipment.updateView');
 Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewing'])->name('equipment.finalViewing');
@@ -206,8 +207,9 @@ Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewin
 Route::get('/admin_equipment', [EquipmentStockController::class, 'index'])->name('admin_EQUIPMENT');
 
 
-//Supplies
+//Supplies Stock in
 Route::get('/admin_StockInSupplies', [SuppliesController::class, 'index'])->name('admin_StockInSupplies');
+Route::post('/supplies/approved', [SuppliesController::class, 'approve'])->name('supplies.approve');
 Route::get('/supplies/details', [SuppliesController::class,'suppliesDetails'])->name('supplies.details');
 Route::post('/supplies/store', [SuppliesController::class, 'store'])->name('supplies.store');
 Route::post('/supplies/delete', [SuppliesController::class, 'destroy'])->name('supplies.destroy');
@@ -216,18 +218,21 @@ Route::post('/supplies/update-main', [SuppliesController::class, 'updateMain'])-
 Route::post('/supplies/update-view', [SuppliesController::class, 'updateView'])->name('equipment.updateView');
 Route::get('/supplies/final-viewing', [SuppliesController::class, 'finalViewing'])->name('supplies.finalViewing');
 
-Route::get('/admin_supplies', function () {
-    return view('adminPages.admin_supplies');
-})->name('admin_supplies');
+//Supplies
+Route::get('/admin_supplies', [SuppliesStockController::class, 'index'])->name('admin_supplies');
 
-//Instructional Room
+
+//Rooms
 Route::get('/admin_facilityRegRoom', [RoomController::class, 'index'])->name('admin_facilityRegRoom');
 Route::post('/rooms/store', [RoomController::class, 'store'])->name('room.store');
 Route::post('/room/edit', [RoomController::class, 'edit'])->name('room.edit');
+Route::get('/api/rooms', [RoomController::class, 'getRoomsBySchoolYear'])->name('room.schoolYear');
 
-//Laboratory Room
 Route::get('/admin_facilitySpecRoom', [RoomController::class, 'labindex'])->name('admin_facilitySpecRoom');
+Route::post('/room/lab/edit', [RoomController::class, 'edit'])->name('room.lab.edit');
 Route::post('/rooms/lab/store', [RoomController::class, 'store'])->name('rooms.lab.store');
+Route::get('/buildings-rooms', [RoomController::class, 'getBuildingAndRooms'])->name('getBuildingandRooms');
+
 
 //Events and Activities
 Route::post('/events/store', [ApprovalController::class, 'store'])->name('events.store');
@@ -320,3 +325,19 @@ Route::get('/admin_eventsHistory', function () {
     });
 
 });
+
+
+// PRODUCT ORDER FOR APPROVAL
+Route::get('/admin_POInventory', function () {
+    return view('adminPages.admin_POInventory');
+})->name('admin_POInventory');
+
+// PRODUCT ORDER APPROVE ORDER
+Route::get('/admin_POApprOrderInventory', function () {
+    return view('adminPages.admin_POApprOrderInventory');
+})->name('admin_POApprOrderInventory');
+
+// PRODUCT ORDER COMPLETED ORDER
+Route::get('/admin_POCompleteOrderInventory', function () {
+    return view('adminPages.admin_POCompleteOrderInventory');
+})->name('admin_POCompleteOrderInventory');

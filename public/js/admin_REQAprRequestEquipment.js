@@ -105,6 +105,40 @@ $(document).ready(function() {
     });
 });
 
+// CANCEL BUTTON FORM CARD
+$(document).ready(function () {
+    $("#CancelApprReqEquipBtn").click(function () {
+        $("#CancelEquipPopupCard").removeClass("hidden");
+    });
+    
+    $("#submitCancelEquipPopupCard").click(function () {
+        event.preventDefault();
+        Swal.fire({
+            icon: 'success',
+            title: 'Submitted',
+            text: 'Your reason has been submitted',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#CancelEquipPopupCard").addClass("hidden");
+        });
+    });
+
+
+    $("#closeCancelEquipPopupCard").click(function () {
+        event.preventDefault();
+        Swal.fire({
+            icon: 'error',
+            title: 'Cancelled',
+            text: 'Decline process has been cancelled',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#CancelEquipPopupCard").addClass("hidden");
+        });
+    });
+});
+
 
 // COMPLETE BUTTON FORM CARD
 $(document).ready(function () {
@@ -237,3 +271,5 @@ document.addEventListener("DOMContentLoaded", function () {
         // });
     }
 });
+
+

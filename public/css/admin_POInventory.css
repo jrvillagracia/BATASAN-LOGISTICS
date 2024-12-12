@@ -1,0 +1,56 @@
+#POTable thead {
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+#ProductOrder1 {
+    z-index: 50; /* Increase the z-index  */
+}
+
+#step2ContentTable thead{
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+#step2ContentTable th, #step2ContentTable td {
+    white-space: nowrap;
+}
+
+#step2ContentTable td {
+    width: 20%; /* Adjust the width as needed */
+}
+
+/* Optional: Adjust the width of the 'Quantity' input field */
+#step2ContentTable input[type="number"] {
+    width: 100%;
+}
+
+
+/* VIEW Product Order */
+#POViewTable thead{
+    background-color: #163172; /* Your custom background color */
+    color: white; /* Your custom text color */
+}
+
+#ViewProductOrderPopupCard{
+    z-index: 50;
+}
+
+
+
+
+
+
+/*APPROVE ORDER MODULE PRODUCT ORDER */
+#ViewApprOrderPOPopupCard{
+    z-index: 50;
+}
+
+
+
+/*COMPLETED ORDER MODULE PRODUCT ORDER */
+#ViewComOrderPOPopupCard{
+    z-index: 50;
+}
+
+

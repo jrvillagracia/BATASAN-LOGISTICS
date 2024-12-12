@@ -66,6 +66,11 @@
                 <button id="RegRoomExportBtn" class="bg-green-500 text-white p-2 rounded hover:bg-green-600">Export File</button>
                 <button id="RegRoomSelectAllBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Select all</button>
 
+                <!-- School Year filter --> 
+                <select id="ReqSchoolYear" name="ReqSchoolYear" class="w-30 px-2 py-1 border border-gray-400 rounded">
+                    <option value="" disabled selected></option>
+                </select>
+
             </div>
         </div>
 
@@ -158,7 +163,8 @@
                 </thead>
                 <tbody id="tableBody">
                     @foreach($combinedRooms as $room)
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="{{$loop->index}}" data-id="{{$room['roomId']}}">
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="{{$loop->index}}" data-id="{{$room['roomId']}}"
+                        data-school-year="{{ $room['facilityRoom']['schoolYear']}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $room['facilityRoom']['BldName']}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $room['facilityRoom']['Room'] }}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $room['facilityRoom']['facilityStatus'] }}</td>
@@ -172,7 +178,7 @@
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
                             </button>
-                            
+
                             <button class="editINSTButton" data-id="{{$room['roomId']}}" type="button">
                                 <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
@@ -229,6 +235,7 @@
             @endforeach
 
             <!-- Edit Popup Card -->
+            @foreach($combinedRooms as $room)
             <div id="RegEditFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
 
@@ -240,25 +247,11 @@
                             </svg>
                         </button>
                     </div>
-                    
-                    @foreach($combinedRooms as $room)
+
+
                     <form id="RegEditForm" action="" method="">
                         @csrf
-                        <!-- Input Fields -->
-                        <!-- <div class="mb-4">
-                            <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                    </svg>
-                                </div>
-                                <input id="RegEditDate" datepicker datepicker-buttons datepicker-autoselect-today type="text" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
-                            </div>
-                        </div> -->
-
                         <input type="hidden" name="id" id="RegEditRoomId" value="">
-
 
                         <div class="mb-4">
                             <label for="name" class="block text-sm font-semibold mb-2">Building Name</label>

@@ -12,6 +12,8 @@ class Equipment extends Model
 
     protected $table = 'equipment';
 
+    protected $primaryKey = 'equipmentId';
+
     protected $fillable = [
         'EquipmentControlNo',
         'EquipmentBrandName',
@@ -26,6 +28,7 @@ class Equipment extends Model
         'EquipmentDepartment',
         'EquipmentClassification',
         'EquipmentSKU',
-        'EquipmentSerialNo'
+        'EquipmentSerialNo',
+        'EquipmentStatus'
     ];
 }

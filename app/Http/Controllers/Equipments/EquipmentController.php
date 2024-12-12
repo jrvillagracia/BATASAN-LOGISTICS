@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Equipments;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Equipments\Equipment;
@@ -14,6 +15,7 @@ class EquipmentController extends Controller
     public function index()
     {
         $equipment = Equipment::select(
+            DB::raw('"EquipmentStatus"'),
             DB::raw('"EquipmentBrandName"'),
             DB::raw('"EquipmentName"'),
             DB::raw('"EquipmentCategory"'),
@@ -29,6 +31,7 @@ class EquipmentController extends Controller
             DB::raw('COUNT(*) AS "totalItems"')
         )
         ->groupBy(
+            DB::raw('"EquipmentStatus"'),
             DB::raw('"EquipmentBrandName"'),
             DB::raw('"EquipmentName"'),
             DB::raw('"EquipmentCategory"'),
@@ -44,45 +47,6 @@ class EquipmentController extends Controller
             
         return view('adminPages.admin_StockInEquipment', compact('equipment'));
     }
-
-    public function finalViewing(Request $request)
-    {
-        // Validate the incoming request
-        $validated = $request->validate([
-            'id' => 'required|integer|exists:equipment,id',
-        ]);
-
-        // Get the equipment ID from the validated data
-        $id = $validated['id'];
-
-        // Fetch all details of the equipment
-        $equipmentDetails = Equipment::select(
-            'id',
-            'EquipmentControlNo',
-            'EquipmentSerialNo',
-            'EquipmentBrandName',
-            'EquipmentName',
-            'EquipmentCategory',
-            'EquipmentType',
-            'EquipmentColor',
-            'EquipmentUnit',
-            'EquipmentQuantity',
-            'EquipmentUnitPrice',
-            'EquipmentClassification',
-            'EquipmentDate'
-        )
-        ->where('id', $id)
-        ->first();
-
-        // Check if equipment details were found
-        if (!$equipmentDetails) {
-            return response()->json(['message' => 'Equipment not found'], 404);
-        }
-
-        // Return the equipment details
-        return response()->json($equipmentDetails);
-    }
-
 
     public function create()
     {
@@ -101,11 +65,12 @@ class EquipmentController extends Controller
             'EquipmentUnit' => 'required|string|max:255',
             'EquipmentQuantity' => 'required|integer',
             'EquipmentDate' => 'required|date',
-            'EquipmentUnitPrice' => 'required|numeric',
-            'EquipmentClassification' => 'required|string|max:255',
+            'EquipmentUnitPrice' => 'required|numeric|max:5000',
+            'EquipmentClassification' => 'required|string',
             'EquipmentSKU' => 'required|string|max:255',
-            'EquipmentSerialNo' => 'required|string|max:255',
         ]);
+
+        $validatedData['EquipmentDate'] = Carbon::parse($validatedData['EquipmentDate'])->format('Y-m-d');
     
         // Create a new equipment entry in the database
         for ($i = 0; $i < $validatedData['EquipmentQuantity']; $i++) {
@@ -116,7 +81,7 @@ class EquipmentController extends Controller
     
         // Find the latest entry for this brand
         $latestEquipment = Equipment::where('EquipmentBrandName', $request->EquipmentBrandName)
-                                    ->orderBy('id', 'desc')
+                                    ->orderBy('equipmentId', 'desc')
                                     ->first();
     
         if ($latestEquipment) {
@@ -132,6 +97,12 @@ class EquipmentController extends Controller
         // Prepare the control number for the new item
         $controlNumber = $brandAbbreviation . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
+          // Check if the serial number exists (if any)
+          $serialNo = $request->EquipmentSerialNo ?? null;  
+          if ($serialNo) {
+              $status = 'COMPLETE'; 
+          }
+
             $equipment = Equipment::create([
                 'EquipmentBrandName' => $validatedData['EquipmentBrandName'],
                 'EquipmentName' => $validatedData['EquipmentName'],
@@ -144,16 +115,16 @@ class EquipmentController extends Controller
                 'EquipmentUnitPrice' => $validatedData['EquipmentUnitPrice'],
                 'EquipmentClassification' => $validatedData['EquipmentClassification'],
                 'EquipmentSKU' => $validatedData['EquipmentSKU'],
-                'EquipmentSerialNo' => $validatedData['EquipmentSerialNo'],
-                'EquipmentControlNo' => $controlNumber, // Save the generated control number
+                'EquipmentControlNo' => $controlNumber, 
+                'EquipmentStatus' => 'PENDING',
             ]);
         }
         
         // Return a response with the control number and success message
         return response()->json([
             'message' => 'Equipment saved successfully!',
-            'controlNo' => $controlNumber, // Return the control number
-            'equipment' => $equipment, // Optional: return the equipment details
+            'controlNo' => $controlNumber,
+            'equipment' => $equipment,
         ]);
     }
 
@@ -169,7 +140,7 @@ class EquipmentController extends Controller
 
         // Fetch equipment details that match the brand name
         $equipmentDetails = Equipment::select(
-                'id',
+                'equipmentId',
                 'EquipmentControlNo',
                 'EquipmentBrandName',
                 'EquipmentName',
@@ -180,7 +151,9 @@ class EquipmentController extends Controller
                 'EquipmentUnit',
                 'EquipmentUnitPrice',
                 'EquipmentClassification',
-                'EquipmentDate'
+                'EquipmentDate',
+                'EquipmentSerialNo',
+                'EquipmentStatus'
             )
             ->where('EquipmentBrandName', 'like', $brandName) 
             ->get();
@@ -188,13 +161,13 @@ class EquipmentController extends Controller
         if ($equipmentDetails->isEmpty()) {
             return response()->json(['message' => 'Equipment not found'], 404);
         }
-
+       
         // Prepare response with the brand name prefix and equipment details
         return response()->json([
             'brandName' => $brandName,
             'equipmentDetails' => $equipmentDetails->map(function ($equipment) {
                 return [
-                    'id' => $equipment->id, // Include ID
+                    'equipmentId' => $equipment->equipmentId,
                     'EquipmentControlNo' => $equipment->EquipmentControlNo,
                     'EquipmentBrandName' => $equipment->EquipmentBrandName,
                     'EquipmentName' => $equipment->EquipmentName,
@@ -206,6 +179,8 @@ class EquipmentController extends Controller
                     'EquipmentUnitPrice' => $equipment->EquipmentUnitPrice,
                     'EquipmentClassification' => $equipment->EquipmentClassification,
                     'EquipmentDate' => $equipment->EquipmentDate,
+                    'EquipmentSerialNo' => $equipment->EquipmentSerialNo,
+                    'EquipmentStatus' => $equipment->EquipmentStatus,
                 ];
             })
         ]);
@@ -214,23 +189,37 @@ class EquipmentController extends Controller
 
     public function updateMain(Request $request)
     {
-        Log::info('Incoming request data for Main Edit:', $request->all());
+        Log::info('Incoming request data for Main :', $request->all());
     
         // Validate the incoming request data for the main table
         $validatedData = $request->validate([
-            'EquipmentBrandName' => 'required|string|max:255',
-            'EquipmentName' => 'required|string|max:255',
-            'EquipmentCategory' => 'required|string',
-            'EquipmentSKU' => 'required|string|max:255',
-            'brand' => 'required|string|max:255', // Ensure brand is validated
+            'EquipmentBrandNameEdit' => 'required|string|max:255',
+            'EquipmentNameEdit' => 'required|string|max:255',
+            'EquipmentCategoryEdit' => 'required|string',
+            'otherEquipCategoryEdit' => 'nullable|string|max:255',
+            'EquipmentQuantityEdit' => 'required|integer',
+            'EquipmentColorEdit' => 'required|string|max:255',
+            'EquipmentTypeEdit' => 'required|string|max:255',
+            'EquipmentUnitEdit' => 'required|string|max:255',
+            'EquipmentUnitPriceEdit' => 'required|numeric',
+            'EquipmentClassificationEdit' => 'required|string|max:255',
+            'EquipmentSKUEdit' => 'required|string|max:255',
+            'brand' => 'required|string|max:255', 
         ]);
+        
     
         // Update the equipment based on the brand
         $updateCount = Equipment::where('EquipmentBrandName', $validatedData['brand'])->update([
-            'EquipmentBrandName' => $validatedData['EquipmentBrandName'],
-            'EquipmentName' => $validatedData['EquipmentName'],
-            'EquipmentCategory' => $validatedData['EquipmentCategory'],
-            'EquipmentSKU' => $validatedData['EquipmentSKU'], // Fixed typo from 'EquipmenntSKU'
+            'EquipmentBrandName' => $validatedData['EquipmentBrandNameEdit'],
+            'EquipmentName' => $validatedData['EquipmentNameEdit'],
+            'EquipmentCategory' => $validatedData['EquipmentCategoryEdit'],
+            'EquipmentQuantity' => (int)$validatedData['EquipmentQuantityEdit'],
+            'EquipmentColor' => $validatedData['EquipmentColorEdit'],
+            'EquipmentType' => $validatedData['EquipmentTypeEdit'],
+            'EquipmentUnit' => $validatedData['EquipmentUnitEdit'],
+            'EquipmentUnitPrice' => $validatedData['EquipmentUnitPriceEdit'],
+            'EquipmentClassification' => $validatedData['EquipmentClassificationEdit'],
+            'EquipmentSKU' => $validatedData['EquipmentSKUEdit'],
         ]);
     
         // Check if any rows were updated
@@ -245,61 +234,81 @@ class EquipmentController extends Controller
     public function updateView(Request $request)
     {
         $request->validate([
-            'id' => 'required|integer|exists:equipment,id',
-            'FullEquipmentSerialNoEdit' => 'required|string|max:255',
-            'FullEquipmentTypeEdit' => 'required|string|max:255',
-            'FullEquipmentColorEdit' => 'required|string|max:255',
-            'FullEquipmentUnitEdit' => 'required|string|max:255',
-            'FullEquipmentUnitPriceEdit' => 'required|numeric',
-            'FullEquipmentClassificationEdit' => 'required|string|max:255',
-            'FullEquipmentDateEdit' => 'required|date',
+            'equipmentId' => 'required|integer|exists:equipment,equipmentId',
+            'EquipmentSerialNo' => 'required|string|max:255', 
+            'FullEquipmentControlNoEdit' => 'required|string|max:255'
         ]);
 
-        $equipment = Equipment::findOrFail($request->input('id'));
+        $equipment = Equipment::findOrFail($request->input('equipmentId'));
 
-        $equipment->EquipmentSerialNo = $request->input('FullEquipmentSerialNoEdit');
-        $equipment->EquipmentType = $request->input('FullEquipmentTypeEdit');
-        $equipment->EquipmentColor = $request->input('FullEquipmentColorEdit');
-        $equipment->EquipmentUnit = $request->input('FullEquipmentUnitEdit');
-        $equipment->EquipmentUnitPrice = $request->input('FullEquipmentUnitPriceEdit');
-        $equipment->EquipmentClassification = $request->input('FullEquipmentClassificationEdit');
-        $equipment->EquipmentDate = $request->input('FullEquipmentDateEdit');
+        $equipment->EquipmentSerialNo = $request->input('EquipmentSerialNo');
+
+        $equipment->EquipmentControlNo = $request->input('FullEquipmentControlNoEdit');
+
+        
 
         $equipment->save();
 
-        return response()->json(['message' => 'Equipment updated successfully.', 'equipment' => $equipment]);
+        // Check if all equipment items of the same brand have a serial number
+        $brandName = $equipment->EquipmentBrandName;
+        $equipmentItems = Equipment::where('EquipmentBrandName', $brandName)->get();
+
+        // Initialize a flag to track if all items have a serial number
+        $allComplete = true;
+
+        foreach ($equipmentItems as $item) {
+            if (!$item->EquipmentSerialNo) {
+                $allComplete = false;
+                break;
+            }
+        }
+
+        // If all items for the same brand have a serial number, set their status to "COMPLETE"
+        if ($allComplete) {
+            Equipment::where('EquipmentBrandName', $brandName)
+                    ->update(['EquipmentStatus' => 'COMPLETE']);
+        } else {
+            // If any item is missing a serial number, set status to "PENDING"
+            Equipment::where('EquipmentBrandName', $brandName)
+                    ->update(['EquipmentStatus' => 'PENDING']);
+        }
+
+
+        return response()->json([
+            'message' => 'Equipment updated successfully.',
+            'serialNumber' => $request->input('serialNumber'),
+            'status' => 'status',
+            'equipment' => $equipment
+        ]);
     }
-
-
 
 
     public function destroy(Request $request)
     {
+        // Get the brand name from the request
         $brandName = $request->input('brand');
 
-        Log::info('Incoming brand name for deletion:', ['brand' => $brandName]);
+        // Find and delete items with the matching brand name
+        $deletedCount = Equipment::where('EquipmentBrandName', $brandName)->delete();
 
-        $equipmentItems = Equipment::where('EquipmentBrandName', $brandName)->get();
-
-        if ($equipmentItems->isEmpty()) {
-            return response()->json(['message' => 'Equipment item not found.'], 404);
+        if ($deletedCount > 0) {
+            return response()->json(['success' => 'Items deleted successfully']);
+        } else {
+            return response()->json(['error' => 'No items found for the given brand']);
         }
-
-        Equipment::where('EquipmentBrandName', $brandName)->delete();
-
-        return response()->json(['message' => 'All equipment items deleted successfully.'], 200);
-    }   
+    }
 
 
-    public function destroyEdit2(Request $request)
+
+    public function destroy2(Request $request)
     {
         // Validate the incoming request
         $request->validate([
-            'id' => 'required|integer|exists:equipment,id',
+            'equipmentId' => 'required|integer|exists:equipment,equipmentId',
         ]);
 
-        $id = $request->input('id');
-        $equipment = Equipment::find($id);
+        $equipmentId = $request->input('equipmentId');
+        $equipment = Equipment::find($equipmentId);
 
         if ($equipment) {
             $equipment->delete();
@@ -324,6 +333,17 @@ class EquipmentController extends Controller
         }
 
         $firstBrandName = $equipment->first()->EquipmentBrandName;
+
+        // Check if any equipment is still in "pending" status
+        foreach ($equipment as $item) {
+            if ($item->status == 'pending') {
+                return response()->json(['message' => 'The equipment has a pending status and cannot be stock-in until approved.'], 400);
+            }
+
+            if (empty($item->EquipmentSerialNo)) {
+                return response()->json(['message' => 'A serial number is required for stock-in.'], 400);
+            }
+        }
 
         try {
             // Insert all equipment details into the 'equipment_stock'
@@ -355,6 +375,7 @@ class EquipmentController extends Controller
             return response()->json(['message' => 'Error approving equipment: ' . $e->getMessage()], 500);
         }
     }
+
 
 }
     

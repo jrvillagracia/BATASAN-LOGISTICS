@@ -23,7 +23,7 @@ $(document).ready(function () {
 //ADD FACILITY REGULAR
 $(document).ready(function () {
     $('#RegSubFormBtn').click(function (event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
         $.ajaxSetup({
             headers: {
@@ -34,11 +34,11 @@ $(document).ready(function () {
         const buildingName = $('#RegBldName').val();
         const room = $('#RegRoom').val();
         const capacity = $('#RegCapacity').val();
-        const facilityRoomDate = $('#RegRoomDate').val(); 
-        
+        const facilityRoomDate = $('#RegRoomDate').val();
+        const schoolYear = $('#ReqSchoolYear').val();
 
         // Check if all values are entered
-        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '') {
+        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '' || schoolYear ==='') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -47,7 +47,6 @@ $(document).ready(function () {
             });
             return;
         }
-
 
         // Determine facilityRoomType based on the current page/form
         let facilityRoomType = '';
@@ -66,48 +65,63 @@ $(document).ready(function () {
             capacity: capacity,
             facilityRoomDate: facilityRoomDate,
             facilityRoomType: facilityRoomType,
+            schoolYear:schoolYear,
         };
 
-        // AJAX request
-        $.ajax({
-            url: '/rooms/store',
-            type: 'POST',  
-            data: formData,  
-            success: function (response) {
-                console.log(response);
-                $('#RegForm')[0].reset(); 
-                $('#RegFormCard').addClass('hidden');
-                
-                let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
+        // Confirmation dialog
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to submit this room information?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, submit it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // AJAX request
+                $.ajax({
+                    url: '/rooms/store',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        console.log(response);
+                        $('#RegForm')[0].reset();
+                        $('#RegFormCard').addClass('hidden');
 
-                // Append the new row to the table
-                const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300"></td>
-                                   <td class="px-6 py-6 border-b border-gray-300"></td>
-                               </tr>`;
-                $('#tableBody').append(newRow);
+                        let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Saved!',
-                    text: 'Room has been successfully added',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    location.reload();
-                });
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr.responseText);
-                // Handle error response
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                    showConfirmButton: true
+                        // Append the new row to the table
+                        const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300"></td>
+                                           <td class="px-6 py-6 border-b border-gray-300"></td>
+                                       </tr>`;
+                        $('#tableBody').append(newRow);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Saved!',
+                            text: 'Room has been successfully added',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        // Handle error response
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                            showConfirmButton: true
+                        });
+                    }
                 });
             }
         });
@@ -117,11 +131,11 @@ $(document).ready(function () {
 
 
 // SELECT ALL BUTTOn
-$(document).ready(function() {
+$(document).ready(function () {
     let isAllChecked = false;
 
 
-    $('#RegfoundSectionselectAllBtn').click(function() {
+    $('#RegfoundSectionselectAllBtn').click(function () {
         isAllChecked = !isAllChecked;
         $('#RegFacTable').find('input[type="checkbox"]').prop('checked', isAllChecked);
 
@@ -256,40 +270,6 @@ $(document).ready(function () {
 });
 
 
-
-// $(document).ready(function () {
-//     $('#editINSTButton').click(function () {
-//         console.log('Show Add Facility Button Clicked');
-//         $('#RegEditFormCard').removeClass('hidden');
-//     });
-
-
-//     $('#RegEditCloseFormBtn').click(function () {
-//         console.log('Close Add Facility Button Clicked');
-//         $('#RegEditFormCard').addClass('hidden');
-//     });
-
-
-//     $('#RegEditCancelFormBtn').click(function () {
-//         console.log('Close Add Facility Button Clicked');
-//         $('#RegEditFormCard').addClass('hidden');
-//     });
-
-//     $('#RegEditSaveFormBtn').click(function () {
-//         Swal.fire({
-//             icon: 'success',
-//             title: 'Saved!',
-//             text: 'Your action has been successfully saved',
-//             confirmButtonText: 'OK',
-//             confirmButtonColor: '#3085d6'
-//         }).then(() => {
-//             $("#RegEditFormCard").addClass("hidden");
-//         });
-//     });
-// });
-
-
-
 // MAIN TABLE DATATABLES
 document.addEventListener("DOMContentLoaded", function () {
     // Check if the table exists and simple-datatables is loaded
@@ -315,10 +295,59 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+// Get School Year
+$(document).ready(function () {
+    function fetchSchoolYears() {
+        const apiUrl = "http://192.168.2.62:3000/api/v1/sis/schoolYear";
+
+        $.ajax({
+            url: apiUrl,
+            method: "GET",
+            success: function (response) {
+                const $dropdown = $('#ReqSchoolYear');
+                $dropdown.empty();
+                $dropdown.append('<option value="" disabled>Select School Year</option>');
+                $.each(response.foundSchoolYear, function (index, year) {
+                    const isSelected = year.schoolYear === "2024-2025" ? "selected" : "";
+                    $dropdown.append(
+                        `<option value="${year.schoolYear}" ${isSelected}>${year.schoolYear}</option>`
+                    );
+                });
+            },
+            error: function () {
+                $('#ReqSchoolYear').append('<option value="" disabled>No data available</option>');
+            }
+        });
+    }
+
+    fetchSchoolYears();
+
+    // Filter table rows based on selected school year
+    $('#ReqSchoolYear').change(function () {
+        const selectedYear = $(this).val();
+
+        console.log(`Selected Year: ${selectedYear}`); // Debugging: Log selected year
+
+        $('#tableBody tr').each(function () {
+            const rowYear = $(this).data('school-year');
+
+            console.log(`Row Year: ${rowYear}`); // Debugging: Log row year
+
+            if (rowYear === selectedYear) {
+                $(this).show(); // Show rows that match the selected year
+            } else {
+                $(this).hide(); // Hide rows that do not match
+            }
+        });
+    });
+});
+
+
+
 //Automatic Set Date
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     function formatDateToMMDDYYYY(date) {
-        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         const year = date.getFullYear();
         return `${month}/${day}/${year}`;

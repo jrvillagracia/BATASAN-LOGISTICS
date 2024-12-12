@@ -24,7 +24,7 @@ $(document).ready(function () {
 // ADD FACILITY SPECIAL 
 $(document).ready(function () {
     $('#SpecSubFormBtn').click(function (event) {
-        event.preventDefault();  // Prevent default form submission
+        event.preventDefault(); // Prevent default form submission
 
         $.ajaxSetup({
             headers: {
@@ -37,14 +37,15 @@ $(document).ready(function () {
         const room = $('#SpecRoom').val();
         const capacity = $('#SpecCapacity').val();
         const facilityRoomDate = $('#SpecRoomDate').val(); 
+        const schoolYear =$('#SuppReqSchoolYear').val();
 
         // Check if all values are entered
-        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '') {
+        if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === ''|| schoolYear ==='') {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "Please fill all fields!",
-                    showConfirmButton: true
+                showConfirmButton: true
             });
             return;
         }
@@ -60,59 +61,74 @@ $(document).ready(function () {
 
         // Prepare data for AJAX request
         const formData = {
-            _token: $('meta[name="csrf-token"]').attr('content'),  // Laravel CSRF token
+            _token: $('meta[name="csrf-token"]').attr('content'), // Laravel CSRF token
             buildingName: buildingName,
             room: room,
             capacity: capacity,
             facilityRoomDate: facilityRoomDate,
-            facilityRoomType: facilityRoomType,  // Adjust this name to match your backend field
+            facilityRoomType: facilityRoomType,
+            schoolYear:schoolYear,
         };
 
+        // Confirmation message
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to submit this form?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, submit it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // AJAX request
+                $.ajax({
+                    url: '/rooms/lab/store', // The correct way to include the Blade route
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        $('#SpecForm')[0].reset();
+                        $('#SpecFormCard').addClass('hidden');
 
-        // AJAX request
-        $.ajax({
-            url: '/rooms/lab/store',  // The correct way to include the Blade route
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-                $('#SpecForm')[0].reset();
-                $('#SpecFormCard').addClass('hidden');
+                        let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
 
-                let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
+                        // Optionally, you can append the new data to the table or update the UI
+                        const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
+                                           <td class="px-6 py-6 border-b border-gray-300"></td>
+                                           <td class="px-6 py-6 border-b border-gray-300"></td>
+                                       </tr>`;
+                        $('#tableBody').append(newRow);
 
-                // Optionally, you can append the new data to the table or update the UI
-                const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
-                                   <td class="px-6 py-6 border-b border-gray-300"></td>
-                                   <td class="px-6 py-6 border-b border-gray-300"></td>
-                               </tr>`;
-                $('#tableBody').append(newRow);
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Saved!',
-                    text: 'Your action has been successfully submitted',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    location.reload();
-                });
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr.responseText);
-                // Handle error response
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong!",
-                    showConfirmButton: true
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Saved!',
+                            text: 'Your action has been successfully submitted',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        // Handle error response
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                            showConfirmButton: true
+                        });
+                    }
                 });
             }
         });
     });
 });
+
 
 
 // SELECT ALL BUTTOn
@@ -135,14 +151,19 @@ $(document).ready(function() {
 
 // VIEW 
 $(document).ready(function () {
-    $('#viewLABButton').click(function () {
-        console.log('View Laboratory Button is Clicked.');
-        $('#ViewLABPopupCard').removeClass('hidden');
+    $('.viewLABButton').click(function () {
+        const roomId = $(this).data('id'); 
+        const roomIndex = $(this).data('index');
+        console.log(`View Laboratory Button Clicked: Room ID = ${roomId}, Index = ${roomIndex}`);
+        
+        $(`#ViewLABPopupCard-${roomIndex}`).removeClass('hidden');
     });
 
-    $('#closeViewLABPopupCard').click(function () {
-        console.log('Close "X" Equipment Button is Clicked.');
-        $('#ViewLABPopupCard').addClass('hidden');
+    $('.closeViewLABPopupCard').click(function () {
+        const roomIndex = $(this).data('id');
+        console.log(`Close "X" Button Clicked: Index = ${roomIndex}`);
+        
+        $(`#ViewLABPopupCard-${roomIndex}`).addClass('hidden');
     });
 });
 
@@ -150,11 +171,88 @@ $(document).ready(function () {
 
 // EDIT
 $(document).ready(function () {
-    $('#editLABButton').click(function () {
-        console.log('Show Add Facility Button Clicked');
-        $('#SpecEditFormCard').removeClass('hidden');
+    var csrfToken = $('meta[name="csrf-token"]').attr('content') || $('#csrf-token').data('token');
+    console.log('CSRF Token:', csrfToken);
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': csrfToken
+        }
     });
 
+    // Event delegation for the edit button click
+    $(document).on('click', '.editLABButton', function (event) {
+        event.preventDefault();
+        console.log('Edit Room Button Clicked');
+
+        // Get room ID from the clicked button's data-id attribute
+        var roomId = $(this).data('id');
+        var row = $(this).closest('tr'); // Closest row containing the button
+        console.log('Editing Room with ID:', roomId);
+
+        // Show the edit modal
+        $('#SpecEditFormCard').removeClass('hidden');
+
+        // Populate the form with data from the selected row
+        $('#SpecEditForm').find('#SpecEditBldName').val(row.find('td').eq(0).text().trim());
+        $('#SpecEditForm').find('#SpecEditRoom').val(row.find('td').eq(1).text().trim());
+        $('#SpecEditForm').find('#SpecEditCapacity').val(row.find('td').eq(2).text().trim()); // Adjusted index for capacity
+
+        // Set the hidden input field with the room ID
+        $('#SpecEditRoomId').val(roomId);
+    });
+
+    // Handle the save button click
+    $('.SpecEditSaveFormBtn').on('click', function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: "Are you sure all input data are correct?",
+            showDenyButton: true,
+            confirmButtonText: "Yes",
+            denyButtonText: "No",
+            confirmButtonColor: '#3085d6',
+            denyButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = $('#SpecEditForm').serialize();
+                console.log('Form data:', formData);
+
+                $.ajax({
+                    url: '/room/lab/edit',
+                    method: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        Swal.fire("Saved!", "", "success").then(() => {
+                            updateTableRow(response.room); // Update the table row with new data
+                            $('#SpecEditFormCard').addClass('hidden');
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage = xhr.responseJSON?.message || error;
+                        console.log('Error:', errorMessage);
+                        Swal.fire("Error!", "Failed to update room: " + errorMessage, "error");
+                    }
+                });
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        });
+    });
+
+    // Function to update the table row with new data
+    function updateTableRow(room) {
+        var row = $(`tr[data-id="${room.id}"]`); // Locate the row using data-id
+        if (row.length > 0) {
+            row.find('td').eq(0).text(room.BuildingName); // Update building name
+            row.find('td').eq(1).text(room.Room);         // Update room name
+            row.find('td').eq(2).text(room.capacity);     // Update capacity
+            console.log('Row updated successfully');
+        } else {
+            console.warn('Row not found for room ID:', room.id);
+        }
+    }
 
     $('#SpecEditCloseFormBtn').click(function () {
         console.log('Close Add Facility Button Clicked');
@@ -165,18 +263,6 @@ $(document).ready(function () {
     $('#SpecEditCancelFormBtn').click(function () {
         console.log('Close Add Facility Button Clicked');
         $('#SpecEditFormCard').addClass('hidden');
-    });
-
-    $('#SpecEditSaveFormBtn').click(function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Saved!',
-            text: 'Your action has been successfully saved',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#SpecEditFormCard").addClass("hidden");
-        });
     });
 });
 
@@ -204,6 +290,52 @@ document.addEventListener("DOMContentLoaded", function() {
             dataTable.search(searchTerm);
         });
     }
+});
+
+//Get School Year
+$(document).ready(function () {
+    function fetchSchoolYears() {
+        // Define the API URL
+        const apiUrl = "http://192.168.2.62:3000/api/v1/sis/schoolYear";
+
+        // Make an AJAX GET request to the API
+        $.ajax({
+            url: apiUrl,
+            method: "GET",
+            success: function (response) {
+
+                const $dropdown = $('#SuppReqSchoolYear');
+                $dropdown.empty();
+
+                $dropdown.append('<option value="" disabled>Select School Year</option>');
+
+                $.each(response.foundSchoolYear, function (index, year) {
+                    const isSelected = year.schoolYear === "2024-2025" ? "selected" : "";
+                    $dropdown.append(
+                        `<option value="${year.schoolYear}" ${isSelected}>${year.schoolYear}</option>`
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Failed to fetch school years:", error);
+                // Handle error scenario
+                $('#SuppReqSchoolYear').append('<option value="" disabled>No data available</option>');
+            }
+        });
+    }
+
+    // Call the function to fetch school years on page load
+    fetchSchoolYears();
+
+
+    // Event listener for the dropdown change event
+    $('#SuppReqSchoolYear').change(function () {
+        const selectedOption = $(this).find('option:selected');
+        const selectedValue = selectedOption.val(); // Get the value (schoolYearId)
+
+        // Log the selected option
+        console.log(`Selected School Year: ${selectedValue}`);
+    });
 });
 
 

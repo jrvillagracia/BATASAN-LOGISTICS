@@ -3,6 +3,7 @@
 @section('title', 'Events and Activities | BHNHS')
 
 @section('content')
+
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -61,7 +62,6 @@
                             </svg>
                         </div>
                         <input type="search" id="eventSearch" name="eventSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
-                        <button type="submit" class="text-white absolute right-2.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                     </div>
 
                     <!-- Add Item Button -->
@@ -71,7 +71,7 @@
 
         <!-- Floating Card with Form (Initially Hidden) -->
         <div id="EventFormCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-            <div class="bg-white p-4 rounded-lg shadow-lg max-w-xl w-full">
+            <div class="bg-white p-4 rounded-lg shadow-lg max-w-4xl w-full">
 
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold mb-4">Add Event and Activity</h2>
@@ -82,122 +82,226 @@
                     </button>
                 </div>
 
-                <form id="EventForm" action="{{ route('events.store') }}"method="POST">
-                    @csrf
-                    <div class="grid grid-cols-2 gap-2">
-                        <!-- First column label/input -->
-                        <input type="hidden" name="event_id" id="event_id" value="{{ $event->event_id ?? '' }}">
-                        <div>
-                            <label for="time" class="block text-sm font-semibold mb-2">Select time:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
-                                    </svg>
+                <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse" id="stepper">
+                    <li id="EventsStep1Icon" class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
+                            1
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Fill Up Details</h3>
+                        </span>
+                    </li>
+                    <li id="EventsStep2Icon" class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                            2
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Request Inventory To Events</h3>
+                        </span>
+                    </li>
+                </ol>
+
+                <!-- Step 1 Content -->
+                <div id="EventsActStep1Content" class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
+                    <form id="EventForm" action="{{ route('events.store') }}" method="POST">
+                        <!-- Input Fields -->
+                        @csrf
+                        <div class="grid grid-cols-2 gap-2">
+                            <!-- First column label/input -->
+                            <input type="hidden" name="event_id" id="event_id" value="{{ $event->event_id ?? '' }}">
+                            <div>
+                                <label for="time" class="block text-sm font-semibold mb-2">Time:</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <input type="time" id="EventApprTime" name="EventApprtime" readonly class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                                 </div>
-                                <input type="time" id="EventApprTime" name="EventApprtime" readonly class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                             </div>
-                        </div>
 
-                        <div>
-                            <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                    </svg>
-                                </div>
-                                <input id="EventApprDate" name="EventApprDate" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="Request" class="block text-sm font-semibold mb-2">Requesting Office/Unit:</label>
-                            <input type="text" id="EventApprRequestOffice"  name="EventApprRequestOffice" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Request">
-                        </div>
-
-                        <div>
-                            <label for="Request" class="block text-sm font-semibold mb-2">Requesting for:</label>
-                            <input type="text" id="EventApprRequestFor" name="EventApprRequestFor" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Request for...." pattern="[A-Za-z ]*" title="Only characters are allowed">
-                        </div>
-
-                        <div>
-                            <label for="EName" class="block text-sm font-semibold mb-2">Event Name:</label>
-                            <input type="text" id="EventApprName" name="EventApprName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Event Name">
-                        </div>
-
-                        <div>
-                            <label for="EName" class="block text-sm font-semibold mb-2">Event Date:</label>
-                            <div id="date-range-picker" date-rangepicker class="flex items-center">
+                            <div>
+                                <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                         </svg>
                                     </div>
-                                    <input id="StartEventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" name="startEventApprDate" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
+                                    <input id="EventApprDate" name="EventApprDate" readonly datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                                 </div>
-                                <span class="mx-4 text-gray-500">to</span>
+                            </div>
+
+                            <div>
+                                <label for="EventApprRequestOffice" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
+                                <select id="EventApprRequestOffice" name="EventApprRequestOffice" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Office/Unit</option>
+                                    <option value="">TLE Department</option>
+                                    <option value="">English Department</option>
+                                    <option value="">Storage Office</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="Request" class="block text-sm font-semibold mb-2">Requesting for:</label>
+                                <input type="text" id="EventApprRequestFor" name="EventApprRequestFor" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Request for...." pattern="[A-Za-z ]*" title="Only characters are allowed">
+                            </div>
+
+                            <div>
+                                <label for="EName" class="block text-sm font-semibold mb-2">Event Name:</label>
+                                <input type="text" id="EventApprName" name="EventApprName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Event Name">
+                            </div>
+
+                            <div>
+                                <label for="EName" class="block text-sm font-semibold mb-2">Event Date:</label>
+                                <div id="date-range-picker" date-rangepicker class="flex items-center">
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input id="StartEventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" name="startEventApprDate" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
+                                    </div>
+                                    <span class="mx-4 text-gray-500">to</span>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input id="EndEventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" name="endEventApprDate" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="start-time" class="block text-sm font-semibold mb-2">Start time:</label>
                                 <div class="relative">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
-                                    <input id="EndEventApprDate" datepicker datepicker-min-date="06/04/2024" datepicker-max-date="05/05/2025" name="endEventApprDate" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
+                                    <input type="time" id="StartEventApprTime" name="StartEventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                                 </div>
                             </div>
-                        </div>
 
-                        <div>
-                            <label for="start-time" class="block text-sm font-semibold mb-2">Start time:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
-                                    </svg>
+                            <div>
+                                <label for="end-time" class="block text-sm font-semibold mb-2">End time:</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <input type="time" id="EndEventApprTime" name="EndEventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                                 </div>
-                                <input type="time" id="StartEventApprTime" name="StartEventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                             </div>
-                        </div>
 
-                        <div>
-                            <label for="end-time" class="block text-sm font-semibold mb-2">End time:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <input type="time" id="EndEventApprTime" name="EndEventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                            <div>
+                                <label for="EventsActBldName" class="block text-sm font-semibold mb-2">Building Name</label>
+                                <select id="EventsActBldName" name="EventsActBldName" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Building</option>
+                                    <option value=""></option>
+                                </select>
                             </div>
-                        </div>
 
-                        <div>
-                            <label for="ELocation" class="block text-sm font-semibold mb-2">Event Location:</label>
-                            <input type="text" id="EventApprLocation" name="EventApprLocation" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Event Location">
-                        </div>
+                            <div>
+                                <label for="EventsActRoom" class="block text-sm font-semibold mb-2">Room</label>
+                                <select id="EventsActRoom" name="EventsActRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Room</option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
 
-                        <div>
-                            <label for="EProductName" class="block text-sm font-semibold mb-2">Product Name:</label>
-                            <input type="text" id="EventApprProductName" name="EventApprProductName" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Product Name">
                         </div>
+                        <div class="flex justify-end pt-5">
+                            <button id="EventGoToStep2" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded">Next</button>
+                        </div>
+                    </form>
+                </div>
 
-                        <div>
-                            <label for="EQuantity" class="block text-sm font-semibold mb-1">Quantity</label>
-                            <input type="number" name="EventApprQuantity" id="EventApprQuantity" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity">
-                        </div>
+                <!-- Step 2 Content -->
+                <div id="EventsActStep2Content" class="border w-full border-blue-900 rounded-md shadow sm:p-8 p-4 hidden">
+                    <!-- Add a wrapper div around the table for scrolling -->
+                    <div class="overflow-y-auto max-h-60">
+                        <table id="step2ContentTable" class="w-full border-collapse">
+                            <thead>
+                                <tr class=" bg-blue-900">
+                                    <th class="p-2 text-white">Inventory</th>
+                                    <th class="p-2 text-white">Category</th>
+                                    <th class="p-2 text-white">Type</th>
+                                    <th class="p-2 text-white">Unit</th>
+                                    <th class="p-2 text-white">Quantity</th>
+                                    <th class="p-2 text-white">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="Events-TablBody">
+                                <!-- Single Inventory Item -->
+                                <tr class="Events-Rows">
+                                    <td class="p-2">
+                                        <select id="EventsActivityInventory" name="EventsActivityInventory" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                            <option value="EventsActivityInventory" disabled selected>Select Inventory</option>
+                                            <!-- These options will depend on the selected building -->
+                                            <option value="Inventory" data-building="">Equipment</option>
+                                            <option value="Supplies" data-building="">Supplies</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2">
+                                        <select id="EventActCategoryName" name="EventActCategoryName" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                            <option value="EventActCategoryName" disabled selected>Select Category</option>
+                                            <!-- These options will depend on the selected building -->
+                                            <option value="Laptop" data-building="">Laptop</option>
+                                            <option value="Printer" data-building="">Printer</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2">
+                                        <select id="EventActType" name="EventActType" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                            <option value="EventActType" disabled selected>Select Type</option>
+                                            <!-- These options will depend on the selected building -->
+                                            <option value="64gb" data-building="">64gb</option>
+                                            <option value="Nikon" data-building="">Nikon</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2">
+                                        <select id="EventActUnit" name="EventActUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                            <option value="EventActUnit" disabled selected>Select Unit</option>
+                                            <!-- These options will depend on the selected building -->
+                                            <option value="Box" data-building="">Box</option>
+                                            <option value="Unit" data-building="">Unit</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="number" id="EventActQuantity" class="w-20 border rounded p-2" placeholder="">
+                                    </td>
+
+                                    <td class="p-2 text-center">
+                                        <button type="button" class="EventActivitiesDelete-row-btn text-red-500 hover:text-red-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- More inventory rows can be added here -->
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div class="flex justify-end space-x-2">
-                        <button id="EventCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
-                        <button id="EventSubmitFormBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                    <div class="flex justify-between pt-3">
+                        <button id="EventBackToStep1" type="button" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-5 py-2.5 rounded">Back</button>
+                        <div class="flex justify-end space-x-2">
+                            <button type="button" id="EventAddRowBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 rounded">+ Add Another Item</button>
+                            <button id="EventCancelFormBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                            <button id="EventSubmitFormBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        </div>
                     </div>
+                </div>
 
-                </form>
             </div>
         </div>
-
 
         <!-- Table -->
         <div class="relative shadow-md sm:rounded-lg px-9 py-5">
@@ -224,10 +328,10 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Actions
-                        </th> 
+                        </th>
                 </thead>
                 <tbody id="tableBody" class="">
-                @foreach ($events as $event)
+                    @foreach ($events as $event)
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="{{$event->id}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->status}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->eventId}}</td>
@@ -247,7 +351,7 @@
             </table>
 
             <!-- View Popup Card -->
-             @foreach ($events as $event)
+            @foreach ($events as $event)
             <div id="ViewEventApprPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" data-id="">
                 <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
                     <div class="flex justify-between items-center mb-4">
@@ -294,7 +398,7 @@
                 </div>
             </div>
             @endforeach
-            
+
 
             <!-- Decline Popup Card -->
             @foreach ($events as $event)

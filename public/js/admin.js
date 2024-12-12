@@ -174,6 +174,7 @@ $(document).ready(function() {
         console.log('Burger Button Clicked');
         $("#sidebar").toggleClass("w-80 w-20");
         $(".sidebar-text").toggleClass("hidden");
+        $(".sidebar-text").toggleClass("hidden");
         $("#main-content").toggleClass("ml-80 ml-20"); // UPDATED
         $(".school-text").toggleClass("hidden");
     });

@@ -187,31 +187,42 @@
 
                     <form id="MainteFacilityForm" action="" method="POST">
                         <!-- Input Fields -->
-                        <div class="mb-4">
-                            <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                    </svg>
+
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
+                                    </div>
+                                    <input id="MainteFacilityDate" type="text" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                                 </div>
-                                <input id="MainteFacilityDate" type="text" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                             </div>
 
-                            <label for="time" class="block text-sm font-semibold mb-2">Select time:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
-                                    </svg>
+                            <div>
+                                <label for="time" class="block text-sm font-semibold mb-2">Time:</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <input type="time" id="MainteFacilityTime" name="MainteFacilityTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                                 </div>
-                                <input type="time" id="MainteFacilityTime" name="MainteFacilityTime" readonly class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                             </div>
                         </div>
 
                         <div class="mb-4">
                             <label for="MainteFacilityReqUnit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
-                            <input type="text" id="MainteFacilityReqUnit" name="MainteFacilityReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded" placeholder="Requesting Office/Unit">
+                            <select id="MainteFacilityReqUnit" name="MainteFacilityReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                <option value="" disabled selected>Select Office/Unit</option>
+                                <option value="">TLE Department</option>
+                                <option value="">English Department</option>
+                                <option value="">Storage Office</option>
+                            </select>
                         </div>
 
                         <div class="mb-4">
@@ -221,23 +232,31 @@
 
                         <!-- Two-column section for the specified fields -->
                         <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label for="FacilityBuildingName" class="block text-sm font-semibold mb-1">Building Name:</label>
-                                <input type="text" id="FacilityBuildingName" name="FacilityBuildingName" class="border border-gray-400 p-2 rounded w-full" placeholder="Building Name">
+                            <!-- Building Dropdown -->
+                            <div class="flex-1">
+                                <label for="FacilityBuildingName" class="block text-sm font-semibold mb-2">Building Name</label>
+                                <select id="FacilityBuildingName" name="FacilityBuildingName" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Building</option>
+                                    <option value=""></option>
+                                </select>
                             </div>
 
-                            <div>
-                                <label for="FacilityRoom" class="block text-sm font-semibold mb-1">Room:</label>
-                                <input type="text" name="FacilityRoom" id="FacilityRoom" class="border border-gray-400 p-2 rounded w-full" placeholder="Room">
+                            <!-- Room Dropdown -->
+                            <div class="flex-1">
+                                <label for="FacilityRoom" class="block text-sm font-semibold mb-2">Room</label>
+                                <select id="FacilityRoom" name="FacilityRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <option value="" disabled selected>Select Room</option>
+                                    <!-- These options will depend on the selected building -->
+                                    <option value="" data-building=""></option>
+                                </select>
                             </div>
+
 
                             <div>
                                 <label for="FacilityType" class="block text-sm font-semibold mb-1">Facility Type:</label>
                                 <select name="FacilityType" id="FacilityType" class="border border-gray-400 p-2 rounded w-full">
                                     <option value="" disabled selected>Select a category</option>
-                                    <option value="Instructional">Instructional</option>
-                                    <option value="Laboratory">Laboratory</option>
-                                    <option value="Office">Office</option>
+                                    <option value=""></option>
                                 </select>
                             </div>
 
@@ -245,6 +264,8 @@
                                 <button id="CloseMainteFacilityForm" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded h-12">Close</button>
                                 <button id="SubmitMainteFacilityForm" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded h-12">Submit</button>
                             </div>
+
+                        </div>
                     </form>
                 </div>
             </div>

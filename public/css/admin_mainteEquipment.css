@@ -17,3 +17,8 @@
 #MainteFacilityFormBtn {
     z-index: 50; /* Increase the z-index  */
 }
+
+
+#View-Mainte-Equip-InventoryPopupCard{
+    z-index: 50;
+}
