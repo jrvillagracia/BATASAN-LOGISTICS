@@ -21,7 +21,7 @@ class RoomController extends Controller
     public function index()
 {
     // Fetch the API response
-    $response = Http::get('http://192.168.2.62:3000/api/v1/sis/section/rooms/schoolYear');
+    $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear');
     $foundSections = $response->json()['foundSections'] ?? []; // Default to an empty array if not found
 
     // Fetch the rooms from your own database
@@ -94,7 +94,7 @@ class RoomController extends Controller
     public function labindex()
     {
         // Fetch the API response
-        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear/2020-2021');
+        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear');
         $foundSections = $response->json()['foundSections'] ?? []; // Default to an empty array if not found
 
         // Fetch laboratory rooms from your database
@@ -121,6 +121,7 @@ class RoomController extends Controller
                         'facilityStatus' => $room->facilityStatus,
                         'Capacity' => $room->Capacity,
                         'facilityRoomType' => $room->facilityRoomType,
+                        'schoolYear' => $room->schoolYear ?? 'unknown',
                     ],
                     'session' => null,       // Default values for missing API data
                     'gradeLevel' => null,
@@ -211,7 +212,7 @@ class RoomController extends Controller
     public function showDetailsRooms()
     {
         // Fetch API response
-        $apiResponse = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms');
+        $apiResponse = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear');
 
         // Decode the API response
         $apiData = $apiResponse->json();

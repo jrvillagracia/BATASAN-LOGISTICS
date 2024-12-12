@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function() {
 $(document).ready(function () {
     function fetchSchoolYears() {
         // Define the API URL
-        const apiUrl = "http://192.168.2.62:3000/api/v1/sis/schoolYear";
+        const apiUrl = "https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/schoolYear";
 
         // Make an AJAX GET request to the API
         $.ajax({
