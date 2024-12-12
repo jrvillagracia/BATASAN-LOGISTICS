@@ -326,7 +326,7 @@
 
             if (token) {
                 // If the token exists, proceed with the redirection
-                const baseUrl = "http://192.168.2.62:5173/admin/dashboard";
+                const baseUrl = "https://bhnhs-sis.onrender.com/admin/dashboard";
                 const urlWithToken = `${baseUrl}?access_token=${token}`;
 
                 // Remove the token from localStorage
