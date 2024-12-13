@@ -686,15 +686,7 @@ $(document).ready(function () {
     // Cancel button
     $("#closeStockInEquipPopupCard").click(function (event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Your action has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#D1191A'
-        }).then(() => {
-            $("#StockInEquipmentPopupCard").addClass("hidden");
-        });
+        $("#StockInEquipmentPopupCard").addClass("hidden");
     });
 
     // Submit button

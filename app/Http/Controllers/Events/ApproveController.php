@@ -25,7 +25,7 @@ class ApproveController extends Controller
             'SuppliesCategory as Type',
             'SuppliesQuantity as Quantity',
             'SuppliesSKU as SKU',
-            'id'
+            'suppliesId'
         ])->get();
     
         $equipment = DB::table('equipment')->select([
@@ -34,7 +34,7 @@ class ApproveController extends Controller
             'EquipmentCategory as Type',
             'EquipmentQuantity as Quantity',
             'EquipmentSKU as SKU',
-            'id'
+            'equipmentId'
         ])->get();
     
         // Merge supplies and equipment data into a single collection
