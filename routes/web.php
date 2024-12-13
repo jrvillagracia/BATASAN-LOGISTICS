@@ -205,7 +205,7 @@ Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewin
 
 //Equipment
 Route::get('/admin_equipment', [EquipmentStockController::class, 'index'])->name('admin_EQUIPMENT');
-
+Route::get('/equipment/details2', [EquipmentStockController::class, 'equipmentDetails'])->name('equipment.details');
 
 //Supplies Stock in
 Route::get('/admin_StockInSupplies', [SuppliesController::class, 'index'])->name('admin_StockInSupplies');

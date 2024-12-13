@@ -1,10 +1,49 @@
 // VIEW 1 BUTTON CARD FORM  
 $(document).ready(function () {
-    $('#viewEquipmentBTN').click(function () {
-        console.log('View Equipment Button is Clicked.');
+    $(document).on('click', '#viewEquipmentBTN', function () {
+        const button = $(this);
+        const brandName = button.data('brand');
+
         $('#VwEquimentMdl').removeClass('hidden');
+        $('#ViewDynamicTable tbody').empty();
+
+        $.ajax({
+            url: '/equipment/details2',
+            type: 'GET',
+            data: { EquipmentBrandName: brandName },
+            success: function (response) {
+                console.log('Response:', response);
+
+                if (response.equipmentDetails && response.equipmentDetails.length > 0) {
+                    response.equipmentDetails.forEach(equipment => {
+                        console.log('equipment.EquipmentSerialNo:', equipment.EquipmentSerialNo);
+
+                        const newRow = `
+                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700"
+                            data-id="${equipment.id}"
+                            data-brand="${equipment.EquipmentBrandName}"
+                            data-serial="${equipment.EquipmentSerialNo}">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <input id="ViewEQUIPMENTCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${equipment.EquipmentSerialNo}</td>
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${equipment.EquipmentControlNo}</td>
+                        </tr>`;
+                        $('#ViewDynamicTable tbody').append(newRow);
+                    });
+                } else {
+                    console.log('No equipment details found.');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('AJAX Error:', textStatus, errorThrown);
+                console.error('Response Text:', jqXHR.responseText);
+                alert('Failed to load equipment details: ' + (jqXHR.status ? jqXHR.statusText : 'Unknown error'));
+            }
+        });
     });
 });
+
 
 $(document).ready(function () {
     $('#closeViewEquipmentFormBTN').click(function () {
