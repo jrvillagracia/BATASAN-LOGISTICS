@@ -38,10 +38,10 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div>
-                <a href="{{ route('admin_StockInSupplies') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
-                <a href="{{ route('admin_supplies')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Supplies</a>
-                <a href="{{ route('admin_suppliesHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
-                <a href="{{ route('admin_suppliesUsed')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
+                <a href="{{ route('admin_StockInSupplies') }}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
+                <a href="{{ route('admin_supplies')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Supplies</a>
+                <a href="{{ route('admin_suppliesHistory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{ route('admin_suppliesUsed')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
             </div>
 
             <!-- Date Picker -->
@@ -77,6 +77,8 @@
                 <thead class="text-sm text-white dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Brand Name
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -97,35 +99,38 @@
                         <th scope="col" class="px-6 py-3">
                             Actions
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                        </th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
                     @foreach($supplies as $item)
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}" data-brand="">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <input id="SUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        </td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesBrandName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesCategory}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesQuantity}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->totalPrice, 2)}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSKU}}/td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSKU}}</td>
                         <td class="px-6 py-4 border-b border-gray-300">
-                            <button id="viewSuppliesBTN" type="button">
-                                <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <button id="viewSuppliesssBTN" type="button">
+                                <svg class="w-[27px] h-[27px] text-green-600 hover:text-green-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
                             </button>
                             <button id="editSuppliesBTN" type="button">
-                                <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-[27px] h-[27px] text-blue-600 hover:text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
                                     <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
                                 </svg>
                             </button>
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <input id="SUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <button class="deleteSUPPBTN" data-brand="{{$item->SuppliesBrandName}}" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#Ff0000">
+                                    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                     @endforeach
@@ -220,25 +225,28 @@
                                 <label for="SUPPLIESClassificationEDT" class="block text-sm font-semibold mb-1">Classification</label>
                                 <input type="text" name="SUPPLIESClassificationEDT" id="SUPPLIESClassificationEDT" class="border p-2 rounded w-full mb-4 border-gray-400" placeholder="Classification">
                             </div>
+                        </div>
 
-
+                        <div>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="lowEditSupplies2StockAlert" name="lowEditSupplies2StockAlert" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm font-semibold">Low stock alert</span>
+                        </label>
+                        <div id="lowEditSupplies2StockThresholdDiv" class="mt-2 hidden">
+                            <label for="lowEditSupplies2StockThreshold" class="block text-sm font-semibold mb-1">Low stock threshold</label>
+                            <input type="number" id="lowEditSupplies2StockThreshold" name="lowEditSupplies2StockThreshold" class="border border-gray-400 p-2 rounded w-64" placeholder="Enter threshold">
                         </div>
 
 
                         <div class="flex justify-end space-x-2">
                             <button type="button" id="saveSUPPBTN" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                            <!-- @if(isset($item)) Check if $item exists -->
-                            <button type="button" id="deleteSUPPBTN" data-brand="{{$item->SuppliesBrandName}}" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
-                            <!-- @else -->
-                            <button type="button" id="deleteSUPPBTN" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded" disabled>No Supplies to Delete</button>
-                            <!-- @endif -->
                         </div>
                     </form>
                 </div>
             </div>
 
             <!-- View 1 Popup Card -->
-            <div id="VwSuppMdl" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div id="VwSuppModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold px-7">View Full Information</h2>
@@ -263,118 +271,23 @@
                             <div><strong>Date:</strong>{{$item->SuppliesDate}}</div>
                         </div>
 
-                        <div class="flex justify-end space-x-4 items-center ml-auto">
-                            <!-- Search Form -->
-                            <form id="suppSearchForm" class="flex items-center space-x-4">
-                                <!-- Search Input -->
-                                <div class="relative w-96">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                        </svg>
-                                    </div>
-                                    <input type="search" id="suppSearch" name="suppSearch" class="block w-64 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
-                                </div>
-
-                                <!-- Buttons -->
-
-                                <button id="ViewSuppExportBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Export</button>
-                                <button id="ViewSuppCondemnedBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Condemned</button>
-                                <button id="ViewSuppSelectAllBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Select All</button>
-                            </form>
-                        </div>
-
-
-
-                        <div class="overflow-x-auto"> <!-- Added for horizontal scrolling if needed -->
-                            <table id="ViewDynamicTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <thead class="text-sm text-white dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            Serial Number
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Control Number
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Actions
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableViewBody">
-                                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">SDADSAD</td>
-                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">SADASDasd</td>
-                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <button id="ViewEditSUPPLIESBTN" data-id="" type="button">
-                                                <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
-                                                    <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </td>
-                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <input id="ViewSUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        </td>
-                                    </tr>
-                                    <!-- Dynamic rows will be inserted here -->
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
 
+                    <div class="flex justify-end space-x-2 pt-5">
+                        <button type="button" id="printViewSUPPBTN" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Print</button>
+                    
+                    </div>
                 </div>
             </div>
             <!-- END OF View 1 Popup Card -->
 
             <!-- Edit 2 Popup Card -->
-            <div id="editFullSuppliesMdl" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md h-auto overflow-auto">
-                    <!-- Flex container for heading and close button -->
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-semibold">Edit Supplies</h2>
-                        <button id="closeEditFullSuppliesMdl" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                    <form id="editFullSuppForm" action="" method="POST">
-
-                        <input type="hidden" name="id" id="fullsuppliesId">
-
-                        <label for="FullSUPPLIESSerialNoEDT" class="block text-sm font-semibold mb-1">Serial Number</label>
-                        <input type="text" name="FullSUPPLIESSerialNoEDT" id="FullSUPPLIESSerialNoEDT" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Serial Number">
-
-                        <label for="FullSUPPLIESControlNoEDT" class="block text-sm font-semibold mb-1">Control Number</label>
-                        <input type="text" name="FullSUPPLIESControlNoEDT" id="FullSUPPLIESControlNoEDT" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Control Number">
-
-
-                        <div class="flex justify-end space-x-2">
-                            <button type="button" id="saveFullSUPPBTN" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                            <button type="button" id="deleteFullSUPPBTN" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            
             <!-- END OF Edit 2 Popup Card -->
 
 
 
             <!-- Condemned Pop Up Card -->
-            <div id="CondemnedSuppliesPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-
-                    <label for="remarks" class="block mb-2"><strong>Are you sure you want to condem the item?</strong></label>
-
-                    <div class="flex justify-center space-x-4">
-                        <button id="submitCondemnedSuppPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeCondemnedSuppPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
-                    </div>
-                </div>
-            </div>
 
             <!-- View Data Export Button Card-->
             <div id="dataIncludedModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">

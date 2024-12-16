@@ -94,42 +94,63 @@ $(document).ready(function() {
 
 
         // AJAX request to save the data
-        $.ajax({
-            url: '/supplies/store',  // Ensure the URL matches the route name
-            type: 'POST',
-            data: {
-                _token: $('input[name="_token"]').val(),  // Include the CSRF token
-                SuppliesBrandName: brandName,
-                SuppliesName: name,
-                SuppliesCategory: finalCategory,  // Use the final category (custom or selected)
-                SuppliesType: type,
-                SuppliesColor: color,
-                SuppliesUnit: unit,
-                SuppliesQuantity: quantity,
-                SuppliesDate: date,
-                SuppliesUnitPrice: uPrice,
-                SuppliesClassification: classification,
-                SuppliesSKU: sku,
-            },
-            success: function (response) {
-                Swal.fire({
-                    icon: "success",
-                    title: response.message,
-                    showConfirmButton: true
-                }).then(() => {
-                    location.reload();
-                });
-            },
-            error: function (xhr) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: xhr.responseText
-                });
-            }
-        });
-    }
-});
+        $('body').append(`
+            <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Saving, please wait...</p>
+                </div>
+            </div>
+        `);
+        setTimeout(() => {
+            // Remove the loader
+            $('#save-loader').remove();
+
+
+            $.ajax({
+                url: '/supplies/store',  // Ensure the URL matches the route name
+                type: 'POST',
+                data: {
+                    _token: $('input[name="_token"]').val(),  // Include the CSRF token
+                    SuppliesBrandName: brandName,
+                    SuppliesName: name,
+                    SuppliesCategory: finalCategory,  // Use the final category (custom or selected)
+                    SuppliesType: type,
+                    SuppliesColor: color,
+                    SuppliesUnit: unit,
+                    SuppliesQuantity: quantity,
+                    SuppliesDate: date,
+                    SuppliesUnitPrice: uPrice,
+                    SuppliesClassification: classification,
+                    SuppliesSKU: sku,
+                },
+                success: function (response) {
+                    Swal.fire({
+                        icon: "success",
+                        title: response.message,
+                        showConfirmButton: true,
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function (xhr) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: xhr.responseText
+                    });
+                }
+            });
+        }, 1000);
+
+    }});
 });
 });
 
@@ -192,7 +213,6 @@ $(document).ready(function() {
     // Handle saving the changes
     $('#saveSuppButton').on('click', function(e) {
         e.preventDefault();
-    
         Swal.fire({
             title: "Are you sure all input data are correct?",
             showDenyButton: true,
@@ -205,16 +225,38 @@ $(document).ready(function() {
                 var formData = $('#editForm').serialize();
                 console.log('Form data:', formData);
     
+                $('body').append(`
+                    <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                        <section class="dots-container">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </section>
+                        <div class="dot-loader-dialog">
+                            <p>Saving...</p>
+                        </div>
+                    </div>
+                `);
+
                 // Ensure brand is being set correctly
                 var suppliesBrand = $('#editForm').find('input[name="brand"]').val(); 
                 console.log('Supplies Brand to be sent:', suppliesBrand); 
-                
+
                 $.ajax({
                     url: '/supplies/update-main', 
                     method: 'POST',
                     data: formData,
                     success: function() {
-                        Swal.fire("Saved!", "", "success").then(() => {
+                        $('#save-loader').remove();
+                        Swal.fire({
+                            title: "Saved!",
+                            text: "",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                            confirmButtonColor: "#3085d6" // Set the color of the confirmation button
+                        }).then(() => {
                             updateTableRow(suppliesBrand); // Update the table row with new data
                             $('#editSuppModal').addClass('hidden');
                         });
@@ -228,6 +270,7 @@ $(document).ready(function() {
             } else if (result.isDenied) {
                 Swal.fire("Changes are not saved", "", "info");
             }
+            
         });
     });
 
@@ -270,7 +313,7 @@ $(document).ready(function() {
 
 // SUPPLIES DELETE FUNCTION 
 $(document).ready(function() {
-    $('#deleteSuppButton').click(function() {
+    $('.deleteSuppButton').click(function() {
         var suppliesBrand = $(this).data('brand');
         var csrfToken = $('#csrf-token').data('token');
 
@@ -289,6 +332,20 @@ $(document).ready(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 // Send AJAX request to the server to delete the item
+                $('body').append(`
+                    <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                        <section class="dots-container">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </section>
+                        <div class="dot-loader-dialog">
+                            <p>Deleting...</p>
+                        </div>
+                    </div>
+                `);
                 $.ajax({
                     url: '/supplies/delete',  
                     type: 'POST',
@@ -297,6 +354,7 @@ $(document).ready(function() {
                         _token: csrfToken  
                     },
                     success: function(response) {
+                        $('#save-loader').remove();
                         Swal.fire({
                             title: "Deleted!",
                             text: "The supplies item has been deleted.",
@@ -312,6 +370,7 @@ $(document).ready(function() {
                     },
                     error: function(xhr) {
                         // Show error message
+                        $('#save-loader').remove();
                         Swal.fire({
                             title: "Error!",
                             text: "There was an error deleting the item.",
@@ -702,6 +761,20 @@ $(document).ready(function () {
     $("#submitStockInSuppPopupCard").click(function (event) {
         event.preventDefault();
 
+        $('body').append(`
+            <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Stocking In, please wait...</p>
+                </div>
+            </div>
+        `);
         // Get the brandName stored in the popup card's data
         const brandName = $("#StockInSuppliesPopupCard").data('brand');
         if (!brandName) {
@@ -725,6 +798,7 @@ $(document).ready(function () {
                 _token: $('meta[name="csrf-token"]').attr('content') 
             },
             success: function (response) {
+                $('#save-loader').remove();
                 Swal.fire({
                     icon: 'success',
                     title: 'Approved',
@@ -737,6 +811,7 @@ $(document).ready(function () {
                 });
             },
             error: function (xhr) {
+                $('#save-loader').remove();
                 console.log("Error response:", xhr.responseText);
                 Swal.fire({
                     icon: 'error',
@@ -765,3 +840,27 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("SuppliesDate").value = today;
 });
 
+
+// LOW STOCK CHECKBOX INSIDE THE ADD FORM
+$(document).ready(function () {
+    // Toggle visibility of the threshold input based on checkbox state
+    $('#lowSuppliesStockAlert').change(function () {
+        if ($(this).is(':checked')) {
+            $('#lowSuppliesStockThresholdDiv').removeClass('hidden'); // Show input
+        } else {
+            $('#lowSuppliesStockThresholdDiv').addClass('hidden'); // Hide input
+        }
+    });
+});
+
+// LOW STOCK CHECKBOX INSIDE THE EDIT 1 FORM
+$(document).ready(function () {
+    // Toggle visibility of the threshold input based on checkbox state
+    $('#lowEditSuppliesStockAlert').change(function () {
+        if ($(this).is(':checked')) {
+            $('#lowEditSuppliesStockThresholdDiv').removeClass('hidden'); // Show input
+        } else {
+            $('#lowEditSuppliesStockThresholdDiv').addClass('hidden'); // Hide input
+        }
+    });
+});

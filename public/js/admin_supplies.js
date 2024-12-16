@@ -1,15 +1,14 @@
 // VIEW 1 BUTTON CARD FORM  
 $(document).ready(function () {
-    $('#viewSuppliesBTN').click(function () {
+    $('.viewSuppliesssBTN').click(function () {
         console.log('View Supplies Button is Clicked.');
-        $('#VwSuppMdl').removeClass('hidden');
+        $('#VwSuppModal').removeClass('hidden');
     });
-});
 
-$(document).ready(function () {
     $('#closeViewSuppFormBTN').click(function () {
         console.log('Close "X" Supplies Button is Clicked.');
-        $('#VwSuppMdl').addClass('hidden');
+        $('#VwSuppModal').addClass('hidden');
+
     });
 });
 
@@ -46,21 +45,7 @@ $(document).ready(function() {
     });
 });
 
-// SELECT ALL BUTTON IN VIEW TABLE 
-$(document).ready(function() {
-    let isAllChecked = false;
-    $('#ViewSuppSelectAllBTN').click(function() {
-        event.preventDefault();
-        isAllChecked = !isAllChecked;
-        $('#ViewDynamicTable').find('input[type="checkbox"]').prop('checked', isAllChecked);
 
-        if (isAllChecked) {
-            $(this).text('Unselect All');
-        } else {
-            $(this).text('Select All');
-        }
-    });
-});
 
 
 // VIEW DATA EXPORT CHECKBOXES BUTTON CARD
@@ -89,88 +74,85 @@ $(document).ready(function () {
 });
 
 
-// CONDEM VALIDATION
-$(document).ready(function () {
-    $("#ViewSuppCondemnedBTN").click(function () {
-        event.preventDefault();
-        $("#CondemnedSuppliesPopupCard").removeClass("hidden");
-    });
 
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeCondemnedSuppPopupCard").click(function () {
-        event.preventDefault();
+
+// DELETE FUNCTION
+$(document).ready(function() {
+    $('.deleteSUPPBTN').click(function() {
+        var suppliesBrand = $(this).data('brand');
+        var csrfToken = $('#csrf-token').data('token');
+
+        // Check if suppliesBrand is retrieved correctly
+        console.log('Supplies Brand to delete:', suppliesBrand);
+
         Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Your action has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#D1191A'
-        }).then(() => {
-            $("#CondemnedSuppliesPopupCard").addClass("hidden");
-        });
-    });
-
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitCondemnedSuppPopupCard").click(function () {
-        event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#CondemnedSuppliesPopupCard").addClass("hidden");
-        });
-    });
-});
-
-// EDIT 2 BUTTON
-$(document).ready(function () {
-    $('#ViewEditSUPPLIESBTN').click(function () {
-        event.preventDefault();
-        console.log('Edit Form Button is Clicked.');
-        $('#editFullSuppliesMdl').removeClass('hidden');
-    });
-
-    $('#closeEditFullSuppliesMdl').click(function () {
-        console.log('Close Button is Clicked.');
-        $('#editFullSuppliesMdl').addClass('hidden');
-    });
-
-    $("#saveFullSUPPBTN").click(function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#editFullSuppliesMdl").addClass("hidden");
-        });
-    });
-
-    $("#deleteFullSUPPBTN").click(function () {
-        Swal.fire({
-            title: "Are you sure you want to delete this Supplies?",
-            showDenyButton: true,
+            title: "Are you sure?",
+            text: "You want to delete the selected Supplies item?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
             confirmButtonText: "Yes",
-            denyButtonText: "No",
-            confirmButtonColor: '#3085d6',
-            denyButtonColor: '#d33'
+            cancelButtonText: "No"
         }).then((result) => {
             if (result.isConfirmed) {
-                // User clicked "Yes" - proceed with deletion logic
-                $("#editFullSuppliesMdl").addClass("hidden");
-                // Add your deletion logic here (e.g., an AJAX request)
-                console.log("Supplies deleted!");
-            } else if (result.isDenied) {
-                // User clicked "No" - you can add any other logic here if needed
-                console.log("Deletion canceled!");
+                // Send AJAX request to the server to delete the item
+                $('body').append(`
+                    <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                        <section class="dots-container">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </section>
+                        <div class="dot-loader-dialog">
+                            <p>Deleting...</p>
+                        </div>
+                    </div>
+                `);
+                $.ajax({
+                    url: '/supplies/delete',  
+                    type: 'POST',
+                    data: {
+                        brand: suppliesBrand, // Use the brand name for deletion
+                        _token: csrfToken  
+                    },
+                    success: function(response) {
+                        $('#save-loader').remove();
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "The supplies item has been deleted.",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                        });
+
+                        // Close the modal
+                        $('#editSUPPLIESMdl').addClass('hidden');
+
+                        // Optionally, remove the item from the UI
+                        $('tr[data-brand="'+suppliesBrand+'"]').remove(); // Ensure rows are matched by brand
+                    },
+                    error: function(xhr) {
+                        // Show error message
+                        $('#save-loader').remove();
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an error deleting the item.",
+                            icon: "error",
+                            confirmButtonColor: "#3085d6"
+                        });
+                        console.log(xhr.responseText); // Log error details for debugging
+                    }
+                });
             }
         });
-    });    
+    });
 });
+
+
+
+
 
 
 
@@ -197,4 +179,16 @@ document.addEventListener("DOMContentLoaded", function () {
             dataTable.search(searchTerm);
         });
     }
+});
+
+// LOW STOCK CHECKBOX INSIDE THE EDIT 1 FORM
+$(document).ready(function () {
+    // Toggle visibility of the threshold input based on checkbox state
+    $('#lowEditSupplies2StockAlert').change(function () {
+        if ($(this).is(':checked')) {
+            $('#lowEditSupplies2StockThresholdDiv').removeClass('hidden'); // Show input
+        } else {
+            $('#lowEditSupplies2StockThresholdDiv').addClass('hidden'); // Hide input
+        }
+    });
 });

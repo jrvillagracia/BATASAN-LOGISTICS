@@ -44,17 +44,42 @@ $(document).ready(function () {
         $('#MainteFacilityFormBtn').addClass('hidden');
     });
 
-    $("#SubmitMainteFacilityForm").click(function () {
-        event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#MainteFacilityFormBtn").addClass("hidden");
-        });
+    $("#SubmitMainteFacilityForm").click(function (event) {
+        event.preventDefault(); // Prevent the default button behavior
+    
+        // Add the save loader
+        $('body').append(`
+            <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Saving, please wait...</p>
+                </div>
+            </div>
+        `);
+    
+        // Simulate a loading delay before showing SweetAlert 2
+        setTimeout(() => {
+            // Remove the loader
+            $('#save-loader').remove();
+    
+            // Show the SweetAlert
+            Swal.fire({
+                icon: 'success',
+                title: 'Submitted',
+                text: 'Your action has been successfully submitted',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            }).then(() => {
+                // Add any additional actions here
+                $("#MainteFacilityFormBtn").addClass("hidden");
+            });
+        }, 1000); // Simulate loader for 1 second
     });
 });
 

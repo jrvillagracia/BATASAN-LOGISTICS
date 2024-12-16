@@ -38,11 +38,11 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div>
-                <a href="{{ route('admin_StockInEquipment') }}" class="button border-b-2  py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
-                <a href="{{ route('admin_EQUIPMENT')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Equipment</a>
-                <a href="{{ route('admin_equipCondemned') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
-                <a href="{{ route('admin_equipHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
-                <a href="#" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
+                <a href="{{ route('admin_StockInEquipment') }}" class="pageloader button border-b-2  py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
+                <a href="{{ route('admin_EQUIPMENT')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Equipment</a>
+                <a href="{{ route('admin_equipCondemned') }}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
+                <a href="{{ route('admin_equipHistory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{ route('admin_equipUsed')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
             </div>
 
             <!-- Search Bar -->
