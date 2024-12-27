@@ -119,13 +119,16 @@
             <!-- View Popup Card -->
             <div id="REPViewMainteFacilityPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Maintenance Request Slip</h2>
-                        <button id="REPCloseViewMainteFacilityPopupCard" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="flex items-center">
+                            <div class="rounded-full w-20 h-15 flex items-center justify-center overflow-hidden">
+                                <img src="{{asset('img/logo.png')}}" alt="Logo" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="ml-4 text-center">
+                                <span class="font-bold text-lg text-black">Batasan Hills National High School</span>
+                            </div>
+                        </div>
+                        <h2 class="text-lg font-semibold mt-2 text-center">Maintenance Request Slip</h2>
                     </div>
 
                     <div class="text-sm">
@@ -140,7 +143,7 @@
                         <p class="mb-2"><strong>Facility Type: </strong></p>
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="cancelViewForReprMainteFacilityPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="cancelViewForReprMainteFacilityPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
                     </div>
                 </div>
 
@@ -148,16 +151,19 @@
 
             <!-- Set Job Popup Card -->
             <div id="REPSetMainteFacilityPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">JOB Slip</h2>
-                        <button id="REPCloseSetMainteFacilityPopupCard" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+                <div id="set-item-FORRE-maintFaci-print-btn" class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="flex items-center">
+                            <div class="rounded-full w-20 h-15 flex items-center justify-center overflow-hidden">
+                                <img src="{{asset('img/logo.png')}}" alt="Logo" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="ml-4 text-center">
+                                <span class="font-bold text-lg text-black">Batasan Hills National High School</span>
+                            </div>
+                        </div>
+                        <h2 class="text-lg font-semibold mt-2 text-center">Maintenance Request Slip</h2>
                     </div>
-
+                    
                     <div class="text-sm">
                         <p class="mb-2"><strong>Date/Time Requested: </strong></p>
                         <p class="mb-2"><strong>Requesting Office/Unit: </strong></p>
@@ -176,8 +182,8 @@
                         <p class="mb-2"><strong>Contact No: </strong> </p>
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="printSetForRepMainteFacilityPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
-                        <button id="cancelSetForReprMainteFacilityPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="printSetForRepMainteFacilityPopupCard" class="set-item-FOR-REP-FACILITY-print-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
+                        <button id="cancelSetForReprMainteFacilityPopupCard" class="set-item-FOR-REP-FACILITY-cance-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
 

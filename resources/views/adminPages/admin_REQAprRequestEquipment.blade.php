@@ -128,15 +128,6 @@
                         <th scope="col" class="px-6 py-3">
                             Request ID
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Category
-                        </th>
-                        <th scope="col" class="px-6 py-30">
-                            Type
-                        </th>
-                        <th scope="col" class="px-6 py-30">
-                            Quantity
-                        </th>
                         <th scope="col" class="px-6 py-30">
                             Requesting Office/Unit
                         </th>
@@ -152,9 +143,6 @@
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">R00001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">64gb</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Elementary Faculty</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/12/2024</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -200,10 +188,19 @@
                                         Category
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        Brand Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Type
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Unit
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        SKU
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Stocks
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Quantity
@@ -213,8 +210,11 @@
                             <tbody id="tableViewBody">
                                 <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Brand Name</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">64gb</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Unit</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">SKU</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Stocks</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
                                 </tr>
                                 <!-- Dynamic rows will be inserted here -->

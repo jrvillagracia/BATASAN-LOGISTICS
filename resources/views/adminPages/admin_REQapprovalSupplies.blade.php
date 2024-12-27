@@ -154,7 +154,7 @@
                                         <option value="" disabled selected>Select Room</option>
                                         <!-- These options will depend on the selected building -->
                                         <option value="" data-building=""></option>
-                                    </select>   
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -320,69 +320,40 @@
                         <p class="mb-2"><strong>Requesting For:</strong></p>
                     </div>
 
-                    <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
-                        <table id="step2ViewReqSupContentTable" class="w-full border-collapse">
-                            <thead>
-                                <tr class="bg-blue-900 ">
-                                    <th class="p-2 text-white">Category</th>
-                                    <th class="p-2 text-white">Type</th>
-                                    <th class="p-2 text-white">Unit</th>
-                                    <th class="p-2 text-white">Quantity</th>
-                                    <th class="p-2 text-white">Action</th>
+                    <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto ">
+                        <table id="reqSuppTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-sm text-white dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Category
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Type
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Unit
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Quantity
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody id="ViewRequestSup-TablBody">
-                                <!-- Single Inventory Item -->
-                                <tr class="ViewRequestSup-Rows">
-                                    <td class="p-2">
-                                        <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                            <option value="" disabled selected>Select Category</option>
-                                            <!-- These options will depend on the selected building -->
-                                            <option value="Laptop" data-building="">Laptop</option>
-                                            <option value="Printer" data-building="">Printer</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2">
-                                        <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                            <option value="" disabled selected>Select Type</option>
-                                            <!-- These options will depend on the selected building -->
-                                            <option value="64gb" data-building="">64gb</option>
-                                            <option value="Nikon" data-building="">Nikon</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2">
-                                        <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                            <option value="" disabled selected>Select Unit</option>
-                                            <!-- These options will depend on the selected building -->
-                                            <option value="Box" data-building="">Box</option>
-                                            <option value="Unit" data-building="">Unit</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2 flex justify-center">
-                                        <input type="number" class="w-20 border rounded p-2" placeholder="">
-                                    </td>
-
-                                    <td class="p-2 text-center">
-                                        <button type="button" class="ViewReqApprovalSup-DeleteBTN text-red-500 hover:text-red-700">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </td>
+                            <tbody id="tableViewBody">
+                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">64gb</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Unit</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
                                 </tr>
-                                <!-- More inventory rows can be added here -->
+
+                                <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
                     </div>
 
 
-                    <div class="flex justify-between pt-3">
-                        <button id="printReqSuppliesInventoryPopupCard" type="button" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Print</button>
-                        <div class="flex justify-end space-x-4 pt-3">
-                            <button id="ViewReqSuppliesAddRowBTN" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">+ Add Item</button>
-                            <button id="saveReqSuppliesInventoryPopupCard" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Save</button>
-                            <button id="cancelReqSuppliesInventoryPopupCard" class="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded">Cancel</button>
-                        </div>
+                    <div class="flex justify-end space-x-4 pt-3">
+                        <button id="cancelReqSuppliesInventoryPopupCard" class="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
 
                 </div>
@@ -451,9 +422,9 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Category</th>
                                     <th scope="col" class="px-6 py-3">Brand Name</th>
-                                    <th scope="col" class="px-6 py-3">Product Name</th>
                                     <th scope="col" class="px-6 py-3">Type</th>
                                     <th scope="col" class="px-6 py-3">SKU</th>
+                                    <th scope="col" class="px-6 py-3">Stocks</th>
                                     <th scope="col" class="px-6 py-3">Quantity</th>
                                 </tr>
                             </thead>
@@ -468,16 +439,9 @@
                                             <option value="BrandC">Brand C</option>
                                         </select>
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <select name="ReqSupProductName" class="w-34 px-2 py-1 border border-gray-400 rounded">
-                                            <option value="" disabled selected>Select Product</option>
-                                            <option value="ProductA">Product A</option>
-                                            <option value="ProductB">Product B</option>
-                                            <option value="ProductC">Product C</option>
-                                        </select>
-                                    </td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">MINI</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">AUTOMATIC</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Stocks</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <input type="text" value="1" class="border-0 border-b border-gray-500 px-2 py-1 w-20 text-center">
                                     </td>

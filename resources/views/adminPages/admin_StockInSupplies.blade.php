@@ -115,7 +115,12 @@
 
                         <div>
                             <label for="SuppliesUnit" class="block text-sm font-semibold mb-1">Unit</label>
-                            <input type="text" name="SuppliesUnit" id="SuppliesUnit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Unit" pattern="[A-Za-z ]*" title="Only characters are allowed">
+                            <select name="SuppliesUnit" id="SuppliesUnit" class="border p-2 rounded w-full mb-2 border-gray-400">
+                                <option value="" disabled selected>Select a unit</option>
+                                <option value="box">Box</option>
+                                <option value="unit">Unit</option>
+                                <!-- Add more options as needed -->
+                            </select>
                         </div>
 
                         <div>

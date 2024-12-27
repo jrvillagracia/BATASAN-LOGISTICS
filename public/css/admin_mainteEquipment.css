@@ -22,3 +22,19 @@
 #View-Mainte-Equip-InventoryPopupCard{
     z-index: 50;
 }
+
+
+
+/*================== THIS IS FOR APPROVAL VIEWING IN MAINTENANCE EQUIPMENT =======================*/
+
+#view-maintequip-pdf-content {
+    padding: 1rem;
+}
+
+
+/*================== THIS IS FOR REPAIR VIEWING IN MAINTENANCE EQUIPMENT =======================*/
+
+#set-item-FOREPmaintequip-pdf-content {
+    padding: 1rem;
+}
+
