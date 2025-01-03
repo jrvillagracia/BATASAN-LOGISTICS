@@ -8,7 +8,7 @@
     <title>@yield('title')</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- FOR GENERATE TO PDF SCRIPT LIBRARY -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
@@ -72,12 +72,14 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
 
@@ -145,7 +147,7 @@
                             <p class="text-sm text-white sidebar-text">Main</p>
                         </div>
                         <li class="hover:bg-gray-200 p-3 rounded-md shadow-sm">
-                            <a href="{{route('admin_dashboard')}}" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <a href="{{route('admin_dashboard')}}" class="pageloader flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-7 h-7">
                                     <path d="M111.87-520v-328.13H440V-520H111.87Zm0 408.13V-440H440v328.13H111.87ZM520-520v-328.13h328.13V-520H520Zm0 408.13V-440h328.13v328.13H520Z" />
                                 </svg>
@@ -170,19 +172,18 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="{{route('admin_facilityRegRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Instructional Room</a>
+                                    <a href="{{route('admin_facilityRegRoom')}}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Instructional Room</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('admin_facilitySpecRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Laboratory Room</a>
+                                    <a href="{{route('admin_facilitySpecRoom')}}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Laboratory Room</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('admin_facilityOfficeRoom')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Office Room</a>
+                                    <a href="{{route('admin_facilityOfficeRoom')}}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Office Room</a>
                                 </li>
                             </ul>
                         </li>
-
                         <li class="hover:bg-gray-200 p-3 rounded-md">
-                            <a href="{{route('admin_eventsForApproval')}}" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <a href="{{route('admin_eventsForApproval')}}" class="pageloader flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="w-7 h-7">
                                     <path d="M438-223.37 293.37-367.76l60.39-60.39L438-343.91l168.24-168.24 60.39 60.39L438-223.37ZM202.87-71.87q-37.78 0-64.39-26.61t-26.61-64.39v-554.26q0-37.78 26.61-64.39t64.39-26.61H240v-80h85.5v80h309v-80H720v80h37.13q37.78 0 64.39 26.61t26.61 64.39v554.26q0 37.78-26.61 64.39t-64.39 26.61H202.87Zm0-91h554.26V-560H202.87v397.13Z" />
                                 </svg>
@@ -203,13 +204,13 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="{{ route('admin_POInventory')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Product Order</a>
+                                    <a href="{{ route('admin_POInventory')}}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Product Order</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin_StockInSupplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Supplies</a>
+                                    <a href="{{ route('admin_StockInSupplies') }}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Supplies</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin_StockInEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
+                                    <a href="{{ route('admin_StockInEquipment') }}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Equipment</a>
                                 </li>
                             </ul>
                         </li>
@@ -228,10 +229,10 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="{{ route('admin_REQapprovalSupplies') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Supplies</a>
+                                    <a href="{{ route('admin_REQapprovalSupplies') }}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Supplies</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin_REQapprovalEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Equipment</a>
+                                    <a href="{{ route('admin_REQapprovalEquipment') }}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Request Equipment</a>
                                 </li>
                             </ul>
                         </li>
@@ -250,10 +251,10 @@
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
                                 <li>
-                                    <a href="{{ route('admin_mainteFacility')}}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Facility</a>
+                                    <a href="{{ route('admin_mainteFacility')}}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Facility</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin_mainteEquipment') }}" class="flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Inventory</a>
+                                    <a href="{{ route('admin_mainteEquipment') }}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Maintenance Inventory</a>
                                 </li>
                             </ul>
                         </li>
@@ -262,13 +263,13 @@
                         </div>
 
                         <li class="hover:bg-gray-200 p-3 rounded-md">
-                            <button id="student-info-link" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <button id="student-info-link" class="pageloader flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <span class="material-symbols-outlined">account_box</span>
                                 <span class="sidebar-text font-bold">Student Information</span>
                             </button>
                         </li>
                         <li class="hover:bg-gray-200 p-3 rounded-md">
-                            <a href="https://bnhs-hr.onrender.com/admin/dashboard" class="flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
+                            <a href="https://bnhs-hr.onrender.com/admin/dashboard" class="pageloader flex items-center justify-center md:justify-start space-x-2 text-white hover:text-black">
                                 <span class="material-symbols-outlined">groups_2</span>
                                 <span class="sidebar-text font-bold">Human Resources</span>
                             </a>
@@ -315,33 +316,58 @@
     </div>
 
     <script>
-    // Ensure the DOM is fully loaded before adding the event listener
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById("student-info-link").addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent the default button action
+        // Ensure the DOM is fully loaded before adding the event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("student-info-link").addEventListener("click", function(event) {
+                event.preventDefault(); // Prevent the default button action
 
-            // Retrieve the token from localStorage
-            const token = localStorage.getItem('token'); // Assuming the token is stored under the key 'access_token'
+                // Retrieve the token from localStorage
+                const token = localStorage.getItem('token'); // Assuming the token is stored under the key 'access_token'
 
-            console.log("Token from localStorage: " + token); // Log token to console for debugging
+                console.log("Token from localStorage: " + token); // Log token to console for debugging
 
-            if (token) {
-                // If the token exists, proceed with the redirection
-                const baseUrl = "https://bhnhs-sis.onrender.com/admin/dashboard";
-                const urlWithToken = `${baseUrl}?access_token=${token}`;
+                if (token) {
+                    // If the token exists, proceed with the redirection
+                    const baseUrl = "https://bhnhs-sis.onrender.com/admin/dashboard";
+                    const urlWithToken = `${baseUrl}?access_token=${token}`;
 
-                // Remove the token from localStorage
-                localStorage.removeItem('token'); // Remove the token after redirecting
+                    // Remove the token from localStorage
+                    localStorage.removeItem('token'); // Remove the token after redirecting
 
-                // Redirect to the new URL with the token
-                window.location.href = urlWithToken;
-            } else {
-                // If no token is found, log an error (or handle the scenario as needed)
-                console.error("Token is missing!");
-            }
+                    // Redirect to the new URL with the token
+                    window.location.href = urlWithToken;
+                } else {
+                    // If no token is found, log an error (or handle the scenario as needed)
+                    console.error("Token is missing!");
+                }
+            });
         });
-    });
-</script>
+
+        // PAGE LOADER
+        $('.pageloader').on('click', function(e) {
+            e.preventDefault(); // Prevent the default navigation
+            const targetUrl = $(this).attr('href'); // Get the href value of the clicked link
+
+            $('body').append(`
+            <div id="page-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Please wait...</p>
+                </div>
+            </div>
+            `);
+
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 1000); // Simulate loader for 1 second
+        });
+    </script>
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

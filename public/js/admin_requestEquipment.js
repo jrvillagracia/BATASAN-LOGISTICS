@@ -146,54 +146,6 @@ $(document).ready(function () {
         $('#ViewReqEquipPopupCard').addClass('hidden');
     });
 
-    $('#ViewReqEquipmentAddRowBTN').click(function () {
-        console.log('Request Equipment Add Row Button is Clicked.');
-        const ReqEquipNewRow = `
-             <tr class="ViewRequestEquip-Rows">
-                <td class="p-2">
-                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                        <option value="" disabled selected>Select Category</option>
-                        <!-- These options will depend on the selected building -->
-                        <option value="Laptop" data-building="">Laptop</option>
-                        <option value="Printer" data-building="">Printer</option>
-                    </select>
-                </td>
-                <td class="p-2">
-                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                        <option value="" disabled selected>Select Type</option>
-                        <!-- These options will depend on the selected building -->
-                        <option value="64gb" data-building="">64gb</option>
-                        <option value="Nikon" data-building="">Nikon</option>
-                    </select>
-                </td>
-                <td class="p-2">
-                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                        <option value="" disabled selected>Select Unit</option>
-                        <!-- These options will depend on the selected building -->
-                        <option value="Box" data-building="">Box</option>
-                        <option value="Unit" data-building="">Unit</option>
-                    </select>
-                </td>
-                <td class="p-2 flex justify-center">
-                    <input type="number" class="w-20 border rounded p-2" placeholder="">
-                </td>
-
-               <td class="p-2 text-center">
-                    <button type="button" class="ViewReqApprovalEquip-DeleteBTN text-red-500 hover:text-red-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </td>
-            </tr>`;
-        $('#ViewRequestEquip-TablBody').append(ReqEquipNewRow);
-    });
-
-    $('#ViewRequestEquip-TablBody').on('click', '.ViewReqApprovalEquip-DeleteBTN', function () {
-        $(this).closest('tr').remove();
-    });
-
-
     $("#saveEquipmentInventoryPopupCard").click(function () {
         Swal.fire({
             icon: 'success',

@@ -38,10 +38,10 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div>
-                <a href="{{ route('admin_StockInSupplies') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
-                <a href="{{ route('admin_supplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Supplies</a>
-                <a href="{{ route('admin_suppliesHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
-                <a href="{{ route('admin_suppliesUsed')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
+                <a href="{{ route('admin_StockInSupplies') }}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
+                <a href="{{ route('admin_supplies')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Supplies</a>
+                <a href="{{ route('admin_suppliesHistory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{ route('admin_suppliesUsed')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
             </div>
 
             <!-- Date Picker -->

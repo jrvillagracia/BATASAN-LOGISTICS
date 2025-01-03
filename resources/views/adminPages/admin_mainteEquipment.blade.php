@@ -41,10 +41,10 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
-                <a href="{{route('admin_mainteEquipment')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
-                <a href="{{route('admin_mainteForRepEquip')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Repair</a>
-                <a href="{{route('admin_ComReqMainteEquip')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_HistoryMainteEquip')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{route('admin_mainteEquipment')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
+                <a href="{{route('admin_mainteForRepEquip')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Repair</a>
+                <a href="{{route('admin_ComReqMainteEquip')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_HistoryMainteEquip')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
             </div>
 
             <!-- Search Bar -->
@@ -165,7 +165,9 @@
                                 <!-- Single Inventory Item -->
                                 <tr class="MaintenanceEquip-Rows">
                                     <td class="p-2">
-                                        <input type="text" class="w-full rounded p-2" placeholder="Serial Number">
+                                        <select class="js-serial-number w-full rounded p-2">
+                                            <!-- Options will be dynamically loaded -->
+                                        </select>
                                     </td>
                                     <td class="p-2">
                                         <input type="text" class="w-full rounded p-2" placeholder="Control Number">
@@ -255,14 +257,17 @@
 
             <!-- View Popup Card -->
             <div id="ViewMainteInventoryPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Maintenance Request Slip</h2>
-                        <button id="closeViewMainteInventoryPopupCard" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+                <div id="view-maintequip-pdf-content" class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="flex items-center">
+                            <div class="rounded-full w-20 h-15 flex items-center justify-center overflow-hidden">
+                                <img src="{{asset('img/logo.png')}}" alt="Logo" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="ml-4 text-center">
+                                <span class="font-bold text-lg text-black">Batasan Hills National High School</span>
+                            </div>
+                        </div>
+                        <h2 class="text-lg font-semibold mt-2 text-center">Maintenance Request Slip</h2>
                     </div>
 
                     <div class="text-sm">
@@ -284,8 +289,8 @@
                         <p class="mb-2"><strong>Control Number: </strong></p>
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="printForApprMainteInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
-                        <button id="cancelForApprMainteInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="printForApprMainteInventoryPopupCard" class="print-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
+                        <button id="cancelForApprMainteInventoryPopupCard" class="cancel-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
 
