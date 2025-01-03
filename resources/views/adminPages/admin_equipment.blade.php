@@ -42,9 +42,9 @@
             <div>
                 <a href="{{route('admin_StockInEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
                 <a href="{{route('admin_EQUIPMENT')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Equipment</a>
-                <a href="{{ route('admin_equipCondemned') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
-                <a href="{{ route('admin_equipHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
-                <a href="{{ route('admin_equipUsed')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
+                <a href="{{route('admin_equipCondemned') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
+                <a href="{{route('admin_equipHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{route('admin_equipUsed')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
             </div>
 
             <!-- Search Bar -->
@@ -104,7 +104,14 @@
                 </thead>
                 <tbody id="tableBody">
                     @foreach($equipment as $item)
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}" data-brand="{{$item->EquipmentBrandName}}">
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->equipmentStockId}}" data-brand="{{$item->EquipmentBrandName}}"
+                        data-type="{{$item->EquipmentType}}" 
+                        data-unit="{{$item->EquipmentUnit}}" 
+                        data-color="{{$item->EquipmentColor}}"
+                        data-category="{{$item->EquipmentCategory}}" 
+                        data-other-category="{{$item->otherEQUIPMENTCategoryEDT ?? ''}}"
+                        data-classification="{{$item->EquipmentClassification}}"
+                        data-unit-price="{{$item->EquipmentUnitPrice}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentBrandName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentCategory}}</td>
@@ -112,7 +119,7 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->totalPrice, 2)}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentSKU}}</td>
                         <td class="px-6 py-4">
-                            <button id="viewEquipmentBTN" data-id="{{ $item->id}}" data-brand="{{$item->EquipmentBrandName}}" type="button">
+                            <button id="viewEquipmentBTN" data-id="{{ $item->equipmentStockId}}" data-brand="{{$item->EquipmentBrandName}}" type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -124,9 +131,14 @@
                                     <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
                                 </svg>
                             </button>
+                            <button id="deleteEQUIPBTN" type="button" data-brand="{{$item->EquipmentBrandName}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#Ff0000">
+                                    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                                </svg>
+                            </button>
                         </td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <input id="EQUIPMENTCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input id="EQUIPMENTCheckBox" data-brand="{{$item->EquipmentBrandName}}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </td>
                     </tr>
                     @endforeach
@@ -138,7 +150,8 @@
 
 
         <!-- Edit 1 Popup Card -->
-        <div id="editEQUIPMENTMdl" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+         @foreach($equipment as $item)
+        <div id="editEQUIPMENTMdl" data-brand="{{$item->EquipmentBrandName}}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl  overflow-y-auto">
                 <!-- Flex container for heading and close button -->
                 <div class="flex justify-between items-center mb-4">
@@ -149,11 +162,13 @@
                         </svg>
                     </button>
                 </div>
-                <form id="editForm" action="" method="">
-
+                <form id="editForms" data-brand="{{$item->EquipmentBrandName}}">
+                
                     <div class="grid grid-cols-2 gap-2">
 
-                        <input type="hidden" name="brand" value="">
+                        <input type="hidden" name="oldBrandName" id="oldBrandName" value="">
+
+                        <input type="hidden" name="oldName" id="oldName'" value="">
 
                         <div>
                             <label for="EQUIPMENTBrandNameEDT" class="block text-sm font-semibold mb-1">Brand Name</label>
@@ -184,12 +199,12 @@
 
                         <div>
                             <label for="EQUIPMENTQuantityEDT" class="block text-sm font-semibold mb-1">Quantity</label>
-                            <input type="number" name="EQUIPMENTQuantityEDT" id="EQUIPMENTQuantityEDT" min="1" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity" required>
+                            <input type="number" name="EQUIPMENTQuantityEDT" id="EQUIPMENTQuantityEDT" min="1" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Quantity">
                         </div>
 
                         <div>
                             <label for="EQUIPMENTSKUEDT" class="block text-sm font-semibold mb-1">SKU</label>
-                            <input type="text" id="EQUIPMENTSKUEDT" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="SKU">
+                            <input type="text" id="EQUIPMENTSKUEDT" name="EQUIPMENTSKUEDT" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="SKU">
                         </div>
 
 
@@ -232,15 +247,11 @@
 
                     <div class="flex justify-end space-x-2">
                         <button type="button" id="saveEQUIPBTN" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                        <!-- @if(isset($item)) -->
-                        <button type="button" id="deleteEQUIPBTN" data-brand="{{$item->EquipmentBrandName}}" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
-                        <!-- @else -->
-                        <button type="button" id="deleteEQUIPBTN" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded" disabled>No Equipment to Delete</button>
-                        <!-- @endif -->
                     </div>
                 </form>
             </div>
         </div>
+        @endforeach
         <!-- END OF Edit 1 Popup Card -->
 
 
@@ -256,6 +267,7 @@
                     </button>
                 </div>
 
+                @if($equipment->isNotEmpty())
                 <div class="relative shadow-md sm:rounded-lg px-9 py-5">
                     <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="equipmentDetails">
                         <div><strong>Brand Name:</strong>{{$item->EquipmentBrandName}}</div>
@@ -269,7 +281,7 @@
                         <div><strong>Type:</strong>{{$item->EquipmentType}}</div>
                         <div><strong>Date:</strong>{{$item->EquipmentDate}}</div>
                     </div>
-
+    
                     <div class="flex justify-end space-x-4 items-center ml-auto">
                         <!-- Search Form -->
                         <form id="equipSearchForm" class="flex items-center space-x-4">
@@ -286,7 +298,7 @@
                             <!-- Buttons -->
 
                             <button id="ViewEquipExportBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Export</button>
-                            <button id="ViewEquipCondemnedBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Condemned</button>
+                            <button id="ViewEquipCondemnedBTN" data-id="{{$item->equipmentStockId}}" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Condemned</button>
                             <button id="ViewEquipSelectAllBTN" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Select All</button>
                         </form>
                     </div>
@@ -308,16 +320,18 @@
                                 </tr>
                             </thead>
                             <tbody id="tableViewBody">
+                                @foreach($equipment as $item)
                                 <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" 
-                                    data-id="{{$item->equipmentId}}"
+                                    data-id="{{$item->equipmentStockId}}"
                                     data-brand="{{$item->EquipmentBrandName}}"
                                     data-serial="{{$item->EquipmentSerialNo}}">
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <input id="ViewEQUIPMENTCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <input type="checkbox"  name="ViewEQUIPMENTCheckBox" data-id="{{ $item->equipmentStockId}}" class="ViewEQUIPMENTCheckBox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     </td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentSerialNo}}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentControlNo}}</td>
                                 </tr>
+                                @endforeach
                                 <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
@@ -325,7 +339,10 @@
                 </div>
             </div>
         </div>
+        @else
+        <p class="text-center text-gray-500">No equipment details available.</p>
         <!-- END OF View 1 Popup Card -->
+         @endif
 
 
         <!-- Edit 2 Popup Card -->

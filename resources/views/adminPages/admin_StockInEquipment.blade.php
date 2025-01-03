@@ -198,11 +198,13 @@
                 <tbody id="tableBody">
                     @foreach($equipment as $item)
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->equipmentId}}" data-brand="{{$item->EquipmentBrandName}}"
+                        data-equipname="{{$item->EquipmentName}}"
+                        data-oldname="{{$item->EquipmentName}}"
                         data-type="{{$item->EquipmentType}}" 
                         data-unit="{{$item->EquipmentUnit}}" 
                         data-color="{{$item->EquipmentColor}}"
                         data-category="{{$item->EquipmentCategory}}" 
-                        data-other-category="{{$item->OtherCategory ?? ''}}"
+                        data-other-category="{{$item->otherEquipCategoryEdit ?? ''}}"
                         data-unit-price="{{$item->EquipmentUnitPrice}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentStatus}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentBrandName}}</td>
@@ -230,7 +232,7 @@
                                     <path d="M200-520q-33 0-56.5-23.5T120-600v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v160q0 33-23.5 56.5T760-520H200Zm0 400q-33 0-56.5-23.5T120-200v-160q0-33 23.5-56.5T200-440h560q33 0 56.5 23.5T840-360v160q0 33-23.5 56.5T760-120H200Z" />
                                 </svg>
                             </button>
-                            <button id="deleteEquipButton"  data-brand="{{$item->EquipmentBrandName}}" type="button">
+                            <button id="deleteEquipButton"  data-equipname="{{$item->EquipmentName}}" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#Ff0000">
                                     <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
                                 </svg>
@@ -273,11 +275,13 @@
                         </svg>
                     </button>
                 </div>
-                <form id="editForm" data-brand="{{$item->EquipmentBrandName}}" action="{{ route('equipment.updateMain') }}" method="POST">
+                <form id="editForm" data-brand="{{$item->EquipmentBrandName}}">
 
                     <div class="grid grid-cols-2 gap-2">
 
-                        <input type="hidden" name="brand" id="brandField" value="">
+                        <input type="hidden" name="brand" id="brand" value="">
+
+                        <input type="hidden" name="oldname" id="oldname'" value="">
 
                         <div>
                             <label for="EquipmentBrandName" class="block text-sm font-semibold mb-1">Brand Name</label>
@@ -344,10 +348,7 @@
                     </div>
 
                     <div class="flex justify-end space-x-2">
-                        <button type="button" id="saveEquipButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                       
-                        <button type="button" id="deleteEquipButton" data-brand="{{$item->EquipmentBrandName}}" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
-                        
+                        <button type="button" id="saveEquipButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button> 
                     </div>
                 </form>
             </div>
