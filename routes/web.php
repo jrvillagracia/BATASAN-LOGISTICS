@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Exports\EquipmentExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RegisterController;
@@ -11,6 +13,7 @@ use App\Http\Controllers\Events\CompleteController;
 use App\Http\Controllers\Supplies\SuppliesController;
 use App\Http\Controllers\FacilityModule\RoomController;
 use App\Http\Controllers\Equipments\EquipmentController;
+use App\Http\Controllers\Equipments\EquipCondemController;
 use App\Http\Controllers\Supplies\SuppliesStockController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
 use App\Http\Controllers\DashboardController;
@@ -42,12 +45,6 @@ Route::middleware("jwt-verify")->group(function() {
     })->name('admin_dashboard');
 
     Route::get('/admin_dashboard', [DashboardController::class, 'index'])->name('admin_dashboard');
-    
-    
-    // CONDEMNED MODULE FOR EQUIPMENT
-    Route::get('/admin_equipCondemned', function () {
-        return view('admin_equipCondemned');
-    })->name('admin_equipCondemned');
     
     
     // USED MODULE FOR EQUIPMENT
@@ -118,23 +115,10 @@ Route::get('/employee_login', function () {
 //     return view('admin_dashboard');
 // })->name('admin_dashboard');
 
-
-// CONDEMNED MODULE FOR EQUIPMENT
-Route::get('/admin_equipCondemned', function () {
-    return view('adminPages.admin_equipCondemned');
-})->name('admin_equipCondemned');
-
-
 // USED MODULE FOR EQUIPMENT
 Route::get('/admin_equipUsed', function () {
     return view('adminPages.admin_equipUsed');
 })->name('admin_equipUsed');
-
-
-// HISTORY FOR EQUIPMENT
-Route::get('/admin_equipHistory', function () {
-    return view('adminPages.admin_equipHistory');
-})->name('admin_equipHistory');
 
 // HISTORY FOR SUPPLIES
 Route::get('/admin_suppliesHistory', function () {
@@ -210,6 +194,17 @@ Route::get('/equipment/final-viewing', [EquipmentController::class, 'finalViewin
 //Equipment
 Route::get('/admin_equipment', [EquipmentStockController::class, 'index'])->name('admin_EQUIPMENT');
 Route::get('/equipment/details2', [EquipmentStockController::class, 'equipmentDetails'])->name('equipment.details');
+Route::post('/equipment/delete-stock', [EquipmentStockController::class, 'destroyStock'])->name('equipment.destroy-stock');
+Route::post('/update/main-table', [EquipmentStockController::class, 'update'])->name('update.equipment');
+Route::post('/condemn-equipment', [EquipmentStockController::class, 'condemnEquipment'])->name('condemn.equipment');
+Route::get('/export-equipment', function () {
+    return Excel::download(new EquipmentExport, 'equipment.xlsx');
+})->name('equipment.export');
+
+//Equipment Condemned
+Route::get('/admin_equipCondemned', [EquipCondemController::class, 'index'])->name('admin_equipCondemned');
+
+
 
 //Supplies Stock in
 Route::get('/admin_StockInSupplies', [SuppliesController::class, 'index'])->name('admin_StockInSupplies');
