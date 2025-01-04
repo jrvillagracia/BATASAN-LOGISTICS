@@ -158,14 +158,17 @@
 
             <!-- View Popup Card -->
             <div id="ViewAprReqEquipPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl overflow-y-auto">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Request Equipment Slip</h2>
-                        <button id="closeAprReqViewEquipPopupCard" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+                <div id="view-APR-REQ-requestEquipment-pdf-content" class="bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl overflow-y-auto">
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="flex items-center">
+                            <div class="rounded-full w-20 h-15 flex items-center justify-center overflow-hidden">
+                                <img src="{{asset('img/logo.png')}}" alt="Logo" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="ml-4 text-center">
+                                <span class="font-bold text-lg text-black">Batasan Hills National High School</span>
+                            </div>
+                        </div>
+                        <h2 class="text-lg font-semibold mt-2 text-center">Request Equipment Slip</h2>
                     </div>
 
                     <div class="text-sm">
@@ -223,8 +226,8 @@
                     </div>
 
                     <div class="flex justify-end space-x-4 pt-5">
-                        <button id="printAprReqEquipmentInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
-                        <button id="cancelAprReqEquipmentInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="printAprReqEquipmentInventoryPopupCard" class="view-APR-REQ-requestEquipment-print-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
+                        <button id="cancelAprReqEquipmentInventoryPopupCard" class="cancel-APR-REQ-requestEquipment-cancel-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>

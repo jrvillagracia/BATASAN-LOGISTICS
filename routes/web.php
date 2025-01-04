@@ -13,6 +13,8 @@ use App\Http\Controllers\FacilityModule\RoomController;
 use App\Http\Controllers\Equipments\EquipmentController;
 use App\Http\Controllers\Supplies\SuppliesStockController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
+use App\Http\Controllers\DashboardController;
+
 
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
 
@@ -38,6 +40,8 @@ Route::middleware("jwt-verify")->group(function() {
         // dd(session("token"));
         return view('adminPages.admin_dashboard');
     })->name('admin_dashboard');
+
+    Route::get('/admin_dashboard', [DashboardController::class, 'index'])->name('admin_dashboard');
     
     
     // CONDEMNED MODULE FOR EQUIPMENT
