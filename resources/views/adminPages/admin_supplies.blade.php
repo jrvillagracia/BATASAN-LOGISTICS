@@ -103,7 +103,14 @@
                 </thead>
                 <tbody id="tableBody">
                     @foreach($supplies as $item)
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}" data-brand="">
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->suppliesStockId}}" data-brand="{{$item->SuppliesBrandName}}"
+                        data-type="{{$item->SuppliesType}}"
+                        data-unit="{{$item->SuppliesUnit}}"
+                        data-color="{{$item->SuppliesColor}}"
+                        data-classification="{{$item->SuppliesClassification}}"
+                        data-category="{{$item->SuppliesCategory}}"
+                        data-other-category="{{$item->otherSUPPLIESCategoryEDT ?? ''}}"
+                        data-unit-price="{{$item->SuppliesUnitPrice}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <input id="SUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </td>
@@ -114,13 +121,13 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->totalPrice, 2)}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSKU}}</td>
                         <td class="px-6 py-4 border-b border-gray-300">
-                            <button id="viewSuppliesssBTN" type="button">
+                            <button id="viewSuppliesBTN" data-id="{{ $item->suppliesStockId }}" data-brand="{{$item->SuppliesBrandName}}"  type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 hover:text-green-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
                             </button>
-                            <button id="editSuppliesBTN" type="button">
+                            <button id="editSuppliesBTN"  type="button">
                                 <svg class="w-[27px] h-[27px] text-blue-600 hover:text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
                                     <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
@@ -175,7 +182,7 @@
 
                             <div>
                                 <label for="SUPPLIESCategoryEDT" class="block text-sm font-semibold mb-1">Category</label>
-                                <select name="SuppliesCategoryEdit" id="SUPPLIESCategoryEDT" class="border p-2 rounded w-full mb-2 border-gray-400">
+                                <select name="SuppliesStockCategoryEdit" id="SUPPLIESCategoryEDT" class="border p-2 rounded w-full mb-2 border-gray-400">
                                     <option value="" disabled selected>Select a category</option>
                                     <option value="textbook">Textbook</option>
                                     <option value="office">Office Supplies</option>
@@ -257,8 +264,9 @@
                         </button>
                     </div>
 
+                    @foreach($supplies as $item)
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
-                        <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="SuppliesDetails">
+                        <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="suppliesDetails">
                             <div><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</div>
                             <div><strong>Color:</strong>{{$item->SuppliesColor}}</div>
                             <div><strong>Product Name:</strong>{{$item->SuppliesName}}</div>
@@ -270,9 +278,9 @@
                             <div><strong>Type:</strong>{{$item->SuppliesType}}</div>
                             <div><strong>Date:</strong>{{$item->SuppliesDate}}</div>
                         </div>
-
                     </div>
-
+                    @endforeach
+                    
                     <div class="flex justify-end space-x-2 pt-5">
                         <button type="button" id="printViewSUPPBTN" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Print</button>
                     

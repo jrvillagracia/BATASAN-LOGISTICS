@@ -251,6 +251,21 @@ $(document).ready(function () {
                 var formData = $('#editForm').serialize();
                 console.log('Form data:', formData);
 
+                $('body').append(`
+                    <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                        <section class="dots-container">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </section>
+                        <div class="dot-loader-dialog">
+                            <p>Saving...</p>
+                        </div>
+                    </div>
+                `);
+
                 var equipBrand = $('#editForm').find('input[name="brand"]').val();
                 console.log('Equipment Brand to be sent:', equipBrand);
 
@@ -291,7 +306,6 @@ $(document).ready(function () {
             row.find('td').eq(1).text($('#EquipmentBrandNameEdit').val().trim());
             row.find('td').eq(2).text($('#EquipmentNameEdit').val().trim());
             row.find('td').eq(3).text(finalCategory);
-            row.find('td').eq(4).text($('#EquipmentQuantityEdit').val().trim());
             row.find('td').eq(6).text($('#EquipmentSKUEdit').val().trim());
             row.find('td').eq(7).text($('#EquipmentClassificationEdit').val().trim());
 
@@ -711,7 +725,6 @@ $(document).ready(function () {
         $("#StockInEquipmentPopupCard").data('brand', brandName);
     });
 
-    // Cancel button
     $("#closeStockInEquipPopupCard").click(function (event) {
         event.preventDefault();
         $("#StockInEquipmentPopupCard").addClass("hidden");

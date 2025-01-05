@@ -216,7 +216,7 @@
                         data-unit="{{$item->SuppliesUnit}}"
                         data-color="{{$item->SuppliesColor}}"
                         data-category="{{$item->SuppliesCategory}}"
-                        data-other-category="{{$item->OtherCategory ?? ''}}"
+                        data-other-category="{{$item->otherSuppCategoryEdit ?? ''}}"
                         data-unit-price="{{$item->SuppliesUnitPrice}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesBrandName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesName}}</td>
@@ -226,7 +226,7 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSKU}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesClassification}}</td>
                         <td class="px-6 py-4 border-b border-gray-300">
-                            <button id="viewSuppButton" type="button">
+                            <button id="viewSuppButton" data-id="{{ $item->suppliesId }}" data-brand="{{$item->SuppliesBrandName}}" type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 hover:text-green-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -314,9 +314,9 @@
                             </div>
 
 
-                            <div id="otherSuppCategoryDiv" class="hidden">
-                                <label for="otherCategoryEdit" class="block text-sm font-semibold mb-1">Other Category</label>
-                                <input type="text" name="otherCategoryEdit" id="otherSuppCategoryEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Enter category">
+                            <div id="otherSuppCategoryDivEdit" class="hidden">
+                                <label for="otherSuppCategoryEdit" class="block text-sm font-semibold mb-1">Other Category</label>
+                                <input type="text" name="otherSuppCategoryEdit" id="otherSuppCategoryEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Enter category">
                             </div>
 
                             <div>
@@ -390,8 +390,8 @@
                         </button>
                     </div>
 
-                    @if(isset($item))
-                    <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full">
+                    @foreach($supplies as $item)
+                    <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full" id="suppliesDetails">
                         <div>
                             <p class="mb-2"><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</p>
                             <p class="mb-2"><strong>Product Name:</strong>{{$item->SuppliesName}}</p>

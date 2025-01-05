@@ -43,4 +43,59 @@ class EquipCondemController extends Controller
         return view('adminPages.admin_equipCondemned', compact('equipment'));
     }
 
+    public function equipmentDetails(Request $request)
+    {
+        // Get the equipment brand name from the request
+        $brandName = $request->input('EquipmentBrandName');
+
+        if (!$brandName) {
+            return response()->json(['message' => 'Brand name is required'], 400);
+        }
+
+        // Fetch equipment details that match the brand name
+        $equipmentDetails = EquipCondem::select(
+                'equipcondemId',
+                'EquipmentControlNo',
+                'EquipmentBrandName',
+                'EquipmentName',
+                'EquipmentCategory',
+                'EquipmentSKU',
+                'EquipmentColor',
+                'EquipmentType',
+                'EquipmentUnit',
+                'EquipmentUnitPrice',
+                'EquipmentClassification',
+                'EquipmentDate',
+                'EquipmentSerialNo',
+            )
+            ->where('EquipmentBrandName', 'like', $brandName) 
+            ->get();
+
+        if ($equipmentDetails->isEmpty()) {
+            return response()->json(['message' => 'Equipment not found'], 404);
+        }
+       
+        // Prepare response with the brand name prefix and equipment details
+        return response()->json([
+            'brandName' => $brandName,
+            'equipmentDetails' => $equipmentDetails->map(function ($equipment) {
+                return [
+                    'equipcondemId' => $equipment->equipmentcondemId,
+                    'EquipmentControlNo' => $equipment->EquipmentControlNo,
+                    'EquipmentBrandName' => $equipment->EquipmentBrandName,
+                    'EquipmentName' => $equipment->EquipmentName,
+                    'EquipmentCategory' => $equipment->EquipmentCategory,
+                    'EquipmentSKU' => $equipment->EquipmentSKU,
+                    'EquipmentColor' => $equipment->EquipmentColor,
+                    'EquipmentType' => $equipment->EquipmentType,
+                    'EquipmentUnit' => $equipment->EquipmentUnit,
+                    'EquipmentUnitPrice' => $equipment->EquipmentUnitPrice,
+                    'EquipmentClassification' => $equipment->EquipmentClassification,
+                    'EquipmentDate' => $equipment->EquipmentDate,
+                    'EquipmentSerialNo' => $equipment->EquipmentSerialNo,
+                ];
+            })
+        ]);
+    }
+
 }

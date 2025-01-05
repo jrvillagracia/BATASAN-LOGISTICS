@@ -199,7 +199,7 @@ Route::get('/export-equipment', function () {
 
 //Equipment Condemned
 Route::get('/admin_equipCondemned', [EquipCondemController::class, 'index'])->name('admin_equipCondemned');
-
+Route::get('/equipment/details3', [EquipCondemController::class, 'equipmentDetails'])->name('equipment.details');
 
 
 //Supplies Stock in
@@ -215,6 +215,9 @@ Route::get('/supplies/final-viewing', [SuppliesController::class, 'finalViewing'
 
 //Supplies
 Route::get('/admin_supplies', [SuppliesStockController::class, 'index'])->name('admin_supplies');
+Route::get('/supplies/details2', [SuppliesStockController::class,'suppliesDetails'])->name('supplies.details2');
+Route::post('/suppliesStock/delete', [SuppliesStockController::class, 'destroy'])->name('suppliesStock.destroy');
+Route::post('/suppliesStock/update', [SuppliesStockController::class, 'updateSupplies'])->name('suppliesStock.update');
 
 
 //Rooms
