@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Equipments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Equipments\EquipCondem;
@@ -336,7 +337,7 @@ class EquipmentStockController extends Controller
                 ]);
 
                 // Log the deletion process
-                \Log::info('Condemning equipment with ID: ' . $equipment->equipmentStockId);
+                Log::info('Condemning equipment with ID: ' . $equipment->equipmentStockId);
 
                 // Delete the equipment from the EquipmentStock table
                 $equipment->delete();
