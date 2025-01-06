@@ -16,6 +16,8 @@ use App\Http\Controllers\Equipments\EquipmentController;
 use App\Http\Controllers\Equipments\EquipCondemController;
 use App\Http\Controllers\Supplies\SuppliesStockController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
+use App\Http\Controllers\DashboardController;
+
 
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
 
@@ -41,7 +43,9 @@ Route::middleware("jwt-verify")->group(function() {
         // dd(session("token"));
         return view('adminPages.admin_dashboard');
     })->name('admin_dashboard');
-    
+
+    Route::get('/admin_dashboard', [DashboardController::class, 'index'])->name('admin_dashboard');
+    Route::get('/get-equipment-per-month', [DashboardController::class, 'getEquipmentPerMonth'])->name('get-equipment-per-month');
     
     // USED MODULE FOR EQUIPMENT
     Route::get('/admin_equipUsed', function () {

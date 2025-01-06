@@ -68,63 +68,80 @@ $(document).ready(function () {
             schoolYear:schoolYear,
         };
 
+        $('body').append(`
+            <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Saving, please wait...</p>
+                </div>
+            </div>
+        `);
+
         // Confirmation dialog
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to submit this room information?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, submit it!',
-            cancelButtonText: 'No, cancel!',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // AJAX request
-                $.ajax({
-                    url: '/rooms/store',
-                    type: 'POST',
-                    data: formData,
-                    success: function (response) {
-                        console.log(response);
-                        $('#RegForm')[0].reset();
-                        $('#RegFormCard').addClass('hidden');
-
-                        let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
-
-                        // Append the new row to the table
-                        const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
-                                           <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
-                                           <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
-                                           <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
-                                           <td class="px-6 py-6 border-b border-gray-300"></td>
-                                           <td class="px-6 py-6 border-b border-gray-300"></td>
-                                       </tr>`;
-                        $('#tableBody').append(newRow);
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Saved!',
-                            text: 'Room has been successfully added',
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#3085d6'
-                        }).then(() => {
-                            location.reload();
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(xhr.responseText);
-                        // Handle error response
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: "Something went wrong!",
-                            showConfirmButton: true
-                        });
-                    }
-                });
-            }
-        });
+        setTimeout(() =>{
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to submit this room information?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, submit it!',
+                cancelButtonText: 'No, cancel!',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // AJAX request
+                    $.ajax({
+                        url: '/rooms/store',
+                        type: 'POST',
+                        data: formData,
+                        success: function (response) {
+                            console.log(response);
+                            $('#RegForm')[0].reset();
+                            $('#RegFormCard').addClass('hidden');
+    
+                            let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
+    
+                            // Append the new row to the table
+                            const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
+                                               <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
+                                               <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
+                                               <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
+                                               <td class="px-6 py-6 border-b border-gray-300"></td>
+                                               <td class="px-6 py-6 border-b border-gray-300"></td>
+                                           </tr>`;
+                            $('#tableBody').append(newRow);
+    
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Saved!',
+                                text: 'Room has been successfully added',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#3085d6'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr.responseText);
+                            // Handle error response
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Something went wrong!",
+                                showConfirmButton: true
+                            });
+                        }
+                    });
+                }
+            });
+        }, 1000);
     });
 });
 

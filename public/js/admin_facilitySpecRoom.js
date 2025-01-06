@@ -70,62 +70,80 @@ $(document).ready(function () {
             schoolYear:schoolYear,
         };
 
+        $('body').append(`
+            <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Saving, please wait...</p>
+                </div>
+            </div>
+        `);
+
+
         // Confirmation message
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to submit this form?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, submit it!',
-            cancelButtonText: 'No, cancel!',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // AJAX request
-                $.ajax({
-                    url: '/rooms/lab/store', // The correct way to include the Blade route
-                    type: 'POST',
-                    data: formData,
-                    success: function (response) {
-                        $('#SpecForm')[0].reset();
-                        $('#SpecFormCard').addClass('hidden');
-
-                        let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
-
-                        // Optionally, you can append the new data to the table or update the UI
-                        const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
-                                           <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
-                                           <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
-                                           <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
-                                           <td class="px-6 py-6 border-b border-gray-300"></td>
-                                           <td class="px-6 py-6 border-b border-gray-300"></td>
-                                       </tr>`;
-                        $('#tableBody').append(newRow);
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Saved!',
-                            text: 'Your action has been successfully submitted',
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#3085d6'
-                        }).then(() => {
-                            location.reload();
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(xhr.responseText);
-                        // Handle error response
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: "Something went wrong!",
-                            showConfirmButton: true
-                        });
-                    }
-                });
-            }
-        });
+        setTimeout(() =>{
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to submit this form?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, submit it!',
+                cancelButtonText: 'No, cancel!',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // AJAX request
+                    $.ajax({
+                        url: '/rooms/lab/store', // The correct way to include the Blade route
+                        type: 'POST',
+                        data: formData,
+                        success: function (response) {
+                            $('#SpecForm')[0].reset();
+                            $('#SpecFormCard').addClass('hidden');
+    
+                            let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
+    
+                            // Optionally, you can append the new data to the table or update the UI
+                            const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
+                                               <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
+                                               <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
+                                               <td class="px-6 py-6 border-b border-gray-300">${response.capacity}</td>
+                                               <td class="px-6 py-6 border-b border-gray-300"></td>
+                                               <td class="px-6 py-6 border-b border-gray-300"></td>
+                                           </tr>`;
+                            $('#tableBody').append(newRow);
+    
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Saved!',
+                                text: 'Your action has been successfully submitted',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#3085d6'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr.responseText);
+                            // Handle error response
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Something went wrong!",
+                                showConfirmButton: true
+                            });
+                        }
+                    });
+                }
+            });
+        }, 1000);
     });
 });
 
