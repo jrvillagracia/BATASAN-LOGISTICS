@@ -142,12 +142,15 @@ class SuppliesController extends Controller
 
         // Fetch supplies details that match the brand name
         $suppliesDetails= Supplies::select(
-                'id',
-                'SuppliesControlNo',
-                'SuppliesSerialNo',
+                'suppliesId',
                 'SuppliesBrandName',
                 'SuppliesName',
+                'SuppliesCategory',
+                'SuppliesType',
+                'SuppliesColor',
                 'SuppliesUnit',
+                'SuppliesSKU',
+                'SuppliesColor',
                 'SuppliesUnitPrice',
                 'SuppliesClassification',
                 'SuppliesDate'
@@ -164,11 +167,13 @@ class SuppliesController extends Controller
             'brandName' => $brandName,
             'suppliesDetails' => $suppliesDetails->map(function ($supplies) {
                 return [
-                    'id' => $supplies->id, // Include ID
-                    'SuppliesControlNo' => $supplies->SuppliesControlNo,
-                    'SuppliesSerialNo' => $supplies->SuppliesSerialNo,
+                    'suppliesId' => $supplies->suppliesId, // Include ID
                     'SuppliesBrandName' => $supplies->SuppliesBrandName,
                     'SuppliesName' => $supplies->SuppliesName,
+                    'SuppliesCategory' => $supplies->SuppliesCategory,
+                    'SuppliesType' => $supplies->SuppliesType,
+                    'SuppliesColor' => $supplies->SuppliesColor,
+                    'SuppliesSKU' => $supplies->SuppliesSKU,
                     'SuppliesUnit' => $supplies->SuppliesUnit,
                     'SuppliesUnitPrice' => $supplies->SuppliesUnitPrice,
                     'SuppliesClassification' => $supplies->SuppliesClassification,
@@ -187,7 +192,7 @@ class SuppliesController extends Controller
             'SuppliesBrandNameEdit' => 'required|string|max:255',
             'SuppliesNameEdit' => 'required|string|max:255',
             'SuppliesCategoryEdit' => 'required|string',
-            'otherSuppCategoryEdit' => 'nullable|string|max:255',
+            'otherSuppCategoryEdit' => 'nullable|required_if:SuppliesCategoryEdit,other|string|max:255',
             'SuppliesQuantityEdit' => 'required|integer',
             'SuppliesColorEdit' => 'required|string|max:255',
             'SuppliesTypeEdit' => 'required|string|max:255',
@@ -198,11 +203,16 @@ class SuppliesController extends Controller
             'brand' => 'required|string|max:255',
         ]);
 
+        $category = $validatedData['SuppliesCategoryEdit'];
+        if ($category === 'other' && !empty($validatedData['otherSuppCategoryEdit'])) {
+            $category = $validatedData['otherSuppCategoryEdit'];
+        }
+
         // Update the supplies based on the brand
         $updateCount = Supplies::where('SuppliesBrandName', $validatedData['brand'])->update([
             'SuppliesBrandName' => $validatedData['SuppliesBrandNameEdit'],
             'SuppliesName' => $validatedData['SuppliesNameEdit'],
-            'SuppliesCategory' => $validatedData['SuppliesCategoryEdit'],
+            'SuppliesCategory' => $category,
             'SuppliesQuantity' => (int)$validatedData['SuppliesQuantityEdit'],
             'SuppliesColor' => $validatedData['SuppliesColorEdit'],
             'SuppliesType' => $validatedData['SuppliesTypeEdit'],

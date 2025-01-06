@@ -42,10 +42,10 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
-                <a href="{{route('admin_REQapprovalEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
-                <a href="{{route('admin_REQAprRequestEquipment')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
-                <a href="{{route('admin_REQComRequestEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_REQHistoryEquipment')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{route('admin_REQapprovalEquipment')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
+                <a href="{{route('admin_REQAprRequestEquipment')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
+                <a href="{{route('admin_REQComRequestEquipment')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_REQHistoryEquipment')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
             </div>
 
             <!-- Search Bar -->
@@ -128,15 +128,6 @@
                         <th scope="col" class="px-6 py-3">
                             Request ID
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Category
-                        </th>
-                        <th scope="col" class="px-6 py-30">
-                            Type
-                        </th>
-                        <th scope="col" class="px-6 py-30">
-                            Quantity
-                        </th>
                         <th scope="col" class="px-6 py-30">
                             Requesting Office/Unit
                         </th>
@@ -152,9 +143,6 @@
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">R00001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">64gb</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Elementary Faculty</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/12/2024</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -170,14 +158,17 @@
 
             <!-- View Popup Card -->
             <div id="ViewAprReqEquipPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl overflow-y-auto">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Request Equipment Slip</h2>
-                        <button id="closeAprReqViewEquipPopupCard" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+                <div id="view-APR-REQ-requestEquipment-pdf-content" class="bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl overflow-y-auto">
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="flex items-center">
+                            <div class="rounded-full w-20 h-15 flex items-center justify-center overflow-hidden">
+                                <img src="{{asset('img/logo.png')}}" alt="Logo" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="ml-4 text-center">
+                                <span class="font-bold text-lg text-black">Batasan Hills National High School</span>
+                            </div>
+                        </div>
+                        <h2 class="text-lg font-semibold mt-2 text-center">Request Equipment Slip</h2>
                     </div>
 
                     <div class="text-sm">
@@ -200,10 +191,19 @@
                                         Category
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        Brand Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Type
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Unit
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        SKU
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Stocks
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Quantity
@@ -213,8 +213,11 @@
                             <tbody id="tableViewBody">
                                 <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Brand Name</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">64gb</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Unit</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">SKU</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Stocks</td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
                                 </tr>
                                 <!-- Dynamic rows will be inserted here -->
@@ -223,8 +226,8 @@
                     </div>
 
                     <div class="flex justify-end space-x-4 pt-5">
-                        <button id="printAprReqEquipmentInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
-                        <button id="cancelAprReqEquipmentInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="printAprReqEquipmentInventoryPopupCard" class="view-APR-REQ-requestEquipment-print-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
+                        <button id="cancelAprReqEquipmentInventoryPopupCard" class="cancel-APR-REQ-requestEquipment-cancel-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>

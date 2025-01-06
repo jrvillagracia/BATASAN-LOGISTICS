@@ -38,11 +38,11 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
-                <a href="{{ route('admin_StockInEquipment') }}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
-                <a href="{{ route('admin_EQUIPMENT')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Equipment</a>
-                <a href="{{ route('admin_equipCondemned') }}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
-                <a href="{{ route('admin_equipHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
-                <a href="{{ route('admin_equipUsed')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
+                <a href="{{ route('admin_StockInEquipment') }}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
+                <a href="{{ route('admin_EQUIPMENT')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Equipment</a>
+                <a href="{{ route('admin_equipCondemned') }}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Condemned</a>
+                <a href="{{ route('admin_equipHistory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{ route('admin_equipUsed')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
             </div>
 
 
@@ -104,20 +104,20 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody" class="">
-
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="">
+                    @foreach($equipment as $item)
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-brand="{{$item->EquipmentBrandName}}" data-id="{{ $item->equipcondemId}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <input id="EQUIPMENTCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Dell</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">XP</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">150,000</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">DEL-XPS13-BLK-256</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentBrandName}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentName}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentCategory}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentQuantity}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">₱{{number_format($item->totalPrice, 2)}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentSKU}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Offices</td>
                         <td class="px-6 py-4">
-                            <button id="viewCondEquipButton" type="button">
+                            <button id="viewCondEquipButton" data-id="{{ $item->equipcondemId}}" data-brand="{{$item->EquipmentBrandName}}" type="button">
                                 <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -125,7 +125,7 @@
                             </button>
                         </td>
                     </tr>
-
+                    @endforeach
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>
@@ -145,18 +145,19 @@
                         </button>
                     </div>
 
+                    @if($equipment->isNotEmpty())
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
                         <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="equipmentDetails">
-                            <div><strong>Brand Name:</strong> Logitech</div>
-                            <div><strong>Color:</strong> Black</div>
-                            <div><strong>Product Name:</strong> Mouse</div>
-                            <div><strong>Unit:</strong> Boxes</div>
-                            <div><strong>Category:</strong> IT Department</div>
-                            <div><strong>Unit Price:</strong> ₱500</div>
-                            <div><strong>SKU:</strong> MOUSE0000001</div>
-                            <div><strong>Classification:</strong> DO</div>
-                            <div><strong>Type:</strong> TYPE</div>
-                            <div><strong>Date:</strong> 11/16/2024</div>
+                            <div><strong>Brand Name:</strong>{{$item->EquipmentBrandName}}</div>
+                            <div><strong>Color:</strong>{{$item->EquipmentColor}}</div>
+                            <div><strong>Product Name:</strong>{{$item->EquipmentName}}</div>
+                            <div><strong>Unit:</strong>{{$item->EquipmentUnit}}</div>
+                            <div><strong>Category:</strong>{{$item->EquipmentCategory}}</div>
+                            <div><strong>Unit Price:</strong>{{$item->EquipmentUnitPrice}}</div>
+                            <div><strong>SKU:</strong>{{$item->EquipmentSKU}}</div>
+                            <div><strong>Classification:</strong>{{$item->EquipmentClassification}}</div>
+                            <div><strong>Type:</strong>{{$item->EquipmentType}}</div>
+                            <div><strong>Date:</strong>{{$item->EquipmentDate}}</div>
                         </div>
 
                         <div class="flex justify-end space-x-4 items-center ml-auto">
@@ -194,13 +195,15 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tableViewBody">
+                                    @foreach($equipment as $item)
                                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
                                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <input id="ViewEQUIPMENTCondCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         </td>
-                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Serial Number</td>
-                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Control Number</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentSerialNo}}</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->EquipmentControlNo}}</td>
                                     </tr>
+                                    @endforeach
                                     <!-- Dynamic rows will be inserted here -->
                                 </tbody>
                             </table>
@@ -208,7 +211,10 @@
                     </div>
                 </div>
             </div>
+            @else
+            <p class="text-center text-gray-500">No equipment details available.</p>
             <!-- END OF View 1 Popup Card -->
+            @endif
 
             <!-- View Data Export Button Card-->
         <div id="CondEquipDataIncludedModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">

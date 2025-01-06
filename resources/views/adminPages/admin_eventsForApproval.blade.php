@@ -44,10 +44,10 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
-                <a href="{{route('admin_eventsForApproval')}}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
-                <a href="{{route('admin_eventsAprRequest')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
-                <a href="{{route('admin_eventsComRequest')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_eventsHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{route('admin_eventsForApproval')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
+                <a href="{{route('admin_eventsAprRequest')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
+                <a href="{{route('admin_eventsComRequest')}}" class="pageloaderbutton border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_eventsHistory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
             </div>
 
             <!-- Search Bar -->
@@ -331,7 +331,7 @@
                         </th>
                 </thead>
                 <tbody id="tableBody" class="">
-                    @foreach ($events as $event)
+                    <!-- @foreach ($events as $event)
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="{{$event->id}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->status}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->eventId}}</td>
@@ -345,7 +345,23 @@
                             <button type="button" data-id="{{ $event->id }}" class=" EventDeclineBTN bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
                         </td>
                     </tr>
-                    @endforeach
+                    @endforeach -->
+
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">PENDING</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">EV00001</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">12/12/2024</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">8:00PM</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">TLE DEPARTMENT</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">EVENT</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <button type="button" id="SampleEventViewBTN" class=" bg-yellow-600 hover:bg-yellow-800 text-white px-4 py-2 rounded">View</button>
+                            <button type="button" id="SampleEventSetItemBTN"class=" bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded">Set Item</button>
+                            <button type="button" id="SampleEventApproveBTN" class="  bg-green-600 hover:bg-green-800 text-white px-4 py-2 rounded">Approve</button>
+                            <button type="button" id="SampleEventDeclineBTN" class="  bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded">Decline</button>
+                            
+                        </td>
+                    </tr>
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>

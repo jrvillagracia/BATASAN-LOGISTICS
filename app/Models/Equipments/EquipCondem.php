@@ -5,13 +5,13 @@ namespace App\Models\Equipments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EquipmentStock extends Model
+class EquipCondem extends Model
 {
     use HasFactory;
 
-    protected $table = 'equipment_stocks';
+    protected $table = 'equipcondem';
 
-    protected $primaryKey = 'equipmentStockId';
+    protected $primaryKey = 'equipcondemId';
 
     protected $fillable = [
         'EquipmentControlNo',
@@ -29,4 +29,5 @@ class EquipmentStock extends Model
         'EquipmentSKU',
         'EquipmentSerialNo'
     ];
+
 }

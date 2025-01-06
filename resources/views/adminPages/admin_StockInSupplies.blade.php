@@ -38,10 +38,10 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div>
-                <a href="{{ route('admin_StockInSupplies') }}" class="button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
-                <a href="{{ route('admin_supplies')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Supplies</a>
-                <a href="{{ route('admin_suppliesHistory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
-                <a href="{{ route('admin_suppliesUsed')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
+                <a href="{{ route('admin_StockInSupplies') }}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Stock In</a>
+                <a href="{{ route('admin_supplies')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Supplies</a>
+                <a href="{{ route('admin_suppliesHistory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <a href="{{ route('admin_suppliesUsed')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Used</a>
             </div>
 
             <!-- Date Picker -->
@@ -115,7 +115,12 @@
 
                         <div>
                             <label for="SuppliesUnit" class="block text-sm font-semibold mb-1">Unit</label>
-                            <input type="text" name="SuppliesUnit" id="SuppliesUnit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Unit" pattern="[A-Za-z ]*" title="Only characters are allowed">
+                            <select name="SuppliesUnit" id="SuppliesUnit" class="border p-2 rounded w-full mb-2 border-gray-400">
+                                <option value="" disabled selected>Select a unit</option>
+                                <option value="box">Box</option>
+                                <option value="unit">Unit</option>
+                                <!-- Add more options as needed -->
+                            </select>
                         </div>
 
                         <div>
@@ -151,7 +156,17 @@
                             <label for="SuppliesSKU" class="block text-sm font-semibold mb-1">SKU</label>
                             <input type="text" id="SuppliesSKU" class="border p-2 rounded w-full mb-2 border-gray-400" placeholder="SKU">
                         </div>
+                    </div>
 
+                    <div>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="lowSuppliesStockAlert" name="lowSuppliesStockAlert" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm font-semibold">Low stock alert</span>
+                        </label>
+                        <div id="lowSuppliesStockThresholdDiv" class="mt-2 hidden">
+                            <label for="lowSuppliesStockThreshold" class="block text-sm font-semibold mb-1">Low stock threshold</label>
+                            <input type="number" id="lowSuppliesStockThreshold" name="lowSuppliesStockThreshold" class="border border-gray-400 p-2 rounded w-64" placeholder="Enter threshold">
+                        </div>
                     </div>
 
                     <!-- Save and Close Buttons -->
@@ -197,11 +212,11 @@
                 <tbody id="tableBody">
                     @foreach($supplies as $item)
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->suppliesId}}" data-brand="{{$item->SuppliesBrandName}}"
-                        data-type="{{$item->SuppliesType}}" 
-                        data-unit="{{$item->SuppliesUnit}}" 
+                        data-type="{{$item->SuppliesType}}"
+                        data-unit="{{$item->SuppliesUnit}}"
                         data-color="{{$item->SuppliesColor}}"
-                        data-category="{{$item->SuppliesCategory}}" 
-                        data-other-category="{{$item->OtherCategory ?? ''}}"
+                        data-category="{{$item->SuppliesCategory}}"
+                        data-other-category="{{$item->otherSuppCategoryEdit ?? ''}}"
                         data-unit-price="{{$item->SuppliesUnitPrice}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesBrandName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesName}}</td>
@@ -211,26 +226,26 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSKU}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesClassification}}</td>
                         <td class="px-6 py-4 border-b border-gray-300">
-                            <button id="viewSuppButton" type="button">
-                                <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <button id="viewSuppButton" data-id="{{ $item->suppliesId }}" data-brand="{{$item->SuppliesBrandName}}" type="button">
+                                <svg class="w-[27px] h-[27px] text-green-600 hover:text-green-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                     <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
                             </button>
                             <button id="editSuppButton" type="button">
-                                <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-[27px] h-[27px] text-blue-600  hover:text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
                                     <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
                                 </svg>
                             </button>
-                            <button class="editStockInSuppButton" data-id="{{ $item->suppliesId }}"  type="button">
+                            <button class="editStockInSuppButton" data-id="{{ $item->suppliesId }}" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
                                     <path d="M200-520q-33 0-56.5-23.5T120-600v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v160q0 33-23.5 56.5T760-520H200Zm0 400q-33 0-56.5-23.5T120-200v-160q0-33 23.5-56.5T200-440h560q33 0 56.5 23.5T840-360v160q0 33-23.5 56.5T760-120H200Z" />
                                 </svg>
                             </button>
-                            <button id="deleteSuppButton"  data-brand="{{$item->SuppliesBrandName}}" type="button">
+                            <button class="deleteSuppButton" data-brand="{{$item->SuppliesBrandName}}" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#Ff0000">
-                                    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                                    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
                                 </svg>
                             </button>
                         </td>
@@ -299,9 +314,9 @@
                             </div>
 
 
-                            <div id="otherSuppCategoryDiv" class="hidden">
-                                <label for="otherCategoryEdit" class="block text-sm font-semibold mb-1">Other Category</label>
-                                <input type="text" name="otherCategoryEdit" id="otherSuppCategoryEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Enter category">
+                            <div id="otherSuppCategoryDivEdit" class="hidden">
+                                <label for="otherSuppCategoryEdit" class="block text-sm font-semibold mb-1">Other Category</label>
+                                <input type="text" name="otherSuppCategoryEdit" id="otherSuppCategoryEdit" class="border border-gray-400 p-2 rounded w-full mb-2" placeholder="Enter category">
                             </div>
 
                             <div>
@@ -342,11 +357,22 @@
 
                         </div>
 
+                        <div>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" id="lowEditSuppliesStockAlert" name="lowEditSuppliesStockAlert" class="rounded text-blue-500 focus:ring-blue-500">
+                            <span class="text-sm font-semibold">Low stock alert</span>
+                        </label>
+                        <div id="lowEditSuppliesStockThresholdDiv" class="mt-2 hidden">
+                            <label for="lowEditSuppliesStockThreshold" class="block text-sm font-semibold mb-1">Low stock threshold</label>
+                            <input type="number" id="lowEditSuppliesStockThreshold" name="lowEditSuppliesStockThreshold" class="border border-gray-400 p-2 rounded w-64" placeholder="Enter threshold">
+                        </div>
+                    </div>
+
 
                         <div class="flex justify-end space-x-2">
                             <button type="button" id="saveSuppButton" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Save</button>
-                           
-                        
+
+
                         </div>
                     </form>
                 </div>
@@ -364,8 +390,8 @@
                         </button>
                     </div>
 
-                    @if(isset($item))
-                    <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full">
+                    @foreach($supplies as $item)
+                    <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full" id="suppliesDetails">
                         <div>
                             <p class="mb-2"><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</p>
                             <p class="mb-2"><strong>Product Name:</strong>{{$item->SuppliesName}}</p>
@@ -383,57 +409,14 @@
                         </div>
                     </div>
                     @endif
-                    @if($supplies->isEmpty())
-                    <p class="text-center text-gray-500">No Supplies details available.</p>
-                    @else
-                    <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
-                        <table id="ViewDynamicTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-sm text-white dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Serial Number
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Control Number
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Actions
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
 
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableViewBody">
-                                @foreach($supplies as $item)
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->id}}">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesSerialNo}}</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$item->SuppliesControlNo}}</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <button id="editSuppBTN" type="button">
-                                            <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd" />
-                                                <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <input id="StockInSuppCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    </td>
-                                </tr>
-                                @endforeach
-                                <!-- Dynamic rows will be inserted here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    @endif
                 </div>
             </div>
             <!-- END OF View 1 Popup Card -->
 
             <!-- Edit 2 Popup Card -->
             <div id="editFullSuppModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md h-auto overflow-auto">
+                <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-1xl overflow-y-auto">
                     <!-- Flex container for heading and close button -->
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-2xl font-semibold">Edit Supplies</h2>

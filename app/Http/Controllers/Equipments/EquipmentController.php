@@ -65,68 +65,73 @@ class EquipmentController extends Controller
             'EquipmentUnit' => 'required|string|max:255',
             'EquipmentQuantity' => 'required|integer',
             'EquipmentDate' => 'required|date',
-            'EquipmentUnitPrice' => 'required|numeric|max:5000',
+            'EquipmentUnitPrice' => 'required|numeric|max:100000',
             'EquipmentClassification' => 'required|string',
             'EquipmentSKU' => 'required|string|max:255',
         ]);
 
         $validatedData['EquipmentDate'] = Carbon::parse($validatedData['EquipmentDate'])->format('Y-m-d');
-    
-        // Create a new equipment entry in the database
-        for ($i = 0; $i < $validatedData['EquipmentQuantity']; $i++) {
-            // Create a new equipment entry in the database
 
-            // Extract the first three letters of the brand name in uppercase
-        $brandAbbreviation = strtoupper(substr($request->EquipmentBrandName, 0, 3));
-    
-        // Find the latest entry for this brand
-        $latestEquipment = Equipment::where('EquipmentBrandName', $request->EquipmentBrandName)
-                                    ->orderBy('equipmentId', 'desc')
-                                    ->first();
-    
-        if ($latestEquipment) {
-            // Extract the number part from the latest control number and increment it
-            $latestControlNo = $latestEquipment->EquipmentControlNo;
-            $latestNumber = (int) substr($latestControlNo, -4); // Extract last 4 digits
-            $newNumber = $latestNumber + 1;
+        // Check if an entry with the same category, type, unit, and brand name already exists
+        $existingEquipment = Equipment::where('EquipmentBrandName', $validatedData['EquipmentBrandName'])
+            ->where('EquipmentCategory', $validatedData['EquipmentCategory'])
+            ->where('EquipmentType', $validatedData['EquipmentType'])
+            ->where('EquipmentUnit', $validatedData['EquipmentUnit'])
+            ->first();
+
+        if ($existingEquipment) {
+            // If a match is found, merge by updating the quantity
+            $existingEquipment->EquipmentQuantity += $validatedData['EquipmentQuantity'];
+            $existingEquipment->save();
+
+            return response()->json([
+                'message' => 'Equipment merged successfully!',
+                'equipment' => $existingEquipment,
+            ]);
         } else {
-            // If no entries exist for this brand, start from 0001
-            $newNumber = 1;
-        }
-    
-        // Prepare the control number for the new item
-        $controlNumber = $brandAbbreviation . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+            // If no match is found, create a new entry for each quantity
+            for ($i = 0; $i < $validatedData['EquipmentQuantity']; $i++) {
+                // Generate a control number
+                $brandAbbreviation = strtoupper(substr($validatedData['EquipmentBrandName'], 0, 3));
+                $latestEquipment = Equipment::where('EquipmentBrandName', $validatedData['EquipmentBrandName'])
+                    ->orderBy('equipmentId', 'desc')
+                    ->first();
 
-          // Check if the serial number exists (if any)
-          $serialNo = $request->EquipmentSerialNo ?? null;  
-          if ($serialNo) {
-              $status = 'COMPLETE'; 
-          }
+                if ($latestEquipment) {
+                    $latestControlNo = $latestEquipment->EquipmentControlNo;
+                    $latestNumber = (int) substr($latestControlNo, -4);
+                    $newNumber = $latestNumber + 1;
+                } else {
+                    $newNumber = 1;
+                }
 
-            $equipment = Equipment::create([
-                'EquipmentBrandName' => $validatedData['EquipmentBrandName'],
-                'EquipmentName' => $validatedData['EquipmentName'],
-                'EquipmentCategory' => $validatedData['EquipmentCategory'],
-                'EquipmentType' => $validatedData['EquipmentType'],
-                'EquipmentColor' => $validatedData['EquipmentColor'],
-                'EquipmentUnit' => $validatedData['EquipmentUnit'],
-                'EquipmentQuantity' => 1, // Save one quantity for each entry
-                'EquipmentDate' => $validatedData['EquipmentDate'],
-                'EquipmentUnitPrice' => $validatedData['EquipmentUnitPrice'],
-                'EquipmentClassification' => $validatedData['EquipmentClassification'],
-                'EquipmentSKU' => $validatedData['EquipmentSKU'],
-                'EquipmentControlNo' => $controlNumber, 
-                'EquipmentStatus' => 'PENDING',
+                $controlNumber = $brandAbbreviation . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+                // Create a new equipment entry
+                $equipment = Equipment::create([
+                    'EquipmentBrandName' => $validatedData['EquipmentBrandName'],
+                    'EquipmentName' => $validatedData['EquipmentName'],
+                    'EquipmentCategory' => $validatedData['EquipmentCategory'],
+                    'EquipmentType' => $validatedData['EquipmentType'],
+                    'EquipmentColor' => $validatedData['EquipmentColor'],
+                    'EquipmentUnit' => $validatedData['EquipmentUnit'],
+                    'EquipmentQuantity' => 1,
+                    'EquipmentDate' => $validatedData['EquipmentDate'],
+                    'EquipmentUnitPrice' => $validatedData['EquipmentUnitPrice'],
+                    'EquipmentClassification' => $validatedData['EquipmentClassification'],
+                    'EquipmentSKU' => $validatedData['EquipmentSKU'],
+                    'EquipmentControlNo' => $controlNumber,
+                    'EquipmentStatus' => 'PENDING',
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'New equipment entry created successfully!',
+                'equipment' => $equipment,
             ]);
         }
-        
-        // Return a response with the control number and success message
-        return response()->json([
-            'message' => 'Equipment saved successfully!',
-            'controlNo' => $controlNumber,
-            'equipment' => $equipment,
-        ]);
     }
+
 
 
     public function equipmentDetails(Request $request)
@@ -189,14 +194,14 @@ class EquipmentController extends Controller
 
     public function updateMain(Request $request)
     {
-        Log::info('Incoming request data for Main :', $request->all());
+        Log::info('Incoming request data for Main:', $request->all());
     
         // Validate the incoming request data for the main table
         $validatedData = $request->validate([
             'EquipmentBrandNameEdit' => 'required|string|max:255',
             'EquipmentNameEdit' => 'required|string|max:255',
             'EquipmentCategoryEdit' => 'required|string',
-            'otherEquipCategoryEdit' => 'nullable|string|max:255',
+            'otherEquipCategoryEdit' => 'nullable|required_if:EquipmentCategoryEdit,other|string|max:255',
             'EquipmentQuantityEdit' => 'required|integer',
             'EquipmentColorEdit' => 'required|string|max:255',
             'EquipmentTypeEdit' => 'required|string|max:255',
@@ -204,32 +209,91 @@ class EquipmentController extends Controller
             'EquipmentUnitPriceEdit' => 'required|numeric',
             'EquipmentClassificationEdit' => 'required|string|max:255',
             'EquipmentSKUEdit' => 'required|string|max:255',
-            'brand' => 'required|string|max:255', 
+            'brand' => 'required|string|max:255',
+            'oldname' => 'required|string|max:255',
         ]);
-        
     
-        // Update the equipment based on the brand
-        $updateCount = Equipment::where('EquipmentBrandName', $validatedData['brand'])->update([
+        $category = $validatedData['EquipmentCategoryEdit'];
+        if ($category === 'other' && !empty($validatedData['otherEquipCategoryEdit'])) {
+            $category = $validatedData['otherEquipCategoryEdit'];
+        }
+    
+        // Find the current equipment entry from the database
+        $equipment = Equipment::where('EquipmentBrandName', $validatedData['brand'])
+                            ->where('EquipmentName', $validatedData['oldname'])
+                            ->first();
+    
+        if (!$equipment) {
+            return response()->json(['message' => 'Equipment not found'], 404);
+        }
+    
+        $currentQuantity = $equipment->EquipmentQuantity;
+        $newQuantity = $validatedData['EquipmentQuantityEdit'];
+    
+        // Calculate the difference between the new quantity and the current quantity
+        $quantityDifference = $newQuantity - $currentQuantity;
+    
+        // If the new quantity is greater than the current quantity, create new entries for the difference
+        if ($quantityDifference > 0) {
+            // Create new entries based on the quantity difference
+            for ($i = 0; $i < $quantityDifference; $i++) {
+                // Generate control number for the new entry
+                $brandAbbreviation = strtoupper(substr($validatedData['EquipmentBrandNameEdit'], 0, 3));
+                $latestEquipment = Equipment::where('EquipmentBrandName', $validatedData['EquipmentBrandNameEdit'])
+                                            ->orderBy('equipmentId', 'desc')
+                                            ->first();
+    
+                if ($latestEquipment) {
+                    // Extract the number part from the latest control number and increment it
+                    $latestControlNo = $latestEquipment->EquipmentControlNo;
+                    $latestNumber = (int) substr($latestControlNo, -4); // Extract last 4 digits
+                    $newNumber = $latestNumber + 1;
+                } else {
+                    // If no entries exist for this brand, start from 0001
+                    $newNumber = 1;
+                }
+    
+                // Prepare the control number for the new item
+                $controlNumber = $brandAbbreviation . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+    
+                // Create the new equipment entry with the new control number and automatically set the current date for EquipmentDate
+                Equipment::create([
+                    'EquipmentBrandName' => $validatedData['EquipmentBrandNameEdit'],
+                    'EquipmentName' => $validatedData['EquipmentNameEdit'],
+                    'EquipmentCategory' => $category,
+                    'EquipmentQuantity' => 1, // Each new entry has a quantity of 1
+                    'EquipmentColor' => $validatedData['EquipmentColorEdit'],
+                    'EquipmentType' => $validatedData['EquipmentTypeEdit'],
+                    'EquipmentUnit' => $validatedData['EquipmentUnitEdit'],
+                    'EquipmentUnitPrice' => $validatedData['EquipmentUnitPriceEdit'],
+                    'EquipmentClassification' => $validatedData['EquipmentClassificationEdit'],
+                    'EquipmentSKU' => $validatedData['EquipmentSKUEdit'],
+                    'EquipmentControlNo' => $controlNumber,
+                    'EquipmentStatus' => 'PENDING',
+                    'EquipmentDate' => Carbon::now(), // Automatically set to the current date and time
+                ]);
+            }
+        }
+    
+        // Update the main equipment entry with the new details
+        $equipment->update([
             'EquipmentBrandName' => $validatedData['EquipmentBrandNameEdit'],
             'EquipmentName' => $validatedData['EquipmentNameEdit'],
-            'EquipmentCategory' => $validatedData['EquipmentCategoryEdit'],
-            'EquipmentQuantity' => (int)$validatedData['EquipmentQuantityEdit'],
+            'EquipmentCategory' => $category,
+            'EquipmentQuantity' => $newQuantity, // Update the quantity
             'EquipmentColor' => $validatedData['EquipmentColorEdit'],
             'EquipmentType' => $validatedData['EquipmentTypeEdit'],
             'EquipmentUnit' => $validatedData['EquipmentUnitEdit'],
             'EquipmentUnitPrice' => $validatedData['EquipmentUnitPriceEdit'],
             'EquipmentClassification' => $validatedData['EquipmentClassificationEdit'],
             'EquipmentSKU' => $validatedData['EquipmentSKUEdit'],
+            'EquipmentDate' => Carbon::now(), // Update EquipmentDate with the current date and time
         ]);
     
-        // Check if any rows were updated
-        if ($updateCount > 0) {
-            return response()->json(['message' => 'Equipment updated successfully in Main Table']);
-        } else {
-            return response()->json(['message' => 'No equipment found to update'], 404);
-        }
+        return response()->json(['message' => 'Equipment updated successfully in Main Table', 'equipment' => $equipment]);
     }
     
+
 
     public function updateView(Request $request)
     {
@@ -285,18 +349,24 @@ class EquipmentController extends Controller
 
     public function destroy(Request $request)
     {
-        // Get the brand name from the request
-        $brandName = $request->input('brand');
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'EquipmentName' => 'required|string',
+        ]);
 
-        // Find and delete items with the matching brand name
-        $deletedCount = Equipment::where('EquipmentBrandName', $brandName)->delete();
+        // Get the equipment name from the request
+        $equipmentName = $validatedData['EquipmentName'];
+
+        // Find and delete all items with the matching equipment name
+        $deletedCount = Equipment::where('EquipmentName', $equipmentName)->delete();
 
         if ($deletedCount > 0) {
-            return response()->json(['success' => 'Items deleted successfully']);
+            return response()->json(['message' => 'Items deleted successfully!']);
         } else {
-            return response()->json(['error' => 'No items found for the given brand']);
+            return response()->json(['message' => 'No items found for the given equipment name.'], 404);
         }
     }
+
 
 
 
@@ -325,30 +395,34 @@ class EquipmentController extends Controller
             'id' => 'required|string', // The EquipmentBrandName from the request
         ]);
 
-        // Find equipment with the specified EquipmentBrandName
+        // Retrieve equipment records by brand name
         $equipment = Equipment::where('EquipmentBrandName', $validated['id'])->get();
 
+        // Check if any records were found
         if ($equipment->isEmpty()) {
             return response()->json(['message' => 'No equipment found for the given brand name'], 404);
         }
 
-        $firstBrandName = $equipment->first()->EquipmentBrandName;
-
-        // Check if any equipment is still in "pending" status
+        // Validate statuses and serial numbers
         foreach ($equipment as $item) {
             if ($item->status == 'pending') {
-                return response()->json(['message' => 'The equipment has a pending status and cannot be stock-in until approved.'], 400);
+                return response()->json(['message' => 'Some equipment is pending approval.'], 400);
             }
 
             if (empty($item->EquipmentSerialNo)) {
-                return response()->json(['message' => 'A serial number is required for stock-in.'], 400);
+                return response()->json(['message' => 'A serial number is required for all equipment.'], 400);
             }
         }
 
         try {
-            // Insert all equipment details into the 'equipment_stock'
+            // Begin transaction
+            DB::beginTransaction();
+
+            // Insert all equipment details into 'equipment_stocks' using equipmentId as the primary key
             foreach ($equipment as $item) {
                 EquipmentStock::create([
+                    'equipmentId' => $item->equipmentId, // Use equipmentId as the primary key
+                    'EquipmentControlNo' => $item->EquipmentControlNo,
                     'EquipmentBrandName' => $item->EquipmentBrandName,
                     'EquipmentName' => $item->EquipmentName,
                     'EquipmentCategory' => $item->EquipmentCategory,
@@ -356,7 +430,6 @@ class EquipmentController extends Controller
                     'EquipmentColor' => $item->EquipmentColor,
                     'EquipmentUnit' => $item->EquipmentUnit,
                     'EquipmentQuantity' => $item->EquipmentQuantity,
-                    'EquipmentControlNo' => $item->EquipmentControlNo,
                     'EquipmentDate' => $item->EquipmentDate,
                     'EquipmentUnitPrice' => $item->EquipmentUnitPrice,
                     'EquipmentClassification' => $item->EquipmentClassification,
@@ -367,11 +440,16 @@ class EquipmentController extends Controller
                 ]);
             }
 
-            // Delete all equipment records with the specified EquipmentBrandName
-            Equipment::where('EquipmentBrandName', $firstBrandName)->delete();
+            // Delete all equipment records with the specified brand name
+            Equipment::where('EquipmentBrandName', $validated['id'])->delete();
+
+            // Commit transaction
+            DB::commit();
 
             return response()->json(['message' => 'Equipment approved successfully!']);
         } catch (\Exception $e) {
+            // Rollback transaction in case of an error
+            DB::rollBack();
             return response()->json(['message' => 'Error approving equipment: ' . $e->getMessage()], 500);
         }
     }

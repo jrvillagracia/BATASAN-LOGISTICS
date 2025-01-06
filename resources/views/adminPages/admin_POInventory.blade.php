@@ -42,9 +42,9 @@
         <div class="flex justify-between items-center mt-4 px-9 py-2">
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
-                <a href="{{route('admin_POInventory')}}" class="button border-b-2 py-2 px-4 border-blue-500 transition-all duration-300 translate-x-2">For Approval</a>
-                <a href="{{route('admin_POApprOrderInventory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Order</a>
-                <a href="{{route('admin_POCompleteOrderInventory')}}" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
+                <a href="{{route('admin_POInventory')}}" class="pageloader button border-b-2 py-2 px-4 border-blue-500 transition-all duration-300 translate-x-2">For Approval</a>
+                <a href="{{route('admin_POApprOrderInventory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Approve Order</a>
+                <a href="{{route('admin_POCompleteOrderInventory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
             </div>
 
             <!-- Search Bar -->
@@ -246,128 +246,129 @@
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>
+        </div>
 
-            <!-- Approval Popup Card -->
-            <div id="ApprProductInventoryPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-                    <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to approve this Product Order?</h2>
-                    <div class="flex justify-center space-x-4">
-                        <button id="submitApprProductInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeApprProductInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
-                    </div>
+        <!-- Approval Popup Card -->
+        <div id="ApprProductInventoryPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+                <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to approve this Product Order?</h2>
+                <div class="flex justify-center space-x-4">
+                    <button id="submitApprProductInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                    <button id="closeApprProductInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                 </div>
             </div>
+        </div>
 
-            <!-- Decline Popup Card -->
-            <div id="DclnProductInventoryPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+        <!-- Decline Popup Card -->
+        <div id="DclnProductInventoryPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
-                    <!-- Reason Dropdown -->
-                    <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to decline this request?</h2>
+                <!-- Reason Dropdown -->
+                <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to decline this request?</h2>
 
-                    <div class="flex justify-center space-x-4">
-                        <button id="submitDclnProductInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeDclnProductInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
-                    </div>
+                <div class="flex justify-center space-x-4">
+                    <button id="submitDclnProductInventoryPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                    <button id="closeDclnProductInventoryPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                 </div>
             </div>
+        </div>
 
 
-            <!-- View Popup Card -->
-            <div id="ViewProductOrderPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-5xl max-h-[80vh] overflow-y-auto">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold ">Product Order Slip</h2>
-                        <button id="closeViewProductOrderPopupCard" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+        <!-- View Popup Card -->
+        <div id="ViewProductOrderPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-5xl max-h-[80vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold ">Product Order Slip</h2>
+                    <button id="closeViewProductOrderPopupCard" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full">
+                    <div>
+                        <p class="mb-2"><strong>Date:</strong></p>
+                        <p class="mb-2"><strong>Time:</strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit:</strong></p>
+                        <p class="mb-2"><strong>Requesting For:</strong></p>
                     </div>
+                </div>
 
-                    <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full">
-                        <div>
-                            <p class="mb-2"><strong>Date:</strong></p>
-                            <p class="mb-2"><strong>Time:</strong></p>
-                            <p class="mb-2"><strong>Requesting Office/Unit:</strong></p>
-                            <p class="mb-2"><strong>Requesting For:</strong></p>
+                <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
+                    <table id="step2ReqEquipContentTable" class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-blue-900 ">
+                                <th class="p-2 text-white">Inventory</th>
+                                <th class="p-2 text-white">Category</th>
+                                <th class="p-2 text-white">Type</th>
+                                <th class="p-2 text-white">Unit</th>
+                                <th class="p-2 text-white">Quantity</th>
+                                <th class="p-2 text-white">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ViewProductOrder-TablBody">
+                            <!-- Single Inventory Item -->
+                            <tr class="ViewProductOrder-Rows">
+                                <td class="p-2">
+                                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="" disabled selected>Select Inventory</option>
+                                        <!-- These options will depend on the selected building -->
+                                        <option value="Equipment" data-building="">Equipment</option>
+                                        <option value="Supplies" data-building="">Supplies</option>
+                                    </select>
+                                </td>
+                                <td class="p-2">
+                                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="" disabled selected>Select Category</option>
+                                        <!-- These options will depend on the selected building -->
+                                        <option value="Laptop" data-building="">Laptop</option>
+                                        <option value="Printer" data-building="">Printer</option>
+                                    </select>
+                                </td>
+                                <td class="p-2">
+                                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="" disabled selected>Select Type</option>
+                                        <!-- These options will depend on the selected building -->
+                                        <option value="64gb" data-building="">64gb</option>
+                                        <option value="Nikon" data-building="">Nikon</option>
+                                    </select>
+                                </td>
+                                <td class="p-2">
+                                    <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                        <option value="" disabled selected>Select Unit</option>
+                                        <!-- These options will depend on the selected building -->
+                                        <option value="Box" data-building="">Box</option>
+                                        <option value="Unit" data-building="">Unit</option>
+                                    </select>
+                                </td>
+                                <td class="p-2 flex justify-center">
+                                    <input type="number" class="w-20 border rounded p-2" placeholder="">
+                                </td>
+
+                                <td class="p-2 text-center">
+                                    <button type="button" class="ViewProductOrder-DeleteBTN text-red-500 hover:text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- More inventory rows can be added here -->
+                        </tbody>
+                    </table>
+
+                    <div class="flex justify-between pt-3">
+                        <button id="printProductOrderInventoryPopupCard" type="button" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Print</button>
+                        <div class="flex justify-end space-x-4">
+                            <button id="ViewAddRowBTN" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">+ Add Item</button>
                         </div>
                     </div>
-
-                    <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
-                        <table id="step2ReqEquipContentTable" class="w-full border-collapse">
-                            <thead>
-                                <tr class="bg-blue-900 ">
-                                    <th class="p-2 text-white">Inventory</th>
-                                    <th class="p-2 text-white">Category</th>
-                                    <th class="p-2 text-white">Type</th>
-                                    <th class="p-2 text-white">Unit</th>
-                                    <th class="p-2 text-white">Quantity</th>
-                                    <th class="p-2 text-white">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ViewProductOrder-TablBody">
-                                <!-- Single Inventory Item -->
-                                <tr class="ViewProductOrder-Rows">
-                                    <td class="p-2">
-                                        <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                            <option value="" disabled selected>Select Inventory</option>
-                                            <!-- These options will depend on the selected building -->
-                                            <option value="Equipment" data-building="">Equipment</option>
-                                            <option value="Supplies" data-building="">Supplies</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2">
-                                        <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                            <option value="" disabled selected>Select Category</option>
-                                            <!-- These options will depend on the selected building -->
-                                            <option value="Laptop" data-building="">Laptop</option>
-                                            <option value="Printer" data-building="">Printer</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2">
-                                        <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                            <option value="" disabled selected>Select Type</option>
-                                            <!-- These options will depend on the selected building -->
-                                            <option value="64gb" data-building="">64gb</option>
-                                            <option value="Nikon" data-building="">Nikon</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2">
-                                        <select id="" name="" class="w-full px-2 py-1 border border-gray-400 rounded">
-                                            <option value="" disabled selected>Select Unit</option>
-                                            <!-- These options will depend on the selected building -->
-                                            <option value="Box" data-building="">Box</option>
-                                            <option value="Unit" data-building="">Unit</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2 flex justify-center">
-                                        <input type="number" class="w-20 border rounded p-2" placeholder="">
-                                    </td>
-
-                                    <td class="p-2 text-center">
-                                        <button type="button" class="ViewProductOrder-DeleteBTN text-red-500 hover:text-red-700">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <!-- More inventory rows can be added here -->
-                            </tbody>
-                        </table>
-
-                        <div class="flex justify-between pt-3">
-                            <button id="printProductOrderInventoryPopupCard" type="button" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Print</button>
-                            <div class="flex justify-end space-x-4">
-                                <button id="ViewAddRowBTN" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">+ Add Item</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pagination -->
                 </div>
+
+                <!-- Pagination -->
             </div>
+        </div>
 
 </section>
 @endsection

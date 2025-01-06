@@ -160,7 +160,7 @@ $(document).ready(function() {
 // VIEW BUTTON CARD FORM      
 // THIS IS VIEW BUTTON IS APPLICABLE TO FOR APPROVAL, APPROVE REQUEST, COMPLETED REQUEST
 $(document).ready(function() {
-    $(document).on('click', '.EventViewBTN', function(event) {
+    $(document).on('click', '.SampleEventViewBTN', function(event) {
         event.preventDefault();
         console.log('View Event Button Clicked');
         let eventId = $(this).data('id');

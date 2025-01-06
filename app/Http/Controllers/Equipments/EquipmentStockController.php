@@ -3,17 +3,19 @@
 namespace App\Http\Controllers\Equipments;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-//use App\Models\Equipments\Equipment;
-use App\Models\Equipments\EquipmentStock;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-//use App\Http\Controllers\Equipments\EquipmentStockController;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Equipments\EquipCondem;
+use Illuminate\Support\Facades\Response;
+use App\Models\Equipments\EquipmentStock;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class EquipmentStockController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $equipment = EquipmentStock::select(
@@ -59,7 +61,7 @@ class EquipmentStockController extends Controller
 
         // Fetch equipment details that match the brand name
         $equipmentDetails = EquipmentStock::select(
-                'id',
+                'equipmentStockId',
                 'EquipmentControlNo',
                 'EquipmentBrandName',
                 'EquipmentName',
@@ -85,7 +87,7 @@ class EquipmentStockController extends Controller
             'brandName' => $brandName,
             'equipmentDetails' => $equipmentDetails->map(function ($equipment) {
                 return [
-                    'id' => $equipment->equipmentId,
+                    'equipmentStockId' => $equipment->equipmentStockId,
                     'EquipmentControlNo' => $equipment->EquipmentControlNo,
                     'EquipmentBrandName' => $equipment->EquipmentBrandName,
                     'EquipmentName' => $equipment->EquipmentName,
@@ -182,6 +184,86 @@ class EquipmentStockController extends Controller
         ]);
     }
 
+    public function update(Request $request)
+    {
+        $validatedData = $request->validate([
+            'EQUIPMENTBrandNameEDT' => 'required|string|max:255',
+            'EQUIPMENTNameEDT' => 'required|string|max:255',
+            'EQUIPMENTCategoryEDT' => 'required|string',
+            'otherEQUIPMENTCategoryEDT' => 'nullable|required_if:EQUIPMENTCategoryEDT,other|string|max:255',
+            'EQUIPMENTQuantityEDT' => 'required|integer',
+            'EQUIPMENTSKUEDT' => 'required|string|max:255',
+            'EQUIPMENTColorEDT' => 'required|string|max:255',
+            'EQUIPMENTTypeEDT' => 'required|string|max:255',
+            'EQUIPMENTUnitEDT' => 'required|string|max:255',
+            'EQUIPMENTUnitPriceEDT' => 'required|numeric',
+            'EQUIPMENTClassificationEDT' => 'required|string|max:255',
+            'oldbrandName' => 'required|string|max:255',
+            'oldName' => 'required|string|max:255',
+        ]);
+
+         $category = $validatedData['EQUIPMENTCategoryEDT'];
+        if ($category === 'other' && !empty($validatedData['otherEQUIPMENTCategoryEDT'])) {
+            $category = $validatedData['otherEQUIPMENTCategoryEDT'];
+        }
+
+        // Find the current equipment entry from the database using old values
+        $equipment = EquipmentStock::where('EquipmentBrandName', $validatedData['oldbrandName'])
+            ->where('EquipmentName', $validatedData['oldName'])
+            ->first();
+
+        if (!$equipment) {
+            return response()->json(['message' => 'Equipment not found', 'EquipmentBrandName'=> $validatedData['EQUIPMENTBrandNameEDT'], 'EquipmentName'=>$validatedData['EQUIPMENTNameEDT']], 404);
+        }
+
+        $currentQuantity = $equipment->EquipmentQuantity;
+        $newQuantity = $validatedData['EQUIPMENTQuantityEDT'];
+
+        // Condition to check if the new quantity is less than the current quantity
+        if ($newQuantity < $currentQuantity) {
+            return response()->json([
+                'message' => "Can't edit quantity to less than the current value ($currentQuantity)."
+            ], 400);
+        }
+
+        // If the new quantity is greater than the current quantity, update the quantity
+        if ($newQuantity > $currentQuantity) {
+            $quantityDifference = $newQuantity - $currentQuantity;
+
+            // Update the quantity of the existing entry
+            $equipment->update([
+                'EquipmentQuantity' => $newQuantity,
+            ]);
+        } else if ($newQuantity < $currentQuantity) {
+            // If the new quantity is less than the current quantity, delete the excess entries
+            $quantityDifference = $currentQuantity - $newQuantity;
+
+            // Delete the excess entries based on the quantity difference
+            EquipmentStock::where('EquipmentBrandName', $validatedData['EQUIPMENTBrandNameEDT'])
+                ->where('EquipmentName', $validatedData['EQUIPMENTNameEDT'])
+                ->orderBy('equipmentStockId', 'desc')
+                ->take($quantityDifference)
+                ->delete();
+        }
+
+        // Update the main equipment entry with the new details
+        $equipment->update([
+            'EquipmentBrandName' => $validatedData['EQUIPMENTBrandNameEDT'],
+            'EquipmentName' => $validatedData['EQUIPMENTNameEDT'],
+            'EquipmentCategory' => $category,
+            'EquipmentQuantity' => $validatedData['EQUIPMENTQuantityEDT'],
+            'EquipmentColor' => $validatedData['EQUIPMENTColorEDT'],
+            'EquipmentType' => $validatedData['EQUIPMENTTypeEDT'],
+            'EquipmentUnit' => $validatedData['EQUIPMENTUnitEDT'],
+            'EquipmentUnitPrice' => $validatedData['EQUIPMENTUnitPriceEDT'],
+            'EquipmentClassification' => $validatedData['EQUIPMENTClassificationEDT'],
+            'EquipmentSKU' => $validatedData['EQUIPMENTSKUEDT'],
+            'EquipmentDate' => Carbon::now(),
+        ]);
+
+        return response()->json(['message' => 'Equipment updated successfully']);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -198,19 +280,71 @@ class EquipmentStockController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroyStock(Request $request)
     {
-        //
+        // Validate the request input
+        $request->validate([
+            'brand' => 'required|string',
+        ]);
+
+        // Get the brand name from the request
+        $brandName = $request->input('brand');
+
+        // Find and delete items with the matching brand name
+        $deletedCount = EquipmentStock::where('EquipmentBrandName', $brandName)->delete();
+
+        if ($deletedCount > 0) {
+            return response()->json(['message' => 'Items deleted successfully']);
+        } else {
+            return response()->json(['message' => 'No items found for the given brand'], 404);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function condemnEquipment(Request $request)
     {
-        //
+        // Get all selected equipment items from the request
+        $selectedItems = $request->input('equipment_ids');
+
+        // Validate the selected items array
+        if (empty($selectedItems)) {
+            return response()->json(['error' => 'Please select at least one item to condemn.'], 400);
+        }
+
+        // Loop through each selected item and condemn it
+        foreach ($selectedItems as $equipmentStockId) {
+            // Fetch the equipment data by equipmentStockId
+            $equipment = EquipmentStock::where('equipmentStockId', $equipmentStockId)->first();
+
+            if ($equipment) {
+                // Create a new record in the equipcondem table
+                EquipCondem::create([
+                    'equipmentStockId' => $equipment->equipmentStockId,
+                    'EquipmentControlNo' => $equipment->EquipmentControlNo,
+                    'EquipmentBrandName' => $equipment->EquipmentBrandName,
+                    'EquipmentName' => $equipment->EquipmentName,
+                    'EquipmentCategory' => $equipment->EquipmentCategory,
+                    'EquipmentType' => $equipment->EquipmentType,
+                    'EquipmentColor' => $equipment->EquipmentColor,
+                    'EquipmentUnit' => $equipment->EquipmentUnit,
+                    'EquipmentQuantity' => $equipment->EquipmentQuantity,
+                    'EquipmentDate' => $equipment->EquipmentDate,
+                    'EquipmentUnitPrice' => $equipment->EquipmentUnitPrice,
+                    'EquipmentClassification' => $equipment->EquipmentClassification,
+                    'EquipmentSKU' => $equipment->EquipmentSKU,
+                    'EquipmentSerialNo' => $equipment->EquipmentSerialNo,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                // Log the deletion process
+                Log::info('Condemning equipment with ID: ' . $equipment->equipmentStockId);
+
+                // Delete the equipment from the EquipmentStock table
+                $equipment->delete();
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Selected items have been condemned successfully.']);
     }
+
 }
