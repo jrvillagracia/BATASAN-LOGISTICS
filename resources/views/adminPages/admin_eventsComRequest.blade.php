@@ -13,10 +13,10 @@
     </div>
 
     <!-- Breadcrumb -->
-    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 " aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
-                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 ">
                     Events and Activities
                 </a>
             </li>
@@ -25,7 +25,7 @@
                     <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                     </svg>
-                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Completed Request</a>
+                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 ">Completed Request</a>
                 </div>
             </li>
             <!-- Add additional breadcrumbs here -->
@@ -58,8 +58,8 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="eventComRequestSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
-                        <button type="submit" class="text-white absolute right-2.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                        <input type="search" id="eventComRequestSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                        
                     </div>
 
                     <!-- Add Item Button -->
@@ -101,14 +101,14 @@
                 </thead>
                 <tbody id="tableBody" class="">
                 @foreach ($events as $event)
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->status}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->eventId}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprDate}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ \Carbon\Carbon::parse($event->StartEventApprTime)->format('g:ia') }}-{{ \Carbon\Carbon::parse($event->EndEventApprTime)->format('g:ia') }}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprRequestOffice}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$event->EventApprRequestFor}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <tr class="odd:bg-blue-100  even:bg-white  border-b  " data-index="" data-id="">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$event->status}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$event->eventId}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$event->EventApprDate}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ \Carbon\Carbon::parse($event->StartEventApprTime)->format('g:ia') }}-{{ \Carbon\Carbon::parse($event->EndEventApprTime)->format('g:ia') }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$event->EventApprRequestOffice}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$event->EventApprRequestFor}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                             <button id="EventComRequestViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                         </td>
                     </tr>
@@ -149,7 +149,10 @@
                         <table id="ViewCompletedReqTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-sm text-white dark:text-gray-400">
                                 <tr>
-                                <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3">
+                                        
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Product Name
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -167,23 +170,20 @@
                                     <th scope="col" class="px-6 py-3">
                                         Missing
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Check
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="tableViewBody">
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Chair</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Uratex</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">monoblock</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">4</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">AUTOMATIC SKU</td>
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="">
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <input type="text" value="1" class="border-0 border-b border-gray-500 px-2 py-1 w-20 text-center">
+                                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600">
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Chair</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Uratex</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">monoblock</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">4</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">AUTOMATIC SKU</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                        <input type="text" value="1" class="border-0 border-b border-gray-500 px-2 py-1 w-20 text-center">
                                     </td>
                                 </tr>
 
@@ -193,8 +193,8 @@
                     </div>
 
                     <div class="flex justify-end space-x-4 mt-10">
-                        <button id="submitViewEventComRequestPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeViewEventComRequestPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitViewEventComRequestPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="closeViewEventComRequestPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>

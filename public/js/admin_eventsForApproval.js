@@ -1,6 +1,6 @@
 // ======================== ADD EVENT BUTTON ============================= //
-$(document).ready(function() {
-    $('#EventFormButton').click(function(event) {
+$(document).ready(function () {
+    $('#EventFormButton').click(function (event) {
         event.preventDefault();
         console.log('Show Event Form Button Clicked');
 
@@ -11,17 +11,17 @@ $(document).ready(function() {
         $('#EventApprDate').val(formattedDate);
         $('#EventApprTime').val(formattedTime);
 
-        $('#EventFormCard').removeClass('hidden'); 
+        $('#EventFormCard').removeClass('hidden');
     });
 
-    $('#EventCancelFormBtn, #EventCloseFormBtn').click(function(event) {
+    $('#EventCancelFormBtn, #EventCloseFormBtn').click(function (event) {
         event.preventDefault();
-        $('#EventFormCard').addClass('hidden'); 
+        $('#EventFormCard').addClass('hidden');
     });
 
-    $("#EventSubmitFormBtn").click(function(event) {
-        event.preventDefault(); 
-
+    $("#EventSubmitFormBtn").click(function (event) {
+        event.preventDefault();
+        
         const eventData = {
             EventApprTime: $('#EventApprTime').val(),
             EventApprDate: $('#EventApprDate').val(),
@@ -45,7 +45,7 @@ $(document).ready(function() {
             url: '/events/store',
             method: 'POST',
             data: eventData,
-            success: function(response) {
+            success: function (response) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Submitted',
@@ -53,7 +53,7 @@ $(document).ready(function() {
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
-                    $("#EventFormCard").addClass("hidden"); 
+                    $("#EventFormCard").addClass("hidden");
                     if (isTableEmpty) {
                         // Reload the page if the table was initially empty
                         location.reload();
@@ -63,7 +63,7 @@ $(document).ready(function() {
                     }
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -77,7 +77,7 @@ $(document).ready(function() {
 
 
 
-     // Go to Step 2
+    // Go to Step 2
     $('#EventGoToStep2').click(function () {
         $('#EventsActStep1Content').addClass('hidden');
         $('#EventsActStep2Content').removeClass('hidden');
@@ -159,19 +159,19 @@ $(document).ready(function() {
 // ======================== START FOR APPROVAL MODULE ============================= //
 // VIEW BUTTON CARD FORM      
 // THIS IS VIEW BUTTON IS APPLICABLE TO FOR APPROVAL, APPROVE REQUEST, COMPLETED REQUEST
-$(document).ready(function() {
-    $(document).on('click', '.SampleEventViewBTN', function(event) {
+$(document).ready(function () {
+    $(document).on('click', '.EventViewBTN', function (event) {
         event.preventDefault();
         console.log('View Event Button Clicked');
         let eventId = $(this).data('id');
         console.log("Event ID:", eventId); // Debugging line
-        
+
         if (eventId) {
             $.ajax({
                 url: '/apr/event/details',
                 type: 'GET',
                 data: { id: eventId },
-                success: function(response) {
+                success: function (response) {
                     if (response.eventDetails) {
                         $('#getEventsDetails').html(`
                             <p><strong>Date:</strong> ${response.eventDetails.EventApprDate}</p>
@@ -181,17 +181,14 @@ $(document).ready(function() {
                             <p><strong>Event Date:</strong> ${response.eventDetails.StartEventApprDate}</p>
                             <p><strong>Event Time:</strong> ${response.eventDetails.StartEventApprTime}</p>
                             <p><strong>Event Location:</strong> ${response.eventDetails.EventApprLocation}</p>
-                            <br><hr><br>
-                            <p class="mb-2"><strong>Required Equipment and Supplies</strong></p>
-                            <p><strong>Product Name:</strong> ${response.eventDetails.EventApprProductName}</p>
-                            <p><strong>Quantity:</strong> ${response.eventDetails.EventApprQuantity}</p>
+                            <br><hr>
                         `);
                         $('#ViewEventApprPopupCard').removeClass('hidden');
                     } else {
                         alert('Event details could not be loaded.');
                     }
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.error("AJAX Error:", xhr.responseJSON); // Detailed error info
                     alert('Error loading event details: ' + xhr.responseText);
                 }
@@ -199,23 +196,124 @@ $(document).ready(function() {
         }
     });
 
-    $('#closeViewEventPopupCard').click(function() {
+    $('#closeViewEventPopupCard').click(function () {
         $('#ViewEventApprPopupCard').addClass('hidden');
     });
 });
+
+
+// ======================== SET ITEM BUTTON ============================= //
+$(document).ready(function () {
+    // Event Set Item Button - Show Event Details and Table
+    $(document).on('click', '.EventForApprvlSetItemBTN', function (event) {
+        event.preventDefault();
+        console.log('Set Item Button is Clicked.');
+
+        // Get the event ID from the clicked button
+        let eventId = $(this).data('id');
+        console.log('Event ID:', eventId);
+
+        if (eventId) {
+            $.ajax({
+                url: '/events_Apr_details',  // Updated URL
+                type: 'GET',
+                data: { id: eventId },
+                success: function (response) {
+                    if (response.eventDetails) {
+                        // Show the modal
+                        $('#SetItemEventForApprReqPopupCard').removeClass('hidden');
+
+                        // Assuming the event details contain the table data in HTML format
+                        $('#eventDetailsContainer').html(response.eventDetails);
+
+                        // Ensure the table inside the modal is displayed
+                        $('#eventDetailsTable').removeClass('hidden'); // Make sure the table is visible
+                    } else {
+                        alert('Event details could not be loaded.');
+                    }
+                },
+                error: function (xhr) {
+                    alert('Error loading event details: ' + xhr.responseText);
+                }
+            });
+        }
+    });
+
+    // Close the popup modal when clicking the close button
+    $(document).on('click', '.closeSetItemEventApprReqPopupCard', function (event) {
+        event.preventDefault();
+        console.log('Close View Button is Clicked.');
+        $('#SetItemEventForApprReqPopupCard').addClass('hidden');
+    });
+
+    // Close the modal when clicking outside the popup area
+    $(window).on('click', function (e) {
+        if ($(e.target).is('#SetItemEventForApprReqPopupCard')) {
+            $('#SetItemEventApprReqPopupCard').addClass('hidden');
+        }
+    });
+
+    // Close the popup explicitly when clicking on the close button inside
+    $(document).on('click', '#closeSetItemEventApprReqPopupCard', function () {
+        $('#SetItemEventForApprReqPopupCard').addClass('hidden');
+    });
+
+    // Submit Set Item Event
+    $(document).on('click', '#submitSetItemEventApprReqPopupCard', function () {
+        event.preventDefault();
+        Swal.fire({
+            icon: 'success',
+            title: 'Submitted',
+            text: 'Item Set successfully submitted',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#SetItemEventForApprReqPopupCard").addClass("hidden");
+        });
+    });
+});
+
+
+
+// ======================== SET ITEM BUTTON ============================= //
+$(document).ready(function () {
+    $('#EventForApprvlSetItemBTN').click(function (event) {
+        event.preventDefault();
+        $('#SetItemEventForApprReqPopupCard').removeClass('hidden');
+    });
+
+    $('#closeSetItemEventForApprReqPopupCard').click(function (event) {
+        event.preventDefault();
+        $('#SetItemEventForApprReqPopupCard').addClass('hidden');
+    });
+
+
+    $("#submitSetItemEventForApprReqPopupCard").click(function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Submitted',
+            text: 'Item Set successfully submitted',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            $("#SetItemEventForApprReqPopupCard").addClass("hidden");
+        });
+    });
+});
+
 
 
 
 // APPROVE BUTTON CARD FORM
 $(document).ready(function () {
     // Event Approve Button - Show Approval Modal
-    $(document).on('click', '.EventApproveBTN', function() {
+    $(document).on('click', '.EventApproveBTN', function () {
         console.log('Approve Button Clicked - Showing Approval Modal');
         $(".ApprEventPopupCard").removeClass("hidden");
     });
 
     // Cancel Approval Modal
-    $(".closeApprEventPopupCard").click(function() {
+    $(".closeApprEventPopupCard").click(function () {
         Swal.fire({
             icon: 'error',
             title: 'Cancelled',
@@ -228,16 +326,16 @@ $(document).ready(function () {
     });
 
     // Submit Approval
-    $(".submitApprEventPopupCard").click(function() {
+    $(".submitApprEventPopupCard").click(function () {
         var eventId = $(this).data('id');
         $.ajax({
-            url: '/events/approve', 
+            url: '/events/approve',
             method: 'POST',
             data: {
                 id: eventId,
-                _token: $('meta[name="csrf-token"]').attr('content') 
+                _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function(response) {
+            success: function (response) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Approved',
@@ -249,7 +347,7 @@ $(document).ready(function () {
                     location.reload();
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -269,7 +367,7 @@ $(document).ready(function () {
     $(document).on("click", ".EventDeclineBTN", function () {
         var eventId = $(this).data('id');  // Get event ID from button
         console.log("Decline button clicked for Event ID:", eventId);
-        
+
         // Store the eventId in a hidden input or data attribute in the modal if needed
         $("#DeclineEventPopupCard").data("eventId", eventId).removeClass("hidden");
     });
@@ -299,7 +397,7 @@ $(document).ready(function () {
                 id: eventId,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function(response) {
+            success: function (response) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Submitted',
@@ -311,7 +409,7 @@ $(document).ready(function () {
                     location.reload();
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 console.error('Decline failed:', xhr.responseText);
                 Swal.fire({
                     icon: 'error',
@@ -375,7 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        document.getElementById("eventSearch").addEventListener("keyup", function() {
+        document.getElementById("eventSearch").addEventListener("keyup", function () {
             let searchTerm = this.value;
             dataTable.search(searchTerm);
         });
