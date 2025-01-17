@@ -182,7 +182,7 @@
 
                             <div>
                                 <label for="SUPPLIESCategoryEDT" class="block text-sm font-semibold mb-1">Category</label>
-                                <select name="SuppliesStockCategoryEdit" id="SUPPLIESCategoryEDT" class="border p-2 rounded w-full mb-2 border-gray-400">
+                                <select name="SUPPLIESCategoryEDT" id="SUPPLIESCategoryEDT" class="border p-2 rounded w-full mb-2 border-gray-400">
                                     <option value="" disabled selected>Select a category</option>
                                     <option value="textbook">Textbook</option>
                                     <option value="office">Office Supplies</option>
@@ -264,7 +264,7 @@
                         </button>
                     </div>
 
-                    @foreach($supplies as $item)
+                    @if($supplies->isNotEmpty())
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
                         <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="suppliesDetails">
                             <div><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</div>
@@ -279,12 +279,12 @@
                             <div><strong>Date:</strong>{{$item->SuppliesDate}}</div>
                         </div>
                     </div>
-                    @endforeach
                     
                     <div class="flex justify-end space-x-2 pt-5">
                         <button type="button" id="printViewSUPPBTN" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">Print</button>
                     
                     </div>
+                    @endif
                 </div>
             </div>
             <!-- END OF View 1 Popup Card -->

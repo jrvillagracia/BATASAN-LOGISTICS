@@ -19,76 +19,76 @@ class RoomController extends Controller
     }
 
     public function index()
-{
-    // Fetch the API response
-    $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear');
-    $foundSections = $response->json()['foundSections'] ?? []; // Default to an empty array if not found
+    {
+        // Fetch the API response
+        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear');
+        $foundSections = $response->json()['foundSections'] ?? []; // Default to an empty array if not found
 
-    // Fetch the rooms from your own database
-    $instructionalRooms = Room::where('facilityRoomType', 'Instructional')->get();
+        // Fetch the rooms from your own database
+        $instructionalRooms = Room::where('facilityRoomType', 'Instructional')->get();
 
-    if ($instructionalRooms->isEmpty()) {
-        // If no instructional rooms exist, return empty data structures
+        if ($instructionalRooms->isEmpty()) {
+            // If no instructional rooms exist, return empty data structures
+            return view('adminPages.admin_facilityRegRoom', [
+                'combinedRooms' => [],
+                'emptyRooms' => []
+            ]);
+        }
+
+        $currentDate = Carbon::now()->format('m/d/Y');
+
+        // Start with all instructional rooms
+        $combinedRooms = $instructionalRooms->map(function ($room) use ($currentDate) {
+            return [
+                'roomId' => $room->id,
+                'facilityRoom' => [
+                    'BldName' => $room->BldName,
+                    'Room' => $room->Room,
+                    'facilityStatus' => $room->facilityStatus,
+                    'Capacity' => $room->Capacity,
+                    'facilityRoomType' => $room->facilityRoomType,
+                    'schoolYear' => $room->schoolYear ?? 'unknown',
+                ],
+                'session' => null,       // Default values for missing API data
+                'gradeLevel' => null,
+                'sectionName' => null,
+                'currentEnrollment' => 0,
+                'assignedDate' => $currentDate
+            ];
+        })->keyBy('roomId')->toArray();
+
+        // Empty rooms list
+        $emptyRooms = $combinedRooms;
+
+        // Merge API sections into the instructional rooms
+        foreach ($foundSections as $section) {
+            // Skip sections without a valid roomId
+            if (!isset($section['roomId']) || $section['roomId'] === null) {
+                continue;
+            }
+
+            $roomId = $section['roomId'];
+
+            // Check if the roomId exists in the combinedRooms array
+            if (isset($combinedRooms[$roomId])) {
+                $combinedRooms[$roomId] = array_merge($combinedRooms[$roomId], [
+                    'session' => $section['session'] ?? null,
+                    'gradeLevel' => $section['gradeLevel'] ?? null,
+                    'sectionName' => $section['sectionName'] ?? null,
+                    'currentEnrollment' => $section['currentEnrollment'] ?? 0,
+                    'assignedDate' => $currentDate
+                ]);
+
+                // Remove from emptyRooms since it's now populated
+                unset($emptyRooms[$roomId]);
+            }
+        }
+
         return view('adminPages.admin_facilityRegRoom', [
-            'combinedRooms' => [],
-            'emptyRooms' => []
+            'combinedRooms' => $combinedRooms, // Rooms with data
+            'emptyRooms' => $emptyRooms         // Rooms without data
         ]);
     }
-
-    $currentDate = Carbon::now()->format('m/d/Y');
-
-    // Start with all instructional rooms
-    $combinedRooms = $instructionalRooms->map(function ($room) use ($currentDate) {
-        return [
-            'roomId' => $room->id,
-            'facilityRoom' => [
-                'BldName' => $room->BldName,
-                'Room' => $room->Room,
-                'facilityStatus' => $room->facilityStatus,
-                'Capacity' => $room->Capacity,
-                'facilityRoomType' => $room->facilityRoomType,
-                'schoolYear' => $room->schoolYear ?? 'unknown',
-            ],
-            'session' => null,       // Default values for missing API data
-            'gradeLevel' => null,
-            'sectionName' => null,
-            'currentEnrollment' => 0,
-            'assignedDate' => $currentDate
-        ];
-    })->keyBy('roomId')->toArray();
-
-    // Empty rooms list
-    $emptyRooms = $combinedRooms;
-
-    // Merge API sections into the instructional rooms
-    foreach ($foundSections as $section) {
-        // Skip sections without a valid roomId
-        if (!isset($section['roomId']) || $section['roomId'] === null) {
-            continue;
-        }
-
-        $roomId = $section['roomId'];
-
-        // Check if the roomId exists in the combinedRooms array
-        if (isset($combinedRooms[$roomId])) {
-            $combinedRooms[$roomId] = array_merge($combinedRooms[$roomId], [
-                'session' => $section['session'] ?? null,
-                'gradeLevel' => $section['gradeLevel'] ?? null,
-                'sectionName' => $section['sectionName'] ?? null,
-                'currentEnrollment' => $section['currentEnrollment'] ?? 0,
-                'assignedDate' => $currentDate
-            ]);
-
-            // Remove from emptyRooms since it's now populated
-            unset($emptyRooms[$roomId]);
-        }
-    }
-
-    return view('adminPages.admin_facilityRegRoom', [
-        'combinedRooms' => $combinedRooms, // Rooms with data
-        'emptyRooms' => $emptyRooms         // Rooms without data
-    ]);
-}
 
 
     public function labindex()
@@ -275,5 +275,37 @@ class RoomController extends Controller
         ]);
     }
     
+    public function deleteRoom(Request $request)
+    {
+        $roomId = $request->input('id');
+        $room = Room::findOrFail($roomId);
+
+        // Fetch the API response for sections with rooms
+        $response = Http::get('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/section/rooms/schoolYear');
+        $foundSections = $response->json()['foundSections'] ?? [];
+
+        // Check if the room has any assigned sessions or sections
+        foreach ($foundSections as $section) {
+            if (isset($section['roomId']) && $section['roomId'] == $roomId) {
+                // If a session or section is found, prevent deletion
+                if (!empty($section['session']) || !empty($section['sectionName'])) {
+                    return response()->json(['message' => 'Room cannot be deleted as it has assigned sessions or sections.'], 400);
+                }
+            }
+        }
+
+        // Check if the room has any active relationships with sessions or sections
+        $assignedSessions = $room->sessions()->count(); // Adjust this if the relationship is different
+
+        if ($assignedSessions > 0) {
+            return response()->json(['message' => 'Room cannot be deleted as it has assigned sessions.'], 400);
+        }
+
+        // If no assigned sessions or sections, delete the room
+        $room->delete();
+
+        return response()->json(['message' => 'Room deleted successfully.']);
+    }
+
 
 }

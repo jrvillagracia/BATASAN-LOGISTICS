@@ -311,6 +311,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// Filter table rows based on selected school year using DataTables
+$(document).ready(function () {
+    const dataTable = new simpleDatatables.DataTable("#RegFacTable");
+
+    $('#ReqSchoolYear').change(function () {
+        const selectedYear = $(this).val();
+
+        console.log(`Selected Year: ${selectedYear}`); // Debugging: Log selected year
+
+        dataTable.search(selectedYear);
+    });
+});
+
 
 // Get School Year
 $(document).ready(function () {

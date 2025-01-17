@@ -120,7 +120,7 @@ $(document).ready(function () {
         var equipUnitPrice = row.data('unit-price');
         var equipColor = row.data('color');
         var equipClassification = row.data('classification');
-        var otherCategory = row.data('other-category');
+        var otherCategory = row.find('td').eq(3).text().trim();
         console.log('Edit button clicked for equipment Brand:', equipBrand);
 
         $('#editEQUIPMENTMdl').removeClass('hidden');
@@ -213,6 +213,7 @@ $(document).ready(function () {
                         EQUIPMENTTypeEDT: type,
                         EQUIPMENTUnitEDT: unit,
                         EQUIPMENTUnitPriceEDT: unitprice,
+                        otherEQUIPMENTCategoryEDT: otherCategory // Add this line
                     },
                     success: function () {
                         Swal.fire("Saved!", "", "success").then(() => {

@@ -390,7 +390,7 @@
                         </button>
                     </div>
 
-                    @foreach($supplies as $item)
+                    @if(isset($item))
                     <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full" id="suppliesDetails">
                         <div>
                             <p class="mb-2"><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</p>

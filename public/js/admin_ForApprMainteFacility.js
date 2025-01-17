@@ -3,12 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Get the current date
     const currentDate = new Date();
 
-    // Format the date as MM/DD/YYYY
+    // Format the date as M-D-Y
     const formatDate = (date) => {
         const dd = String(date.getDate()).padStart(2, '0');
         const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
         const yyyy = date.getFullYear();
-        return `${mm}/${dd}/${yyyy}`;
+        return `${mm}-${dd}-${yyyy}`;
     };
 
     // Calculate max date (e.g., one year from today)
@@ -33,21 +33,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ======================= ADD REQUEST ========================== //
 $(document).ready(function () {
-    $('#MainteFacilityREQFormButton').click(function () {
-        event.preventDefault();
+
+    // When the "Add Request" button is clicked
+    $('#MainteFacilityREQFormButton').click(function (event) {
+        event.preventDefault();  // Prevent form submission
         console.log('Add Request Button is Clicked.');
+
+        // Show the form by removing the hidden class
         $('#MainteFacilityFormBtn').removeClass('hidden');
+
+        // Get the current date and time
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; 
+        const formattedTime = currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+        // Set the date and time inputs with the current date and time
+        $('#MainteFacilityDate').val(formattedDate);
+        $('#MainteFacilityTime').val(formattedTime);
+
     });
 
-    $('#CloseMainteFacilityForm').click(function () {
+    // When the "Close" button is clicked
+    $('#CloseMainteFacilityForm').click(function (event) {
+        event.preventDefault();
         console.log('Close Button is Clicked.');
-        $('#MainteFacilityFormBtn').addClass('hidden');
+        $('#MainteFacilityFormBtn').addClass('hidden');  // Hide the form
     });
 
+    // When the "Submit" button is clicked
     $("#SubmitMainteFacilityForm").click(function (event) {
-        event.preventDefault(); // Prevent the default button behavior
-    
-        // Add the save loader
+        event.preventDefault();  // Prevent the default button behavior
+
+        // Show the save loader
         $('body').append(`
             <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
                 <section class="dots-container">
@@ -62,44 +79,91 @@ $(document).ready(function () {
                 </div>
             </div>
         `);
-    
-        // Simulate a loading delay before showing SweetAlert 2
-        setTimeout(() => {
-            // Remove the loader
-            $('#save-loader').remove();
-    
-            // Show the SweetAlert
-            Swal.fire({
-                icon: 'success',
-                title: 'Submitted',
-                text: 'Your action has been successfully submitted',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                // Add any additional actions here
-                $("#MainteFacilityFormBtn").addClass("hidden");
-            });
-        }, 1000); // Simulate loader for 1 second
+
+        // Collect the form data
+        const formData = {
+            FacilityBuildingName: $('#FacilityBuildingName').val(),
+            FacilityRoom: $('#FacilityRoom').val(),
+            FacilityType: $('#FacilityType').val(),
+            MainteFacilityReqUnit: $('#MainteFacilityReqUnit').val(),
+            MainteFacilityReqFOR: $('#MainteFacilityReqFOR').val(),
+            MainteFacilityTime: $('#MainteFacilityTime').val(),
+            MainteFacilityDate: $('#MainteFacilityDate').val(),
+            _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for Laravel
+        };
+
+        // Send the form data via AJAX
+        $.ajax({
+            url: '/admin/mainteFacility/store',
+            method: 'POST',
+            data: formData,
+            success: function (response) {
+                console.log('Form submission successful:', response);
+
+                // Simulate a loading delay before showing SweetAlert
+                setTimeout(() => {
+                    // Remove the save loader
+                    $('#save-loader').remove();
+
+                    // Show the SweetAlert success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Submitted',
+                        text: 'Your action has been successfully submitted',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        // Hide the form after successful submission
+                        $("#MainteFacilityFormBtn").addClass("hidden");
+                        // Optionally reset the form fields
+                        $('#MainteFacilityREQForm')[0].reset();
+                    });
+                }, 1000);  // Simulate loader for 1 second
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+
+                // Remove the save loader in case of error
+                $('#save-loader').remove();
+
+                // Show an error alert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Failed',
+                    text: 'There was an error processing your request. Please try again.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33'
+                });
+            }
+        });
     });
+
 });
+
 
 
 
 
 // VIEW BUTTON CARD FORM  
 $(document).ready(function () {
-    $('#MaintenanceFacilityViewBTN').click(function () {
+    // Open the modal when clicking the "View" button
+    $('.MaintenanceFacilityViewBTN').click(function () {
+        const mainteFacilityIndex = $(this).data('index');
         console.log('View Equipment Button is Clicked.');
-        $('#ViewMainteFacilityPopupCard').removeClass('hidden');
+
+        $(`#ViewMainteFacilityPopupCard--${mainteFacilityIndex}`).removeClass('hidden');
+    });
+
+    // Close the modal when clicking the "Cancel" button
+    $('.cancelForApprMainteFacilityPopupCard').click(function () {
+        const mainteFacilityIndex = $(this).data('index');
+        console.log('Cancel View Equipment Button is Clicked.');
+
+        $(`#ViewMainteFacilityPopupCard--${mainteFacilityIndex}`).addClass('hidden');
     });
 });
 
-$(document).ready(function () {
-    $('#cancelForApprMainteFacilityPopupCard').click(function () {
-        console.log('Cancel View Equipment Button is Clicked.');
-        $('#ViewMainteFacilityPopupCard').addClass('hidden');
-    });
-});
+
 
 
 // APPROVE BUTTON CARD FORM
@@ -109,7 +173,7 @@ $(document).ready(function () {
     });
 
     // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeApprMainteFacilityPopupCard").click(function () {
+    $("#closeApprMainteFacilityPopupCard").click(function (event) {
         event.preventDefault();
         Swal.fire({
             icon: 'error',
@@ -146,7 +210,7 @@ $(document).ready(function () {
     });
 
     // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeDclnMainteFacilityPopupCard").click(function () {
+    $("#closeDclnMainteFacilityPopupCard").click(function (event) {
         event.preventDefault();
         Swal.fire({
             icon: 'error',
@@ -215,12 +279,13 @@ $(document).ready(function () {
         url: '/buildings-rooms',
         method: 'GET',
         success: function (data) {
-            // Populate Building dropdown
-            const buildingDropdown = $("#ReqSupBldName");
+            // Initialize the dropdown for building selection
+            const buildingDropdown = $("#FacilityBuildingName");
             buildingDropdown.empty().append('<option disabled selected>Select Building</option>');
-
+            
             const roomsByBuilding = {};
 
+            // Populate the building dropdown and group rooms by building
             data.forEach(function (room) {
                 if (!roomsByBuilding[room.BldName]) {
                     roomsByBuilding[room.BldName] = [];
@@ -229,10 +294,10 @@ $(document).ready(function () {
                 roomsByBuilding[room.BldName].push(room.Room);
             });
 
-            // Filter Room dropdown based on selected building
-            $("#ReqSupBldName").change(function () {
+            // When a building is selected, populate the rooms based on the selected building
+            $("#FacilityBuildingName").change(function () {
                 const selectedBuilding = $(this).val();
-                const roomDropdown = $("#MainteFacilityRoom");
+                const roomDropdown = $("#FacilityRoom");
                 roomDropdown.empty().append('<option disabled selected>Select Room</option>');
 
                 if (roomsByBuilding[selectedBuilding]) {
@@ -247,6 +312,8 @@ $(document).ready(function () {
         }
     });
 });
+
+
 
 
 // Export to PDF
@@ -291,3 +358,31 @@ $(document).ready(function () {
             });
     });
 });
+
+
+// Get the Department
+$(document).ready(function () {
+    // Make an AJAX request to the API
+    $.ajax({
+        url: 'https://bnhs-hr.onrender.com/api/all/departments',  // Adjust the URL to match your API endpoint
+        method: 'GET',
+        headers: {
+            'x-api-key': 'Ru8NWgJalpjcZ1T53i10Z5Jp4xdQoKdU90dq8zLHC1ZrGMxwbl4XToKg0sb7JCv9',
+        },
+        success: function (data) {
+            const departmentDropdown = $("#MainteFacilityReqUnit");
+            departmentDropdown.empty().append('<option value="" disabled selected>Select Office/Unit</option>');
+
+            // Loop through the API data and append each department as an option
+            data.forEach(function(department) {
+                departmentDropdown.append(`<option value="${department.id}">${department.name}</option>`);
+            });
+        },
+        error: function (error) {
+            console.error("Error fetching departments:", error);
+            alert('Failed to load departments. Please try again later.');
+        }
+    });
+});
+
+

@@ -94,27 +94,28 @@
 
                 </thead>
                 <tbody id="tableBody" class="">
-
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="">
+                    @foreach($facility as $mainteFacility)    
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="{{$loop->index}}" data-id="{{$mainteFacility->MainteFacilityId}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">R00001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">SB</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">402</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Insturctional</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">11/18/2024</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->RepairId}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->FacilityBuildingName}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->FacilityRoom}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->FacilityType}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->MainteFacilityDate}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button id="MaintenanceFacilityViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                            <button data-id="{{$mainteFacility->MainteFacilityId}}" data-index="{{$loop->index}}" type="button" class=" MaintenanceFacilityViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                             <button id="MaintenanceFacilityApproveBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
                             <button id="MaintenanceFacilityDeclineBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
                         </td>
                     </tr>
-
+                    @endforeach
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>
 
             <!-- View Popup Card -->
-            <div id="ViewMainteFacilityPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+             @foreach($facility as $mainteFacility)
+            <div id="ViewMainteFacilityPopupCard--{{$loop->index}}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div id="view-maintFacility-pdf-content" class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
                     <div class="flex flex-col items-center mb-4">
                         <div class="flex items-center">
@@ -128,24 +129,26 @@
                         <h2 class="text-lg font-semibold mt-2 text-center">Maintenance Request Slip</h2>
                     </div>
 
-                    <div class="text-sm">
-                        <p class="mb-2"><strong>Date/Time Requested: </strong></p>
-                        <p class="mb-2"><strong>Requesting Office/Unit: </strong></p>
-                        <p class="mb-2"><strong>Requesting for: </strong></p>
+                    
+                    <div class="text-sm" id="showDetails">
+                        <p class="mb-2"><strong>Date/Time Requested: {{$mainteFacility->MainteFacilityDate}}/{{$mainteFacility->MainteFacilityTime}}</strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit:{{$mainteFacility->MainteFacilityReqUnit}}</strong></p>
+                        <p class="mb-2"><strong>Requesting for:{{$mainteFacility->MainteFacilityReqFOR}}</strong></p>
 
                         <div class="pt-4">
                         </div>
-                        <p class="mb-2"><strong>Building Name: </strong></p>
-                        <p class="mb-2"><strong>Room: </strong></p>
-                        <p class="mb-2"><strong>Facility Type: </strong></p>
+                        <p class="mb-2"><strong>Building Name:{{$mainteFacility->FacilityBuildingName}} </strong></p>
+                        <p class="mb-2"><strong>Room:{{$mainteFacility->FacilityRoom}}</strong></p>
+                        <p class="mb-2"><strong>Facility Type:{{$mainteFacility->FacilityType}}</strong></p>
                     </div>
                     <div class="flex justify-end space-x-4">
                         <button id="printForApprMainteFacilityPopupCard" class="view-MainteFaci-print-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
-                        <button id="cancelForApprMainteFacilityPopupCard" class="view-MainteFaci-cancel-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button data-index="{{ $loop->index }}" class="cancelForApprMainteFacilityPopupCard view-MainteFaci-cancel-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
 
             </div>
+            @endforeach
 
             <!-- Approval Popup Card -->
             <div id="ApprMainteFacilityPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
@@ -191,6 +194,7 @@
                     <form id="MainteFacilityForm" action="" method="POST">
                         <!-- Input Fields -->
 
+                        <input type="hidden" name="RepairId" id="RepairId" value="">
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
@@ -213,7 +217,7 @@
                                             <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
-                                    <input type="time" id="MainteFacilityTime" name="MainteFacilityTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                                    <input type="time" id="MainteFacilityTime" name="MainteFacilityTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" required />
                                 </div>
                             </div>
                         </div>
@@ -222,9 +226,6 @@
                             <label for="MainteFacilityReqUnit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
                             <select id="MainteFacilityReqUnit" name="MainteFacilityReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
                                 <option value="" disabled selected>Select Office/Unit</option>
-                                <option value="">TLE Department</option>
-                                <option value="">English Department</option>
-                                <option value="">Storage Office</option>
                             </select>
                         </div>
 
@@ -240,7 +241,6 @@
                                 <label for="FacilityBuildingName" class="block text-sm font-semibold mb-2">Building Name</label>
                                 <select id="FacilityBuildingName" name="FacilityBuildingName" class="w-full px-2 py-1 border border-gray-400 rounded">
                                     <option value="" disabled selected>Select Building</option>
-                                    <option value=""></option>
                                 </select>
                             </div>
 
@@ -259,7 +259,6 @@
                                 <label for="FacilityType" class="block text-sm font-semibold mb-1">Facility Type:</label>
                                 <select name="FacilityType" id="FacilityType" class="border border-gray-400 p-2 rounded w-full">
                                     <option value="" disabled selected>Select a category</option>
-                                    <option value=""></option>
                                 </select>
                             </div>
 

@@ -29,4 +29,9 @@ class EquipmentStock extends Model
         'EquipmentSKU',
         'EquipmentSerialNo'
     ];
+
+    public function mainteEquipment()
+    {
+        return $this->belongsTo(MainteEquipment::class, 'mainteEquipmentId');
+    }
 }

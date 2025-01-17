@@ -31,8 +31,18 @@ document.addEventListener("DOMContentLoaded", function () {
 // ADD ORDER
 $(document).ready(function () {
     // Show Product Order Form
-    $('#ProductOrderBTN').click(function () {
+    $('#ProductOrderBTN').click(function (event) {
+        event.preventDefault();
         $('#ProductOrder1').removeClass('hidden');
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString('en-CA');
+        const formattedTime = currentDate.toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' });
+
+        $('#ProductOrderDate').val(formattedDate);
+        $('#ProductOrderTime').val(formattedTime);
+
+        $('#step1Content').removeClass('hidden');
     });
 
     // Close Product Order Form

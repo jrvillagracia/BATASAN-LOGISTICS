@@ -347,4 +347,11 @@ class EquipmentStockController extends Controller
         return response()->json(['success' => true, 'message' => 'Selected items have been condemned successfully.']);
     }
 
+    public function getAllEquipments()
+    {
+        $equipments = EquipmentStock::all();
+        $equipments = EquipmentStock::select('EquipmentSerialNo', 'EquipmentControlNo')->get();
+        return response()->json($equipments);
+    }
+
 }
