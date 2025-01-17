@@ -48,7 +48,7 @@ Route::middleware("jwt-verify")->group(function() {
 
     Route::get('/admin_dashboard', [DashboardController::class, 'index'])->name('admin_dashboard');
     Route::get('/get-equipment-per-month', [DashboardController::class, 'getEquipmentPerMonth'])->name('get-equipment-per-month');
-    
+    Route::get('/get-supplies-per-month', [DashboardController::class, 'getSuppliesPerMonth'])->name('get-supplies-per-month');
     // USED MODULE FOR EQUIPMENT
     Route::get('/admin_equipUsed', function () {
         return view('admin_equipUsed');

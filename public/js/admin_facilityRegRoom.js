@@ -85,6 +85,8 @@ $(document).ready(function () {
 
         // Confirmation dialog
         setTimeout(() =>{
+            $('#save-loader').remove();
+            
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'Do you want to submit this room information?',
