@@ -53,7 +53,7 @@
             <!-- Search Bar -->
             <div class=" flex items-center space-x-4">
 
-                <label for="event-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only dark:text-white">Search</label>
+                <label for="event-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only">Search</label>
                 <form id="eventSearchForm" class="flex items-center space-x-4">
                     <div class="relative w-96">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
