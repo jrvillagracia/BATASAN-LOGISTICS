@@ -66,6 +66,12 @@ $(document).ready(function () {
                     <input type="text" class="w-full rounded p-2" placeholder="Control Number">
                 </td>
                 <td class="p-2 text-center">
+                    <button id="viewMainteEquipReqBTN" type="button">
+                        <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </button>
                     <button type="button" class="MainteEquipDelete-row-btn text-red-500 hover:text-red-700">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -140,37 +146,6 @@ $(document).ready(function () {
         $('#MainteEquipStep1Icon').addClass('text-blue-600').removeClass('text-gray-500');
     });
 
-
-     // Add a new inventory row to the table
-    // $('#MainteEquipAddRowBtn').click(function () {
-    //     const newRow = `
-    //         <tr class="MaintenanceEquip-Rows">
-    //             <td class="  p-2">
-    //                 <input type="text" class="w-full   rounded p-2" placeholder="Serial Number">
-    //             </td>
-    //             <td class="p-2">
-    //                 <input type="text" class="w-full  rounded p-2" placeholder="Control Number">
-    //             </td>
-    //             <td class=" p-2 text-center">
-    //                 <button id="viewMainteEquipReqBTN" type="button">
-    //                     <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-    //                         <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-    //                         <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-    //                     </svg>
-    //                 </button>
-    //                 <button type="button" class="MainteEquipDelete-row-btn text-red-500 hover:text-red-700">
-    //                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    //                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-    //                     </svg>
-    //                 </button>
-    //              </td>
-    //         </tr>`;
-    //     $('#MaintenanceEquip-TablBody').append(newRow);
-    // });
-
-    // $('#MaintenanceEquip-TablBody').on('click', '.MainteEquipDelete-row-btn', function () {
-    //     $(this).closest('tr').remove();
-    // });
 
 });
 
