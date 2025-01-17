@@ -34,20 +34,62 @@ $(document).ready(function () {
     // Example serial numbers (replace this with dynamic data if needed)
     const serialNumbers = ['SN12345', 'SN23456', 'SN34567', 'SN45678', 'SN56789'];
 
-    // Reference the dropdown
-    const $serialDropdown = $('.js-serial-number');
+    // Function to populate a dropdown with serial numbers
+    function populateSerialNumbers($dropdown) {
+        $dropdown.empty(); // Clear existing options
+        serialNumbers.forEach(serial => {
+            $dropdown.append(`<option value="${serial}">${serial}</option>`);
+        });
+    }
 
-    // Populate the dropdown with serial numbers
-    serialNumbers.forEach(serial => {
-        $serialDropdown.append(`<option value="${serial}">${serial}</option>`);
+    // Initialize Select2 for all existing rows
+    $('.js-serial-number').each(function () {
+        const $this = $(this);
+        populateSerialNumbers($this);
+        $this.select2({
+            placeholder: "Search Serial Number",
+            allowClear: true,
+            width: '100%',
+        });
     });
 
-    // Initialize Select2 for the searchable dropdown
-    $serialDropdown.select2({
-        placeholder: "Search Serial Number", // Placeholder text
-        allowClear: true,                    // Allow clearing the selection
-        width: '100%',                        // Set dropdown width
-        height: '100%'
+    // Add a new row dynamically
+    $('#MainteEquipAddRowBtn').on('click', function () {
+        const newRow = `
+            <tr class="MaintenanceEquip-Rows">
+                <td class="p-2">
+                    <select class="js-serial-number w-full rounded p-2">
+                        <!-- Options will be dynamically loaded -->
+                    </select>
+                </td>
+                <td class="p-2">
+                    <input type="text" class="w-full rounded p-2" placeholder="Control Number">
+                </td>
+                <td class="p-2 text-center">
+                    <button type="button" class="MainteEquipDelete-row-btn text-red-500 hover:text-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>`;
+        
+        // Append the new row to the table body
+        $('#MaintenanceEquip-TablBody').append(newRow);
+
+        // Initialize the dropdown in the newly added row
+        const $newDropdown = $('#MaintenanceEquip-TablBody').find('.js-serial-number').last();
+        populateSerialNumbers($newDropdown);
+        $newDropdown.select2({
+            placeholder: "Search Serial Number",
+            allowClear: true,
+            width: '100%',
+        });
+    });
+
+    // Delete a row
+    $('#MaintenanceEquip-TablBody').on('click', '.MainteEquipDelete-row-btn', function () {
+        $(this).closest('tr').remove();
     });
 });
 
@@ -100,35 +142,35 @@ $(document).ready(function () {
 
 
      // Add a new inventory row to the table
-    $('#MainteEquipAddRowBtn').click(function () {
-        const newRow = `
-            <tr class="MaintenanceEquip-Rows">
-                <td class="  p-2">
-                    <input type="text" class="w-full   rounded p-2" placeholder="Serial Number">
-                </td>
-                <td class="p-2">
-                    <input type="text" class="w-full  rounded p-2" placeholder="Control Number">
-                </td>
-                <td class=" p-2 text-center">
-                    <button id="viewMainteEquipReqBTN" type="button">
-                        <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                    </button>
-                    <button type="button" class="MainteEquipDelete-row-btn text-red-500 hover:text-red-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                 </td>
-            </tr>`;
-        $('#MaintenanceEquip-TablBody').append(newRow);
-    });
+    // $('#MainteEquipAddRowBtn').click(function () {
+    //     const newRow = `
+    //         <tr class="MaintenanceEquip-Rows">
+    //             <td class="  p-2">
+    //                 <input type="text" class="w-full   rounded p-2" placeholder="Serial Number">
+    //             </td>
+    //             <td class="p-2">
+    //                 <input type="text" class="w-full  rounded p-2" placeholder="Control Number">
+    //             </td>
+    //             <td class=" p-2 text-center">
+    //                 <button id="viewMainteEquipReqBTN" type="button">
+    //                     <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+    //                         <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+    //                         <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+    //                     </svg>
+    //                 </button>
+    //                 <button type="button" class="MainteEquipDelete-row-btn text-red-500 hover:text-red-700">
+    //                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    //                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    //                     </svg>
+    //                 </button>
+    //              </td>
+    //         </tr>`;
+    //     $('#MaintenanceEquip-TablBody').append(newRow);
+    // });
 
-    $('#MaintenanceEquip-TablBody').on('click', '.MainteEquipDelete-row-btn', function () {
-        $(this).closest('tr').remove();
-    });
+    // $('#MaintenanceEquip-TablBody').on('click', '.MainteEquipDelete-row-btn', function () {
+    //     $(this).closest('tr').remove();
+    // });
 
 });
 
