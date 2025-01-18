@@ -44,7 +44,7 @@
                 <a href="{{route('admin_mainteEquipment')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
                 <a href="{{route('admin_mainteForRepEquip')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Repair</a>
                 <a href="{{route('admin_ComReqMainteEquip')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_HistoryMainteEquip')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                <!--<a href="{{route('admin_HistoryMainteEquip')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a> -->
             </div>
 
             <!-- Search Bar -->
