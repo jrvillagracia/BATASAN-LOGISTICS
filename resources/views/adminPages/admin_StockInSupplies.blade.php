@@ -63,6 +63,7 @@
 
                     <!-- Add Item Button-->
                     <button id="SuppliesFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
+                </form>
             </div>
         </div>
 
@@ -409,7 +410,6 @@
                         </div>
                     </div>
                     @endif
-
                 </div>
             </div>
             <!-- END OF View 1 Popup Card -->
