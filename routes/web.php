@@ -6,6 +6,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JWTApiTokenController;
 use App\Http\Controllers\Events\ApproveController;
 use App\Http\Controllers\Events\ApprovalController;
@@ -16,7 +17,8 @@ use App\Http\Controllers\Equipments\EquipmentController;
 use App\Http\Controllers\Equipments\EquipCondemController;
 use App\Http\Controllers\Supplies\SuppliesStockController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MaintenanceFacility\MainteFacilityController;
+use App\Http\Controllers\MaintenanceFacility\MainteEquipmentController;
 
 
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
@@ -46,7 +48,7 @@ Route::middleware("jwt-verify")->group(function() {
 
     Route::get('/admin_dashboard', [DashboardController::class, 'index'])->name('admin_dashboard');
     Route::get('/get-equipment-per-month', [DashboardController::class, 'getEquipmentPerMonth'])->name('get-equipment-per-month');
-    
+    Route::get('/get-supplies-per-month', [DashboardController::class, 'getSuppliesPerMonth'])->name('get-supplies-per-month');
     // USED MODULE FOR EQUIPMENT
     Route::get('/admin_equipUsed', function () {
         return view('admin_equipUsed');
@@ -197,6 +199,7 @@ Route::get('/equipment/details2', [EquipmentStockController::class, 'equipmentDe
 Route::post('/equipment/delete-stock', [EquipmentStockController::class, 'destroyStock'])->name('equipment.destroy-stock');
 Route::post('/update/main-table', [EquipmentStockController::class, 'update'])->name('update.equipment');
 Route::post('/condemn-equipment', [EquipmentStockController::class, 'condemnEquipment'])->name('condemn.equipment');
+Route::get('/get/equipments', [EquipmentStockController::class, 'getAllEquipments'])->name('get.equipments');
 Route::get('/export-equipment', function () {
     return Excel::download(new EquipmentExport, 'equipment.xlsx');
 })->name('equipment.export');
@@ -222,6 +225,9 @@ Route::get('/admin_supplies', [SuppliesStockController::class, 'index'])->name('
 Route::get('/supplies/details2', [SuppliesStockController::class,'suppliesDetails'])->name('supplies.details2');
 Route::post('/suppliesStock/delete', [SuppliesStockController::class, 'destroy'])->name('suppliesStock.destroy');
 Route::post('/suppliesStock/update', [SuppliesStockController::class, 'updateSupplies'])->name('suppliesStock.update');
+Route::get('/export-supplies', function () {
+    return Excel::download(new EquipmentExport, 'supplies.xlsx');
+})->name('supplies.export');
 
 
 //Rooms
@@ -249,8 +255,6 @@ Route::get('/event/details', [ApproveController::class, 'getEventDetails'])->nam
 Route::get('/events_Apr_details', [ApproveController::class, 'getEventDetails'])->name('events_Apr_details');
 Route::post('/cancel-event', [ApproveController::class, 'cancel'])->name('cancel.event');
 
-
-
 //Complete Request
 Route::get('/admin_eventsComRequest', [CompleteController::class, 'index'])->name('admin_eventsComRequest');
 
@@ -260,6 +264,15 @@ Route::get('/admin_facilityOfficeRoom', function () {
     return view('adminPages.admin_facilityOfficeRoom');
 })->name('admin_facilityOfficeRoom');
 
+//Maintenance Facility
+Route::get('/admin_mainteFacility', [MainteFacilityController::class, 'index'])->name('admin_mainteFacility');
+Route::post('/admin/mainteFacility/store', [MainteFacilityController::class, 'store'])->name('mainteFacility.store');
+Route::post('/mainte-facility/details', [MainteFacilityController::class, 'showDetails'])->name('mainte.facility.details');
+
+//Maintenance Equipment
+Route::get('/admin_mainteEquipment', [MainteEquipmentController::class, 'index'])->name('admin_mainteEquipment');
+Route::get('/admin_mainteEquipment/details', [MainteEquipmentController::class, 'showDetails'])->name('maintenance.details');
+Route::post('/mainteEquipment/store', [MainteEquipmentController::class, 'store'])->name('mainteEquipment.store'); 
 
 
 // FACULTY PAGES
@@ -267,13 +280,6 @@ Route::get('/faculty_home', function () {
     return view('facultyPages.faculty_home');
 })->name('faculty_home');
 
-
-
-
-// MAINTENANCE For Approval INVENTORY
-Route::get('/admin_mainteEquipment', function () {
-    return view('adminPages.admin_mainteEquipment');
-})->name('admin_mainteEquipment');
 
 
 // MAINTENANCE For Repair INVENTORY
@@ -290,12 +296,6 @@ Route::get('/admin_ComReqMainteEquip', function () {
 Route::get('/admin_HistoryMainteEquip', function () {
     return view('adminPages.admin_HistoryMainteEquip');
 })->name('admin_HistoryMainteEquip');
-
-
-// MAINTENANCE For Approval FACILITY
-Route::get('/admin_mainteFacility', function () {
-    return view('adminPages.admin_mainteFacility');
-})->name('admin_mainteFacility');
 
 // MAINTENANCE For Repair FACILITY
 Route::get('/admin_mainteForRepFacility', function () {

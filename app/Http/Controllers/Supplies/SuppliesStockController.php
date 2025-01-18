@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Supplies;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-//use App\Models\Supplies\Supplies;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Supplies\SuppliesStock;
-//use App\Http\Controllers\Supplies\SuppliesStockController;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class SuppliesStockController extends Controller
 {
@@ -106,7 +107,7 @@ class SuppliesStockController extends Controller
         $validatedData = $request->validate([
             'SUPPLIESBrandNameEDT' => 'required|string|max:255',
             'SUPPLIESNameEDT' => 'required|string|max:255',
-            'SuppliesStockCategoryEdit' => 'required|string',
+            'SUPPLIESCategoryEDT' => 'required|string',
             'otherSUPPLIESCategoryEDT' => 'nullable|required_if:SuppliesCategoryEdit,other|string|max:255',
             'SUPPLIESQuantityEDT' => 'required|integer',
             'SUPPLIESColorEDT' => 'required|string|max:255',
@@ -118,7 +119,7 @@ class SuppliesStockController extends Controller
             'brand' => 'required|string|max:255',
         ]);
 
-        $category = $validatedData['SuppliesStockCategoryEdit'];
+        $category = $validatedData['SUPPLIESCategoryEDT'];
         if ($category === 'other' && !empty($validatedData['otherSUPPLIESCategoryEDT'])) {
             $category = $validatedData['otherSUPPLIESCategoryEDT'];
         }

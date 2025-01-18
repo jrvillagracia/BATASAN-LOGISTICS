@@ -1,6 +1,6 @@
 @extends('adminLayouts.admin_sidebarLayout')
 
-@section('title', 'Maintenance Inveontory | BHNHS')
+@section('title', 'Maintenance Inventory | BHNHS')
 
 @section('content')
 
@@ -101,6 +101,9 @@
                 <div id="MainteEquipStep1Content" class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
                     <form id="MainteEquipmentForm" action="" method="POST">
                         <!-- Input Fields -->
+
+                        <input type="hidden" name="mainteRepairId" id="mainteRepairId" value="">
+
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label for="datepicker-format" class="block text-sm font-semibold mb-2">Date:</label>
@@ -129,17 +132,14 @@
 
                         <div class="mb-4">
                             <label for="MainteEquipReqUnit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
-                            <select id="MainteEquipReqUnit" name="MainteEquipReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
+                            <select id="MainteEquipReqUnit" name="MainteEquipReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded" required>
                                 <option value="" disabled selected>Select Office/Unit</option>
-                                <option value="">TLE Department</option>
-                                <option value="">English Department</option>
-                                <option value="">Storage Office</option>
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label for="MainteEquipReqFOR" class="block text-sm font-semibold mb-2">Requesting for</label>
-                            <textarea id="MainteEquipReqFOR" class="w-full p-2 rounded border border-gray-400 mb-4 max-h-40 overflow-y-scroll" rows="3" placeholder="Enter your requesting here for..."></textarea>
+                            <textarea id="MainteEquipReqFOR" class="w-full p-2 rounded border border-gray-400 mb-4 max-h-40 overflow-y-scroll" rows="3" placeholder="Enter your requesting here for..." required></textarea>
                         </div>
 
 
@@ -233,24 +233,24 @@
                             Actions
                         </th>
 
-                </thead>
+                        </thead>
                 <tbody id="tableBody" class="">
-
+                    @foreach($equipment as $mergedData)
                     <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Waiting for Pick Up</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">BHNHS-2024-0001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Sir. Vic</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">TLE Department</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">LAPDELL-001234</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">LPT-0001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">DELL</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Waiting for Pick Up</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['mainteRepairId'] ?? 'N/A' }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['EquipmentBrandName'] }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['EquipmentName'] }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['EquipmentCategory'] }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['EquipmentSKU'] }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['MainteEquipDate'] ?? 'N/A' }}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <button id="MaintenanceEquipmentViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                             <button id="MaintenanceEquipmentApproveBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
                             <button id="MaintenanceEquipmentDeclineBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
                         </td>
                     </tr>
-
+                    @endforeach
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>
@@ -335,6 +335,7 @@
                         <h2 class="text-lg font-semibold">Name of the [CATEGORY OF THE EQUIPMENT]</h2>
                     </div>
 
+                    
                     <div class="text-sm">
                         <p class="mb-2"><strong>Brand Name: </strong></p>
                         <p class="mb-2"><strong>Product Name: </strong></p>

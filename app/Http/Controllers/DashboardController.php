@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Supplies\Supplies;
 use Illuminate\Support\Facades\DB;
 use App\Models\Equipments\Equipment;
 use App\Models\Equipments\EquipmentStock;
 use App\Models\Models\FacilityModule\Room;
-
+use App\Models\Supplies\SuppliesStock;
 
 class DashboardController extends Controller
 {
@@ -20,8 +21,10 @@ class DashboardController extends Controller
         // $totalEquipmentStocks = DB::table('equipment_stocks')->count();
         $totalEquipmentStocks = EquipmentStock::count();
 
+        $totalSuppliesStocks = SuppliesStock::count();
+
         // Pass the totalFacilities variable to the Blade view
-        return view('adminPages.admin_dashboard', compact('totalFacilities', 'totalEquipmentStocks'));
+        return view('adminPages.admin_dashboard', compact('totalFacilities', 'totalEquipmentStocks', 'totalSuppliesStocks'));
     }
 
     public function getEquipmentPerMonth(Request $request)
@@ -43,6 +46,28 @@ class DashboardController extends Controller
         return response()->json([
             'months' => $months,
             'counts' => $counts,
+        ]);
+    }
+
+    public function getSuppliesPerMonth(Request $request)
+    {
+        $suppliesPerMonth = Supplies::selectRaw('COUNT(*) as count, EXTRACT(MONTH FROM "SuppliesDate") as month')
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        $Suppliesmonths = [];
+        $Suppliescounts = [];
+
+        foreach ($suppliesPerMonth as $data) {
+            $Suppliesmonths[] = Carbon::create()->month((int) $data->month)->format('M'); // Month name
+            $Suppliescounts[] = $data->count; 
+        }
+
+        // Return JSON response
+        return response()->json([
+            'Suppliesmonths' => $Suppliesmonths,
+            'Suppliescounts' => $Suppliescounts,
         ]);
     }
 }

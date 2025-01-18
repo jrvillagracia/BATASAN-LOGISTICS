@@ -31,54 +31,227 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ======================= SEARCH SERIAL NUMBER FUNCTION IN ADD REQUEST ========================== //
 $(document).ready(function () {
-    // Example serial numbers (replace this with dynamic data if needed)
-    const serialNumbers = ['SN12345', 'SN23456', 'SN34567', 'SN45678', 'SN56789'];
+    let equipmentData = []; // Store fetched equipment data globally
+    const selectedSerialNumbers = new Set(); // Track selected serial numbers
 
-    // Reference the dropdown
-    const $serialDropdown = $('.js-serial-number');
+    // Fetch serial numbers and control numbers via AJAX
+    function fetchEquipmentData() {
+        $.ajax({
+            url: '/get/equipments', // Adjust the URL to match your API endpoint
+            method: 'GET',
+            success: function (data) {
+                equipmentData = data; // Store the data for reuse
+                initializeDropdowns($('.js-serial-number')); // Initialize existing dropdowns
+            },
+            error: function () {
+                alert('Failed to fetch equipment data!');
+            }
+        });
+    }
 
-    // Populate the dropdown with serial numbers
-    serialNumbers.forEach(serial => {
-        $serialDropdown.append(`<option value="${serial}">${serial}</option>`);
+    // Initialize dropdowns with fetched data
+    function initializeDropdowns($dropdowns) {
+        $dropdowns.each(function () {
+            const $dropdown = $(this);
+            populateDropdown($dropdown);
+        });
+
+        // Bind change event to update control numbers and disable selected serials in other dropdowns
+        $dropdowns.off('change').on('change', function () {
+            const selectedSerial = $(this).val();
+            const equipment = equipmentData.find(e => e.EquipmentSerialNo === selectedSerial);
+            if (equipment) {
+                $(this).closest('tr').find('input[type="text"]').val(equipment.EquipmentControlNo);
+            }
+
+            // Update the selected serial number set
+            if (selectedSerial) {
+                selectedSerialNumbers.add(selectedSerial);
+            }
+
+            // Disable selected serials in other dropdowns
+            disableSelectedSerials();
+        });
+    }
+
+    // Populate a dropdown with equipment data
+    function populateDropdown($dropdown) {
+        $dropdown.empty().append('<option disabled selected>Select Serial Number</option>');
+        equipmentData.forEach(function (equipment) {
+            $dropdown.append(`<option value="${equipment.EquipmentSerialNo}">${equipment.EquipmentSerialNo}</option>`);
+        });
+    }
+
+    // Disable selected serial numbers in all dropdowns
+    function disableSelectedSerials() {
+        $('.js-serial-number').each(function () {
+            const $dropdown = $(this);
+            const currentValue = $dropdown.val();
+
+            $dropdown.find('option').each(function () {
+                const $option = $(this);
+                if (selectedSerialNumbers.has($option.val()) && $option.val() !== currentValue) {
+                    $option.prop('disabled', true); // Disable the option
+                } else {
+                    $option.prop('disabled', false); // Enable the option
+                }
+            });
+        });
+    }
+
+    // Fetch equipment data on page load
+    fetchEquipmentData();
+
+    // Add a new row dynamically
+    $('#MainteEquipAddRowBtn').on('click', function () {
+        const newRow = `
+            <tr class="MaintenanceEquip-Rows">
+                <td class="p-2">
+                    <select class="js-serial-number w-full rounded p-2">
+                        <!-- Options will be dynamically loaded -->
+                    </select>
+                </td>
+                <td class="p-2">
+                    <input type="text" class="w-full rounded p-2" placeholder="Control Number">
+                </td>
+                <td class="p-2 text-center">
+                    <button id="viewMainteEquipReqBTN" type="button">
+                        <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </button>
+                    <button type="button" class="MainteEquipDelete-row-btn text-red-500 hover:text-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>`;
+
+        // Append the new row to the table body
+        $('#MaintenanceEquip-TablBody').append(newRow);
+
+        // Initialize the dropdown in the newly added row
+        const $newDropdown = $('#MaintenanceEquip-TablBody').find('.js-serial-number').last();
+        populateDropdown($newDropdown);
+        initializeDropdowns($newDropdown); // Apply equipment data and event listeners
+        $newDropdown.select2({
+            placeholder: "Search Serial Number",
+            allowClear: true,
+            width: '100%',
+        });
     });
 
-    // Initialize Select2 for the searchable dropdown
-    $serialDropdown.select2({
-        placeholder: "Search Serial Number", // Placeholder text
-        allowClear: true,                    // Allow clearing the selection
-        width: '100%',                        // Set dropdown width
-        height: '100%'
+    // Delete a row
+    $('#MaintenanceEquip-TablBody').on('click', '.MainteEquipDelete-row-btn', function () {
+        const $row = $(this).closest('tr');
+        const selectedValue = $row.find('.js-serial-number').val();
+
+        // Remove the selected value from the tracking set
+        if (selectedValue) {
+            selectedSerialNumbers.delete(selectedValue);
+        }
+
+        // Remove the row
+        $row.remove();
+
+        // Update dropdown options to reflect the removal
+        disableSelectedSerials();
     });
 });
 
 
+
+
 // ======================= ADD REQUEST ========================== //
 $(document).ready(function () {
-    $('#MainteEquipmentREQFormButton').click(function () {
+    // Handle the Add Request button click
+    $('#MainteEquipmentREQFormButton').click(function (event) {
         event.preventDefault();
         console.log('Add Request Button is Clicked.');
+
         $('#MainteEquipmentFormBtn').removeClass('hidden');
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0];
+        const formattedTime = currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+        $('#MainteEquipDate').val(formattedDate);
+        $('#MainteEquipTime').val(formattedTime);
     });
 
+    // Handle the Close button click
     $('#CloseMainteEquipForm').click(function () {
         console.log('Close Button is Clicked.');
         $('#MainteEquipmentFormBtn').addClass('hidden');
     });
 
-    $('#closeAddReqMainteEquipInventoryPopupCard').click(function () {
+    // Handle the "X" Close button click
+    $('#closeAddReqMainteEquipInventoryPopupCard').click(function (event) {
+        event.preventDefault();
         console.log('Close "X" Button is Clicked.');
         $('#MainteEquipmentFormBtn').addClass('hidden');
     });
 
-    $("#SubmitMainteEquipForm").click(function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#MainteEquipmentFormBtn").addClass("hidden");
+    // Submit form via AJAX
+    $('#SubmitMainteEquipForm').click(function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        console.log('Submit Button Clicked.');
+
+        // Collect form data
+        const formData = {
+            mainteRepairId: $('#mainteRepairId').val(), // Ensure the input field exists
+            MainteEquipDate: $('#MainteEquipDate').val(),
+            MainteEquipTime: $('#MainteEquipTime').val(),
+            MainteEquipReqUnit: $('#MainteEquipReqUnit').val(),
+            MainteEquipReqFOR: $('#MainteEquipReqFOR').val(),
+            _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token for security
+        };
+
+        // Validate that required fields are not empty
+        if (!formData.MainteEquipDate || !formData.MainteEquipTime || !formData.MainteEquipReqUnit || !formData.MainteEquipReqFOR) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please fill out all required fields.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
+            return;
+        }
+
+        // AJAX request to store data
+        $.ajax({
+            url: '/mainteEquipment/store', // Replace with your actual route URL
+            method: 'POST',
+            data: formData,
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Submitted',
+                        text: response.message,
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        // Optionally clear the form or close the modal
+                        $('#MainteEquipmentFormBtn').addClass('hidden');
+                        $('#MaintenanceEquip-TablBody').empty(); // Clear the table rows if needed
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while processing your request. Please try again.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33'
+                });
+            }
         });
     });
 
@@ -98,39 +271,9 @@ $(document).ready(function () {
         $('#MainteEquipStep1Icon').addClass('text-blue-600').removeClass('text-gray-500');
     });
 
-
-     // Add a new inventory row to the table
-    $('#MainteEquipAddRowBtn').click(function () {
-        const newRow = `
-            <tr class="MaintenanceEquip-Rows">
-                <td class="  p-2">
-                    <input type="text" class="w-full   rounded p-2" placeholder="Serial Number">
-                </td>
-                <td class="p-2">
-                    <input type="text" class="w-full  rounded p-2" placeholder="Control Number">
-                </td>
-                <td class=" p-2 text-center">
-                    <button id="viewMainteEquipReqBTN" type="button">
-                        <svg class="w-[27px] h-[27px] text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                    </button>
-                    <button type="button" class="MainteEquipDelete-row-btn text-red-500 hover:text-red-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                 </td>
-            </tr>`;
-        $('#MaintenanceEquip-TablBody').append(newRow);
-    });
-
-    $('#MaintenanceEquip-TablBody').on('click', '.MainteEquipDelete-row-btn', function () {
-        $(this).closest('tr').remove();
-    });
-
 });
+
+
 
 // VIEWING BUTTON IN MAINTENANCE REQUEST
 $(document).ready(function () {
@@ -440,5 +583,31 @@ $(document).ready(function () {
                 $('.print-btn').removeClass('hidden');
                 $('.cancel-btn').removeClass('hidden');
             });
+    });
+});
+
+
+//================================== GET DEPARTMENT =============================//
+$(document).ready(function () {
+    // Make an AJAX request to the API
+    $.ajax({
+        url: 'https://bnhs-hr.onrender.com/api/all/departments',  // Adjust the URL to match your API endpoint
+        method: 'GET',
+        headers: {
+            'x-api-key': 'Ru8NWgJalpjcZ1T53i10Z5Jp4xdQoKdU90dq8zLHC1ZrGMxwbl4XToKg0sb7JCv9',
+        },
+        success: function (data) {
+            const departmentDropdown = $("#MainteEquipReqUnit");
+            departmentDropdown.empty().append('<option value="" disabled selected>Select Office/Unit</option>');
+
+            // Loop through the API data and append each department as an option
+            data.forEach(function(department) {
+                departmentDropdown.append(`<option value="${department.id}">${department.name}</option>`);
+            });
+        },
+        error: function (error) {
+            console.error("Error fetching departments:", error);
+            alert('Failed to load departments. Please try again later.');
+        }
     });
 });

@@ -63,6 +63,7 @@
 
                     <!-- Add Item Button-->
                     <button id="SuppliesFormButton" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Item</button>
+                </form>
             </div>
         </div>
 
@@ -390,7 +391,7 @@
                         </button>
                     </div>
 
-                    @foreach($supplies as $item)
+                    @if(isset($item))
                     <div class="grid grid-cols-2 gap-4 ml-6 text-sm w-full" id="suppliesDetails">
                         <div>
                             <p class="mb-2"><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</p>
@@ -409,7 +410,6 @@
                         </div>
                     </div>
                     @endif
-
                 </div>
             </div>
             <!-- END OF View 1 Popup Card -->

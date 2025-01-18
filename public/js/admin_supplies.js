@@ -60,8 +60,8 @@ jQuery(function() {
     $('#SUPPLIESCategoryEDT').on('change', function () {
         const category = $(this).val();
         if (category === 'other') {
-            $('#otherSUPPLIESCategoryEDT').removeClass('hidden');
-            const otherCategoryValue = $('#editForm').find('#otherSUPPLIESCategoryEDT').val();
+            $('#otherSuppCategoryDiv').removeClass('hidden');
+            const otherCategoryValue = $('#otherSUPPLIESCategoryEDT').val();
             $('#otherSUPPLIESCategoryEDT').val(otherCategoryValue); // set the value
         } else {
             $('#otherSuppCategoryDiv').addClass('hidden');
@@ -90,7 +90,7 @@ jQuery(function() {
         var suppliesUnitPrice = row.data('unit-price');
         var suppliesColor = row.data('color');
         var suppliesClassification = row.data('classification');
-        var otherCategory = row.data('other-category');
+        var otherCategory = row.find('td').eq(3).text().trim();
         console.log('Edit button clicked for supplies Brand:', suppliesBrand);
 
         // Show the edit modal
@@ -113,12 +113,12 @@ jQuery(function() {
 
         if (otherCategory === 'other') {
             // Show the "Other" category input and populate it
-            $('#otherSuppCategoryDivEdit').removeClass('hidden');
-            $('#editForm').find('#otherSuppCategoryEdit').val(otherCategory);
+            $('#otherSuppCategoryDiv').removeClass('hidden');
+            $('#otherSUPPLIESCategoryEDT').val(otherCategory);
         } else {
             // Hide the "Other" category input
             $('#otherSuppCategoryDiv').addClass('hidden');
-            $('#editForm').find('#otherSUPPLIESCategoryEDT').val('');
+            $('#otherSUPPLIESCategoryEDT').val('');
         }
 
     });
@@ -129,6 +129,15 @@ jQuery(function() {
 
         const category = $('#SUPPLIESCategoryEDT').val();
         const otherCategory = $('#otherSUPPLIESCategoryEDT').val().trim();
+        const brandName = $('#SUPPLIESBrandNameEDT').val().trim();
+        const name = $('#SUPPLIESNameEDT').val().trim();
+        const quantity = $('#SUPPLIESQuantityEDT').val().trim();
+        const sku = $('#SUPPLIESSKUEDT').val().trim();
+        const classification = $('#SUPPLIESClassificationEDT').val().trim();
+        const color = $('#SUPPLIESColorEDT').val().trim();
+        const type = $('#SUPPLIESTypeEDT').val().trim();
+        const unit = $('#SUPPLIESUnitEDT').val().trim();
+        const unitprice = $('#SUPPLIESUnitPriceEDT').val().trim();
 
         Swal.fire({
             title: "Are you sure all input data are correct?",
@@ -151,12 +160,9 @@ jQuery(function() {
                 }
 
                 if (category === 'other') {
-                    $('#editForm').find('#SUPPLIESCategoryEDT').val('other');
+                    $('#SUPPLIESCategoryEDT').val('other');
                 }
 
-                var formData = $('#editForm').serialize();
-                console.log('Form data:', formData);
-    
                 $('body').append(`
                     <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
                         <section class="dots-container">
@@ -172,14 +178,25 @@ jQuery(function() {
                     </div>
                 `);
 
-                // Ensure brand is being set correctly
-                var suppliesBrand = $('#editForm').find('input[name="brand"]').val(); 
-                console.log('Supplies Brand to be sent:', suppliesBrand); 
-
+            
                 $.ajax({
                     url: '/suppliesStock/update', 
                     method: 'POST',
-                    data: formData,
+                    data: {
+                        _token: $('#csrf-token').data('token'),
+                        SUPPLIESBrandNameEDT: brandName,
+                        SUPPLIESNameEDT: name,
+                        SUPPLIESCategoryEDT: category,
+                        SUPPLIESQuantityEDT: quantity,
+                        SUPPLIESSKUEDT: sku,
+                        SUPPLIESClassificationEDT: classification,
+                        SUPPLIESColorEDT: color,
+                        SUPPLIESTypeEDT: type,
+                        SUPPLIESUnitEDT: unit,
+                        SUPPLIESUnitPriceEDT: unitprice,
+                        otherSUPPLIESCategoryEDT: otherCategory,
+                        brand: $('input[name="brand"]').val().trim()
+                    },
                     success: function() {
                         $('#save-loader').remove();
                         Swal.fire({
@@ -228,7 +245,8 @@ jQuery(function() {
     }
 
     // Handle closing the edit modal
-    $('#closeSUPPLIESFormBTN').on('click', function() {
+    $('#closeSUPPLIESFormBTN').on('click', function(event) {
+        event.preventDefault();
         $('#editSUPPLIESMdl').addClass('hidden');
     });
 
@@ -245,6 +263,7 @@ jQuery(function() {
         }
     });
 });
+
 
 // SELECT ALL BUTTON IN MAIN TABLE 
 $(document).ready(function() {
@@ -404,5 +423,15 @@ $(document).ready(function () {
         } else {
             $('#lowEditSupplies2StockThresholdDiv').addClass('hidden'); // Hide input
         }
+    });
+});
+
+// Export main table
+$(document).ready(function() {
+    $('#SuppExportBTN').on('click', function(event) {
+        event.preventDefault(); // Prevent default action (e.g., form submission)
+
+        // Trigger the Excel export by navigating to the export route
+        window.location.href = '/export-supplies';
     });
 });
