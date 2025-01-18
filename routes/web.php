@@ -268,6 +268,7 @@ Route::get('/admin_facilityOfficeRoom', function () {
 Route::get('/admin_mainteFacility', [MainteFacilityController::class, 'index'])->name('admin_mainteFacility');
 Route::post('/admin/mainteFacility/store', [MainteFacilityController::class, 'store'])->name('mainteFacility.store');
 Route::post('/mainte-facility/details', [MainteFacilityController::class, 'showDetails'])->name('mainte.facility.details');
+Route::post('/admin/mainteFacility/decline', [MainteFacilityController::class, 'decline'])->name('mainteFacility.decline');
 
 //Maintenance Equipment
 Route::get('/admin_mainteEquipment', [MainteEquipmentController::class, 'index'])->name('admin_mainteEquipment');

@@ -70,4 +70,32 @@ class MainteFacilityController extends Controller
 
         return response()->json($facility);
     }
+
+    public function decline(Request $request)
+    {
+        // Validate the request input
+        $validated = $request->validate([
+            'mainteFacilityId' => 'required|integer|exists:mainte_facility,mainteFacilityId',
+        ]);
+
+        try {
+            $mainteFacilityId = $validated['mainteFacilityId'];
+
+            // Find and delete the facility
+            $facility = MainteFacility::findOrFail($mainteFacilityId);
+            $facility->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Facility request declined and removed successfully.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to process the request. Please try again.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 }
