@@ -256,6 +256,7 @@
 
 
         <!-- View 1 Popup Card -->
+        @if($equipment->isNotEmpty())
         <div id="VwEquimentMdl" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white p-4 rounded-lg shadow-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"> <!-- Updated width and height -->
                 <div class="flex justify-between items-center mb-4">
@@ -266,8 +267,6 @@
                         </svg>
                     </button>
                 </div>
-
-                @if($equipment->isNotEmpty())
                 <div class="relative shadow-md sm:rounded-lg px-9 py-5">
                     <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="equipmentDetails">
                         <div><strong>Brand Name:</strong>{{$item->EquipmentBrandName}}</div>
@@ -341,8 +340,8 @@
         </div>
         @else
         <p class="text-center text-gray-500">No equipment details available.</p>
+        @endif
         <!-- END OF View 1 Popup Card -->
-         @endif
 
 
         <!-- Edit 2 Popup Card -->

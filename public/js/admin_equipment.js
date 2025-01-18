@@ -1,6 +1,7 @@
 // VIEW 1 BUTTON CARD FORM  
 $(document).ready(function () {
-    $(document).on('click', '#viewEquipmentBTN', function () {
+    $(document).on('click', '#viewEquipmentBTN', function (event){
+        event.preventDefault();
         const button = $(this);
         const brandName = button.data('brand');
 
