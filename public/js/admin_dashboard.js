@@ -20,26 +20,26 @@ if (accessToken) {
 const facultyCode = "BHNHS-2024-0007"; // Example faculty code
 const apiUrl = `http://192.168.2.237/api/retrieve?faculty=${facultyCode}`;
 
-$(document).ready(function() {
-    $.ajax({
-        url: apiUrl,
-        method: "GET",
-        success: function(data) {
-            // Extract full name from the response
-            const fullName = `${data.first_name} ${data.middle_name} ${data.last_name}`.trim();
-            const role = data.roles[0]; // Assuming only one role here
+// $(document).ready(function() {
+//     $.ajax({
+//         url: apiUrl,
+//         method: "GET",
+//         success: function(data) {
+//             // Extract full name from the response
+//             const fullName = `${data.first_name} ${data.middle_name} ${data.last_name}`.trim();
+//             const role = data.roles[0]; // Assuming only one role here
             
-            // Update the full name in the HTML
-            $("#userFullName").text(fullName);
+//             // Update the full name in the HTML
+//             $("#userFullName").text(fullName);
             
-            // Optionally, update the role text
-            $(".text-xs").text(role);
-        },
-        error: function(error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-});
+//             // Optionally, update the role text
+//             $(".text-xs").text(role);
+//         },
+//         error: function(error) {
+//             console.error("Error fetching data:", error);
+//         }
+//     });
+// });
 
 
 
