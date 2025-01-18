@@ -205,7 +205,14 @@ $(document).ready(function () {
 // DECLINE BUTTON CARD FORM
 $(document).ready(function () {
     // Show the popup when the button is clicked
-    $("#MaintenanceFacilityDeclineBTN").click(function () {
+    $(".MaintenanceFacilityDeclineBTN").click(function () {
+        const mainteFacilityId = $(this).data('id'); // Assuming the button has a data attribute for facility ID
+        console.log('Decline Button Clicked for Facility ID:', mainteFacilityId);
+
+        // Set the facility ID in the hidden input field
+        $("#mainteFacilityId").val(mainteFacilityId);
+
+        // Show the decline popup
         $("#DclnMainteFacilityPopupCard").removeClass("hidden");
     });
 
@@ -223,20 +230,44 @@ $(document).ready(function () {
         });
     });
 
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitDclnMainteFacilityPopupCard").click(function () {
+    // Handle the decline form submission
+    $("#submitDclnMainteFacilityPopupCard").click(function (event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your reason has been submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#DclnMainteFacilityPopupCard").addClass("hidden");
+
+        const mainteFacilityId = $("#mainteFacilityId").val();
+
+        $.ajax({
+            url: '/admin/mainteFacility/decline',
+            method: 'POST',
+            data: {
+                mainteFacilityId: mainteFacilityId,
+                _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for Laravel
+            },
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Submitted',
+                    text: response.message, // Use the message from the server response
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    $("#DclnMainteFacilityPopupCard").addClass("hidden");
+                    // Optionally, remove the declined facility from the DOM or refresh the table
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Failed',
+                    text: xhr.responseJSON?.message || 'There was an error processing your request. Please try again.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33'
+                });
+            }
         });
     });
-});// ========================================== //
+});
 
 
 

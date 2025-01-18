@@ -43,7 +43,7 @@
             <!-- Left-Aligned Buttons -->
             <div id="tabs-container" class="relative">
                 <a href="#" class="button border-b-2 border-blue-500  py-2 px-4 transition-all duration-300 translate-x-2">Office Facility</a>
-                <a href="#" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                {{-- <a href="#" class="button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a> --}}
             </div>
 
             <div class=" flex items-center space-x-4">

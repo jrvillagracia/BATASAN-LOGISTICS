@@ -43,7 +43,7 @@
                 <a href="{{route('admin_mainteFacility')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
                 <a href="{{route('admin_mainteForRepFacility')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Repair</a>
                 <a href="{{route('admin_ComReqMainteFacility')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_HistoryMainteFacility')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+               <!-- <a href="{{route('admin_HistoryMainteFacility')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a> -->
             </div>
 
             <!-- Search Bar -->
@@ -95,7 +95,7 @@
                 </thead>
                 <tbody id="tableBody" class="">
                     @foreach($facility as $mainteFacility)    
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="{{$loop->index}}" data-id="{{$mainteFacility->MainteFacilityId}}">
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="{{$loop->index}}" data-id="{{$mainteFacility->mainteFacilityId}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->RepairId}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->FacilityBuildingName}}</td>
@@ -103,9 +103,9 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->FacilityType}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->MainteFacilityDate}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button data-id="{{$mainteFacility->MainteFacilityId}}" data-index="{{$loop->index}}" type="button" class=" MaintenanceFacilityViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                            <button data-id="{{$mainteFacility->mainteFacilityId}}" data-index="{{$loop->index}}" type="button" class=" MaintenanceFacilityViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                             <button id="MaintenanceFacilityApproveBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
-                            <button id="MaintenanceFacilityDeclineBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
+                            <button data-id="{{$mainteFacility->mainteFacilityId}}" type="button" class="MaintenanceFacilityDeclineBTN bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
                         </td>
                     </tr>
                     @endforeach

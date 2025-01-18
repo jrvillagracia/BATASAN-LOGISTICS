@@ -45,7 +45,7 @@
                 <a href="{{route('admin_eventsForApproval')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
                 <a href="{{route('admin_eventsAprRequest')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Approve Request</a>
                 <a href="{{route('admin_eventsComRequest')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_eventsHistory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                {{-- <a href="{{route('admin_eventsHistory')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a> --}}
             </div>
 
             <!-- Search Bar -->
