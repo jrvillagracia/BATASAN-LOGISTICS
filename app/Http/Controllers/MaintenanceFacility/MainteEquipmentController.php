@@ -13,37 +13,9 @@ class MainteEquipmentController extends Controller
 {
     public function index()
     {
-        $equipmentStock = EquipmentStock::all();
-        $mainteEquipment = MainteEquipment::all();
-
-        $mergedData = $equipmentStock->map(function ($stock) use ($mainteEquipment) {
-            $mainte = $mainteEquipment->firstWhere('mainteEquipmentId', $stock->equipmentStockId);
-
-            return [
-                'EquipmentBrandName' => $stock->EquipmentBrandName,
-                'EquipmentName' => $stock->EquipmentName,
-                'EquipmentCategory' => $stock->EquipmentCategory,
-                'EquipmentSKU' => $stock->EquipmentSKU,
-                'EquipmentColor' => $stock->EquipmentColor,
-                'EquipmentType' => $stock->EquipmentType,
-                'EquipmentSerialNo' => $stock->EquipmentSerialNo,
-                'EquipmentControlNo' => $stock->EquipmentControlNo,
-                'mainteRepairId' => $mainte ? $mainte->mainteRepairId : null,
-                'MainteEquipDate' => $mainte ? $mainte->MainteEquipDate : null,
-                'MainteEquipTime' => $mainte ? $mainte->MainteEquipTime : null,
-                'MainteEquipReqUnit' => $mainte ? $mainte->MainteEquipReqUnit : null,
-                'MainteEquipReqFOR' => $mainte ? $mainte->MainteEquipReqFOR : null,
-            ];
-        });
-
-        Log::info('Merged Equipment Data:', $mergedData->toArray());
-
-        $equipment = $mergedData->all();
-        Log::info('Final Equipment Data Passed to View:', $equipment);
-
+        $equipment = MainteEquipment::with('equipmentStock')->get();
         return view('adminPages.admin_mainteEquipment', compact('equipment'));
     }
-
 
     public function create ()
     {
@@ -77,16 +49,29 @@ class MainteEquipmentController extends Controller
         return view('adminPages.admin_mainteEquipment', compact('equipment'));
     }
 
-    public function store (Request $request)
+    public function store(Request $request)
     {
+        // Validate the incoming request data
         $validatedData = $request->validate([
             'MainteEquipDate' => 'required|date_format:Y-m-d',
             'MainteEquipTime' => 'required|date_format:H:i',
             'MainteEquipReqUnit' => 'required|string|max:255',
             'MainteEquipReqFOR' => 'required|string|max:255',
+            'equipmentStockId' => 'required|integer|exists:equipment_stocks,id',  // Validate that the equipment exists
         ]);
 
-        $lastEquipment = MainteEquipment::orderBy('mainteRepairId', 'desc')->first();
+        // Retrieve the equipment details associated with the provided equipmentStockId
+        $equipment = EquipmentStock::find($validatedData['equipmentStockId']);
+        
+        if (!$equipment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Equipment not found.'
+            ]);
+        }
+
+        // Generate the new mainteRepairId based on the last entry
+        $lastEquipment = MainteEquipment::orderBy('mainteEquipmentId', 'desc')->first();
         $lastRepairId = $lastEquipment ? $lastEquipment->mainteRepairId : null;
 
         if ($lastRepairId) {
@@ -96,16 +81,57 @@ class MainteEquipmentController extends Controller
             $newNumber = '001';
         }
 
-        $newRepairId = 'EQRPR' . $newNumber;
-        $validatedData['mainteRepairId'] = $newRepairId;
+        $newRepairId = 'RPR' . $newNumber;
 
+        // Add the new mainteRepairId and the equipment details to the validated data
+        $validatedData['mainteEquipmentId'] = $newRepairId;
+        $validatedData['equipmentBrandName'] = $equipment->EquipmentBrandName;  // Example of adding equipment details
+        $validatedData['equipmentName'] = $equipment->EquipmentName;            // Example of adding equipment details
+
+        // Create the new MainteEquipment record
         MainteEquipment::create($validatedData);
 
+        // Return a success response
         return response()->json([
             'success' => true,
             'message' => 'Equipment request created successfully.',
             'data' => $validatedData
         ]);
     }
+
+
+    public function getEquipmentDetails(Request $request)
+    {
+        // Fetch the equipment record based on SerialNo and ControlNo
+        $equipment = Equipment::where('SerialNo', $request->SerialNo)
+            ->where('ControlNo', $request->ControlNo)
+            ->first();
+
+        if ($equipment) {
+            return response()->json([
+                'success' => true,
+                'equipmentStockId' => $equipment->equipmentStockId,
+                'EquipmentBrandName' => $equipment->EquipmentBrandName,
+                'EquipmentName' => $equipment->EquipmentName,
+                'EquipmentCategory' => $equipment->EquipmentCategory,
+                'EquipmentType' => $equipment->EquipmentType,
+                'EquipmentColor' => $equipment->EquipmentColor,
+                'EquipmentUnit' => $equipment->EquipmentUnit,
+                'EquipmentQuantity' => $equipment->EquipmentQuantity,
+                'EquipmentUnitPrice' => $equipment->EquipmentUnitPrice,
+                'EquipmentDepartment' => $equipment->EquipmentDepartment,
+                'EquipmentClassification' => $equipment->EquipmentClassification,
+                'EquipmentSKU' => $equipment->EquipmentSKU,
+                'EquipmentSerialNo' => $equipment->EquipmentSerialNo,
+                // Add any other columns you need
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Equipment not found'
+            ]);
+        }
+    }
+
 
 }

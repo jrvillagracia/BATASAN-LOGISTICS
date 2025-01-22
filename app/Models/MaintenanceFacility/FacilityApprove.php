@@ -5,13 +5,13 @@ namespace App\Models\MaintenanceFacility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MainteFacility extends Model
+class FacilityApprove extends Model
 {
     use HasFactory;
 
-    protected $table = 'mainte_facility';
+    protected $table = 'facility_approve';
 
-    protected $primaryKey = 'mainteFacilityId';
+    protected $primaryKey = 'facilityApproveId';
 
     protected $fillable = [
         'RepairId',

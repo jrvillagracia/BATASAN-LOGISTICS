@@ -95,7 +95,14 @@
                 </thead>
                 <tbody id="tableBody" class="">
                     @foreach($facility as $mainteFacility)    
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="{{$loop->index}}" data-id="{{$mainteFacility->mainteFacilityId}}">
+                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="{{$loop->index}}" data-id="{{$mainteFacility->mainteFacilityId}}"
+                        data-date="{{$mainteFacility->MainteFacilityDate}}" 
+                        data-time="{{$mainteFacility->MainteFacilityTime}}" 
+                        data-requnit="{{$mainteFacility->MainteFacilityReqUnit}}" 
+                        data-reqfor="{{$mainteFacility->MainteFacilityReqFOR}}" 
+                        data-building="{{$mainteFacility->FacilityBuildingName}}" 
+                        data-room="{{$mainteFacility->FacilityRoom}}" 
+                        data-type="{{$mainteFacility->FacilityType}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->RepairId}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->FacilityBuildingName}}</td>
@@ -104,8 +111,8 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$mainteFacility->MainteFacilityDate}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <button data-id="{{$mainteFacility->mainteFacilityId}}" data-index="{{$loop->index}}" type="button" class=" MaintenanceFacilityViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                            <button id="MaintenanceFacilityApproveBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
-                            <button data-id="{{$mainteFacility->mainteFacilityId}}" type="button" class="MaintenanceFacilityDeclineBTN bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
+                            <button data-id="{{$mainteFacility->mainteFacilityId}}" data-index="{{$loop->index}}" type="button" class="MaintenanceFacilityApproveBTN bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
+                            <button data-id="{{$mainteFacility->mainteFacilityId}}" data-index="{{$loop->index}}" type="button" class="MaintenanceFacilityDeclineBTN bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
                         </td>
                     </tr>
                     @endforeach
@@ -195,6 +202,7 @@
                         <!-- Input Fields -->
 
                         <input type="hidden" name="RepairId" id="RepairId" value="">
+                        <input type="hidden" name="mainteFacilityId" id="mainteFacilityId" value="">
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>

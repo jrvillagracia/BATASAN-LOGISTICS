@@ -18,7 +18,9 @@ use App\Http\Controllers\Equipments\EquipCondemController;
 use App\Http\Controllers\Supplies\SuppliesStockController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
 use App\Http\Controllers\MaintenanceFacility\MainteFacilityController;
+use App\Http\Controllers\MaintenanceFacility\FacilityApproveController;
 use App\Http\Controllers\MaintenanceFacility\MainteEquipmentController;
+use App\Http\Controllers\MaintenanceFacility\FacilityCompleteController;
 
 
 Route::get('/logistics', [JWTApiTokenController::class, 'store'])->name('logistics.transition');
@@ -269,11 +271,20 @@ Route::get('/admin_mainteFacility', [MainteFacilityController::class, 'index'])-
 Route::post('/admin/mainteFacility/store', [MainteFacilityController::class, 'store'])->name('mainteFacility.store');
 Route::post('/mainte-facility/details', [MainteFacilityController::class, 'showDetails'])->name('mainte.facility.details');
 Route::post('/admin/mainteFacility/decline', [MainteFacilityController::class, 'decline'])->name('mainteFacility.decline');
+Route::post('/mainteFacility/approve', [MainteFacilityController::class, 'approve'])->name('mainteFacility.approve');
+
+
+//Maintence Facility Approved
+Route::get('/admin_mainteForRepFacility', [FacilityApproveController::class, 'index'])->name('admin_mainteForRepFacility');
+
+//Maintenance Facility Completed
+Route::get('/admin_ComReqMainteFacility', [FacilityCompleteController::class, 'index'])->name('admin_ComReqMainteFacility');
 
 //Maintenance Equipment
 Route::get('/admin_mainteEquipment', [MainteEquipmentController::class, 'index'])->name('admin_mainteEquipment');
 Route::get('/admin_mainteEquipment/details', [MainteEquipmentController::class, 'showDetails'])->name('maintenance.details');
 Route::post('/mainteEquipment/store', [MainteEquipmentController::class, 'store'])->name('mainteEquipment.store'); 
+Route::get('/getEquipmentDetails', [MainteEquipmentController::class, 'getEquipmentDetails']);
 
 
 // FACULTY PAGES
@@ -298,15 +309,6 @@ Route::get('/admin_HistoryMainteEquip', function () {
     return view('adminPages.admin_HistoryMainteEquip');
 })->name('admin_HistoryMainteEquip');
 
-// MAINTENANCE For Repair FACILITY
-Route::get('/admin_mainteForRepFacility', function () {
-    return view('adminPages.admin_mainteForRepFacility');
-})->name('admin_mainteForRepFacility');
-
-// MAINTENANCE COMPLETED REQUEST FACILITY
-Route::get('/admin_ComReqMainteFacility', function () {
-    return view('adminPages.admin_ComReqMainteFacility');
-})->name('admin_ComReqMainteFacility');
 
 // MAINTENANCE HISOTRY FACILITY
 Route::get('/admin_HistoryMainteFacility', function () {

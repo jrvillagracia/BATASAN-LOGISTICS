@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('mainte_equipment', function (Blueprint $table) {
             $table->bigIncrements('mainteEquipmentId');
-            $table->string('mainteRepairId');
             $table->string('MainteEquipDate');
             $table->string('MainteEquipTime');
             $table->string('MainteEquipReqUnit');
             $table->string('MainteEquipReqFOR');
+
+            $table->unsignedBigInteger('equipmentStockId');
+            $table->foreign('equipmentStockId')->references('equipmentStockId')->on('equipment_stocks')->onDelete('cascade');
             $table->timestamps();
         });
     }

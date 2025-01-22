@@ -14,16 +14,16 @@ class MainteEquipment extends Model
     protected $primaryKey = 'mainteEquipmentId';
 
     protected $fillable = [
-        'mainteRepairId',
         'MainteEquipDate',
         'MainteEquipTime',
         'MainteEquipReqUnit',
         'MainteEquipReqFOR',
+        'equipmentStockId'
     ];
 
     public function equipmentStock()
     {
-        return $this->hasOne(EquipmentStock::class, 'mainteEquipmentId');
+        return $this->hasOne(EquipmentStock::class, 'equipmentStockId', 'equipmentStockId');
     }
 
 }

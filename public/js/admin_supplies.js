@@ -1,6 +1,7 @@
 // VIEW 1 BUTTON CARD FORM  
 jQuery(function() {
-    $(document).on('click', '#viewSuppliesBTN', function() {
+    $(document).on('click', '#viewSuppliesBTN', function(event) {
+        event.preventDefault();
         const row = $(this).closest('tr');
         const brandName = row.attr('data-brand');
 

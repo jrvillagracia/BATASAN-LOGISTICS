@@ -264,7 +264,7 @@
                         </button>
                     </div>
 
-                    @if($supplies->isNotEmpty())
+                    @if(isset($item))
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5">
                         <div class="grid grid-cols-2 gap-1 px-4 text-sm text-gray-700 mb-4" id="suppliesDetails">
                             <div><strong>Brand Name:</strong>{{$item->SuppliesBrandName}}</div>

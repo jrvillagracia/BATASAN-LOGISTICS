@@ -62,6 +62,7 @@ $(document).ready(function () {
             const equipment = equipmentData.find(e => e.EquipmentSerialNo === selectedSerial);
             if (equipment) {
                 $(this).closest('tr').find('input[type="text"]').val(equipment.EquipmentControlNo);
+                $('#equipmentStockId').val(equipment.equipmentStockId); // Set the equipmentStockId
             }
 
             // Update the selected serial number set
@@ -207,56 +208,88 @@ $(document).ready(function () {
             MainteEquipTime: $('#MainteEquipTime').val(),
             MainteEquipReqUnit: $('#MainteEquipReqUnit').val(),
             MainteEquipReqFOR: $('#MainteEquipReqFOR').val(),
+            equipmentStockId: $('#equipmentStockId').val() || '', // Ensure equipmentStockId is not null
             _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token for security
         };
 
         // Validate that required fields are not empty
+        let valid = true;
         if (!formData.MainteEquipDate || !formData.MainteEquipTime || !formData.MainteEquipReqUnit || !formData.MainteEquipReqFOR) {
+            // Check if fields are empty and apply a red border to them
+            if (!formData.MainteEquipReqUnit) {
+                $('#MainteEquipReqUnit').css('border', '2px solid red');
+                valid = false;
+            }
+            if (!formData.MainteEquipReqFOR) {
+                $('#MainteEquipReqFOR').css('border', '2px solid red');
+                valid = false;
+            }
+            if (!formData.MainteEquipDate) {
+                $('#MainteEquipDate').css('border', '2px solid red');
+                valid = false;
+            }
+            if (!formData.MainteEquipTime) {
+                $('#MainteEquipTime').css('border', '2px solid red');
+                valid = false;
+            }
+            return;
+        }
+
+        // AJAX request to store data if validation passes
+        if (valid) {
+            $.ajax({
+                url: '/mainteEquipment/store', // Replace with your actual route URL
+                method: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Submitted',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+                            // Optionally clear the form or close the modal
+                            $('#MainteEquipmentFormBtn').addClass('hidden');
+                            $('#MaintenanceEquip-TablBody').empty(); // Clear the table rows if needed
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while processing your request. Please try again.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#d33'
+                    });
+                }
+            });
+        }
+    });
+
+    // Go to Step 2 with validation
+    $('#MainteEquipGoToStep2').click(function () {
+        // Get values of the fields
+        var reqUnit = $('#MainteEquipReqUnit').val();
+        var reqFOR = $('#MainteEquipReqFOR').val();
+
+        // Validate that the fields are not empty
+        if (reqUnit === '' || reqFOR === '') {
+            // If any field is empty, show error message
             Swal.fire({
                 icon: 'error',
-                title: 'Error',
-                text: 'Please fill out all required fields.',
+                title: 'Missing Fields',
+                text: 'Please fill out both "Requesting Office/Unit" and "Requesting for" fields before proceeding.',
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#d33'
             });
             return;
         }
 
-        // AJAX request to store data
-        $.ajax({
-            url: '/mainteEquipment/store', // Replace with your actual route URL
-            method: 'POST',
-            data: formData,
-            success: function (response) {
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Submitted',
-                        text: response.message,
-                        confirmButtonText: 'OK',
-                        confirmButtonColor: '#3085d6'
-                    }).then(() => {
-                        // Optionally clear the form or close the modal
-                        $('#MainteEquipmentFormBtn').addClass('hidden');
-                        $('#MaintenanceEquip-TablBody').empty(); // Clear the table rows if needed
-                    });
-                }
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An error occurred while processing your request. Please try again.',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#d33'
-                });
-            }
-        });
-    });
-
-    // Go to Step 2
-    $('#MainteEquipGoToStep2').click(function () {
+        // Proceed to the next step if validation passes
         $('#MainteEquipStep1Content').addClass('hidden');
         $('#MainteEquipStep2Content').removeClass('hidden');
         $('#MainteEquipStep1Icon').addClass('text-gray-500').removeClass('text-blue-600');
@@ -270,8 +303,47 @@ $(document).ready(function () {
         $('#MainteEquipStep2Icon').addClass('text-gray-500').removeClass('text-blue-600');
         $('#MainteEquipStep1Icon').addClass('text-blue-600').removeClass('text-gray-500');
     });
-
 });
+
+
+$('#EquipmentSerialNo, #ControlNo').on('change', function () {
+    const serialNo = $('#EquipmentSerialNo').val();
+    const controlNo = $('#EquipmentControlNo').val();
+
+    if (serialNo && controlNo) {
+        $.ajax({
+            url: '/getEquipmentDetails',  // Your new route for fetching all details
+            method: 'GET',
+            data: { SerialNo: serialNo, ControlNo: controlNo },
+            success: function (response) {
+                if (response.success) {
+                    // Populate the form fields with the response data
+                    $('#equipmentStockId').val(response.equipmentStockId);
+                    $('#EquipmentBrandName').val(response.EquipmentBrandName);
+                    $('#EquipmentName').val(response.EquipmentName);
+                    $('#EquipmentCategory').val(response.EquipmentCategory);
+                    $('#EquipmentType').val(response.EquipmentType);
+                    $('#EquipmentColor').val(response.EquipmentColor);
+                    $('#EquipmentUnit').val(response.EquipmentUnit);
+                    $('#EquipmentQuantity').val(response.EquipmentQuantity);
+                    $('#EquipmentUnitPrice').val(response.EquipmentUnitPrice);
+                    $('#EquipmentDepartment').val(response.EquipmentDepartment);
+                    $('#EquipmentClassification').val(response.EquipmentClassification);
+                    $('#EquipmentSKU').val(response.EquipmentSKU);
+                    $('#EquipmentSerialNo').val(response.EquipmentSerialNo);
+                    // Add more fields as needed
+                } else {
+                    // Handle case when no equipment found
+                    alert('No equipment found with the provided Serial Number and Control Number.');
+                }
+            },
+            error: function () {
+                alert('Error fetching equipment information.');
+            }
+        });
+    }
+});
+
 
 
 

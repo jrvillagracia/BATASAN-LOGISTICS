@@ -84,12 +84,26 @@ class RoomController extends Controller
             }
         }
 
+        // Check for rooms under maintenance
+        $maintenanceRooms = \DB::table('mainte_facility')
+            ->select('FacilityBuildingName', 'FacilityRoom')
+            ->get()
+            ->keyBy(function ($item) {
+                return $item->FacilityBuildingName . '-' . $item->FacilityRoom;
+            });
+
+        foreach ($combinedRooms as &$room) {
+            $key = $room['facilityRoom']['BldName'] . '-' . $room['facilityRoom']['Room'];
+            if (isset($maintenanceRooms[$key])) {
+                $room['facilityRoom']['facilityStatus'] = 'Under Maintenance';
+            }
+        }
+
         return view('adminPages.admin_facilityRegRoom', [
             'combinedRooms' => $combinedRooms, // Rooms with data
             'emptyRooms' => $emptyRooms         // Rooms without data
         ]);
     }
-
 
     public function labindex()
     {
