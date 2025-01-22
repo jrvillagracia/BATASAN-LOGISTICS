@@ -24,16 +24,16 @@ $(document).ready(function () {
                         console.log('EquipmentSerialNo:', equipment.EquipmentSerialNo);
 
                         const newRow = `
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        <tr class="odd:bg-blue-100  even:bg-white border-b "
                             data-id="${equipment.equipmentStockId}"
                             data-brand="${equipment.EquipmentBrandName}"
                             data-serial="${equipment.EquipmentSerialNo}">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <input type="checkbox"  name="ViewEQUIPMENTCheckBox" data-id="${equipment.equipmentStockId}" class="ViewEQUIPMENTCheckBox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                <input type="checkbox"  name="ViewEQUIPMENTCheckBox" data-id="${equipment.equipmentStockId}" class="ViewEQUIPMENTCheckBox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 ">
 
                             </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${equipment.EquipmentSerialNo}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${equipment.EquipmentControlNo}</td>
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">${equipment.EquipmentSerialNo}</td>
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">${equipment.EquipmentControlNo}</td>
                         </tr>`;
                         $('#ViewDynamicTable tbody').append(newRow);
                     });
