@@ -13,10 +13,10 @@
     </div>
 
     <!-- Breadcrumb -->
-    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 " aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
-                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 ">
                     Request
                 </a>
             </li>
@@ -25,7 +25,7 @@
                     <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                     </svg>
-                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">For Approval</a>
+                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 ">For Approval</a>
                 </div>
             </li>
             <!-- Add additional breadcrumbs here -->
@@ -57,7 +57,7 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="REQSuppliesSearch" name="REQSuppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                        <input type="search" id="REQSuppliesSearch" name="REQSuppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
                     </div>
                     <!-- Add Item Button -->
                     <button id="ReqSupFormBtn" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">&plus; Add Request</button>
@@ -109,7 +109,7 @@
                                             <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                         </svg>
                                     </div>
-                                    <input id="ReqSuppDate" type="text" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                    <input id="ReqSuppDate" type="text" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                                 </div>
                             </div>
 
@@ -121,7 +121,7 @@
                                             <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
-                                    <input type="time" id="ReqSupTime" name="ReqSupTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                                    <input type="time" id="ReqSupTime" name="ReqSupTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                                 </div>
                             </div>
                         </div>
@@ -276,14 +276,14 @@
                 </thead>
                 <tbody id="tableBody" class="">
 
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">R00001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">MNI</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Elementary Faculty</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/12/2024</td>
+                    <tr class="odd:bg-blue-100  even:bg-white  border-b " data-index="" data-id="">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Pending</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">R00001</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">MNI</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">10</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Elementary Faculty</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">9/12/2024</td>
                         <td class="px-6 py-4">
                             <button id="ViewSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                             <button id="SetItemSupBtn" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Set Item</button>
@@ -339,11 +339,11 @@
                                 </tr>
                             </thead>
                             <tbody id="tableViewBody">
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">64gb</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Unit</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b" data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Laptop</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">64gb</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Unit</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">10</td>
                                 </tr>
 
                                 <!-- Dynamic rows will be inserted here -->
@@ -369,8 +369,8 @@
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
                     <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to approve this request?</h2>
                     <div class="flex justify-center space-x-4">
-                        <button id="submitApprReqSupPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeApprReqSupPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitApprReqSupPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="closeApprReqSupPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -382,8 +382,8 @@
                     <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to decline this request?</h2>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitDclnSupPopupCard" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
-                        <button id="closeDclnSupPopupCard" class="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded">Cancel</button>
+                        <button id="submitDclnSupPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button id="closeDclnSupPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -429,9 +429,9 @@
                                 </tr>
                             </thead>
                             <tbody id="tableViewBody">
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b ">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         <select name="ReqSupBrandName" class="w-34 px-2 py-1 border border-gray-400 rounded">
                                             <option value="" disabled selected>Select Brand Name</option>
                                             <option value="BrandA">Brand A</option>
@@ -439,10 +439,10 @@
                                             <option value="BrandC">Brand C</option>
                                         </select>
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">MINI</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">AUTOMATIC</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Stocks</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">MINI</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">AUTOMATIC</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Stocks</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         <input type="text" value="1" class="border-0 border-b border-gray-500 px-2 py-1 w-20 text-center">
                                     </td>
                                 </tr>

@@ -167,17 +167,8 @@ $(document).ready(function () {
         $("#ApprReqSupPopupCard").removeClass("hidden");
     });
 
-    // Hide the popup and show Cancel message when Cancel button is clicked
     $("#closeApprReqSupPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Your action has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#D1191A'
-        }).then(() => {
-            $("#ApprReqSupPopupCard").addClass("hidden");
-        });
+        $("#ApprReqSupPopupCard").addClass("hidden");
     });
 
     // Hide the popup and show Submitted message when Submit button is clicked
@@ -202,17 +193,8 @@ $(document).ready(function () {
         $("#DclnSupPopupCard").removeClass("hidden");
     });
 
-    // Hide the popup and show Cancel message when Cancel button is clicked
     $("#closeDclnSupPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Decline process has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#DclnSupPopupCard").addClass("hidden");
-        });
+        $("#DclnSupPopupCard").addClass("hidden");
     });
 
     // Hide the popup and show Submitted message when Submit button is clicked

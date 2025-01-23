@@ -14,10 +14,10 @@
     </div>
 
     <!-- Breadcrumb -->
-    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 " aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
-                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 ">
                     Request
                 </a>
             </li>
@@ -26,7 +26,7 @@
                     <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                     </svg>
-                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Approve Request</a>
+                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 ">Approve Request</a>
                 </div>
             </li>
             <!-- Add additional breadcrumbs here -->
@@ -50,7 +50,7 @@
 
 
             <div class=" flex items-center space-x-4">
-                <label for="maintenance-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only dark:text-white">Search</label>
+                <label for="maintenance-search" class="mb-2 text-sm font-medium text-gray-900 w-full sr-only ">Search</label>
                 <form id="REQSuppliesSearchForm" class="flex items-center space-x-4">
                     <div class="relative w-96">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -58,7 +58,7 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="REQSuppliesSearch" name="REQSuppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                        <input type="search" id="REQSuppliesSearch" name="REQSuppliesSearch" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
                     </div>
                     <!-- Add Item Button -->
 
@@ -92,11 +92,11 @@
                 </thead>
                 <tbody id="tableBody" class="">
 
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-index="" data-id="">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">R00001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Elementary Faculty</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">9/12/2024</td>
+                    <tr class="odd:bg-blue-100  even:bg-white  border-b " data-index="" data-id="">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Pending</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">R00001</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Elementary Faculty</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">9/12/2024</td>
                         <td class="px-6 py-4">
                             <button id="ViewApprSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                             <button id="CompleteApprReqSupBtn" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Complete</button>
@@ -164,14 +164,14 @@
                                 </tr>
                             </thead>
                             <tbody id="tableViewBody">
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Laptop</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Brand Name</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">64gb</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Unit</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">SKU</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">STOCKS</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">10</td>
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Laptop</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Brand Name</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">64gb</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Unit</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">SKU</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">STOCKS</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">10</td>
                                 </tr>
                                 
                                 
@@ -212,13 +212,13 @@
                         </button>
                     </div>
 
-                    <div id="checkedRatio" class="mt-4 pl-10 text-m font-medium text-gray-900 dark:text-white font-bold">
+                    <div id="checkedRatio" class="mt-4 pl-10 text-m font-medium text-gray-900  font-bold">
                         Checked: <span id="CompleteCheckedCount">0</span> / <span id="CompleteTotalCount">1</span>
                     </div>
 
                     <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
-                        <table id="reqCOMPLETEEquipTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-sm text-white dark:text-gray-400">
+                        <table id="reqCOMPLETEEquipTable" class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                            <thead class="text-sm text-white ">
                                 <tr>
                                     <th scope="col" class="px-6 py-3"></th>
                                     <th scope="col" class="px-6 py-3">Category</th>
@@ -229,65 +229,65 @@
                                 </tr>
                             </thead>
                             <tbody id="tableViewBody">
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         <input type="checkbox" class="CompleteSup-row-checkbox">
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Wilkins</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Bottled Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">mini</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">automatic SKU no</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Wilkins</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Bottled Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">mini</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">automatic SKU no</td>
                                 </tr>
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         <input type="checkbox" class="CompleteSup-row-checkbox">
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Wilkins</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Bottled Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">mini</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">automatic SKU no</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Wilkins</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Bottled Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">mini</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">automatic SKU no</td>
                                 </tr>
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         <input type="checkbox" class="CompleteSup-row-checkbox">
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Wilkins</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Bottled Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">mini</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">automatic SKU no</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Wilkins</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Bottled Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">mini</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">automatic SKU no</td>
                                 </tr>
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         <input type="checkbox" class="CompleteSup-row-checkbox">
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Wilkins</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Bottled Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">mini</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">automatic SKU no</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Wilkins</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Bottled Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">mini</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">automatic SKU no</td>
                                 </tr>
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         <input type="checkbox" class="CompleteSup-row-checkbox">
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Wilkins</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Bottled Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">mini</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">automatic SKU no</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Wilkins</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Bottled Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">mini</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">automatic SKU no</td>
                                 </tr>
-                                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         <input type="checkbox" class="CompleteSup-row-checkbox">
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Miniral Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Wilkins</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Bottled Water</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">mini</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">automatic SKU no</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Wilkins</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Bottled Water</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">mini</td>
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">automatic SKU no</td>
                                 </tr>
                                 <!-- Dynamic rows will be inserted here -->
                             </tbody>

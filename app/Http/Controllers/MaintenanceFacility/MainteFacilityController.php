@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\MaintenanceFacility;
 
-use App\Http\Controllers\Controller;
-use App\Models\MaintenanceFacility\MainteFacility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use App\Models\MaintenanceFacility\MainteFacility;
+use App\Models\MaintenanceFacility\FacilityApprove;
+use App\Models\MaintenanceFacility\FacilityComplete;
 
 class MainteFacilityController extends Controller
 {
@@ -21,8 +26,8 @@ class MainteFacilityController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the incoming data
-        $validatedData = $request->validate([
+        // Validate incoming request data
+        $validator = Validator::make($request->all(), [
             'FacilityBuildingName' => 'required|string|max:255',
             'FacilityRoom' => 'required|string|max:255',
             'FacilityType' => 'required|string|max:255',
@@ -32,30 +37,41 @@ class MainteFacilityController extends Controller
             'MainteFacilityDate' => 'required|date_format:Y-m-d',
         ]);
 
-        // Generate the RepairId
-        $lastFacility = MainteFacility::orderBy('mainteFacilityId', 'desc')->first();
-        $lastRepairId = $lastFacility ? $lastFacility->RepairId : null;
-
-        if ($lastRepairId) {
-            $lastNumber = (int) substr($lastRepairId, 3); // Extract the numeric part
-            $newNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT); // Increment and pad
-        } else {
-            $newNumber = '001'; // Default for the first entry
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
         }
 
-        $newRepairId = 'RPR' . $newNumber;
-        $validatedData['RepairId'] = $newRepairId;
+        // Generate a temporary RepairId based on the current timestamp
+        $tempRepairId = 'TEMP-' . time();
 
-        // Save the data to the database
-        MainteFacility::create($validatedData);
+        // Save the facility with the temporary RepairId first
+        $facility = MainteFacility::create([
+            'FacilityBuildingName' => $request->FacilityBuildingName,
+            'FacilityRoom' => $request->FacilityRoom,
+            'FacilityType' => $request->FacilityType,
+            'MainteFacilityReqUnit' => $request->MainteFacilityReqUnit,
+            'MainteFacilityReqFOR' => $request->MainteFacilityReqFOR,
+            'MainteFacilityTime' => $request->MainteFacilityTime,
+            'MainteFacilityDate' => $request->MainteFacilityDate,
+            'RepairId' => $tempRepairId,
+        ]);
 
-        // Return a JSON response
+        // Now generate the custom RepairId based on the auto-incremented 'mainteFacilityId'
+        $newRepairId = 'RPR-' . str_pad($facility->mainteFacilityId, 4, '0', STR_PAD_LEFT); // e.g., RPR-0001, RPR-0002, etc.
+
+        // Update the facility with the generated RepairId
+        $facility->update([
+            'RepairId' => $newRepairId
+        ]);
+
+        // Return success response
         return response()->json([
-            'success' => true,
+            'status' => 'success',
             'message' => 'Facility request created successfully.',
-            'data' => $validatedData
+            'data' => $facility
         ]);
     }
+
 
     public function showDetails(Request $request)
     {
@@ -71,31 +87,71 @@ class MainteFacilityController extends Controller
         return response()->json($facility);
     }
 
-    public function decline(Request $request)
+    public function approve(Request $request)
     {
-        // Validate the request input
-        $validated = $request->validate([
-            'mainteFacilityId' => 'required|integer|exists:mainte_facility,mainteFacilityId',
-        ]);
+        if (!$request->has('mainteFacilityId')) {
+            return response()->json(['message' => 'Maintenance Facility ID is required'], 400);
+        }
 
-        try {
-            $mainteFacilityId = $validated['mainteFacilityId'];
+        $facility = MainteFacility::find($request->mainteFacilityId);
 
-            // Find and delete the facility
-            $facility = MainteFacility::findOrFail($mainteFacilityId);
+        if ($facility) {
+            FacilityApprove::create([
+                'mainteFacilityId' => $facility->mainteFacilityId,
+                'MainteFacilityDate' => $facility->MainteFacilityDate,
+                'MainteFacilityTime' => $facility->MainteFacilityTime,
+                'RepairId' => $facility->RepairId,
+                'FacilityBuildingName' => $facility->FacilityBuildingName,
+                'FacilityRoom' => $facility->FacilityRoom,
+                'FacilityType' => $facility->FacilityType,
+                'MainteFacilityReqUnit' => $facility->MainteFacilityReqUnit,
+                'MainteFacilityReqFOR' => $facility->MainteFacilityReqFOR,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
             $facility->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Facility request declined and removed successfully.'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to process the request. Please try again.',
-                'error' => $e->getMessage(),
-            ], 500);
+            return response()->json(['message' => 'Facility request approved successfully.']);
+        } else {
+            return response()->json(['message' => 'Facility not found'], 404);
         }
     }
 
+    public function decline(Request $request)
+    {
+        // Validate if the request contains 'mainteFacilityId'
+        if (!$request->has('mainteFacilityId')) {
+            return response()->json(['message' => 'mainteFacilityId is required'], 400);
+        }
+
+        // Find the facility by its mainteFacilityId
+        $facility = MainteFacility::find($request->mainteFacilityId);
+
+        if ($facility) {
+            \Log::info('Facility found: ' . $facility->mainteFacilityId);
+
+            FacilityComplete::create([
+                'mainteFacilityId' => $facility->mainteFacilityId,
+                'MainteFacilityDate' => $facility->MainteFacilityDate,
+                'MainteFacilityTime' => $facility->MainteFacilityTime,
+                'RepairId' => $facility->RepairId,
+                'FacilityBuildingName' => $facility->FacilityBuildingName,
+                'FacilityRoom' => $facility->FacilityRoom,
+                'FacilityType' => $facility->FacilityType,
+                'MainteFacilityReqUnit' => $facility->MainteFacilityReqUnit,
+                'MainteFacilityReqFOR' => $facility->MainteFacilityReqFOR,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $facility->delete();
+
+            // Return a successful response
+            return response()->json(['message' => 'Facility request declined successfully.']);
+        } else {
+            \Log::warning('Facility not found for mainteFacilityId: ' . $request->mainteFacilityId);
+            return response()->json(['message' => 'Facility not found'], 404);
+        }
+    }
 }

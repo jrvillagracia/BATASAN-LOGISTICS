@@ -102,7 +102,9 @@
                     <form id="MainteEquipmentForm" action="" method="POST">
                         <!-- Input Fields -->
 
-                        <input type="hidden" name="mainteRepairId" id="mainteRepairId" value="">
+                        <input type="hidden" name="mainteEquipmentId" id="mainteEquipmentId" value="">
+
+                        <input type="hidden" name="equipmentStockId" id="equipmentStockId" required>
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
@@ -132,14 +134,16 @@
 
                         <div class="mb-4">
                             <label for="MainteEquipReqUnit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
-                            <select id="MainteEquipReqUnit" name="MainteEquipReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded" required>
+                            <select id="MainteEquipReqUnit" name="MainteEquipReqUnit" class="w-full px-2 py-1 border border-gray-400 rounded" required>  
                                 <option value="" disabled selected>Select Office/Unit</option>
                             </select>
+                            <span id="unitError" class="text-red-500 text-sm hidden">This field is required.</span>
                         </div>
 
                         <div class="mb-4">
                             <label for="MainteEquipReqFOR" class="block text-sm font-semibold mb-2">Requesting for</label>
                             <textarea id="MainteEquipReqFOR" class="w-full p-2 rounded border border-gray-400 mb-4 max-h-40 overflow-y-scroll" rows="3" placeholder="Enter your requesting here for..." required></textarea>
+                            <span id="forError" class="text-red-500 text-sm hidden">This field is required.</span>
                         </div>
 
 
@@ -235,22 +239,33 @@
 
                         </thead>
                 <tbody id="tableBody" class="">
-                    @foreach($equipment as $mergedData)
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="" data-id="">
+                @foreach($equipment as $mergedData)
+                <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Waiting for Pick Up</td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['mainteRepairId'] ?? 'N/A' }}</td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['EquipmentBrandName'] }}</td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['EquipmentName'] }}</td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['EquipmentCategory'] }}</td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['EquipmentSKU'] }}</td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData['MainteEquipDate'] ?? 'N/A' }}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button id="MaintenanceEquipmentViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                            <button id="MaintenanceEquipmentApproveBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
-                            <button id="MaintenanceEquipmentDeclineBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
-                        </td>
-                    </tr>
-                    @endforeach
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData->mainteEquipmentId ?? 'N/A' }}</td>
+                    
+                    <!-- Displaying Brand Name, Equipment Name, Category, and SKU from the equipmentStock relation -->
+                    @if($mergedData->equipmentStock)
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData->equipmentStock->EquipmentBrandName }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData->equipmentStock->EquipmentName }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData->equipmentStock->EquipmentCategory }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData->equipmentStock->EquipmentSKU }}</td>
+                    @else
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">N/A</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">N/A</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">N/A</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">N/A</td>
+                    @endif
+                    
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mergedData->MainteEquipDate ?? 'N/A' }}</td>
+                    
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <button id="MaintenanceEquipmentViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                        <button id="MaintenanceEquipmentApproveBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Approve</button>
+                        <button id="MaintenanceEquipmentDeclineBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
+                    </td>
+                </tr>
+                @endforeach
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>

@@ -207,20 +207,11 @@ $(document).ready(function () {
         $("#DclnEquipPopupCard").removeClass("hidden");
     });
 
-  
     $("#closeDclnEquipPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Decline process has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#DclnEquipPopupCard").addClass("hidden");
-        });
+        $("#DclnEquipPopupCard").addClass("hidden");
     });
 
-
+    
     $("#submitDclnEquipPopupCard").click(function () {
         Swal.fire({
             icon: 'success',

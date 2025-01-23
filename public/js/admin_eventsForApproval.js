@@ -32,14 +32,18 @@ $(document).ready(function () {
             EndEventApprDate: $('#EndEventApprDate').val(),
             StartEventApprTime: $('#StartEventApprTime').val(),
             EndEventApprTime: $('#EndEventApprTime').val(),
-            EventApprLocation: $('#EventApprLocation').val(),
-            EventApprProductName: $('#EventApprProductName').val(),
-            EventApprQuantity: $('#EventApprQuantity').val(),
+            EventsActBldName: $('#EventsActBldName').val(),
+            EventsActRoom: $('#EventsActRoom').val(),
+            EventsActivityInventory: $('#EventsActivityInventory').val(),
+            EventActCategoryName: $('#EventActCategoryName').val(),
+            EventActType: $('#EventActType').val(),
+            EventActUnit: $('#EventActUnit').val(),
+            EventActQuantity: $('#EventActQuantity').val(),
             _token: $('meta[name="csrf-token"]').attr('content'),
         };
 
         // Check if the table is empty
-        const isTableEmpty = $('#tableBody').length === 0;
+        const isTableEmpty = $('#yourTableId tbody tr').length === 0;
 
         $.ajax({
             url: '/events/store',
@@ -64,6 +68,7 @@ $(document).ready(function () {
                 });
             },
             error: function (xhr) {
+                console.log(xhr.responseText);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -74,8 +79,6 @@ $(document).ready(function () {
             }
         });
     });
-
-
 
     // Go to Step 2
     $('#EventGoToStep2').click(function () {
@@ -99,7 +102,6 @@ $(document).ready(function () {
                 <td class="p-2">
                     <select id="EventsActivityInventory" name="EventsActivityInventory" class="w-full px-2 py-1 border border-gray-400 rounded">
                         <option value="EventsActivityInventory" disabled selected>Select Inventory</option>
-                        <!-- These options will depend on the selected building -->
                         <option value="Inventory" data-building="">Equipment</option>
                         <option value="Supplies" data-building="">Supplies</option>
                     </select>
@@ -107,7 +109,6 @@ $(document).ready(function () {
                 <td class="p-2">
                     <select id="EventActCategoryName" name="EventActCategoryName" class="w-full px-2 py-1 border border-gray-400 rounded">
                         <option value="EventActCategoryName" disabled selected>Select Category</option>
-                        <!-- These options will depend on the selected building -->
                         <option value="Laptop" data-building="">Laptop</option>
                         <option value="Printer" data-building="">Printer</option>
                     </select>
@@ -115,7 +116,6 @@ $(document).ready(function () {
                 <td class="p-2">
                     <select id="EventActType" name="EventActType" class="w-full px-2 py-1 border border-gray-400 rounded">
                         <option value="EventActType" disabled selected>Select Type</option>
-                        <!-- These options will depend on the selected building -->
                         <option value="64gb" data-building="">64gb</option>
                         <option value="Nikon" data-building="">Nikon</option>
                     </select>
@@ -123,7 +123,6 @@ $(document).ready(function () {
                 <td class="p-2">
                     <select id="EventActUnit" name="EventActUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
                         <option value="EventActUnit" disabled selected>Select Unit</option>
-                        <!-- These options will depend on the selected building -->
                         <option value="Box" data-building="">Box</option>
                         <option value="Unit" data-building="">Unit</option>
                     </select>
@@ -148,6 +147,7 @@ $(document).ready(function () {
         $(this).closest('tr').remove();
     });
 });
+
 
 
 
@@ -180,7 +180,8 @@ $(document).ready(function () {
                             <p><strong>Event Name:</strong> ${response.eventDetails.EventApprName}</p>
                             <p><strong>Event Date:</strong> ${response.eventDetails.StartEventApprDate}</p>
                             <p><strong>Event Time:</strong> ${response.eventDetails.StartEventApprTime}</p>
-                            <p><strong>Event Location:</strong> ${response.eventDetails.EventApprLocation}</p>
+                            <p><strong>Event Location:</strong> ${response.eventDetails.EventsActBldName}- ${response.eventDetails.EventsActRoom}</p>
+
                             <br><hr>
                         `);
                         $('#ViewEventApprPopupCard').removeClass('hidden');
@@ -581,3 +582,150 @@ $(document).ready(function () {
 //         $("#ViewEventApprPopupCard").addClass("hidden");
 //     });
 // });
+
+
+// Get the Department
+$(document).ready(function () {
+    // Make an AJAX request to the API
+    $.ajax({
+        url: 'https://bnhs-hr.onrender.com/api/all/departments',  // Adjust the URL to match your API endpoint
+        method: 'GET',
+        headers: {
+            'x-api-key': 'Ru8NWgJalpjcZ1T53i10Z5Jp4xdQoKdU90dq8zLHC1ZrGMxwbl4XToKg0sb7JCv9',
+        },
+        success: function (data) {
+            const departmentDropdown = $("#EventApprRequestOffice");
+            departmentDropdown.empty().append('<option value="" disabled selected>Select Office/Unit</option>');
+
+            // Loop through the API data and append each department as an option
+            data.forEach(function(department) {
+                departmentDropdown.append(`<option value="${department.name}">${department.name}</option>`);
+            });
+        },
+        error: function (error) {
+            console.error("Error fetching departments:", error);
+            alert('Failed to load departments. Please try again later.');
+        }
+    });
+});
+
+// Get the Equipments and Supplies
+$(document).ready(function () {
+    // Fetch supplies and equipment via AJAX
+    $.ajax({
+        url: '/get/supplies/equipment',
+        method: 'GET',
+        success: function (data) {
+            // Cache the data for later use
+            const suppliesAndEquipmentData = data;
+
+            // When inventory type changes
+            $("#EventsActivityInventory").change(function () {
+                const inventoryType = $(this).val();
+
+                // Reset and disable subsequent dropdowns
+                const categoryDropdown = $("#EventActCategoryName");
+                categoryDropdown.empty().append('<option disabled selected>Select Category</option>').prop('disabled', true);
+
+                const typeDropdown = $("#EventActType");
+                typeDropdown.empty().append('<option disabled selected>Select Type</option>').prop('disabled', true);
+
+                const unitDropdown = $("#EventActUnit");
+                unitDropdown.empty().append('<option disabled selected>Select Unit</option>').prop('disabled', true);
+
+                // Populate categories based on the selected inventory type
+                if (inventoryType === 'Equipment') {
+                    populateCategories(suppliesAndEquipmentData.equipment);
+                } else if (inventoryType === 'Supplies') {
+                    populateCategories(suppliesAndEquipmentData.supplies);
+                }
+            });
+
+            // Function to populate categories
+            function populateCategories(items) {
+                const categoryDropdown = $("#EventActCategoryName");
+                categoryDropdown.prop('disabled', false);
+
+                // Get unique categories from the items
+                const categories = [...new Set(items.map(item => item.EquipmentCategory || item.SuppliesCategory))];
+
+                // Populate the category dropdown
+                categories.forEach(function (category) {
+                    categoryDropdown.append(`<option value="${category}">${category}</option>`);
+                });
+
+                // Handle category selection change
+                categoryDropdown.change(function () {
+                    const selectedCategory = $(this).val();
+
+                    // Reset and disable type and unit dropdowns
+                    const typeDropdown = $("#EventActType");
+                    typeDropdown.empty().append('<option disabled selected>Select Type</option>').prop('disabled', true);
+
+                    const unitDropdown = $("#EventActUnit");
+                    unitDropdown.empty().append('<option disabled selected>Select Unit</option>').prop('disabled', true);
+
+                    if (selectedCategory) {
+                        populateTypes(items, selectedCategory);
+                    }
+                });
+            }
+
+            // Function to populate types
+            function populateTypes(items, selectedCategory) {
+                const typeDropdown = $("#EventActType");
+                typeDropdown.prop('disabled', false);
+
+                // Filter types based on the selected category
+                const types = [...new Set(items.filter(item => 
+                    (item.EquipmentCategory || item.SuppliesCategory) === selectedCategory
+                ).map(item => item.EquipmentType || item.SuppliesType))];
+
+                // Populate the type dropdown
+                types.forEach(function (type) {
+                    typeDropdown.append(`<option value="${type}">${type}</option>`);
+                });
+
+                // Handle type selection change
+                typeDropdown.change(function () {
+                    const selectedType = $(this).val();
+
+                    // Reset and disable unit dropdown
+                    const unitDropdown = $("#EventActUnit");
+                    unitDropdown.empty().append('<option disabled selected>Select Unit</option>').prop('disabled', true);
+
+                    if (selectedType) {
+                        populateUnits(items, selectedCategory, selectedType);
+                    }
+                });
+            }
+
+            // Function to populate units
+            function populateUnits(items, selectedCategory, selectedType) {
+                const unitDropdown = $("#EventActUnit");
+                unitDropdown.prop('disabled', false);
+
+                // Filter units based on the selected category and type
+                const units = [...new Set(items.filter(item => 
+                    (item.EquipmentCategory || item.SuppliesCategory) === selectedCategory && 
+                    (item.EquipmentType || item.SuppliesType) === selectedType
+                ).map(item => item.EquipmentUnit || item.SuppliesUnit))];
+
+                // Populate the unit dropdown
+                units.forEach(function (unit) {
+                    unitDropdown.append(`<option value="${unit}">${unit}</option>`);
+                });
+            }
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
+            alert('Failed to fetch data!');
+        }
+    });
+});
+
+
+
+
+
+

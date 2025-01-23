@@ -32,6 +32,6 @@ class EquipmentStock extends Model
 
     public function mainteEquipment()
     {
-        return $this->belongsTo(MainteEquipment::class, 'mainteEquipmentId');
+        return $this->belongsTo(MainteEquipment::class, 'equipmentStockId');
     }
 }

@@ -30,13 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
 // ======================= ADD REQUEST ========================== //
 $(document).ready(function () {
 
     // When the "Add Request" button is clicked
     $('#MainteFacilityREQFormButton').click(function (event) {
-        event.preventDefault();  // Prevent form submission
+        event.preventDefault(); // Prevent form submission
         console.log('Add Request Button is Clicked.');
 
         // Show the form by removing the hidden class
@@ -44,25 +43,69 @@ $(document).ready(function () {
 
         // Get the current date and time
         const currentDate = new Date();
-        const formattedDate = currentDate.toISOString().split('T')[0]; 
-        const formattedTime = currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        const formattedDate = currentDate.toISOString().split('T')[0];
+        const formattedTime = currentDate.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
         // Set the date and time inputs with the current date and time
-        $('#MainteFacilityDate').val(formattedDate);
-        $('#MainteFacilityTime').val(formattedTime);
-
+        $('#MainteFacilityDate').val(formattedDate).attr('required', true);
+        $('#MainteFacilityTime').val(formattedTime).attr('required', true);
     });
 
     // When the "Close" button is clicked
     $('#CloseMainteFacilityForm').click(function (event) {
         event.preventDefault();
         console.log('Close Button is Clicked.');
-        $('#MainteFacilityFormBtn').addClass('hidden');  // Hide the form
+        $('#MainteFacilityFormBtn').addClass('hidden'); // Hide the form
     });
+
+    // Validation function
+    function validateForm() {
+        let isValid = true;
+        const requiredFields = [
+            '#FacilityBuildingName',
+            '#FacilityRoom',
+            '#FacilityType',
+            '#MainteFacilityReqUnit',
+            '#MainteFacilityReqFOR',
+            '#MainteFacilityTime',
+            '#MainteFacilityDate'
+        ];
+
+        requiredFields.forEach(function (selector) {
+            const field = $(selector);
+            if (field.val() === '') {
+                field.addClass('border-red-500'); // Highlight missing fields
+                isValid = false;
+            } else {
+                field.removeClass('border-red-500'); // Remove highlight if valid
+            }
+        });
+
+        if (!isValid) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Incomplete Form',
+                text: 'Please fill out all required fields before submitting.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
+        }
+
+        return isValid;
+    }
 
     // When the "Submit" button is clicked
     $("#SubmitMainteFacilityForm").click(function (event) {
-        event.preventDefault();  // Prevent the default button behavior
+        event.preventDefault(); // Prevent the default button behavior
+
+        // Validate the form before proceeding
+        if (!validateForm()) {
+            return; // Stop if validation fails
+        }
 
         // Show the save loader
         $('body').append(`
@@ -89,7 +132,7 @@ $(document).ready(function () {
             MainteFacilityReqFOR: $('#MainteFacilityReqFOR').val(),
             MainteFacilityTime: $('#MainteFacilityTime').val(),
             MainteFacilityDate: $('#MainteFacilityDate').val(),
-            _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for Laravel
+            _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for Laravel
         };
 
         // Send the form data via AJAX
@@ -109,7 +152,7 @@ $(document).ready(function () {
                     Swal.fire({
                         icon: 'success',
                         title: 'Submitted',
-                        text: 'Your action has been successfully submitted',
+                        text: 'Request Successfully submitted',
                         confirmButtonText: 'OK',
                         confirmButtonColor: '#3085d6'
                     }).then(() => {
@@ -118,7 +161,8 @@ $(document).ready(function () {
                         // Optionally reset the form fields
                         $('#MainteFacilityREQForm')[0].reset();
                     });
-                }, 1000);  // Simulate loader for 1 second
+                    location.reload();
+                }, 1000); // Simulate loader for 1 second
             },
             error: function (xhr, status, error) {
                 console.log(xhr.responseText);
@@ -137,7 +181,6 @@ $(document).ready(function () {
             }
         });
     });
-
 });
 
 
@@ -168,91 +211,110 @@ $(document).ready(function () {
 
 // APPROVE BUTTON CARD FORM
 $(document).ready(function () {
-    $("#MaintenanceFacilityApproveBTN").click(function () {
+    $(".MaintenanceFacilityApproveBTN").click(function () {
+        // Get the facility id from the data-id attribute of the clicked row
+        var mainteFacilityId = $(this).closest('tr').data('id');
+        $("#submitApprMainteFacilityPopupCard").data('mainteFacilityId', mainteFacilityId);
         $("#ApprMainteFacilityPopupCard").removeClass("hidden");
     });
 
     // Hide the popup and show Cancel message when Cancel button is clicked
     $("#closeApprMainteFacilityPopupCard").click(function (event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Your action has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#D1191A'
-        }).then(() => {
-            $("#ApprMainteFacilityPopupCard").addClass("hidden");
-        });
+        $("#ApprMainteFacilityPopupCard").addClass("hidden");
     });
 
     // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitApprMainteFacilityPopupCard").click(function () {
+    $("#submitApprMainteFacilityPopupCard").click(function (event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#ApprMainteFacilityPopupCard").addClass("hidden");
-        });
-    });
-});
-
-
-// DECLINE BUTTON CARD FORM
-$(document).ready(function () {
-    // Show the popup when the button is clicked
-    $(".MaintenanceFacilityDeclineBTN").click(function () {
-        const mainteFacilityId = $(this).data('id'); // Assuming the button has a data attribute for facility ID
-        console.log('Decline Button Clicked for Facility ID:', mainteFacilityId);
-
-        // Set the facility ID in the hidden input field
-        $("#mainteFacilityId").val(mainteFacilityId);
-
-        // Show the decline popup
-        $("#DclnMainteFacilityPopupCard").removeClass("hidden");
-    });
-
-    // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeDclnMainteFacilityPopupCard").click(function (event) {
-        event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Decline process has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#DclnMainteFacilityPopupCard").addClass("hidden");
-        });
-    });
-
-    // Handle the decline form submission
-    $("#submitDclnMainteFacilityPopupCard").click(function (event) {
-        event.preventDefault();
-
-        const mainteFacilityId = $("#mainteFacilityId").val();
-
+        
+        var mainteFacilityId = $(this).data('mainteFacilityId');
+        
         $.ajax({
-            url: '/admin/mainteFacility/decline',
+            url: '/mainteFacility/approve',
             method: 'POST',
             data: {
                 mainteFacilityId: mainteFacilityId,
-                _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for Laravel
+                _token: $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Submitted',
-                    text: response.message, // Use the message from the server response
+                    text: 'Your action has been successfully submitted',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    $("#ApprMainteFacilityPopupCard").addClass("hidden");
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Failed',
+                    text: 'There was an error processing your request. Please try again.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33'
+                });
+            }
+        });
+    });
+});
+
+
+
+// DECLINE BUTTON CARD FORM
+$(document).ready(function () {
+    // Show the popup when the "Decline" button is clicked
+    $(".MaintenanceFacilityDeclineBTN").click(function () {
+        var mainteFacilityId = $(this).data('id'); // Get the facility ID from the data attribute
+        console.log('Decline Button Clicked for Facility ID:', mainteFacilityId);
+
+        // Set the facility ID in the hidden input field
+        $("#DclnMainteFacilityPopupCard").data("mainteFacilityId", mainteFacilityId);
+
+        // Show the decline popup
+        $("#DclnMainteFacilityPopupCard").removeClass("hidden");
+    });
+
+    // Hide the popup and show Cancel message when the "Cancel" button is clicked
+    $("#closeDclnMainteFacilityPopupCard").click(function (event) {
+        event.preventDefault();
+        $("#DclnMainteFacilityPopupCard").addClass("hidden");
+    });
+
+    // Handle the decline form submission
+    $(".submitDclnMainteFacilityPopupCard").click(function (event) {
+        event.preventDefault();
+
+        var mainteFacilityId = $("#DclnMainteFacilityPopupCard").data("mainteFacilityId");
+
+        $.ajax({
+            url: '/admin/mainteFacility/decline',
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+            },
+            data: {
+                mainteFacilityId: mainteFacilityId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Submitted',
+                    text: response.message, // Server response message
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
                     $("#DclnMainteFacilityPopupCard").addClass("hidden");
-                    // Optionally, remove the declined facility from the DOM or refresh the table
+
+                    // Remove the declined facility row from the table
+                    $('tr[data-id="'+ mainteFacilityId+'"]').remove();
+
+                    // Log the mainteFacilityId to the console
+                    console.log('Facility ID passed to the other table:', mainteFacilityId);
                 });
             },
             error: function (xhr, status, error) {
@@ -268,9 +330,6 @@ $(document).ready(function () {
         });
     });
 });
-
-
-
 
 
 
@@ -406,7 +465,7 @@ $(document).ready(function () {
 
             // Loop through the API data and append each department as an option
             data.forEach(function(department) {
-                departmentDropdown.append(`<option value="${department.id}">${department.name}</option>`);
+                departmentDropdown.append(`<option value="${department.name}">${department.name}</option>`);
             });
         },
         error: function (error) {
