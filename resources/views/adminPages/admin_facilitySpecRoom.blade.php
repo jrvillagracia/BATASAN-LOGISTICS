@@ -160,7 +160,7 @@
                     <tr class="odd:bg-blue-100  even:bg-white  border-b " data-index="{{$loop->index}}" data-id="{{$room['roomId']}}">
                         <td scope="col" class="px-6 py-4">
                             <div class="flex items-center">
-                                <input id="SpecRoomCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600">
+                                <input id="SpecRoomCheckBox" type="checkbox" class="row-checkbox  w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600">
                                 <label for="checkbox-all-search" class="sr-only">checkbox</label>
                             </div>
                         </td>

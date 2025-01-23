@@ -121,17 +121,9 @@ $(document).ready(function () {
 
 
     $("#closeCancelEquipPopupCard").click(function () {
-        event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Decline process has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#CancelEquipPopupCard").addClass("hidden");
-        });
+        $("#CancelEquipPopupCard").addClass("hidden");
     });
+
 });
 
 

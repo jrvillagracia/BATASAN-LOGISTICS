@@ -68,18 +68,8 @@ $(document).ready(function () {
         });
     });
 
-
     $("#closeCancelSupPopupCard").click(function () {
-        event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Decline process has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#CancelSupPopupCard").addClass("hidden");
-        });
+        $("#CancelSupPopupCard").addClass("hidden");
     });
 });
 
@@ -122,20 +112,29 @@ $(document).ready(function () {
 $(document).ready(function() {
     // Function to update the checked count
     function updateCheckedCount() {
-        var CompleteCheckedCount = $('.Complete-row-checkbox:checked').length; // Count checked checkboxes
-        var CompleteTotalCount = $('.Complete-row-checkbox').length; // Total checkboxes
+        // Count checked checkboxes
+        var CompleteCheckedCount = $('.CompleteSup-row-checkbox:checked').length;
+        
+        // Total checkboxes, default to 0 if there are none
+        var CompleteTotalCount = $('.CompleteSup-row-checkbox').length || 0;
 
         // Update the text showing the checked count and total count
         $('#CompleteCheckedCount').text(CompleteCheckedCount);
         $('#CompleteTotalCount').text(CompleteTotalCount);
     }
 
-    // Initially update the counts on page load
-    updateCheckedCount();
+    // Initially set the counts to 0/0 on page load
+    $('#CompleteCheckedCount').text(0);
+    $('#CompleteTotalCount').text(0);
 
     // Event listener for checkbox change
-    $('.CompleteSup-row-checkbox').on('change', function() {
+    $(document).on('change', '.CompleteSup-row-checkbox', function() {
         updateCheckedCount(); // Update count when any checkbox is toggled
+    });
+
+    // Optional: Update the count dynamically if rows or checkboxes are added/removed
+    $(document).on('DOMNodeInserted DOMNodeRemoved', '#tableViewBody', function() {
+        updateCheckedCount(); // Recalculate when rows are dynamically modified
     });
 });
 
