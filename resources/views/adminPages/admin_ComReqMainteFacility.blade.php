@@ -13,10 +13,10 @@
     </div>
 
     <!-- Breadcrumb -->
-    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+    <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 " aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
-                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 ">
                     Request
                 </a>
             </li>
@@ -25,7 +25,7 @@
                     <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                     </svg>
-                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Completed Request</a>
+                    <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 ">Completed Request</a>
                 </div>
             </li>
             <!-- Add additional breadcrumbs here -->
@@ -44,7 +44,7 @@
                 <a href="{{route('admin_mainteFacility')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Approval</a>
                 <a href="{{route('admin_mainteForRepFacility')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">For Repair</a>
                 <a href="{{route('admin_ComReqMainteFacility')}}" class="pageloader button border-b-2 border-blue-500 py-2 px-4 transition-all duration-300 translate-x-2">Completed Request</a>
-                <a href="{{route('admin_HistoryMainteFacility')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a>
+                {{-- <a href="{{route('admin_HistoryMainteFacility')}}" class="pageloader button border-b-2 py-2 px-4 transition-all duration-300 translate-x-2">History</a> --}}
             </div>
 
             <!-- Search Bar -->
@@ -97,14 +97,14 @@
                 </thead>
                 <tbody id="tableBody" class="">
                     @foreach($facility as $mainteFacility)
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700 " data-index="{{$loop->index}}" data-id="{{$mainteFacility->facilityCompleteRequestId}}">
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Pending</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mainteFacility->RepairId }}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mainteFacility->FacilityBuildingName}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mainteFacility->FacilityRoom }}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mainteFacility->FacilityType}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $mainteFacility->MainteFacilityDate}}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <tr class="odd:bg-blue-100  even:bg-white  border-b  " data-index="{{$loop->index}}" data-id="{{$mainteFacility->facilityCompleteRequestId}}">
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Pending</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ $mainteFacility->RepairId }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ $mainteFacility->FacilityBuildingName}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ $mainteFacility->FacilityRoom }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ $mainteFacility->FacilityType}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ $mainteFacility->MainteFacilityDate}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                             <button id="COMREQMaintenanceFacilitytViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                         </td>
                     </tr>
