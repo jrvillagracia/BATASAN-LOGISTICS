@@ -122,12 +122,8 @@ class MainteFacilityController extends Controller
     {
         // Validate if the request contains 'mainteFacilityId'
         if (!$request->has('mainteFacilityId')) {
-            \Log::error('Decline failed: Missing mainteFacilityId in request.');
             return response()->json(['message' => 'mainteFacilityId is required'], 400);
         }
-
-        // Log the received ID for debugging
-        \Log::info('Decline request received for mainteFacilityId: ' . $request->mainteFacilityId);
 
         // Find the facility by its mainteFacilityId
         $facility = MainteFacility::find($request->mainteFacilityId);
@@ -135,7 +131,6 @@ class MainteFacilityController extends Controller
         if ($facility) {
             \Log::info('Facility found: ' . $facility->mainteFacilityId);
 
-            // Move facility details to the FacilityComplete table
             FacilityComplete::create([
                 'mainteFacilityId' => $facility->mainteFacilityId,
                 'MainteFacilityDate' => $facility->MainteFacilityDate,
@@ -150,12 +145,7 @@ class MainteFacilityController extends Controller
                 'updated_at' => now(),
             ]);
 
-            \Log::info('FacilityComplete record created for mainteFacilityId: ' . $facility->mainteFacilityId);
-
-            // Delete the facility record from the mainte_facility table
             $facility->delete();
-
-            \Log::info('Facility with mainteFacilityId: ' . $facility->mainteFacilityId . ' deleted from MainteFacility table.');
 
             // Return a successful response
             return response()->json(['message' => 'Facility request declined successfully.']);

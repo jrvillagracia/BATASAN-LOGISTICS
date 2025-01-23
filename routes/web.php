@@ -250,6 +250,7 @@ Route::get('/admin_eventsForApproval', [ApprovalController::class, 'index'])->na
 Route::get('/apr/event/details', [ApprovalController::class, 'getEventDetails'])->name('event_details');
 Route::post('/events/approve', [ApprovalController::class, 'approve'])->name('events.approve');
 Route::post('/events/decline', [ApprovalController::class, 'decline'])->name('events.decline');
+Route::get('/get/supplies/equipment', [ApprovalController::class, 'getAllEquipmentAndSupplies'])->name('get.supp.equip.types');
 
 //Approve Request
 Route::get('/admin_eventsAprRequest', [ApproveController::class, 'index'])->name('admin_eventsAprRequest');

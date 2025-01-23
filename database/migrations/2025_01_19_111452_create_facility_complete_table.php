@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('facility_complete_request', function (Blueprint $table) {
+        Schema::create('facility_complete', function (Blueprint $table) {
             $table->bigIncrements('facilityCompleteRequestId');
             $table->unsignedBigInteger('mainteFacilityId');
 
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('facility_complete_request');
+        Schema::dropIfExists('facility_complete');
     }
 };

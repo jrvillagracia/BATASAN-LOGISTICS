@@ -253,24 +253,18 @@
                                         <select id="EventActCategoryName" name="EventActCategoryName" class="w-full px-2 py-1 border border-gray-400 rounded">
                                             <option value="EventActCategoryName" disabled selected>Select Category</option>
                                             <!-- These options will depend on the selected building -->
-                                            <option value="Laptop" data-building="">Laptop</option>
-                                            <option value="Printer" data-building="">Printer</option>
                                         </select>
                                     </td>
                                     <td class="p-2">
                                         <select id="EventActType" name="EventActType" class="w-full px-2 py-1 border border-gray-400 rounded">
                                             <option value="EventActType" disabled selected>Select Type</option>
                                             <!-- These options will depend on the selected building -->
-                                            <option value="64gb" data-building="">64gb</option>
-                                            <option value="Nikon" data-building="">Nikon</option>
                                         </select>
                                     </td>
                                     <td class="p-2">
                                         <select id="EventActUnit" name="EventActUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
                                             <option value="EventActUnit" disabled selected>Select Unit</option>
                                             <!-- These options will depend on the selected building -->
-                                            <option value="Box" data-building="">Box</option>
-                                            <option value="Unit" data-building="">Unit</option>
                                         </select>
                                     </td>
                                     <td class="p-2">
@@ -337,7 +331,7 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{$event->eventId}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$event->EventApprDate}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ \Carbon\Carbon::parse($event->StartEventApprTime)->format('g:ia') }}-{{ \Carbon\Carbon::parse($event->EndEventApprTime)->format('g:ia') }}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{$event->EventApprRequestOffice}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{$event->EventApprRequestOffice}} Department</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{$event->EventApprRequestFor}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             <button type="button" data-id="{{ $event->id }}" class=" EventViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
@@ -365,7 +359,7 @@
                         <p class="mb-2"><strong>Event Name:</strong>{{$event->EventApprName}}</p>
                         <p class="mb-2"><strong>Event Date:</strong>{{$event->StartEventApprDate}}</p>
                         <p class="mb-2"><strong>Event Time:</strong>{{$event->StartEventApprTime}}</p>
-                        <p class="mb-2"><strong>Event Location:</strong>{{$event->EventApprLocation}}</p>
+                        <p class="mb-2"><strong>Event Location:</strong>{{$event->EventsActBldName}} - {{$event->EventsActRoom}}</p>
                         <br>
                         <hr>
                     </div>

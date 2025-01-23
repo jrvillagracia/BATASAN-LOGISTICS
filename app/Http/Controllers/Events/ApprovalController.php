@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Events;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use App\Models\Events\Events;
+use App\Models\Supplies\Supplies;
 use App\Models\Events\ApprovedReq;
 use App\Models\Events\CompleteReq;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
+use App\Models\Equipments\Equipment;
+use Illuminate\Support\Facades\Validator;
 
 
 class ApprovalController extends Controller
@@ -43,9 +46,13 @@ class ApprovalController extends Controller
             'EndEventApprDate' => 'required|date_format:m/d/Y',
             'StartEventApprTime' => 'required|date_format:H:i',
             'EndEventApprTime' => 'required|date_format:H:i',
-            'EventApprLocation' => 'required|string|max:255',
-            'EventApprProductName' => 'required|string|max:255',
-            'EventApprQuantity' => 'required|integer',
+            'EventsActBldName' => 'required|string|max:255',
+            'EventsActRoom' => 'required|string|max:255',
+            'EventsActivityInventory' => 'required|string|max:255',
+            'EventActCategoryName' => 'required|string|max:255',
+            'EventActType' => 'required|string|max:255',
+            'EventActUnit' => 'required|string|max:255',
+            'EventActQuantity' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -72,9 +79,13 @@ class ApprovalController extends Controller
             'EndEventApprDate' => $endEventApprDate,
             'StartEventApprTime' => $request->StartEventApprTime,
             'EndEventApprTime' => $request->EndEventApprTime,
-            'EventApprLocation' => $request->EventApprLocation,
-            'EventApprProductName' => $request->EventApprProductName,
-            'EventApprQuantity' => $request->EventApprQuantity,
+            'EventsActBldName' => $request->EventsActBldName,
+            'EventsActRoom' => $request->EventsActRoom,
+            'EventsActivityInventory' => $request->EventsActivityInventory,
+            'EventActCategoryName' => $request->EventActCategoryName,
+            'EventActType' => $request->EventActType,
+            'EventActUnit' => $request->EventActUnit,
+            'EventActQuantity' => $request->EventActQuantity,
         ]);
 
         // Now generate the custom eventId based on the auto-incremented 'id'
@@ -114,9 +125,13 @@ class ApprovalController extends Controller
             'EventApprName', 
             'StartEventApprDate', 
             'StartEventApprTime', 
-            'EventApprLocation', 
-            'EventApprProductName', 
-            'EventApprQuantity'
+            'EventsActBldName',
+            'EventsActRoom',
+            'EventsActivityInventory',
+            'EventActCategoryName',
+            'EventActType',
+            'EventActUnit', 
+            'EventActQuantity'
         )
         ->where('id', $id)
         ->first();
@@ -208,4 +223,33 @@ class ApprovalController extends Controller
         }
     }
 
+    public function getItemTypes()
+    {
+        $supplies = DB::table('supplies')
+            ->select('SuppliesSKU as id', 'SuppliesName as name', DB::raw("'Supplies' as type"))
+            ->get();
+
+        $equipment = DB::table('equipment')
+            ->select('EquipmentSKU as id', 'EquipmentName as name', DB::raw("'Equipment' as type"))
+            ->get();
+
+        // Merge the results
+        $items = $supplies->merge($equipment);
+
+        return response()->json($items);
+    }
+
+    public function getAllEquipmentAndSupplies()
+    {
+        // Fetch all equipment and supplies
+        $equipment = Equipment::all();
+        $supplies = Supplies::all();
+
+        // Return both collections as separate data in the response
+        return response()->json([
+            'equipment' => $equipment,
+            'supplies' => $supplies,
+        ]);
+    }
+    
 }

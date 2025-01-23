@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
 // ======================= ADD REQUEST ========================== //
 $(document).ready(function () {
 
@@ -269,11 +268,11 @@ $(document).ready(function () {
 $(document).ready(function () {
     // Show the popup when the "Decline" button is clicked
     $(".MaintenanceFacilityDeclineBTN").click(function () {
-        const mainteFacilityId = $(this).data('id'); // Get the facility ID from the data attribute
+        var mainteFacilityId = $(this).data('id'); // Get the facility ID from the data attribute
         console.log('Decline Button Clicked for Facility ID:', mainteFacilityId);
 
         // Set the facility ID in the hidden input field
-        $("#mainteFacilityId").val(mainteFacilityId);
+        $("#DclnMainteFacilityPopupCard").data("mainteFacilityId", mainteFacilityId);
 
         // Show the decline popup
         $("#DclnMainteFacilityPopupCard").removeClass("hidden");
@@ -286,10 +285,10 @@ $(document).ready(function () {
     });
 
     // Handle the decline form submission
-    $("#submitDclnMainteFacilityPopupCard").click(function (event) {
+    $(".submitDclnMainteFacilityPopupCard").click(function (event) {
         event.preventDefault();
 
-        const mainteFacilityId = $("#mainteFacilityId").val();
+        var mainteFacilityId = $("#DclnMainteFacilityPopupCard").data("mainteFacilityId");
 
         $.ajax({
             url: '/admin/mainteFacility/decline',
@@ -299,7 +298,7 @@ $(document).ready(function () {
             },
             data: {
                 mainteFacilityId: mainteFacilityId,
-                _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for Laravel
+                _token: $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
                 Swal.fire({

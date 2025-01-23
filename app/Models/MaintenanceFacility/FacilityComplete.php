@@ -9,7 +9,7 @@ class FacilityComplete extends Model
 {
     use HasFactory;
 
-    protected $table = 'facility_complete_request';
+    protected $table = 'facility_complete';
 
     protected $primaryKey = 'facilityCompleteRequestId';
 

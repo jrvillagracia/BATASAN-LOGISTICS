@@ -172,6 +172,7 @@
             </div>
 
             <!--Decline Popup Card -->
+            @foreach($facility as $mainteFacility)
             <div id="DclnMainteFacilityPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -183,11 +184,12 @@
                     <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitDclnMainteFacilityPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button data-id="{{$mainteFacility->mainteFacilityId}}" class="submitDclnMainteFacilityPopupCard bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
                         <button id="closeDclnMainteFacilityPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
+            @endforeach
 
 
             <!-- Floating Card with Form (Initially Hidden) -->
