@@ -151,21 +151,7 @@ $(document).ready(function () {
 
 
 
-// SELECT ALL BUTTOn
-$(document).ready(function() {
-    let isAllChecked = false;
 
-    $('#SpecRoomSelectAllBtn').click(function() {
-        isAllChecked = !isAllChecked;
-        $('#SpecFacTable').find('input[type="checkbox"]').prop('checked', isAllChecked);
-
-        if (isAllChecked) {
-            $(this).text('Unselect All');
-        } else {
-            $(this).text('Select All');
-        }
-    });
-});
 
 
 
@@ -370,4 +356,84 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const today = formatDateToMMDDYYYY(new Date());
     document.getElementById("SpecRoomDate").value = today;
+});
+
+
+
+// EXPORT TO PDF
+$(document).ready(function () {
+    const { jsPDF } = window.jspdf;
+
+    // Handle "Select All" checkbox
+    let isAllSelected = false; // Track whether all checkboxes are currently selected
+
+    $('#SpecRoomSelectAllBtn').on('click', function () {
+        isAllSelected = !isAllSelected; // Toggle the selection state
+    
+        // Update all checkboxes based on the current state
+        $('.row-checkbox').prop('checked', isAllSelected);
+    
+        // Change button text based on the selection state
+        $(this).text(isAllSelected ? 'Deselect All' : 'Select All');
+    });
+
+    // Handle Export to PDF
+    $('#SpecRoomExportBtn').on('click', function () {
+        const doc = new jsPDF();
+        const totalPagesExp = '{total_pages_count_string}';
+
+        // Add a header
+        function header(doc) {
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Facility: Laboratory Report', 14, 15);
+            doc.line(10, 20, 200, 20);
+        }
+
+        // Add a footer
+        function footer(doc) {
+            const pageCount = doc.internal.getNumberOfPages();
+            const pageSize = doc.internal.pageSize;
+            const pageHeight = pageSize.height || pageSize.getHeight();
+            doc.setFontSize(10);
+            doc.text(`Page ${pageCount} of ${totalPagesExp}`, 14, pageHeight - 10);
+            doc.line(10, pageHeight - 15, 200, pageHeight - 15);
+        }
+
+        // Collect selected rows
+        const selectedRows = [];
+        $('#SpecFacTable tbody tr').each(function () {
+            if ($(this).find('.row-checkbox').is(':checked')) {
+                const row = [];
+                $(this).find('td:not(:first-child)').each(function () {
+                    row.push($(this).text().trim());
+                });
+                selectedRows.push(row);
+            }
+        });
+
+        // Alert if no rows selected
+        if (selectedRows.length === 0) {
+            alert('Please select at least one row to export.');
+            return;
+        }
+
+        // Add selected rows to the PDF
+        doc.autoTable({
+            head: [['Building Name', 'Room', 'Status', 'Capacity', 'Shift Tyep', 'Assigned']],
+            body: selectedRows,
+            startY: 25,
+            didDrawPage: (data) => {
+                header(doc);
+                footer(doc);
+            },
+            margin: { top: 30, bottom: 20 },
+        });
+
+        if (typeof doc.putTotalPages === 'function') {
+            doc.putTotalPages(totalPagesExp);
+        }
+
+        doc.save('Facility: Laboratory Report.pdf');
+    });
 });
