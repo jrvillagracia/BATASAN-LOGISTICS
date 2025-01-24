@@ -106,10 +106,10 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$mainteFacility->FacilityType}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$mainteFacility->MainteFacilityDate}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                            <button id="REPMaintenanceFacilitytViewBTN" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
-                            <button id="REPMaintenanceFacilitytSetBTN" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Set Job</button>
-                            <button id="REPMaintenanceFacilityCompBTN" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Comnplete</button>
-                            <button id="REPMaintenanceFacilityCancelBTN" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
+                            <button data-id="{{$mainteFacility->facilityApproveId}}" data-index="{{$loop->index}}" type="button" class="REPMaintenanceFacilitytViewBTN bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
+                            <button data-id="{{$mainteFacility->facilityApproveId}}" data-index="{{$loop->index}}" type="button" class="REPMaintenanceFacilitytSetBTN bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Set Job</button>
+                            <button data-id="{{$mainteFacility->facilityApproveId}}" data-index="{{$loop->index}}" type="button" class="REPMaintenanceFacilityCompBTN bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Comnplete</button>
+                            <button data-id="{{$mainteFacility->facilityApproveId}}" data-index="{{$loop->index}}" type="button" class="REPMaintenanceFacilityCancelBTN bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
                         </td>
                     </tr>
                     @endforeach
@@ -118,7 +118,8 @@
             </table>
 
             <!-- View Popup Card -->
-            <div id="REPViewMainteFacilityPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+             @foreach($facility as $mainteFacility)
+            <div id="REPViewMainteFacilityPopupCard--{{$loop->index}}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
                     <div class="flex flex-col items-center mb-4">
                         <div class="flex items-center">
@@ -132,26 +133,28 @@
                         <h2 class="text-lg font-semibold mt-2 text-center">Maintenance Request Slip</h2>
                     </div>
 
-                    <div class="text-sm">
-                        <p class="mb-2"><strong>Date/Time Requested: </strong></p>
-                        <p class="mb-2"><strong>Requesting Office/Unit: </strong></p>
-                        <p class="mb-2"><strong>Requesting for: </strong></p>
+                    <div class="text-sm" id="showDetails">
+                        <p class="mb-2"><strong>Date/Time Requested:{{$mainteFacility->MainteFacilityDate}}/{{$mainteFacility->MainteFacilityTime}} </strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit:{{$mainteFacility->MainteFacilityReqUnit}} </strong></p>
+                        <p class="mb-2"><strong>Requesting for:{{$mainteFacility->MainteFacilityReqFOR}} </strong></p>
 
                         <div class="pt-4">
                         </div>
-                        <p class="mb-2"><strong>Building Name: </strong></p>
-                        <p class="mb-2"><strong>Room: </strong></p>
-                        <p class="mb-2"><strong>Facility Type: </strong></p>
+                        <p class="mb-2"><strong>Building Name:{{$mainteFacility->FacilityBuildingName}} </strong></p>
+                        <p class="mb-2"><strong>Room:{{$mainteFacility->FacilityRoom}}</strong></p>
+                        <p class="mb-2"><strong>Facility Type:{{$mainteFacility->FacilityType}} </strong></p>
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button id="cancelViewForReprMainteFacilityPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
+                        <button data-index="{{$loop->index}}" class="cancelViewForReprMainteFacilityPopupCard bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Close</button>
                     </div>
                 </div>
 
             </div>
+            @endforeach
 
             <!-- Set Job Popup Card -->
-            <div id="REPSetMainteFacilityPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            @foreach($facility as $mainteFacility)
+            <div id="REPSetMainteFacilityPopupCard--{{$loop->index}}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div id="set-item-FORRE-maintFaci-print-btn" class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
                     <div class="flex flex-col items-center mb-4">
                         <div class="flex items-center">
@@ -166,15 +169,15 @@
                     </div>
                     
                     <div class="text-sm">
-                        <p class="mb-2"><strong>Date/Time Requested: </strong></p>
-                        <p class="mb-2"><strong>Requesting Office/Unit: </strong></p>
-                        <p class="mb-2"><strong>Requesting for: </strong></p>
+                        <p class="mb-2"><strong>Date/Time Requested:{{$mainteFacility->MainteFacilityDate}}/{{$mainteFacility->MainteFacilityTime}} </strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit:{{$mainteFacility->MainteFacilityReqUnit}}  </strong></p>
+                        <p class="mb-2"><strong>Requesting for:{{$mainteFacility->MainteFacilityReqFOR}} </strong></p>
 
                         <div class="pt-4">
                         </div>
-                        <p class="mb-2"><strong>Building Name: </strong></p>
-                        <p class="mb-2"><strong>Room: </strong></p>
-                        <p class="mb-2"><strong>Facility Type: </strong></p>
+                        <p class="mb-2"><strong>Building Name:{{$mainteFacility->FacilityBuildingName}} </strong></p>
+                        <p class="mb-2"><strong>Room:{{$mainteFacility->FacilityRoom}} </strong></p>
+                        <p class="mb-2"><strong>Facility Type:{{$mainteFacility->FacilityType}} </strong></p>
 
                         <div class="pt-4">
                         </div>
@@ -184,14 +187,15 @@
                     </div>
                     <div class="flex justify-end space-x-4">
                         <button id="printSetForRepMainteFacilityPopupCard" class="set-item-FOR-REP-FACILITY-print-btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Print</button>
-                        <button id="cancelSetForReprMainteFacilityPopupCard" class="set-item-FOR-REP-FACILITY-cance-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button data-index="{{$loop->index}}" class="cancelSetForReprMainteFacilityPopupCard set-item-FOR-REP-FACILITY-cance-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
 
             </div>
-
+            @endforeach
 
             <!-- Completed Popup Card -->
+            @foreach($facility as $mainteFacility)
             <div id="REPCompleteMntcFacilityPopCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -199,13 +203,15 @@
                     <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitCompMainteFacPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button data-id="{{$mainteFacility->facilityApproveId}}" class="submitCompMainteFacPopupCard bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
                         <button id="cancelCompMainteFacPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
+            @endforeach
 
             <!--Cancel Popup Card -->
+            @foreach($facility as $mainteFacility)
             <div id="REPCancelMainteFacilityPopupCard" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
 
@@ -214,12 +220,12 @@
                     <textarea id="remarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..."></textarea>
 
                     <div class="flex justify-center space-x-4">
-                        <button id="submitMainteFacPopupCard" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
+                        <button data-id="{{$mainteFacility->facilityApproveId}}" class="submitMainteFacPopupCard bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit</button>
                         <button id="cancelMainteFacPopupCard" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
                     </div>
                 </div>
             </div>
-
+            @endforeach
 
             <!-- Release Popup Card -->
 

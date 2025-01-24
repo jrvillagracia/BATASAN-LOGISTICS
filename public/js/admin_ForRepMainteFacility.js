@@ -1,100 +1,178 @@
 //==================== VIEW =======================//
 $(document).ready(function () {
-    $('#REPMaintenanceFacilitytViewBTN').click(function () {
+    $('.REPMaintenanceFacilitytViewBTN').click(function () {
+        const facilityApproveIndex = $(this).data('index');
         console.log('View Facility Button is Clicked.');
-        $('#REPViewMainteFacilityPopupCard').removeClass('hidden');
+
+        $(`#REPViewMainteFacilityPopupCard--${facilityApproveIndex}`).removeClass('hidden');
     });
 
-    $('#cancelViewForReprMainteFacilityPopupCard').click(function () {
+    $('.cancelViewForReprMainteFacilityPopupCard').click(function (event) {
         event.preventDefault();
+        const facilityApproveIndex = $(this).data('index')
         console.log('Cancel View Facility Button is Clicked.');
-        $('#REPViewMainteFacilityPopupCard').addClass('hidden');
+        $(`#REPViewMainteFacilityPopupCard--${facilityApproveIndex}`).addClass('hidden');
     });
 });
 
 //==================== SET JOB =======================//
 $(document).ready(function () {
-    $('#REPMaintenanceFacilitytSetBTN').click(function () {
+    $('.REPMaintenanceFacilitytSetBTN').click(function () {
+        const facilitySetJobIndex =$(this).data('index');
         console.log('View Facility Button is Clicked.');
-        $('#REPSetMainteFacilityPopupCard').removeClass('hidden');
+        $(`#REPSetMainteFacilityPopupCard--${facilitySetJobIndex}`).removeClass('hidden');
     });
 
-    $('#cancelSetForReprMainteFacilityPopupCard').click(function () {
+    $('.cancelSetForReprMainteFacilityPopupCard').click(function (event) {
         event.preventDefault();
+        const facilitySetJobIndex =$(this).data('index');
         console.log('Cancel View Facility Button is Clicked.');
-        $('#REPSetMainteFacilityPopupCard').addClass('hidden');
+        $(`#REPSetMainteFacilityPopupCard--${facilitySetJobIndex}`).addClass('hidden');
     });
 });
 
 
 //==================== COMPLETED =======================//
-$(document).ready(function () {
-    $("#REPMaintenanceFacilityCompBTN").click(function () {
-        $("#REPCompleteMntcFacilityPopCard").removeClass("hidden");
+$(document).ready(function() {
+    $(".REPMaintenanceFacilityCompBTN").click(function() {
+        var facilityApproveId = $(this).data('id');
+        $("#REPCompleteMntcFacilityPopCard").data("facilityApproveId", facilityApproveId).removeClass("hidden");
     });
 
-    $("#cancelCompMainteFacPopupCard").click(function () {
+    $("#cancelCompMainteFacPopupCard").click(function(event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Your action has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#D1191A'
-        }).then(() => {
-            $("#REPCompleteMntcFacilityPopCard").addClass("hidden");
-        });
-        
+        $("#REPCompleteMntcFacilityPopCard").addClass("hidden");
+        $("#complete-loader").remove(); //remove loader if cancelled
     });
 
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitCompMainteFacPopupCard").click(function () {
+    // Handle the completion form submission
+    $(".submitCompMainteFacPopupCard").click(function(event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#REPCompleteMntcFacilityPopCard").addClass("hidden");
+        var facilityApproveId = $("#REPCompleteMntcFacilityPopCard").data("facilityApproveId");
+
+        // Show the loader
+        $("#REPCompleteMntcFacilityPopCard").append(`
+            <div id="complete-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Completing request, please wait...</p>
+                </div>
+            </div>
+        `);
+
+        $.ajax({
+            url: '/admin/facilityApprove/complete', 
+            method: 'POST',
+            data: {
+                facilityApproveId: facilityApproveId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                $("#complete-loader").remove(); //remove loader after success
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Submitted',
+                    text: response.message || 'Your action has been successfully submitted',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    $("#REPCompleteMntcFacilityPopCard").addClass("hidden");
+                    //remove the row from the table after success
+                    $('tr[data-id="' + facilityApproveId + '"]').remove();
+                });
+            },
+            error: function(xhr, status, error) {
+                $("#complete-loader").remove(); //remove loader after error
+                console.log(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Failed',
+                    text: xhr.responseJSON?.message || 'There was an error processing your request. Please try again.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33'
+                });
+            }
         });
     });
 });
 
 
 //==================== CANCEL =======================//
-$(document).ready(function () {
-    $("#REPMaintenanceFacilityCancelBTN").click(function () {
-        $("#REPCancelMainteFacilityPopupCard").removeClass("hidden");
+$(document).ready(function() {
+    // Show the popup when the "Cancel" button is clicked
+    $(".REPMaintenanceFacilityCancelBTN").click(function() {
+        var facilityApproveId = $(this).data('id');
+        $("#REPCancelMainteFacilityPopupCard").data("facilityApproveId", facilityApproveId).removeClass("hidden");
     });
 
     // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#cancelMainteFacPopupCard").click(function () {
+    $("#cancelMainteFacPopupCard").click(function(event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Your action has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#D1191A'
-        }).then(() => {
-            $("#REPCancelMainteFacilityPopupCard").addClass("hidden");
-        });
-        
+        $("#REPCancelMainteFacilityPopupCard").addClass("hidden");
+        $("#cancel-loader-rep").remove(); //remove loader if cancel
     });
 
-    // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitMainteFacPopupCard").click(function () {
+    // Handle the cancellation form submission
+    $(".submitMainteFacPopupCard").click(function(event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Submitted',
-            text: 'Your action has been successfully submitted',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#REPCancelMainteFacilityPopupCard").addClass("hidden");
+
+        // Retrieve facilityApproveId from the popup's data
+        var facilityApproveId = $("#REPCancelMainteFacilityPopupCard").data("facilityApproveId");
+
+        // Show the loader
+        $("#REPCancelMainteFacilityPopupCard").append(`
+            <div id="cancel-loader-rep" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Cancelling request, please wait...</p>
+                </div>
+            </div>
+        `);
+
+        $.ajax({
+            url: '/admin/facilityApprove/cancel',
+            method: 'POST',
+            data: {
+                facilityApproveId: facilityApproveId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                $("#cancel-loader-rep").remove(); 
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Submitted',
+                    text: response.message || 'Your action has been successfully submitted',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    $("#REPCancelMainteFacilityPopupCard").addClass("hidden");
+                    //remove the row from the table after success
+                    $('tr[data-id="' + facilityApproveId + '"]').remove();
+                });
+            },
+            error: function(xhr, status, error) {
+                $("#cancel-loader-rep").remove(); //remove loader after error
+                console.log(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Failed',
+                    text: xhr.responseJSON?.message || 'There was an error processing your request. Please try again.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33'
+                });
+            }
         });
     });
 });

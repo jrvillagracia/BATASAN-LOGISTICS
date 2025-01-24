@@ -77,47 +77,52 @@ $(document).ready(function () {
 });
 
 // ======================== CANCEL BUTTON ============================= //
-$(document).ready(function () {
+$(document).ready(function() {
     // Show the popup when the EventApprReqCancelBTN button is clicked
-    $(".EventApprReqCancelBTN").click(function () {
+    $(".EventApprReqCancelBTN").click(function() {
         $("#CancelEventPopupCard").removeClass("hidden");
-
-        // Store the event ID in the submit button's data attribute
         const eventId = $(this).data("id");
         $("#submitCancelEventPopupCard").data("id", eventId);
     });
 
     // Close popup and show cancellation message when Cancel button is clicked
-    $("#closeCancelEventPopupCard").click(function (event) {
+    $("#closeCancelEventPopupCard").click(function(event) {
         event.preventDefault();
-        Swal.fire({
-            icon: 'error',
-            title: 'Closed',
-            text: 'This request has been closed',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#CancelEventPopupCard").addClass("hidden");
-        });
+        $("#CancelEventPopupCard").addClass("hidden");
+        $("#cancel-loader").remove(); //remove loader if cancel
     });
 
     // AJAX request for submitting the cancel action
-    $(".submitCancelEventPopupCard").click(function (event) {
+    $(".submitCancelEventPopupCard").click(function(event) {
         event.preventDefault();
-
-        // Get the event ID stored in the submit button's data attribute
         const eventId = $(this).data("id");
         console.log("Submitting cancellation for Event ID:", eventId);
 
-        // AJAX call to cancel the event
+        // Show the loader
+        $("#CancelEventPopupCard").append(`
+            <div id="cancel-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Cancelling event, please wait...</p>
+                </div>
+            </div>
+        `);
+
         $.ajax({
-            url: "/cancel-event", // Laravel route for canceling the event
+            url: "/cancel-event",
             method: "POST",
             data: {
                 id: eventId,
-                _token: $('meta[name="csrf-token"]').attr("content") // CSRF token
+                _token: $('meta[name="csrf-token"]').attr("content")
             },
-            success: function (response) {
+            success: function(response) {
+                $("#cancel-loader").remove();
                 console.log("Success response:", response);
                 Swal.fire({
                     icon: 'success',
@@ -127,18 +132,18 @@ $(document).ready(function () {
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
                     $("#CancelEventPopupCard").addClass("hidden");
-                    // Optionally, refresh the list or update the UI
                     location.reload();
                 });
             },
-            error: function (xhr) {
+            error: function(xhr) {
+                $("#cancel-loader").remove();
                 console.error("Error response:", xhr.responseJSON);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: xhr.responseJSON ? xhr.responseJSON.message : 'Something went wrong!',
                     confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6'
+                    confirmButtonColor: '#d33'
                 });
             }
         });

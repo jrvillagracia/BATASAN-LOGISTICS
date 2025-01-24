@@ -15,7 +15,13 @@ class MainteFacilityController extends Controller
 {
     public function index()
     {
-        $facility = MainteFacility::all();
+        $facility = MainteFacility::whereNotIn('mainteFacilityId', function ($query) {
+            $query->select('mainteFacilityId')
+                ->from('facility_approve')
+                ->unionAll(function ($query) {
+                    $query->select('mainteFacilityId')->from('facility_complete');
+                });
+        })->get();
         return view('adminPages.admin_mainteFacility', compact('facility'));
     }
 
@@ -110,8 +116,6 @@ class MainteFacilityController extends Controller
                 'updated_at' => now(),
             ]);
 
-            $facility->delete();
-
             return response()->json(['message' => 'Facility request approved successfully.']);
         } else {
             return response()->json(['message' => 'Facility not found'], 404);
@@ -145,7 +149,6 @@ class MainteFacilityController extends Controller
                 'updated_at' => now(),
             ]);
 
-            $facility->delete();
 
             // Return a successful response
             return response()->json(['message' => 'Facility request declined successfully.']);

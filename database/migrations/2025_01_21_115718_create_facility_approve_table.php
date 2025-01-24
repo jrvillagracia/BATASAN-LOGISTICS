@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('facility_approve', function (Blueprint $table) {
             $table->bigIncrements('facilityApproveId');
+            $table->unsignedBigInteger('mainteFacilityId');
+
             $table->string('RepairId');
             $table->string('FacilityBuildingName');
             $table->integer('FacilityRoom');
@@ -22,6 +24,12 @@ return new class extends Migration
             $table->time('MainteFacilityTime');
             $table->date('MainteFacilityDate');
             $table->timestamps();
+
+            $table->foreign('mainteFacilityId')
+            ->references('mainteFacilityId')
+            ->on('mainte_facility')        
+            ->onDelete('cascade')         
+            ->onUpdate('cascade');  
         });
     }
 

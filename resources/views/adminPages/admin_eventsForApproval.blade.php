@@ -525,8 +525,8 @@
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
                     <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to approve this request?</h2>
 
-                    <label for="remarks" class="block mb-2">Remarks</label>
-                    <textarea id="ApprEventRemarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..." style="resize: none; overflow-y: auto;"></textarea>
+                    <!-- <label for="remarks" class="block mb-2">Remarks</label>
+                    <textarea id="ApprEventRemarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..." style="resize: none; overflow-y: auto;"></textarea> -->
 
                     <div class="flex justify-center space-x-4">
                         <button data-id="{{ $event->id }}" class=" submitApprEventPopupCard bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>

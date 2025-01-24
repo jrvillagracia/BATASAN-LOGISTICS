@@ -81,11 +81,44 @@ $(document).ready(function () {
     });
 
     // Go to Step 2
-    $('#EventGoToStep2').click(function () {
-        $('#EventsActStep1Content').addClass('hidden');
-        $('#EventsActStep2Content').removeClass('hidden');
-        $('#EventsStep1Icon').addClass('text-gray-500').removeClass('text-blue-600');
-        $('#EventsStep2Icon').addClass('text-blue-600').removeClass('text-gray-500');
+    $('#EventGoToStep2').click(function() {
+        const requiredFields = [
+            '#EventApprRequestOffice',
+            '#EventApprRequestFor',
+            '#EventApprName',
+            '#StartEventApprDate',
+            '#EndEventApprDate',
+            '#StartEventApprTime',
+            '#EndEventApprTime',
+            '#EventsActBldName',
+            '#EventsActRoom',
+        ];
+    
+        let isValid = true;
+        requiredFields.forEach(field => {
+            //Using trim() here is important to handle whitespace-only inputs
+            if (!$(field).val()) { 
+                isValid = false;
+                $(field).addClass('border-red-500');
+            } else {
+                $(field).removeClass('border-red-500');
+            }
+        });
+    
+        if (isValid) {
+            $('#EventsActStep1Content').addClass('hidden');
+            $('#EventsActStep2Content').removeClass('hidden');
+            $('#EventsStep1Icon').addClass('text-gray-500').removeClass('text-blue-600');
+            $('#EventsStep2Icon').addClass('text-blue-600').removeClass('text-gray-500');
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please fill in all required fields in Step 1.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
+        }
     });
 
     // Go back to Step 1
@@ -306,29 +339,40 @@ $(document).ready(function () {
 
 
 // APPROVE BUTTON CARD FORM
-$(document).ready(function () {
+// APPROVE BUTTON CARD FORM
+$(document).ready(function() {
     // Event Approve Button - Show Approval Modal
-    $(document).on('click', '.EventApproveBTN', function () {
+    $(document).on('click', '.EventApproveBTN', function() {
         console.log('Approve Button Clicked - Showing Approval Modal');
         $(".ApprEventPopupCard").removeClass("hidden");
     });
 
     // Cancel Approval Modal
-    $(".closeApprEventPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Your action has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#D1191A'
-        }).then(() => {
-            $(".ApprEventPopupCard").addClass("hidden");
-        });
+    $(".closeApprEventPopupCard").click(function(event) {
+        event.preventDefault();
+        $(".ApprEventPopupCard").addClass("hidden");
     });
 
     // Submit Approval
-    $(".submitApprEventPopupCard").click(function () {
+    $(".submitApprEventPopupCard").click(function() {
         var eventId = $(this).data('id');
+
+        // Show the loader
+        $('body').append(`
+            <div id="save-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Approving event, please wait...</p>
+                </div>
+            </div>
+        `);
+
         $.ajax({
             url: '/events/approve',
             method: 'POST',
@@ -336,7 +380,9 @@ $(document).ready(function () {
                 id: eventId,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (response) {
+            success: function(response) {
+                // Remove the loader after successful AJAX call
+                $('#save-loader').remove();
                 Swal.fire({
                     icon: 'success',
                     title: 'Approved',
@@ -348,7 +394,9 @@ $(document).ready(function () {
                     location.reload();
                 });
             },
-            error: function (xhr) {
+            error: function(xhr) {
+                // Remove the loader even if there's an error
+                $('#save-loader').remove();
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -363,33 +411,41 @@ $(document).ready(function () {
 
 
 // DECLINE BUTTON CARD FORM
-$(document).ready(function () {
+(document).ready(function() {
     // Show the Decline Event Popup Card
-    $(document).on("click", ".EventDeclineBTN", function () {
-        var eventId = $(this).data('id');  // Get event ID from button
+    $(document).on("click", ".EventDeclineBTN", function() {
+        var eventId = $(this).data('id');
         console.log("Decline button clicked for Event ID:", eventId);
-
-        // Store the eventId in a hidden input or data attribute in the modal if needed
         $("#DeclineEventPopupCard").data("eventId", eventId).removeClass("hidden");
     });
 
     // Cancel button logic
-    $("#closeDeclineEventPopupCard").click(function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cancelled',
-            text: 'Decline process has been cancelled',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            $("#DeclineEventPopupCard").addClass("hidden");
-        });
+    $("#closeDeclineEventPopupCard").click(function(event) {
+        event.preventDefault();
+        $("#DeclineEventPopupCard").addClass("hidden");
+        $("#decline-loader").remove(); //remove loader if cancel
     });
 
     // Submit button logic
-    $(document).on("click", ".submitDeclineEventPopupCard", function () {
-        // Retrieve the event ID from the modal's data attribute
+    $(document).on("click", ".submitDeclineEventPopupCard", function() {
         var eventId = $("#DeclineEventPopupCard").data("eventId");
+
+        // Show the loader
+        $("#DeclineEventPopupCard").append(`
+            <div id="decline-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Declining event, please wait...</p>
+                </div>
+            </div>
+        `);
+
 
         $.ajax({
             url: '/events/decline',
@@ -398,7 +454,8 @@ $(document).ready(function () {
                 id: eventId,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (response) {
+            success: function(response) {
+                $("#decline-loader").remove(); //remove loader after success
                 Swal.fire({
                     icon: 'success',
                     title: 'Submitted',
@@ -410,7 +467,8 @@ $(document).ready(function () {
                     location.reload();
                 });
             },
-            error: function (xhr) {
+            error: function(xhr) {
+                $("#decline-loader").remove(); //remove loader after error
                 console.error('Decline failed:', xhr.responseText);
                 Swal.fire({
                     icon: 'error',
@@ -423,7 +481,6 @@ $(document).ready(function () {
         });
     });
 });
-
 
 
 

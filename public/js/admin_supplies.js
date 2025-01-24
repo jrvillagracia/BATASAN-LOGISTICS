@@ -43,6 +43,13 @@ jQuery(function() {
     $(document).on('click', '#closeViewSuppFormBTN', function() {
         $('#VwSuppModal').addClass('hidden');
     });
+
+    $(window).on('click', function(e) {
+        if ($(e.target).is('#VwSuppModal')) {
+            $('#VwSuppModal').addClass('hidden');
+        }
+    });
+    
 });
 
 
@@ -255,12 +262,6 @@ jQuery(function() {
     $(window).on('click', function(e) {
         if ($(e.target).is('#editSUPPLIESMdl')) {
             $('#editSUPPLIESMdl').addClass('hidden');
-        }
-    });
-
-    $(window).on('click', function(e) {
-        if ($(e.target).is('#ViewSuppModal')) {
-            $('#ViewSuppModal').addClass('hidden');
         }
     });
 });
