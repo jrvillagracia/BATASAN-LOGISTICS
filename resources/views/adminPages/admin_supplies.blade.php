@@ -103,7 +103,7 @@
                 </thead>
                 <tbody id="tableBody">
                     @foreach($supplies as $item)
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700" data-id="{{$item->suppliesStockId}}" data-brand="{{$item->SuppliesBrandName}}"
+                    <tr class="odd:bg-blue-100  even:bg-white  border-b " data-id="{{$item->suppliesStockId}}" data-brand="{{$item->SuppliesBrandName}}"
                         data-type="{{$item->SuppliesType}}"
                         data-unit="{{$item->SuppliesUnit}}"
                         data-color="{{$item->SuppliesColor}}"
@@ -112,7 +112,7 @@
                         data-other-category="{{$item->otherSUPPLIESCategoryEDT ?? ''}}"
                         data-unit-price="{{$item->SuppliesUnitPrice}}">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <input id="SUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input id="SUPPLIESCheckBox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 ">
                         </td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$item->SuppliesBrandName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$item->SuppliesName}}</td>

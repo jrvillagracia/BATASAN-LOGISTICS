@@ -63,7 +63,7 @@
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl text-gray-800 mt-4">Events: <span class="font-bold">10</span></p>
+            <p class="text-2xl text-gray-800 mt-4">Events: <span class="font-bold">{{$totalEventsActivities}}</span></p>
         </div>
         <!-- Maintenance Card -->
         <div
@@ -78,9 +78,8 @@
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl text-gray-800 mt-4">Equipment: <span class="font-bold">12</span></p>
-            <p class="text-base font-semibold text-gray-600 mt-1">Facility: <span
-                    class="font-bold">10</span></p>
+            <p class="text-2xl text-gray-800 mt-4">Equipment: <span class="font-bold">0</span></p>
+            <p class="text-base font-semibold text-gray-600 mt-1">Facility: <span class="font-bold">{{$totalMainteFacility}}</span></p>
         </div>
     </div>
 
