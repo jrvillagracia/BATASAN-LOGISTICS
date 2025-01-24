@@ -14,6 +14,7 @@ class FacilityApprove extends Model
     protected $primaryKey = 'facilityApproveId';
 
     protected $fillable = [
+        'mainteFacilityId',
         'RepairId',
         'FacilityBuildingName',
         'FacilityRoom',
@@ -21,6 +22,11 @@ class FacilityApprove extends Model
         'MainteFacilityReqUnit',
         'MainteFacilityReqFOR',
         'MainteFacilityTime',
-        'MainteFacilityDate'
+        'MainteFacilityDate',
     ];
+
+    public function mainteFacility()
+    {
+        return $this->belongsTo(MainteFacility::class, 'mainteFacilityId', 'mainteFacilityId');
+    }
 }

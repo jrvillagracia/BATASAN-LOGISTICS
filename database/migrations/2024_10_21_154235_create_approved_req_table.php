@@ -23,9 +23,13 @@ return new class extends Migration
             $table->date('EndEventApprDate');
             $table->time('StartEventApprTime');
             $table->time('EndEventApprTime');
-            $table->string('EventApprLocation');
-            $table->string('EventApprProductName');
-            $table->integer('EventApprQuantity');
+            $table->string('EventsActBldName')->nullable();
+            $table->string('EventsActRoom')->nullabe();
+            $table->string('EventsActivityInventory');
+            $table->string('EventActCategoryName');
+            $table->string('EventActType');
+            $table->string('EventActUnit');
+            $table->integer('EventActQuantity');
             $table->timestamps();
         });
     }

@@ -277,6 +277,8 @@ Route::post('/mainteFacility/approve', [MainteFacilityController::class, 'approv
 
 //Maintence Facility Approved
 Route::get('/admin_mainteForRepFacility', [FacilityApproveController::class, 'index'])->name('admin_mainteForRepFacility');
+Route::post('/admin/facilityApprove/complete', [FacilityApproveController::class, 'complete'])->name('facility.approve.complete');
+Route::post('/admin/facilityApprove/cancel', [FacilityApproveController::class, 'cancel'])->name('facility.approve.cancel');
 
 //Maintenance Facility Completed
 Route::get('/admin_ComReqMainteFacility', [FacilityCompleteController::class, 'index'])->name('admin_ComReqMainteFacility');

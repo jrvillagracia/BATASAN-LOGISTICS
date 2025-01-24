@@ -15,4 +15,6 @@ class CompleteController extends Controller
         return view('adminPages.admin_eventsComRequest', compact('events'));
     }
 
+    
+
 }

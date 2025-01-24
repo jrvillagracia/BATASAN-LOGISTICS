@@ -22,8 +22,12 @@ class ApprovedReq extends Model
         'EndEventApprDate',
         'StartEventApprTime',
         'EndEventApprTime',
-        'EventApprLocation',
-        'EventApprProductName',
-        'EventApprQuantity'
+        'EventsActBldName',
+        'EventsActRoom',
+        'EventsActivityInventory',
+        'EventActCategoryName',
+        'EventActType',
+        'EventActUnit',
+        'EventActQuantity'
     ];
 }

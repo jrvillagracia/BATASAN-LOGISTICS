@@ -210,26 +210,41 @@ $(document).ready(function () {
 
 
 // APPROVE BUTTON CARD FORM
-$(document).ready(function () {
-    $(".MaintenanceFacilityApproveBTN").click(function () {
-        // Get the facility id from the data-id attribute of the clicked row
+$(document).ready(function() {
+    $(".MaintenanceFacilityApproveBTN").click(function() {
         var mainteFacilityId = $(this).closest('tr').data('id');
         $("#submitApprMainteFacilityPopupCard").data('mainteFacilityId', mainteFacilityId);
         $("#ApprMainteFacilityPopupCard").removeClass("hidden");
     });
 
     // Hide the popup and show Cancel message when Cancel button is clicked
-    $("#closeApprMainteFacilityPopupCard").click(function (event) {
+    $("#closeApprMainteFacilityPopupCard").click(function(event) {
         event.preventDefault();
         $("#ApprMainteFacilityPopupCard").addClass("hidden");
+        $("#approve-loader").remove(); //remove loader if cancel
     });
 
     // Hide the popup and show Submitted message when Submit button is clicked
-    $("#submitApprMainteFacilityPopupCard").click(function (event) {
+    $("#submitApprMainteFacilityPopupCard").click(function(event) {
         event.preventDefault();
-        
         var mainteFacilityId = $(this).data('mainteFacilityId');
-        
+
+        // Show the loader
+        $("#ApprMainteFacilityPopupCard").append(`
+            <div id="approve-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Approving request, please wait...</p>
+                </div>
+            </div>
+        `);
+
         $.ajax({
             url: '/mainteFacility/approve',
             method: 'POST',
@@ -237,7 +252,8 @@ $(document).ready(function () {
                 mainteFacilityId: mainteFacilityId,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (response) {
+            success: function(response) {
+                $("#approve-loader").remove(); // Remove loader after success
                 Swal.fire({
                     icon: 'success',
                     title: 'Submitted',
@@ -246,9 +262,12 @@ $(document).ready(function () {
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
                     $("#ApprMainteFacilityPopupCard").addClass("hidden");
+                    // Remove the row from the table
+                    $('tr[data-id="' + mainteFacilityId + '"]').remove();
                 });
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
+                $("#approve-loader").remove(); // Remove loader after error
                 console.log(xhr.responseText);
                 Swal.fire({
                     icon: 'error',
@@ -265,30 +284,42 @@ $(document).ready(function () {
 
 
 // DECLINE BUTTON CARD FORM
-$(document).ready(function () {
+$(document).ready(function() {
     // Show the popup when the "Decline" button is clicked
-    $(".MaintenanceFacilityDeclineBTN").click(function () {
-        var mainteFacilityId = $(this).data('id'); // Get the facility ID from the data attribute
+    $(".MaintenanceFacilityDeclineBTN").click(function() {
+        var mainteFacilityId = $(this).data('id');
         console.log('Decline Button Clicked for Facility ID:', mainteFacilityId);
-
-        // Set the facility ID in the hidden input field
-        $("#DclnMainteFacilityPopupCard").data("mainteFacilityId", mainteFacilityId);
-
-        // Show the decline popup
-        $("#DclnMainteFacilityPopupCard").removeClass("hidden");
+        $("#DclnMainteFacilityPopupCard").data("mainteFacilityId", mainteFacilityId).removeClass("hidden");
     });
 
     // Hide the popup and show Cancel message when the "Cancel" button is clicked
-    $("#closeDclnMainteFacilityPopupCard").click(function (event) {
+    $("#closeDclnMainteFacilityPopupCard").click(function(event) {
         event.preventDefault();
         $("#DclnMainteFacilityPopupCard").addClass("hidden");
+        $("#decline-loader").remove(); // Remove loader if cancelled
     });
 
     // Handle the decline form submission
-    $(".submitDclnMainteFacilityPopupCard").click(function (event) {
+    $(".submitDclnMainteFacilityPopupCard").click(function(event) {
         event.preventDefault();
-
         var mainteFacilityId = $("#DclnMainteFacilityPopupCard").data("mainteFacilityId");
+
+        // Show the loader
+        $("#DclnMainteFacilityPopupCard").append(`
+            <div id="decline-loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
+                <section class="dots-container">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </section>
+                <div class="dot-loader-dialog">
+                    <p>Declining request, please wait...</p>
+                </div>
+            </div>
+        `);
+
 
         $.ajax({
             url: '/admin/mainteFacility/decline',
@@ -300,24 +331,22 @@ $(document).ready(function () {
                 mainteFacilityId: mainteFacilityId,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (response) {
+            success: function(response) {
+                $("#decline-loader").remove();
                 Swal.fire({
                     icon: 'success',
                     title: 'Submitted',
-                    text: response.message, // Server response message
+                    text: response.message,
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#3085d6'
                 }).then(() => {
                     $("#DclnMainteFacilityPopupCard").addClass("hidden");
-
-                    // Remove the declined facility row from the table
-                    $('tr[data-id="'+ mainteFacilityId+'"]').remove();
-
-                    // Log the mainteFacilityId to the console
+                    $('tr[data-id="' + mainteFacilityId + '"]').remove();
                     console.log('Facility ID passed to the other table:', mainteFacilityId);
                 });
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
+                $("#decline-loader").remove();
                 console.log(xhr.responseText);
                 Swal.fire({
                     icon: 'error',

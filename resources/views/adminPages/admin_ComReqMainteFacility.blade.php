@@ -98,7 +98,7 @@
                 <tbody id="tableBody" class="">
                     @foreach($facility as $mainteFacility)
                     <tr class="odd:bg-blue-100  even:bg-white  border-b  " data-index="{{$loop->index}}" data-id="{{$mainteFacility->facilityCompleteRequestId}}">
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Pending</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Complete</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ $mainteFacility->RepairId }}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ $mainteFacility->FacilityBuildingName}}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{ $mainteFacility->FacilityRoom }}</td>
@@ -114,6 +114,7 @@
             </table>
 
             <!-- View Popup Card -->
+            @foreach($facility as $mainteFacility)
             <div id="COMREQViewMainteFacilityPopupCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div id="view-COMREQ-maintFac-print-content" class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
                     <div class="flex flex-col items-center mb-4">
@@ -129,15 +130,15 @@
                     </div>
 
                     <div class="text-sm">
-                        <p class="mb-2"><strong>Date/Time Requested: </strong></p>
-                        <p class="mb-2"><strong>Requesting Office/Unit: </strong></p>
-                        <p class="mb-2"><strong>Requesting for: </strong></p>
+                        <p class="mb-2"><strong>Date/Time Requested: {{$mainteFacility->MainteFacilityDate}}/{{$mainteFacility->MainteFacilityTime}}</strong></p>
+                        <p class="mb-2"><strong>Requesting Office/Unit:{{$mainteFacility->MainteFacilityReqUnit}}   </strong></p>
+                        <p class="mb-2"><strong>Requesting for:{{$mainteFacility->MainteFacilityReqFOR}} </strong></p>
 
                         <div class="pt-4">
                         </div>
-                        <p class="mb-2"><strong>Building Name: </strong></p>
-                        <p class="mb-2"><strong>Room: </strong></p>
-                        <p class="mb-2"><strong>Facility Type: </strong></p>
+                        <p class="mb-2"><strong>Building Name:{{$mainteFacility->FacilityBuildingName}}  </strong></p>
+                        <p class="mb-2"><strong>Room: {{$mainteFacility->FacilityRoom}}</strong></p>
+                        <p class="mb-2"><strong>Facility Type:{{$mainteFacility->FacilityType}} </strong></p>
 
                         <div class="pt-4">
                         </div>
@@ -154,6 +155,7 @@
                 </div>
 
             </div>
+            @endforeach
 
             <!-- Set Job Popup Card -->
 

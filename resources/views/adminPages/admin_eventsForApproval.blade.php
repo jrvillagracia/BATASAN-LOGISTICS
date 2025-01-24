@@ -117,7 +117,7 @@
                                             <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
-                                    <input type="time" id="EventApprTime" name="EventApprtime" readonly class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                                    <input type="time" id="EventApprTime" name="EventApprTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" required />
                                 </div>
                             </div>
 
@@ -525,8 +525,8 @@
                 <div class="bg-white p-6 rounded-lg shadow-lg w-80">
                     <h2 class="text-xl font-bold mb-4 text-center">Are you sure you want to approve this request?</h2>
 
-                    <label for="remarks" class="block mb-2">Remarks</label>
-                    <textarea id="ApprEventRemarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..." style="resize: none; overflow-y: auto;"></textarea>
+                    <!-- <label for="remarks" class="block mb-2">Remarks</label>
+                    <textarea id="ApprEventRemarks" class="w-full p-2 rounded border border-gray-400 mb-4" rows="3" placeholder="Enter your remarks here..." style="resize: none; overflow-y: auto;"></textarea> -->
 
                     <div class="flex justify-center space-x-4">
                         <button data-id="{{ $event->id }}" class=" submitApprEventPopupCard bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded">Submit</button>
