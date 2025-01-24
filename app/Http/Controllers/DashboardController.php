@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Events\Events;
 use App\Models\Supplies\Supplies;
 use Illuminate\Support\Facades\DB;
 use App\Models\Equipments\Equipment;
+use App\Models\Supplies\SuppliesStock;
 use App\Models\Equipments\EquipmentStock;
 use App\Models\Models\FacilityModule\Room;
-use App\Models\Supplies\SuppliesStock;
+use App\Models\MaintenanceFacility\MainteFacility;
 
 class DashboardController extends Controller
 {
@@ -23,8 +25,13 @@ class DashboardController extends Controller
 
         $totalSuppliesStocks = SuppliesStock::count();
 
+        $totalEventsActivities = Events::count();
+
+        $totalMainteFacility = MainteFacility::count();
+
         // Pass the totalFacilities variable to the Blade view
-        return view('adminPages.admin_dashboard', compact('totalFacilities', 'totalEquipmentStocks', 'totalSuppliesStocks'));
+        return view('adminPages.admin_dashboard', compact('totalFacilities', 'totalEquipmentStocks', 'totalSuppliesStocks', 
+        'totalEventsActivities', 'totalMainteFacility'));
     }
 
     public function getEquipmentPerMonth(Request $request)
