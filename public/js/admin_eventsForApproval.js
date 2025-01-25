@@ -337,8 +337,6 @@ $(document).ready(function () {
 
 
 
-
-// APPROVE BUTTON CARD FORM
 // APPROVE BUTTON CARD FORM
 $(document).ready(function() {
     // Event Approve Button - Show Approval Modal

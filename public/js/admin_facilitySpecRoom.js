@@ -200,9 +200,9 @@ $(document).ready(function () {
         $('#SpecEditFormCard').removeClass('hidden');
 
         // Populate the form with data from the selected row
-        $('#SpecEditForm').find('#SpecEditBldName').val(row.find('td').eq(0).text().trim());
-        $('#SpecEditForm').find('#SpecEditRoom').val(row.find('td').eq(1).text().trim());
-        $('#SpecEditForm').find('#SpecEditCapacity').val(row.find('td').eq(2).text().trim()); // Adjusted index for capacity
+        $('#SpecEditForm').find('#SpecEditBldName').val(row.find('td').eq(1).text().trim());
+        $('#SpecEditForm').find('#SpecEditRoom').val(row.find('td').eq(2).text().trim());
+        $('#SpecEditForm').find('#SpecEditCapacity').val(row.find('td').eq(4).text().trim()); // Adjusted index for capacity
 
         // Set the hidden input field with the room ID
         $('#SpecEditRoomId').val(roomId);

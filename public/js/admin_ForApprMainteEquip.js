@@ -312,7 +312,7 @@ $('#EquipmentSerialNo, #ControlNo').on('change', function () {
 
     if (serialNo && controlNo) {
         $.ajax({
-            url: '/getEquipmentDetails',  // Your new route for fetching all details
+            url: '/getEquipmentDetails',
             method: 'GET',
             data: { SerialNo: serialNo, ControlNo: controlNo },
             success: function (response) {

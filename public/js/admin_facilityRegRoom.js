@@ -198,9 +198,9 @@ $(document).ready(function () {
         $('#RegEditFormCard').removeClass('hidden');
 
         // Populate the form with data from the selected row
-        $('#RegEditForm').find('#RegEditBldName').val(row.find('td').eq(0).text().trim());
-        $('#RegEditForm').find('#RegEditRoom').val(row.find('td').eq(1).text().trim());
-        $('#RegEditForm').find('#RegEditCapacity').val(row.find('td').eq(2).text().trim()); // Adjusted index for capacity
+        $('#RegEditForm').find('#RegEditBldName').val(row.find('td').eq(1).text().trim());
+        $('#RegEditForm').find('#RegEditRoom').val(row.find('td').eq(2).text().trim());
+        $('#RegEditForm').find('#RegEditCapacity').val(row.find('td').eq(4).text().trim()); // Adjusted index for capacity
 
         // Set the hidden input field with the room ID
         $('#RegEditForm').find('input[name="id"]').val(roomId);
