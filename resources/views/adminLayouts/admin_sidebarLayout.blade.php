@@ -179,9 +179,9 @@
                                 <li>
                                     <a href="{{route('admin_facilitySpecRoom')}}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Laboratory Room</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="{{route('admin_facilityOfficeRoom')}}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Office Room</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="hover:bg-gray-200 p-3 rounded-md">
@@ -205,9 +205,9 @@
                             </button>
 
                             <ul id="dropdownContent" class="hidden py-2 space-y-2">
-                                <li>
+                                {{-- <li>
                                     <a href="{{ route('admin_POInventory')}}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Product Order</a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <a href="{{ route('admin_StockInSupplies') }}" class="pageloader flex items-center w-full sidebar-text p-2 font-bold text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 hover:text-black">Supplies</a>
                                 </li>

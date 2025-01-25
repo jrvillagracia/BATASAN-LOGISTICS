@@ -12,6 +12,7 @@ use App\Models\Supplies\SuppliesStock;
 use App\Models\Equipments\EquipmentStock;
 use App\Models\Models\FacilityModule\Room;
 use App\Models\MaintenanceFacility\MainteFacility;
+use App\Models\MaintenanceFacility\FacilityApprove;
 
 class DashboardController extends Controller
 {
@@ -27,11 +28,11 @@ class DashboardController extends Controller
 
         $totalEventsActivities = Events::count();
 
-        $totalMainteFacility = MainteFacility::count();
+        $totalMainteFacilityApprove = FacilityApprove::count();
 
         // Pass the totalFacilities variable to the Blade view
         return view('adminPages.admin_dashboard', compact('totalFacilities', 'totalEquipmentStocks', 'totalSuppliesStocks', 
-        'totalEventsActivities', 'totalMainteFacility'));
+        'totalEventsActivities', 'totalMainteFacilityApprove'));
     }
 
     public function getEquipmentPerMonth(Request $request)
