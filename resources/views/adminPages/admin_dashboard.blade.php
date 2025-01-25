@@ -79,7 +79,7 @@
                 </div>
             </div>
             <p class="text-2xl text-gray-800 mt-4">Equipment: <span class="font-bold">0</span></p>
-            <p class="text-base font-semibold text-gray-600 mt-1">Facility: <span class="font-bold">{{$totalMainteFacility}}</span></p>
+            <p class="text-base font-semibold text-gray-600 mt-1">Facility: <span class="font-bold">{{$totalMainteFacilityApprove}}</span></p>
         </div>
     </div>
 

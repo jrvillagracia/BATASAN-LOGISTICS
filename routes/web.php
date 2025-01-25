@@ -17,6 +17,7 @@ use App\Http\Controllers\Equipments\EquipmentController;
 use App\Http\Controllers\Equipments\EquipCondemController;
 use App\Http\Controllers\Supplies\SuppliesStockController;
 use App\Http\Controllers\Equipments\EquipmentStockController;
+use App\Http\Controllers\Request\ReqApprovalSuppliesController;
 use App\Http\Controllers\MaintenanceFacility\MainteFacilityController;
 use App\Http\Controllers\MaintenanceFacility\FacilityApproveController;
 use App\Http\Controllers\MaintenanceFacility\MainteEquipmentController;
@@ -138,9 +139,6 @@ Route::get('/admin_suppliesUsed', function () {
 
 
 // REQUEST MODULE FOR SUPPLIES
-Route::get('/admin_REQapprovalSupplies', function () {
-    return view('adminPages.admin_REQapprovalSupplies');
-})->name('admin_REQapprovalSupplies');
 
 Route::get('/admin_REQAprRequestSupplies', function () {
     return view('adminPages.admin_REQAprRequestSupplies');
@@ -221,6 +219,7 @@ Route::post('/supplies/delete-view', [SuppliesController::class, 'destroyEdit2']
 Route::post('/supplies/update-main', [SuppliesController::class, 'updateMain'])->name('supplies.updateMain');
 Route::post('/supplies/update-view', [SuppliesController::class, 'updateView'])->name('equipment.updateView');
 Route::get('/supplies/final-viewing', [SuppliesController::class, 'finalViewing'])->name('supplies.finalViewing');
+Route::get('/get/supplies', [SuppliesController::class, 'supplies'])->name('request.supplies');
 
 //Supplies
 Route::get('/admin_supplies', [SuppliesStockController::class, 'index'])->name('admin_supplies');
@@ -288,6 +287,10 @@ Route::get('/admin_mainteEquipment', [MainteEquipmentController::class, 'index']
 Route::get('/admin_mainteEquipment/details', [MainteEquipmentController::class, 'showDetails'])->name('maintenance.details');
 Route::post('/mainteEquipment/store', [MainteEquipmentController::class, 'store'])->name('mainteEquipment.store'); 
 Route::get('/getEquipmentDetails', [MainteEquipmentController::class, 'getEquipmentDetails']);
+
+//Request Supplies
+Route::get('/admin_REQapprovalSupplies', [ReqApprovalSuppliesController::class, 'index'])->name('admin_REQapprovalSupplies');
+Route::post('/requestSupplies/store', [ReqApprovalSuppliesController::class, 'store'])->name('requestApprSupplies.store'); 
 
 
 // FACULTY PAGES

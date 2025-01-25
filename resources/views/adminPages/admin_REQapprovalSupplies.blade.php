@@ -121,18 +121,15 @@
                                             <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
-                                    <input type="time" id="ReqSupTime" name="ReqSupTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                                    <input type="time" id="ReqSuppTime" name="ReqSuppTime" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label for="ReqSuppliesRequestOffice/Unit" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
-                            <select id="ReqSuppliesRequestOffice/Unit" name="ReqSuppliesRequestOffice/Unit" class="w-full px-2 py-1 border border-gray-400 rounded">
+                            <label for="ReqSuppliesRequestOffice" class="block text-sm font-semibold mb-2">Requesting Office/Unit</label>
+                            <select id="ReqSuppliesRequestOffice" name="ReqSuppliesRequestOffice" class="w-full px-2 py-1 border border-gray-400 rounded">
                                 <option value="" disabled selected>Select Office/Unit</option>
-                                <option value="">TLE Department</option>
-                                <option value="">English Department</option>
-                                <option value="">Storage Office</option>
                             </select>
                         </div>
 
@@ -140,8 +137,8 @@
                             <div class="flex space-x-4">
                                 <!-- Building Dropdown -->
                                 <div class="flex-1">
-                                    <label for="ReqSupBldName" class="block text-sm font-semibold mb-2">Building Name</label>
-                                    <select id="ReqSupBldName" name="ReqSupBldName" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <label for="ReqSuppBldName" class="block text-sm font-semibold mb-2">Building Name</label>
+                                    <select id="ReqSuppBldName" name="ReqSuppBldName" class="w-full px-2 py-1 border border-gray-400 rounded">
                                         <option value="" disabled selected>Select Building</option>
                                         <option value=""></option>
                                     </select>
@@ -149,8 +146,8 @@
 
                                 <!-- Room Dropdown -->
                                 <div class="flex-1">
-                                    <label for="ReqSupRoom" class="block text-sm font-semibold mb-2">Room</label>
-                                    <select id="ReqSupRoom" name="ReqSupRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
+                                    <label for="ReqSuppRoom" class="block text-sm font-semibold mb-2">Room</label>
+                                    <select id="ReqSuppRoom" name="ReqSuppRoom" class="w-full px-2 py-1 border border-gray-400 rounded">
                                         <option value="" disabled selected>Select Room</option>
                                         <!-- These options will depend on the selected building -->
                                         <option value="" data-building=""></option>
@@ -194,24 +191,18 @@
                                         <select id="ReqSupCategoryName" name="ReqSupCategoryName" class="w-full px-2 py-1 border border-gray-400 rounded">
                                             <option value="ReqSupCategoryName" disabled selected>Select Category</option>
                                             <!-- These options will depend on the selected building -->
-                                            <option value="Laptop" data-building="">Laptop</option>
-                                            <option value="Printer" data-building="">Printer</option>
                                         </select>
                                     </td>
                                     <td class="p-2">
                                         <select id="ReqSupType" name="ReqSupType" class="w-full px-2 py-1 border border-gray-400 rounded">
                                             <option value="ReqSupType" disabled selected>Select Type</option>
                                             <!-- These options will depend on the selected building -->
-                                            <option value="64gb" data-building="">64gb</option>
-                                            <option value="Nikon" data-building="">Nikon</option>
                                         </select>
                                     </td>
                                     <td class="p-2">
                                         <select id="ReqSupUnit" name="ReqSupUnit" class="w-full px-2 py-1 border border-gray-400 rounded">
                                             <option value="ReqSupUnit" disabled selected>Select Unit</option>
                                             <!-- These options will depend on the selected building -->
-                                            <option value="Box" data-building="">Box</option>
-                                            <option value="Unit" data-building="">Unit</option>
                                         </select>
                                     </td>
                                     <td class="p-2 flex justify-center">
@@ -275,15 +266,15 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody" class="">
-
+                    @foreach($requestSupplies as $request)
                     <tr class="odd:bg-blue-100  even:bg-white  border-b " data-index="" data-id="">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Pending</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">R00001</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Miniral Water</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">MNI</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">10</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">Elementary Faculty</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">9/12/2024</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$request->RepairRequestId}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$request->ReqSupCategoryName}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$request->ReqSupType}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$request->ReqSupQuantity}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$request->ReqSuppliesRequestOffice}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{$request->ReqSuppDate}}</td>
                         <td class="px-6 py-4">
                             <button id="ViewSupBtn" type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">View</button>
                             <button id="SetItemSupBtn" type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Set Item</button>
@@ -291,7 +282,7 @@
                             <button id="DclnSupBtn" type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Decline</button>
                         </td>
                     </tr>
-
+                    @endforeach
                     <!-- Dynamic rows will be inserted here -->
                 </tbody>
             </table>

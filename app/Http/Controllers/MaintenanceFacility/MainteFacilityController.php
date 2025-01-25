@@ -58,7 +58,7 @@ class MainteFacilityController extends Controller
             'MainteFacilityReqUnit' => $request->MainteFacilityReqUnit,
             'MainteFacilityReqFOR' => $request->MainteFacilityReqFOR,
             'MainteFacilityTime' => $request->MainteFacilityTime,
-            'MainteFacilityDate' => $request->MainteFacilityDate,
+            'MainteFacilityDate' => trim($request->MainteFacilityDate),
             'RepairId' => $tempRepairId,
         ]);
 
@@ -69,7 +69,6 @@ class MainteFacilityController extends Controller
         $facility->update([
             'RepairId' => $newRepairId
         ]);
-
         // Return success response
         return response()->json([
             'status' => 'success',

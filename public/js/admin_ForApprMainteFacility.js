@@ -43,7 +43,7 @@ $(document).ready(function () {
 
         // Get the current date and time
         const currentDate = new Date();
-        const formattedDate = currentDate.toISOString().split('T')[0];
+        const formattedDate = currentDate.toLocaleDateString('en-CA');
         const formattedTime = currentDate.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
@@ -483,7 +483,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     // Make an AJAX request to the API
     $.ajax({
-        url: 'https://bnhs-hr.onrender.com/api/all/departments',  // Adjust the URL to match your API endpoint
+        url: 'https://bnhs-hr.onrender.com/api/all/departments',  
         method: 'GET',
         headers: {
             'x-api-key': 'Ru8NWgJalpjcZ1T53i10Z5Jp4xdQoKdU90dq8zLHC1ZrGMxwbl4XToKg0sb7JCv9',

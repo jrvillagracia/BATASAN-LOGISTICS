@@ -352,5 +352,12 @@ class SuppliesController extends Controller
         }
     }
 
+    public function supplies()
+    {
+        $supplies = Supplies::select('SuppliesCategory', 'SuppliesType', 'SuppliesUnit', 'SuppliesQuantity')->get();
+
+        return response()->json($supplies);
+    }
+
 }
 
