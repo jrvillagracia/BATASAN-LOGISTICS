@@ -580,7 +580,8 @@ $(document).ready(function () {
 
        
         $('#editFullEquipModal').removeClass('hidden');
-        $('#editFullEquipForm').find('#FullEquipmentControlNoEdit').val(row.find('td').eq(1).text().trim());
+        $('#EquipmentSerialNo').val(row.find('td').eq(1).text().trim());
+        $('#FullEquipmentControlNoEdit').val(row.find('td').eq(2).text().trim());
         $('#editFullEquipForm').find('input[name="equipmentId"]').val(equipId);
     });
 

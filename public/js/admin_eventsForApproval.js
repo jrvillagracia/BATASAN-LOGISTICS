@@ -96,7 +96,6 @@ $(document).ready(function () {
     
         let isValid = true;
         requiredFields.forEach(field => {
-            //Using trim() here is important to handle whitespace-only inputs
             if (!$(field).val()) { 
                 isValid = false;
                 $(field).addClass('border-red-500');
