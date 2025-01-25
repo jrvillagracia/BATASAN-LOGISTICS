@@ -483,7 +483,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     // Make an AJAX request to the API
     $.ajax({
-        url: 'https://bnhs-hr.onrender.com/api/all/departments',  
+        url: 'https://bnhs-hr-5z64.onrender.com/api/all/departments',  
         method: 'GET',
         headers: {
             'x-api-key': 'Ru8NWgJalpjcZ1T53i10Z5Jp4xdQoKdU90dq8zLHC1ZrGMxwbl4XToKg0sb7JCv9',
