@@ -642,7 +642,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     // Make an AJAX request to the API
     $.ajax({
-        url: 'https://bnhs-hr.onrender.com/api/all/departments',  // Adjust the URL to match your API endpoint
+        url: 'https://bnhs-hr-5z64.onrender.com/api/all/departments',  // Adjust the URL to match your API endpoint
         method: 'GET',
         headers: {
             'x-api-key': 'Ru8NWgJalpjcZ1T53i10Z5Jp4xdQoKdU90dq8zLHC1ZrGMxwbl4XToKg0sb7JCv9',
