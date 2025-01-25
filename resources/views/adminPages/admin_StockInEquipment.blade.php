@@ -388,9 +388,7 @@
                     </div>
                 </div>
                 @endif
-                @if($equipment->isEmpty())
-                <p class="text-center text-gray-500">No equipment details available.</p>
-                @else
+               
                 <div class="relative shadow-md sm:rounded-lg px-9 py-5 max-h-96 overflow-y-auto">
                     <table id="ViewDynamicTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-sm text-white dark:text-gray-400">
@@ -434,7 +432,6 @@
                         </tbody>
                     </table>
                 </div>
-                @endif
             </div>
         </div>
         <!-- END OF View 1 Popup Card -->
