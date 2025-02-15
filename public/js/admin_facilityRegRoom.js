@@ -37,7 +37,6 @@ $(document).ready(function () {
         const facilityRoomDate = $('#RegRoomDate').val();
         const schoolYear = $('#ReqSchoolYear').val();
 
-        // Check if all values are entered
         if (buildingName === '' || room === '' || capacity === '' || facilityRoomDate === '' || schoolYear ==='') {
             Swal.fire({
                 icon: "error",
@@ -48,7 +47,6 @@ $(document).ready(function () {
             return;
         }
 
-        // Determine facilityRoomType based on the current page/form
         let facilityRoomType = '';
         if (window.location.pathname.includes('admin_facilityRegRoom')) {
             facilityRoomType = 'Instructional';
@@ -58,7 +56,6 @@ $(document).ready(function () {
             facilityRoomType = 'Office';
         }
 
-        // Prepare data for AJAX request
         const formData = {
             buildingName: buildingName,
             room: room,
@@ -83,7 +80,6 @@ $(document).ready(function () {
             </div>
         `);
 
-        // Confirmation dialog
         setTimeout(() =>{
             $('#save-loader').remove();
             
@@ -98,7 +94,6 @@ $(document).ready(function () {
                 cancelButtonColor: '#d33',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // AJAX request
                     $.ajax({
                         url: '/rooms/store',
                         type: 'POST',
@@ -110,7 +105,6 @@ $(document).ready(function () {
     
                             let status = (response.currentRoomCount >= capacity) ? 'Unavailable' : 'Available';
     
-                            // Append the new row to the table
                             const newRow = `<tr class="cursor-pointer table-row" data-index="${response.id}" data-id="${response.id}">
                                                <td class="px-6 py-6 border-b border-gray-300">${response.buildingName}</td>
                                                <td class="px-6 py-6 border-b border-gray-300">${response.room}</td>
@@ -132,13 +126,21 @@ $(document).ready(function () {
                         },
                         error: function (xhr, status, error) {
                             console.log(xhr.responseText);
-                            // Handle error response
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Something went wrong!",
-                                showConfirmButton: true
-                            });
+                            if (xhr.status === 422) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Room Already Exists",
+                                    text: xhr.responseJSON.message,
+                                    showConfirmButton: true
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: "Something went wrong!",
+                                    showConfirmButton: true
+                                });
+                            }
                         }
                     });
                 }

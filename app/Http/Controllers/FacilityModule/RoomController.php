@@ -189,9 +189,19 @@ class RoomController extends Controller
             'schoolYear' => 'required|string|max:255',
         ]);
 
+        // Check if the room already exists
+        $existingRoom = Room::where('BldName', $validatedData['buildingName'])
+                            ->where('Room', $validatedData['room'])
+                            ->first();
+
+        if ($existingRoom) {
+            return response()->json([
+                'message' => 'The room already exists!'
+            ], 422); // HTTP 422 Unprocessable Entity
+        }
+
         // Convert the 'facilityRoomDate' to 'Y-m-d' format
         $facilityRoomDate = Carbon::createFromFormat('m/d/Y', $validatedData['facilityRoomDate'])->format('Y-m-d');
-
 
         // Create a new room entry
         $room = new Room();
@@ -200,7 +210,7 @@ class RoomController extends Controller
         $room->facilityStatus = 'Available';
         $room->Capacity = $validatedData['capacity'];
         $room->facilityRoomDate = $facilityRoomDate;  
-        $room->facilityRoomType = $request->facilityRoomType;  
+        $room->facilityRoomType = $validatedData['facilityRoomType'];  
         $room->schoolYear = $validatedData['schoolYear'];
         $room->save();
 
@@ -216,12 +226,13 @@ class RoomController extends Controller
                 'schoolYear'=> $room->schoolYear,
             ];
         });
-    
+
         return response()->json([
             'foundSections' => $foundSections,
             'message' => 'Room added successfully!',
         ], 201);
     }
+
 
     public function showDetailsRooms()
     {
