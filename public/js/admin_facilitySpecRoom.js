@@ -134,13 +134,21 @@ $(document).ready(function () {
                         },
                         error: function (xhr, status, error) {
                             console.log(xhr.responseText);
-                            // Handle error response
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Something went wrong!",
-                                showConfirmButton: true
-                            });
+                            if (xhr.status === 422) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Room Already Exists",
+                                    text: xhr.responseJSON.message,
+                                    showConfirmButton: true
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: "Something went wrong!",
+                                    showConfirmButton: true
+                                });
+                            }
                         }
                     });
                 }
@@ -148,10 +156,6 @@ $(document).ready(function () {
         }, 1000);
     });
 });
-
-
-
-
 
 
 
